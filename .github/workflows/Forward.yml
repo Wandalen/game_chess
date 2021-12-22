@@ -20,7 +20,7 @@ jobs :
     uses: obox-systems/game_chess/.github/workflows/WebCommon.yml@main
 
   forward :
-    needs: [ android, desktop, ios, web ]
+    needs: [ desktop, web ]
     runs-on : ubuntu-latest
     steps :
       - uses: actions/checkout@v2
