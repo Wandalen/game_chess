@@ -28,7 +28,7 @@ function watcherCb()
   }
 }
 
-watcher = browserSync.watch( path.join( o.server.baseDir, '*.wasm' ) );
+watcher = browserSync.watch( path.join( o.server.baseDir, 'index.html' ) );
 watcher.on( 'add', watcherCb );
 watcher.on( 'change', watcherCb );
 
