@@ -41,12 +41,22 @@
   * Less unsafe code
   * Less features
 
+
 - https://github.com/hyperchessbot/uciengine
 - https://github.com/monlih/crabfish
 - https://github.com/th0masb/myopic/
 - https://github.com/paul-schaaf/legal_chess
 
+## Unsorted
+
+- https://lib.rs/crates/littlewing
+- https://lib.rs/crates/alcibiades
+
 ## Multiplayer crates
 
 - https://github.com/netskillzgh/rollo
 - https://github.com/ErnWong/crystalorb
+- https://github.com/TimonPost/laminar
+- https://github.com/naia-rs/naia
+- https://github.com/googleforgames/quilkin
+- https://github.com/googleforgames/open-match
