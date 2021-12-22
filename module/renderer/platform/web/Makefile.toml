@@ -1,0 +1,181 @@
+[config]
+skip_core_tasks = true
+skip_git_env_info = true
+skip_rust_env_info = true
+skip_crate_env_info = true
+
+[env]
+CARGO_MAKE_WEB_PORT = 9999
+
+# Private
+
+[tasks.web_watch]
+private = true
+watch = { postpone = true, watch = [
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../src/", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/static/",
+]}
+
+[tasks.web_install_wasm]
+private = true
+install_script = "rustup target add wasm32-unknown-unknown"
+
+[tasks.web_install_rust_script]
+private = true
+condition = { files_not_exist = [ "${HOME}/.cargo/bin/rust-script" ] }
+script_runner = "@duckscript"
+script = '''
+exec cargo install rust-script --version "0.7.0"
+'''
+
+# [tasks.web_run_wasm_opt]
+# private = true
+# script_runner = "@duckscript"
+# script = '''
+# handle = glob_array ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../bin/wasm*/wasm-opt*
+# path = array_get ${handle} 0
+# parent = dirname ${path}
+# set_env DYLD_LIBRARY_PATH ${parent}
+# exec ${path} ${1}
+# '''
+
+[tasks.web_build_target_debug]
+private = true
+command = "cargo"
+args = [
+  "build",
+  "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
+  "--bin", "web",
+  "--target", "wasm32-unknown-unknown",
+  "--features", "web",
+]
+
+[tasks.web_build_target_release]
+private = true
+install_script = "rustup target add wasm32-unknown-unknown"
+command = "cargo"
+args = [
+  "+nightly",
+  "build",
+  "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
+  "--bin", "web",
+  "--target", "wasm32-unknown-unknown",
+  "--features", "web",
+  "--profile", "release_web",
+  "-Z", "build-std=std,panic_abort", # rebuild std
+  "-Z", "build-std-features=panic_immediate_abort", # rebuild std with abort, without unwind
+]
+
+[tasks.web_wasm_rebuild_debug]
+private = true
+command = "wasm-bindgen"
+args = [
+  "--target", "web",
+  # "--browser"
+  "--out-dir", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/wasm32-unknown-unknown/debug/web.wasm",
+  "--debug",
+  "--keep-debug",
+]
+
+[tasks.web_wasm_build_debug]
+extend = "web_wasm_rebuild_debug"
+install_crate = "wasm-bindgen-cli"
+
+[tasks.web_wasm_build_release]
+private = true
+install_crate = "wasm-bindgen-cli"
+command = "wasm-bindgen"
+args = [
+  "--target", "web",
+  "--out-dir", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web",
+  "--remove-name-section",
+  "--remove-producers-section",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/wasm32-unknown-unknown/release_web/web.wasm",
+]
+
+[tasks.web_build_copy_static]
+private = true
+script_runner = "@duckscript"
+script = '''
+glob_cp ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/static/* ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web
+'''
+
+[tasks.web_wasm_optimize]
+private = true
+dependencies = [ "web_install_rust_script" ]
+command = "rust-script"
+args = [
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/step/wasm_opt.rs",
+  "-Oz",
+  "-o", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web/web_bg.wasm",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web/web_bg.wasm",
+  "--strip-debug",
+  "--simplify-globals",
+  "--vacuum",
+]
+
+[tasks.web_install_npm_dependencies]
+description = "Install npm dependencies for web target."
+private = true
+category = "Prerequisites"
+script_runner = "@shell"
+script = '''
+cd ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}
+npm i
+'''
+
+[tasks.web_server_browsersync]
+private = true
+dependencies = [ "web_install_npm_dependencies" ]
+command = 'node'
+args = [ "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/step/BrowserSync.ss" ]
+
+[tasks.web_rebuild_watching]
+private = true
+extend = "web_watch"
+dependencies = [ "web_build_target_debug", "web_wasm_rebuild_debug", "web_build_copy_static" ]
+
+# Public
+
+[tasks.web_server_run]
+private = false
+category = "Web"
+install_crate = "basic-http-server"
+description = "Run HTTP server on port ${CARGO_MAKE_WEB_PORT}."
+command = "basic-http-server"
+args = [ "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web", "-a", "127.0.0.1:${CARGO_MAKE_WEB_PORT}" ]
+
+[tasks.web_build]
+description = "Build debug of web target."
+private = false
+category = "Web"
+dependencies = [ "web_install_wasm", "web_build_target_debug", "web_wasm_build_debug", "web_build_copy_static" ]
+
+[tasks.web_build_release]
+description = "Build release of web target."
+private = false
+category = "Web"
+dependencies = [ "web_install_wasm", "web_build_target_release", "web_wasm_build_release", "web_build_copy_static", "web_wasm_optimize" ]
+# dependencies = [ "web_install_wasm", "web_build_target_release", "web_wasm_build_release", "web_build_copy_static" ]
+
+[tasks.web_rebuild]
+description = "Rebuild debug of web target."
+private = false
+category = "Web"
+dependencies = [ "web_build_target_debug", "web_wasm_rebuild_debug", "web_build_copy_static" ]
+
+[tasks.web_run]
+description = "Build and run web target."
+category = "Web"
+run_task = { name = [ "web_build", "web_server_run" ] }
+
+[tasks.web_run_watching]
+description = "Rebuild debug of web target and run it."
+category = "Web"
+run_task = { name = [ "web_rebuild_watching", "web_server_browsersync" ], parallel = true }
+
+[tasks.wasm_opt]
+private = true
+dependencies = [ "web_install_rust_script" ]
+command = "rust-script"
+args = [ "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/step/wasm_opt.rs", "${@}" ]

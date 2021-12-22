@@ -1,0 +1,63 @@
+cargo-features = [
+  "named-profiles", # custom named profile
+#  "build-std", # rebuild srd
+#  "strip", # strip either symbols or debuginfo
+#  "weak-dep-features", # ability to use dep_name?/feat_name syntax
+]
+
+[workspace]
+resolver = "2"
+members = [
+  "module/renderer",
+  # "module/renderer/platform/desktop",
+  # "module/renderer/platform/web",
+  # "module/renderer/platform/android",
+  # "module/renderer/platform/ios",
+  # "module/renderer/platform/wasi",
+]
+exclude = [
+  "*",
+  "module/renderer/wgpu",
+  "module/renderer/bevy",
+]
+default-members = [ "module/renderer" ]
+
+#
+# debug profile
+#
+
+[profile.dev.package."*"]
+# opt-level = "s"
+# opt-level = "z"
+
+#
+# release profile
+#
+
+[profile.release]
+opt-level = 3 # aggressive performance optimziation
+lto = true # link-time optimization
+panic = "abort" # abort immediately rather than unwind
+codegen-units = 1 # improves optimization, but decrease compile time
+# strip = "symbols" # strip symbols
+
+[profile.release.package."*"]
+opt-level = 3
+
+#
+# release_web profile
+#
+
+[profile.release_web]
+inherits = "release"
+# opt-level = "s" # optimize for small code size.
+opt-level = "z" # optimize for small code size aggressively.
+lto = true # link-time optimization
+panic = "abort" # abort immediately rather than unwind
+codegen-units = 1 # improves optimization, but decrease compile time
+# strip = "symbols" # strip symbols
+
+
+[profile.release_web.package."*"]
+# opt-level = "s"
+opt-level = "z"

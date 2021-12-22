@@ -1,0 +1,45 @@
+extend = [
+
+  { path = "./platform/desktop/Makefile.toml" },
+  { path = "./platform/web/Makefile.toml" },
+  #
+
+]
+
+[config]
+skip_core_tasks = true # to skip default predefined flow
+
+[tasks.default]
+extend = "desktop_run"
+
+[tasks.test]
+category = "General"
+description = "Run tests"
+command = "cargo"
+args = [ "test" ]
+
+[tasks.doc_dep_graph]
+category = "General"
+description = "Generate dependancy graph."
+private = false
+script_runner = "@shell"
+script = '''
+cargo depgraph --all-deps --dedup-transitive-deps |
+  dot -Tjpg > ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../doc/dep_graph.jpg
+'''
+
+
+[tasks.doc_ref]
+category = "General"
+description = "Generate reference"
+command = "cargo"
+args = [
+  "doc",
+  "--target-dir", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../target/reference",
+]
+
+[tasks.doc]
+category = "General"
+description = "Generate full documentation"
+run_task = { name = [ "doc_dep_graph", "doc_ref" ], parallel = true }
+# dependencies = [ "doc_dep_graph", "doc_ref" ]

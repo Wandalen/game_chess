@@ -1,0 +1,22 @@
+
+name: Delete
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Delete older than the number of days.'
+        required: true
+        type: number
+        default: 90
+
+jobs:
+  del_runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v1.2.3
+        with:
+          token: ${{ secrets.PRIVATE_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: ${{ github.event.inputs.days }}

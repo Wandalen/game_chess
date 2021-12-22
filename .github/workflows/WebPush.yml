@@ -1,0 +1,15 @@
+
+name: WebPush
+
+on :
+  push :
+    branches : [ alpha ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    if: "contains( github.event.head_commit.message, '[build]' )"
+    uses: obox-systems/game_chess/.github/workflows/WebCommon.yml@master
+

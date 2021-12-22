@@ -1,0 +1,52 @@
+name: DesktopCommon
+
+on:
+  workflow_call:
+    inputs:
+      artifacts:
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    strategy :
+      fail-fast : false
+      matrix :
+        os : [ ubuntu, windows, macos ]
+
+    runs-on: ${{ matrix.os }}-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+    - name: Install latest stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+          toolchain: stable
+          override: true
+    - uses: davidB/rust-cargo-make@v1
+
+    - name: Build
+      run: cargo build
+    - name: Run tests
+      run: cargo test
+    - name: Upload
+      if: ${{ inputs.artifacts == 'true' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.os }}
+        path: target/release/test
+        retention-days: 1
+
