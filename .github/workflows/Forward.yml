@@ -10,17 +10,23 @@ env:
 
 jobs :
 
+  android:
+    if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/AndroidCommon.yml@main
   desktop:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: obox-systems/game_chess/.github/workflows/DesktopCommon.yml@master
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/DesktopCommon.yml@main
     with:
       artifacts: 'true'
+  ios:
+    if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/IosCommon.yml@main
   web:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: obox-systems/game_chess/.github/workflows/WebCommon.yml@master
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/WebCommon.yml@main
 
   forward :
-    needs: [ desktop, web ]
+    needs: [ android, desktop, ios, web ]
     runs-on : ubuntu-latest
     steps :
       - uses: actions/checkout@v2
@@ -30,33 +36,4 @@ jobs :
           source_ref : alpha
           target_branch : beta
           commit_message_template : 'Merge {source_ref} into {target_branch} [Automated]'
-
-  # artifacts_forward :
-  #   needs: [ desktop, web ]
-  #   runs-on : ubuntu-latest
-  #   steps :
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: ubuntu
-  #         path: out/linux_release
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: macos
-  #         path: out/macos_release
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: windows
-  #         path: out/windows_release
-  #     - name: Pushes to another repository
-  #       uses: cpina/github-action-push-to-another-repository@v1.3
-  #       env:
-  #         API_TOKEN_GITHUB: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-  #       with:
-  #         source-directory: 'out'
-  #         target-directory: 'out'
-  #         destination-github-username: 'Wandalen'
-  #         destination-repository-name: 'game_chess_build'
-  #         user-email: wandalen@obox.systems
-  #         target-branch: master
 
