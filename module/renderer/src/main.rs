@@ -4,11 +4,13 @@ use bevy::prelude::*;
 
 fn main()
 {
-  let mut app = App::build()
-     .add_plugins( DefaultPlugins )
-     .insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) )
-     .add_startup_system( setup.system() )
-     .run();
+  let mut app = App::build();
+     app.add_plugins( DefaultPlugins );
+     app.insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) );
+     #[cfg(target_arch = "wasm32")]
+     app.add_plugin( bevy_webgl2::WebGL2Plugin );
+     app.add_startup_system( setup.system() );
+     app.run();
 }
 
 fn setup

@@ -14,7 +14,7 @@ package-lock.json
 /Cargo.lock
 /.vscode
 /private.*
-/bin
+bin
 
 -*
 .module

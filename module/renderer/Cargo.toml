@@ -26,7 +26,7 @@ include = [
 ]
 
 [features]
-web = []
+web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
 desktop = []
 default = [ "desktop" ]
 
@@ -44,6 +44,9 @@ required-features = [ "web" ]
 name = "desktop"
 path = "./src/main.rs"
 
-[dependencies]
-# state of the art game engine
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 bevy = { version = "0.5" }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+bevy = { version = "0.5", default-features = false }
+bevy_webgl2 = "0.5"

@@ -12,7 +12,8 @@ CARGO_MAKE_WEB_PORT = 9999
 [tasks.web_watch]
 private = true
 watch = { postpone = true, watch = [
-  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../src/", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/static/",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../src/",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/static/",
 ]}
 
 [tasks.web_install_wasm]
@@ -26,6 +27,25 @@ script_runner = "@duckscript"
 script = '''
 exec cargo install rust-script --version "0.7.0"
 '''
+
+[tasks.wasm-bindgen-cli]
+private = true
+condition = { files_not_exist = [ "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/bin/wasm-bindgen" ]}
+args = [
+  "local-install",
+  "wasm-bindgen-cli",
+  "--version", "0.2.69",
+  "--root", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}",
+  "--locked",
+  "--no-path-warning"
+]
+command = "cargo"
+dependencies = [ "cargo-local-install" ]
+
+[tasks.cargo-local-install]
+private = true
+condition = { files_not_exist = [ "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/bin/wasm-bindgen" ]}
+install_crate = { crate_name = "cargo-local-install", binary = "cargo-wasm-bindgen", test_arg="--help" }
 
 # [tasks.web_run_wasm_opt]
 # private = true
@@ -67,7 +87,8 @@ args = [
 
 [tasks.web_wasm_rebuild_debug]
 private = true
-command = "wasm-bindgen"
+# command = "wasm-bindgen"
+command = "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/bin/wasm-bindgen"
 args = [
   "--target", "web",
   # "--browser"
@@ -79,12 +100,15 @@ args = [
 
 [tasks.web_wasm_build_debug]
 extend = "web_wasm_rebuild_debug"
-install_crate = "wasm-bindgen-cli"
+# install_crate = "wasm-bindgen-cli"
+dependencies = [ "wasm-bindgen-cli" ]
 
 [tasks.web_wasm_build_release]
 private = true
-install_crate = "wasm-bindgen-cli"
-command = "wasm-bindgen"
+# install_crate = "wasm-bindgen-cli"
+dependencies = [ "wasm-bindgen-cli" ]
+# command = "wasm-bindgen"
+command = "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/bin/wasm-bindgen"
 args = [
   "--target", "web",
   "--out-dir", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web",
@@ -98,6 +122,7 @@ private = true
 script_runner = "@duckscript"
 script = '''
 glob_cp ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/static/* ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web
+glob_cp ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../assets/* ${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web/assets
 '''
 
 [tasks.web_wasm_optimize]
