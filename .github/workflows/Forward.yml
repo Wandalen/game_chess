@@ -10,20 +10,14 @@ env:
 
 jobs :
 
-  android:
-    if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: Learn-Together-Pro/rust_game_template/.github/workflows/AndroidCommon.yml@main
   desktop:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: Learn-Together-Pro/rust_game_template/.github/workflows/DesktopCommon.yml@main
+    uses: obox-systems/game_chess/.github/workflows/DesktopCommon.yml@main
     with:
       artifacts: 'true'
-  ios:
-    if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: Learn-Together-Pro/rust_game_template/.github/workflows/IosCommon.yml@main
   web:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: Learn-Together-Pro/rust_game_template/.github/workflows/WebCommon.yml@main
+    uses: obox-systems/game_chess/.github/workflows/WebCommon.yml@main
 
   forward :
     needs: [ android, desktop, ios, web ]
