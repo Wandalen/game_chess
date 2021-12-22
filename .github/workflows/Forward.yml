@@ -10,17 +10,23 @@ env:
 
 jobs :
 
+  android:
+    if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/AndroidCommon.yml@master
   desktop:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: obox-systems/game_chess/.github/workflows/DesktopCommon.yml@master
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/DesktopCommon.yml@master
     with:
       artifacts: 'true'
+  ios:
+    if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/IosCommon.yml@master
   web:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
-    uses: obox-systems/game_chess/.github/workflows/WebCommon.yml@master
+    uses: Learn-Together-Pro/rust_game_template/.github/workflows/WebCommon.yml@master
 
   forward :
-    needs: [ desktop, web ]
+    needs: [ android, desktop, ios, web ]
     runs-on : ubuntu-latest
     steps :
       - uses: actions/checkout@v2
@@ -32,7 +38,7 @@ jobs :
           commit_message_template : 'Merge {source_ref} into {target_branch} [Automated]'
 
   # artifacts_forward :
-  #   needs: [ desktop, web ]
+  #   needs: [ android, desktop, ios, web ]
   #   runs-on : ubuntu-latest
   #   steps :
   #     - uses: actions/checkout@v2
@@ -56,7 +62,7 @@ jobs :
   #         source-directory: 'out'
   #         target-directory: 'out'
   #         destination-github-username: 'Wandalen'
-  #         destination-repository-name: 'game_chess_build'
+  #         destination-repository-name: 'rust_game_template_build'
   #         user-email: wandalen@obox.systems
   #         target-branch: master
 

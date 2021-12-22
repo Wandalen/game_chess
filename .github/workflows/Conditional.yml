@@ -17,7 +17,7 @@ jobs:
         run: |
           response=$(curl --request GET \
           --url 'https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/commits' \
-          --header 'Authorization: token ${{ secrets.PRIVATE_GITHUB_TOKEN }}' \
+          --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Content-Type: application/json')
           echo $response > response.json
@@ -31,7 +31,7 @@ jobs:
           echo "::set-output name=message::$latest_commit_message"
       - name : Exit with fail
         id: run
-        if: "${{ !contains( steps.message.outputs.message, '[build]' ) }}"
+        if: "!contains( github.event.head_commit.message, '[build]' ) && !startsWith( github.event.head_commit.message, 'Merge ' )"
         run: echo "::set-output name=shouldRun::false"
 
   desktop:
@@ -44,3 +44,4 @@ jobs:
     needs: check
     if: ${{ needs.check.outputs.shouldRun != 'false' }}
     uses: obox-systems/game_chess/.github/workflows/WebCommon.yml@master
+
