@@ -1,43 +1,29 @@
-#![ warn( missing_docs ) ]
+#![warn(missing_docs)]
 
 use bevy::prelude::*;
 
-fn main() {
-    let mut app = App::build();
-    app.insert_resource(Msaa { samples: 4 })
-        .add_plugins(DefaultPlugins);
-    app.add_startup_system(setup.system()).run();
+fn main()
+{
+  let mut app = App::build()
+     .add_plugins( DefaultPlugins )
+     .insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) )
+     .add_startup_system( setup.system() )
+     .run();
 }
 
-/// set up a simple 3D scene
-fn setup(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
-    // add entities to the world
-    // plane
-    commands.spawn_bundle(PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
-        material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
-        ..Default::default()
-    });
-    // cube
-    commands.spawn_bundle(PbrBundle {
-        mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-        material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-        transform: Transform::from_translation(Vec3::new(0.0, 0.5, 0.0)),
-        ..Default::default()
-    });
-    // light
-    commands.spawn_bundle(LightBundle {
-        transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
-        ..Default::default()
-    });
-    // camera
-    commands.spawn_bundle(PerspectiveCameraBundle {
-        transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
-            .looking_at(Vec3::default(), Vec3::Y),
-        ..Default::default()
-    });
+fn setup
+(
+  mut commands: Commands,
+  asset_server: Res< AssetServer >,
+  mut materials: ResMut<Assets< ColorMaterial > >,
+)
+{
+    let texture_handle = asset_server.load( "icon.png" );
+    commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
+    let sprite = SpriteBundle
+    {
+      material: materials.add(texture_handle.into()),
+      ..Default::default()
+    };
+    commands.spawn_bundle( sprite );
 }
