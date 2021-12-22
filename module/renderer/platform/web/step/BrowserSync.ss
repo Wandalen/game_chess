@@ -17,21 +17,18 @@ let o =
 
 let inited = false;
 let watcher = null;
-let watchEventsCounter = 0;
 
 function watcherCb()
 {
-  watchEventsCounter++;
-
-  if( inited || watchEventsCounter < 2 )
-  return;
-
-  inited = true;
-  watcher.close();
-  browserSync.init( o );
+  if( !inited )
+  {
+    watcher.close();
+    inited = true;
+    browserSync.init( o );
+  }
 }
 
-watcher = browserSync.watch( path.join( o.server.baseDir, '*.wasm' ) );
+watcher = browserSync.watch( path.join( o.server.baseDir, 'index.html' ) );
 watcher.on( 'add', watcherCb );
 watcher.on( 'change', watcherCb );
 
