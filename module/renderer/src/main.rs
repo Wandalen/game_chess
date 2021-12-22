@@ -18,12 +18,12 @@ fn setup
   mut materials: ResMut<Assets< ColorMaterial > >,
 )
 {
-    let texture_handle = asset_server.load( "icon.png" );
-    commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
-    let sprite = SpriteBundle
-    {
-      material: materials.add(texture_handle.into()),
-      ..Default::default()
-    };
-    commands.spawn_bundle( sprite );
+  let texture_handle = asset_server.load( "icon.png" );
+  commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
+  let sprite = SpriteBundle
+  {
+    material: materials.add(texture_handle.into()),
+    ..Default::default()
+  };
+  commands.spawn_bundle( sprite );
 }
