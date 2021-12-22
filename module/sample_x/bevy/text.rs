@@ -12,10 +12,10 @@ fn main()
   .insert_resource( ClearColor( Color::rgb( 0.04, 0.04, 0.04 ) ) )
   .insert_resource( WindowDescriptor
   {
-    title: "Simple text".to_string(),
-    width: DISPLAY_WIDTH,
-    height: DISPLAY_HEIGHT,
-    resizable: false,
+    title : "Draw text".to_string(),
+    width : DISPLAY_WIDTH,
+    height : DISPLAY_HEIGHT,
+    resizable : false,
     ..Default::default()
   })
   .add_startup_system( setup.system() )

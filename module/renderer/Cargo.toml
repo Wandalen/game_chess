@@ -56,3 +56,7 @@ bevy_webgl2 = "0.5"
 name = "text"
 path = "../../module/sample_x/bevy/text.rs"
 
+[[example]]
+name = "sprite"
+path = "../../module/sample_x/bevy/sprite.rs"
+
