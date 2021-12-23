@@ -8,12 +8,7 @@ cargo-features = [
 [workspace]
 resolver = "2"
 members = [
-  "module/renderer",
-  # "module/renderer/platform/desktop",
-  # "module/renderer/platform/web",
-  # "module/renderer/platform/android",
-  # "module/renderer/platform/ios",
-  # "module/renderer/platform/wasi",
+  "module/*",
 ]
 exclude = [
   "*",
@@ -27,6 +22,7 @@ default-members = [ "module/renderer" ]
 #
 
 [profile.dev.package."*"]
+opt-level = 2 # optimize dependencies only
 # opt-level = "s"
 # opt-level = "z"
 
@@ -56,7 +52,6 @@ lto = true # link-time optimization
 panic = "abort" # abort immediately rather than unwind
 codegen-units = 1 # improves optimization, but decrease compile time
 # strip = "symbols" # strip symbols
-
 
 [profile.release_web.package."*"]
 # opt-level = "s"

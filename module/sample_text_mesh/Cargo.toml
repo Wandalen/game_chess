@@ -1,0 +1,9 @@
+[package]
+name = "text_mesh"
+version = "0.0.1"
+edition = "2021"
+publish = false
+
+[dependencies]
+bevy = "0.5.0"
+bevy_text_mesh = "0.0.3"

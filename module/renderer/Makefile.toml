@@ -8,8 +8,11 @@ extend = [
 
 [config]
 skip_core_tasks = true # to skip default predefined flow
+default_to_workspace = false
 
 [tasks.default]
+category = "Default"
+description = "Build debug of desktop target."
 extend = "desktop_run"
 
 [tasks.test]
