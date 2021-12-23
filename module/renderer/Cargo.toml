@@ -57,13 +57,13 @@ version = "0.0.3"
 
 [[example]]
 name = "text"
-path = "../../module/sample_x/bevy/text.rs"
+path = "../../module/sample_text/src/main.rs"
 
 [[example]]
 name = "text_mesh"
-path = "../../module/sample_x/bevy/text_mesh.rs"
+path = "../../module/sample_text_mesh/src/main.rs"
 
 [[example]]
 name = "sprite"
-path = "../../module/sample_x/bevy/sprite.rs"
+path = "../../module/sample_sprite/src/main.rs"
 
