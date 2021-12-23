@@ -6,7 +6,4 @@ extend = [
 default_to_workspace = false
 
 [env]
-# CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
-# CARGO_MAKE_WORKSPACE_EMULATION = true
-# CARGO_MAKE_CRATE_WORKSPACE_MEMBERS = [ "module/renderer" ]
 CARGO_MAKE_WORKSPACE_SKIP_MEMBERS = [ "module/renderer/*" ]
