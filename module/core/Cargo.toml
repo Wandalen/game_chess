@@ -27,7 +27,7 @@ include = [
 [lib]
 name = "core"
 crate-type = [ "staticlib", "lib", "cdylib" ]
-path = "./src/main.rs"
+path = "./src/lib.rs"
 
 [[bin]]
 name = "core"

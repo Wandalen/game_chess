@@ -44,6 +44,9 @@ required-features = [ "web" ]
 name = "desktop"
 path = "./src/main.rs"
 
+[dependencies]
+core = { path = "../core" }
+
 [target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
 bevy = { version = "0.5" }
 

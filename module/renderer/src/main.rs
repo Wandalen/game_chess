@@ -1,5 +1,7 @@
 #![warn(missing_docs)]
 
+use core;
+
 use bevy::prelude::*;
 
 fn main()
@@ -10,6 +12,7 @@ fn main()
      #[cfg(target_arch = "wasm32")]
      app.add_plugin( bevy_webgl2::WebGL2Plugin );
      app.add_startup_system( setup.system() );
+     app.add_startup_system( core_setup.system() );
      app.run();
 }
 
@@ -28,4 +31,9 @@ fn setup
     ..Default::default()
   };
   commands.spawn_bundle( sprite );
+}
+
+fn core_setup()
+{
+  core::sample();
 }
