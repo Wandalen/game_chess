@@ -20,8 +20,8 @@ fn main()
     resizable : false,
     ..Default::default()
   })
-  .add_plugins(DefaultPlugins)
-  .add_plugin(TextMeshPlugin)
+  .add_plugins( DefaultPlugins )
+  .add_plugin( TextMeshPlugin )
   .add_startup_system( setup.system() )
   .add_startup_system( setup_text_mesh.system() )
   .run();
@@ -31,7 +31,7 @@ fn main()
 
 fn setup_text_mesh( mut commands : Commands, asset_server : Res<AssetServer> )
 {
-  let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Bold.ttf");
+  let font: Handle<TextMeshFont> = asset_server.load( "fonts/FiraSans-Bold.ttf" );
   commands.spawn_bundle( TextMeshBundle
   {
     text_mesh : TextMesh

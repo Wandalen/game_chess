@@ -37,7 +37,7 @@ fn setup
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
   commands.spawn_bundle( SpriteBundle
   {
-    material: materials.add(texture_handle.into()),
+    material: materials.add( texture_handle.into() ),
     ..Default::default()
   });
 }
