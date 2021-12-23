@@ -1,0 +1,85 @@
+
+use bevy::prelude::*;
+use bevy_text_mesh::*;
+use bevy::render::pass::ClearColor;
+
+const DISPLAY_HEIGHT : f32 = 500.0;
+const DISPLAY_WIDTH : f32 = 500.0;
+
+//
+
+fn main()
+{
+  App::build()
+  .insert_resource( ClearColor( Color::rgb( 0.04, 0.04, 0.04 ) ) )
+  .insert_resource( WindowDescriptor
+  {
+    title : "Draw mesh text".to_string(),
+    width : DISPLAY_WIDTH,
+    height : DISPLAY_HEIGHT,
+    resizable : false,
+    ..Default::default()
+  })
+  .add_plugins(DefaultPlugins)
+  .add_plugin(TextMeshPlugin)
+  .add_startup_system( setup.system() )
+  .add_startup_system( setup_text_mesh.system() )
+  .run();
+}
+
+//
+
+fn setup_text_mesh( mut commands : Commands, asset_server : Res<AssetServer> )
+{
+  let font: Handle<TextMeshFont> = asset_server.load("fonts/FiraSans-Bold.ttf");
+  commands.spawn_bundle( TextMeshBundle
+  {
+    text_mesh : TextMesh
+    {
+      text : String::from( "Text as mesh" ),
+      style : TextMeshStyle
+      {
+        font : font.clone(),
+        font_size : SizeUnit::NonStandard( 36.0 ),
+        color : Color::rgb( 0.0, 1.0, 0.0 ),
+        mesh_quality : Quality::Custom( 255 ),
+        ..Default::default()
+      },
+      ..Default::default()
+    },
+    transform: Transform
+    {
+      translation : Vec3::new( -1.0, 1.3, 0.0 ),
+      ..Default::default()
+    },
+    ..Default::default()
+  });
+}
+
+//
+
+fn setup
+(
+  mut commands : Commands,
+  mut meshes : ResMut<Assets<Mesh>>,
+  mut materials : ResMut<Assets<StandardMaterial>>,
+)
+{
+  commands.spawn_bundle( PbrBundle
+  {
+    mesh : meshes.add( Mesh::from( shape::Plane { size: 5.0 } ) ),
+    material : materials.add( Color::rgb( 0.3, 0.5, 0.3 ).into() ),
+    ..Default::default()
+  });
+  commands.spawn_bundle( LightBundle
+  {
+    transform : Transform::from_xyz( 4.0, 8.0, 4.0 ),
+    ..Default::default()
+  });
+  commands.spawn_bundle( PerspectiveCameraBundle
+  {
+    transform: Transform::from_xyz( -2.0, 2.5, 5.0 ).looking_at( Vec3::ZERO, Vec3::Y ),
+    ..Default::default()
+  });
+}
+

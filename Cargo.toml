@@ -8,12 +8,7 @@ cargo-features = [
 [workspace]
 resolver = "2"
 members = [
-  "module/renderer",
-  # "module/renderer/platform/desktop",
-  # "module/renderer/platform/web",
-  # "module/renderer/platform/android",
-  # "module/renderer/platform/ios",
-  # "module/renderer/platform/wasi",
+  "module/*",
 ]
 exclude = [
   "*",
