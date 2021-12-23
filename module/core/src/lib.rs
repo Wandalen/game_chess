@@ -7,3 +7,13 @@ pub fn sample()
   let board: pleco::Board = pleco::Board::from_fen( fen ).unwrap();
   board.pretty_print();
 }
+
+/*
+cargo test -- --show-output
+*/
+
+#[test]
+fn run_sample()
+{
+  sample();
+}

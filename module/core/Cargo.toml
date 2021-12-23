@@ -29,9 +29,5 @@ name = "core"
 crate-type = [ "staticlib", "lib", "cdylib" ]
 path = "./src/lib.rs"
 
-[[bin]]
-name = "core"
-path = "./src/main.rs"
-
 [dependencies]
 pleco = "0.5.0"
