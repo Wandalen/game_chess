@@ -80,7 +80,7 @@ args = [
 
 [tasks.desktop_build_linux_on_mac]
 description = "Build desktop target for GNU/Linux distributives on MacOS."
-private = false
+private = true
 category = "Desktop"
 dependencies = [ "prepare_linux_target_on_mac" ]
 command = "cargo"
@@ -95,7 +95,7 @@ args = [
 
 [tasks.desktop_build_windows_on_mac]
 description = "Build target for Windows on MacOS."
-private = false
+private = true
 category = "Desktop"
 dependencies = [ "prepare_windows_target_on_mac" ]
 command = "cargo"
@@ -110,7 +110,7 @@ args = [
 
 [tasks.desktop_build_windows_on_linux]
 description = "Build target for Windows on Debian-based GNU/Linux disributives."
-private = false
+private = true
 category = "Desktop"
 dependencies = [ "prepare_windows_target_on_linux" ]
 command = "cargo"

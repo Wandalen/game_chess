@@ -52,18 +52,3 @@ bevy = { version = "0.5", default-features = false }
 tracing-wasm = "=0.2.0"
 bevy_webgl2 = "0.5"
 
-[dev-dependencies.bevy_text_mesh]
-version = "0.0.3"
-
-[[example]]
-name = "text"
-path = "../../module/sample_text/src/main.rs"
-
-[[example]]
-name = "text_mesh"
-path = "../../module/sample_text_mesh/src/main.rs"
-
-[[example]]
-name = "sprite"
-path = "../../module/sample_sprite/src/main.rs"
-
