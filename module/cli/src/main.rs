@@ -1,5 +1,74 @@
 #![warn( missing_debug_implementations, missing_docs )]
 
+/*
+Commands
+
+.game.new - creates game with default board
+.game.from.fen - creates game [feature: game from fen]
+[issue: implement command game.from.fen]
+
+.games.list - list games [feature: persistence][issue: imlement persistency]
+.game.open [id] - opens the game from storage [feature: persistence]
+.game.save - saves cureent game state [feature: persistence]
+
+.quit - exit
+[issue: prompt for quit]
+[issue: prompt for save][feature:persistence]
+
+.resume [issue: implement timer ][feature: timer]
+.pause [feature: timer]
+
+.status - print board, current turn, last move
+[issue:extend status to print score][feature:board score]
+
+.move a1a2 - make a move
+
+.moves.list - prints list of legal moves
+[issue:moves list][feature:moves list]
+
+.move.random - make a random legal move
+[feature:moves list]
+[issue:random move][feature:random move]
+
+.moves.history - prints list of moves
+[issue: history]
+
+.move.undo - undo last move
+[feature:history]
+[issue:undo move][feature:undo move]
+
+.gg - current player forfeits
+[issue:forfeit][feature:forfeit]
+
+.online.new
+.online.list
+.online.join
+[feature: basic multiplayer]
+[issue: multiplayer]
+
+.online.spectate
+[feature: basic multiplayer]
+[feature: spectating]
+[issue: spectating]
+
+.online.msg
+[feature: basic multiplayer]
+[feature: chatting]
+[issue: chatting]
+
+*/
+
+/*
+
+Commands minimal
+
+.game.new - creates game with default board
+.quit - exit
+.status - print board, current turn, last move
+.move a1a2 - make a move
+
+*/
+
 use game_chess_core::*;
 
 fn main()
