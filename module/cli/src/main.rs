@@ -1,3 +1,5 @@
+#![warn( missing_debug_implementations, missing_docs )]
+
 use game_chess_core::*;
 
 fn main()

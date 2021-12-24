@@ -1,4 +1,4 @@
-#![warn( missing_debug_implementations )]
+#![warn( missing_debug_implementations, missing_docs )]
 
 pub use pleco::
 {
@@ -105,6 +105,7 @@ Commands minimal
 
 */
 
+#[derive(Debug)]
 pub struct Board
 {
   pleco_board : pleco::Board
@@ -191,6 +192,7 @@ pub type Fen = String;
 
 /// Interface for playing chess game
 
+#[derive(Debug)]
 pub struct Game
 {
   board : Board,
