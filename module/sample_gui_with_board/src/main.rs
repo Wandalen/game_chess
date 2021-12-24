@@ -1,6 +1,6 @@
 #![warn(missing_docs)]
 
-//! The sample which draw a chess desk and GUI side panel with combobox.
+//! The sample which draw a chess board and GUI side panel with combobox.
 
 use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
