@@ -31,7 +31,7 @@ pub fn setup
 {
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
   commands.spawn_bundle( UiCameraBundle::default() );
-  // add resource with materials for chess desk
+  // add resource with materials for chess board
   commands.insert_resource( Materials
   {
     black : materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() ),
@@ -70,7 +70,7 @@ pub fn setup_egui( egui_context : Res<EguiContext>, mut side : ResMut<CurrentSid
 
 //
 
-// struct for desk position declaration
+// struct for board position declaration
 #[derive(Default, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct Position
 {
@@ -88,7 +88,7 @@ impl Default for BoardSegments
   }
 }
 
-// a struct to define size of chess desk square
+// a struct to define size of chess board square
 pub struct Size
 {
   width: f32,
@@ -177,7 +177,7 @@ fn segment_spawn
 
 //
 
-// post system which resizes desk squares
+// post system which resizes board squares
 pub fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite )> )
 {
   let window = windows.get_primary().unwrap();
@@ -204,7 +204,7 @@ pub fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite 
 
 //
 
-// post system which sets desk squares positions
+// post system which sets board squares positions
 pub fn position_translation
 (
   windows: Res<Windows>,
