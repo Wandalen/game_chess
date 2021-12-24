@@ -9,7 +9,13 @@ This project uses [cargo-make](https://github.com/sagiegurari/cargo-make) task r
 cargo install cargo-make
 ```
 
-The project uses GUI library [`Egui`](https://github.com/emilk/egui) and plugin [`bevy_egui`](https://github.com/mvlabat/bevy_egui). To compile the libraries on GNU/Linux distributives `xcb` libraries is required. To install it run:
+To build `Bevy` apps on a GNU/Linux distributive the libraries `libuv` and `libalsa` are required. To install it run:
+
+```
+sudo apt install libudev-dev libalsa-ocaml-dev
+```
+
+The project uses GUI library [`Egui`](https://github.com/emilk/egui) and plugin [`bevy_egui`](https://github.com/mvlabat/bevy_egui). To compile the libraries on GNU/Linux distributives `xcb` libraries are required. To install it run:
 
 ```
 sudo apt install libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
