@@ -1,5 +1,5 @@
 [package]
-name = "game_chess"
+name = "core"
 version = "0.0.1"
 edition = "2021"
 authors = [
@@ -17,7 +17,6 @@ Neutral cross-platform Rust game template.
 """
 categories = [ "game-development", "game-engines" ]
 keywords = [ "chess", "gamedev" ]
-default-run = "desktop"
 include = [
   "/src",
   "/Cargo.toml",
@@ -25,33 +24,10 @@ include = [
   "/License",
 ]
 
-[features]
-web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
-desktop = []
-default = [ "desktop" ]
-
 [lib]
-name = "game_chess"
+name = "core"
 crate-type = [ "staticlib", "lib", "cdylib" ]
-path = "./src/main.rs"
-
-[[bin]]
-name = "web"
-path = "./src/main.rs"
-required-features = [ "web" ]
-
-[[bin]]
-name = "desktop"
-path = "./src/main.rs"
+path = "./src/lib.rs"
 
 [dependencies]
-core = { path = "../core" }
-
-[target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
-bevy = { version = "0.5" }
-
-[target.'cfg( target_arch = "wasm32" )'.dependencies]
-bevy = { version = "0.5", default-features = false }
-tracing-wasm = "=0.2.0"
-bevy_webgl2 = "0.5"
-
+pleco = "0.5.0"

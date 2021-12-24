@@ -1,0 +1,8 @@
+[package]
+name = "sample_core_possible_moves"
+version = "0.0.1"
+edition = "2021"
+publish = false
+
+[dependencies]
+pleco = "0.5.0"
