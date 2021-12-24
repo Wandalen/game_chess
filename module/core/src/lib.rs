@@ -157,6 +157,16 @@ impl Board
     0
   }
 
+  pub fn is_checkmate( &self ) -> bool
+  {
+    self.pleco_board.checkmate()
+  }
+
+  pub fn is_stalemate( &self ) -> bool
+  {
+    self.pleco_board.stalemate()
+  }
+
   pub fn current_turn( &self ) -> Player
   {
     self.pleco_board.turn()
@@ -230,29 +240,20 @@ impl Game
   //   println!( "Next move: {}", self.current_turn() );
   // }
 
-  // pub fn status( &self ) -> GameStatus
-  // {
-  //   if self.board.checkmate()
-  //   {
-  //     return GameStatus::Checkmate;
-  //   }
+  pub fn status( &self ) -> GameStatus
+  {
+    if self.board.is_checkmate()
+    {
+      return GameStatus::Checkmate;
+    }
 
-  //   if self.board.stalemate()
-  //   {
-  //     return GameStatus::Stalemate
-  //   }
+    if self.board.is_stalemate()
+    {
+      return GameStatus::Stalemate;
+    }
 
-  //   if !self.board.is_ok_quick()
-  //   {
-  //     return match self.board.is_okay()
-  //     {
-  //       Ok( _ ) => panic!( "Unexpected behavior: board.is_ok_quick() returned false, but board.is_okay() says that board is ok" ),
-  //       Err( err ) => GameStatus::Error( err )
-  //     }
-  //   }
-
-  //   return GameStatus::Continuing
-  // }
+    return GameStatus::Continuing;
+  }
 }
 
 /*
@@ -267,4 +268,5 @@ fn test_game()
   game.board_print();
   game.make_move( "a2a4" );
   game.board_print();
+  println!( "{:?}", game.status() );
 }
