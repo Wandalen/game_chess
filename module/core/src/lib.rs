@@ -169,7 +169,7 @@ impl Board
   ///
   pub fn print( &self ) /* qqq : remove. instead return string */
   {
-    self.pleco_board.pretty_print();
+    println!( "{}", self.pleco_board.pretty_string() );
   }
 
   ///
