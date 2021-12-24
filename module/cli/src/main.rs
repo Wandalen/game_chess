@@ -1,5 +1,7 @@
 use game_chess_core::*;
 
+//
+
 fn main()
 {
   let mut game: Game = Game::default();
@@ -39,16 +41,22 @@ fn main()
 
 }
 
+//
+
 fn command_exit()
 {
   println!( "Exiting.." );
   std::process::exit( 0 );
 }
 
+//
+
 fn command_game_new( game : &mut Game )
 {
   *game = Game::default();
 }
+
+//
 
 fn command_status( game : &Game )
 {
@@ -62,6 +70,8 @@ fn command_status( game : &Game )
     _ => println!( "Last move: None" ),
   }
 }
+
+//
 
 fn command_move( game : &mut Game )
 {
