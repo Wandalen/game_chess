@@ -10,14 +10,14 @@ authors = [
 license = "MIT"
 readme = "Readme.md"
 documentation = "https://docs.rs/game_chess"
-repository = "https://github.com/obox-systems/game_chess/"
-homepage = "https://github.com/obox-systems/game_chess/"
+repository = "https://github.com/Wandalen/game_chess/"
+homepage = "https://github.com/Wandalen/game_chess/"
 description = """
 Neutral cross-platform Rust game template.
 """
 categories = [ "game-development", "game-engines" ]
 keywords = [ "chess", "gamedev" ]
-default-run = "desktop"
+default-run = "boardtop"
 include = [
   "/src",
   "/Cargo.toml",
@@ -27,8 +27,8 @@ include = [
 
 [features]
 web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
-desktop = []
-default = [ "desktop" ]
+boardtop = []
+default = [ "boardtop" ]
 
 [lib]
 name = "game_chess"
@@ -41,11 +41,11 @@ path = "./src/main.rs"
 required-features = [ "web" ]
 
 [[bin]]
-name = "desktop"
+name = "boardtop"
 path = "./src/main.rs"
 
 [dependencies]
-core = { path = "../core" }
+game_chess_core = { version = "~0.0", path = "../core" }
 
 [target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
 bevy = { version = "0.5" }

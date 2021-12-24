@@ -1,5 +1,5 @@
 # game_chess
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://github.com/obox-systems/game_chess/actions/workflows/DesktopPush.yml/badge.svg)](https://github.com/obox-systems/game_chess/actions/workflows/DesktopPush.yml) [![web](https://github.com/obox-systems/game_chess/actions/workflows/WebPush.yml/badge.svg)](https://github.com/obox-systems/game_chess/actions/workflows/WebPush.yml)
+[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![boardtop](https://github.com/Wandalen/game_chess/actions/workflows/boardtopPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/boardtopPush.yml) [![web](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml)
 
 ## General prerequisites
 
@@ -10,7 +10,7 @@ cargo install cargo-make
 ## How to run on Desktop
 
 ```
-cargo make desktop_run
+cargo make boardtop_run
 ```
 
 ## How to run on Web
@@ -41,9 +41,9 @@ web_install_dependencies - Install web dependencies
 
 Desktop
 ----------
-desktop_build - Build desktop target.
-desktop_run - Run desktop target
-desktop_run_watching - Run desktop target. Rebuilds app on change
+boardtop_build - Build boardtop target.
+boardtop_run - Run boardtop target
+boardtop_run_watching - Run boardtop target. Rebuilds app on change
 
 Web
 ----------

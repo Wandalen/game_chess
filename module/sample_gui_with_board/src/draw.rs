@@ -1,3 +1,5 @@
+#![warn(missing_docs)]
+
 use bevy::prelude::*;
 use bevy_egui::{ egui, EguiContext };
 
@@ -20,6 +22,7 @@ pub struct CurrentSide( Side );
 
 //
 
+// start setup, adding main resources
 pub fn setup
 (
   mut commands: Commands,
@@ -28,11 +31,13 @@ pub fn setup
 {
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
   commands.spawn_bundle( UiCameraBundle::default() );
+  // add resource with materials for chess board
   commands.insert_resource( Materials
   {
     black : materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() ),
     white : materials.add( Color::rgb( 1.0, 1.0, 1.0 ).into() ),
   });
+  // add resource for combobox
   commands.insert_resource( CurrentSide( Side::White ) );
 }
 
@@ -40,6 +45,7 @@ pub fn setup
 
 pub fn setup_egui( egui_context : Res<EguiContext>, mut side : ResMut<CurrentSide> )
 {
+  // add fixated panel
   egui::SidePanel::left( "Menu" )
   .resizable( false )
   .default_width( SIDE_PANEL_WIDTH )
@@ -51,6 +57,7 @@ pub fn setup_egui( egui_context : Res<EguiContext>, mut side : ResMut<CurrentSid
         Side::Black => "Black"
     };
 
+    // add combobox
     egui::ComboBox::from_label( "Select side!" )
     .selected_text( choose )
     .show_ui(ui, | ui |
@@ -63,6 +70,7 @@ pub fn setup_egui( egui_context : Res<EguiContext>, mut side : ResMut<CurrentSid
 
 //
 
+// struct for board position declaration
 #[derive(Default, Copy, Clone, Eq, PartialEq, Hash)]
 pub struct Position
 {
@@ -70,6 +78,7 @@ pub struct Position
   pub y: i32,
 }
 
+// a vector of board sprites
 pub struct BoardSegments( pub Vec<Entity> );
 impl Default for BoardSegments
 {
@@ -79,6 +88,7 @@ impl Default for BoardSegments
   }
 }
 
+// a struct to define size of chess board square
 pub struct Size
 {
   width: f32,
@@ -99,6 +109,7 @@ impl Size
 
 //
 
+// a struct to handle game matereals
 pub struct Materials
 {
   pub black: Handle<ColorMaterial>,
@@ -166,6 +177,7 @@ fn segment_spawn
 
 //
 
+// post system which resizes board squares
 pub fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite )> )
 {
   let window = windows.get_primary().unwrap();
@@ -192,6 +204,7 @@ pub fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite 
 
 //
 
+// post system which sets board squares positions
 pub fn position_translation
 (
   windows: Res<Windows>,
