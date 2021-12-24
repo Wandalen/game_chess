@@ -1,5 +1,4 @@
-
-use std::iter::successors;
+#![warn( missing_debug_implementations )]
 
 pub use pleco::
 {
@@ -172,6 +171,11 @@ impl Board
     self.pleco_board.turn()
   }
 
+  pub fn last_move( &self ) -> Option<Move>
+  {
+    self.pleco_board.last_move()
+  }
+
   pub fn print( &self )
   {
     self.pleco_board.pretty_print();
@@ -256,6 +260,17 @@ impl Game
     }
 
     return GameStatus::Continuing;
+  }
+
+  /// Returns last move as UCI string. For example: "a2a4"
+  /// Returns None if there are no moves
+  pub fn last_move( &self ) -> Option<String>
+  {
+    match self.board.last_move()
+    {
+      Some( m ) => Some( m.stringify() ),
+      _ => None
+    }
   }
 }
 
