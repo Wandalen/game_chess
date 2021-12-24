@@ -1,6 +1,6 @@
 extend = [
 
-  { path = "./platform/boardtop/Makefile.toml" },
+  { path = "./platform/desktop/Makefile.toml" },
   { path = "./platform/web/Makefile.toml" },
   #
 
@@ -12,8 +12,8 @@ default_to_workspace = false
 
 [tasks.default]
 category = "Default"
-description = "Build debug of boardtop target."
-extend = "boardtop_run"
+description = "Build debug of desktop target."
+extend = "desktop_run"
 
 [tasks.test]
 category = "General"

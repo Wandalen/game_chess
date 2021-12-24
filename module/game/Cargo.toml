@@ -17,7 +17,7 @@ Neutral cross-platform Rust game template.
 """
 categories = [ "game-development", "game-engines" ]
 keywords = [ "chess", "gamedev" ]
-default-run = "boardtop"
+default-run = "desktop"
 include = [
   "/src",
   "/Cargo.toml",
@@ -27,8 +27,8 @@ include = [
 
 [features]
 web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
-boardtop = []
-default = [ "boardtop" ]
+desktop = []
+default = [ "desktop" ]
 
 [lib]
 name = "game_chess"
@@ -41,7 +41,7 @@ path = "./src/main.rs"
 required-features = [ "web" ]
 
 [[bin]]
-name = "boardtop"
+name = "desktop"
 path = "./src/main.rs"
 
 [dependencies]
