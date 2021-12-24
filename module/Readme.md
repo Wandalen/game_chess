@@ -43,17 +43,17 @@
 </details>
 
 <details>
-  <summary><a href="./sample_desk_draw">
-    sample_desk_draw
+  <summary><a href="./sample_board_draw">
+    sample_board_draw
   </a></summary>
-    Draw the resizable chess desk.
+    Draw the resizable chess board.
 </details>
 
 <details>
-  <summary><a href="./sample_gui_with_desk">
-    sample_gui_with_desk
+  <summary><a href="./sample_gui_with_board">
+    sample_gui_with_board
   </a></summary>
-    Draw the resizable chess desk and GUI panel with combobox.
+    Draw the resizable chess board and GUI panel with combobox.
 </details>
 
 <details>
@@ -64,10 +64,10 @@
 </details>
 
 <details>
-  <summary><a href="./sample_mouse_position_to_desk">
-    sample_mouse_position_to_desk
+  <summary><a href="./sample_mouse_position_to_board">
+    sample_mouse_position_to_board
   </a></summary>
-    Translate current cursor position to chess desk coordinates.
+    Translate current cursor position to chess board coordinates.
 </details>
 
 <details>

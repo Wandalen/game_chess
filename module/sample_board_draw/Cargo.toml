@@ -1,5 +1,5 @@
 [package]
-name = "gui_with_desk"
+name = "board_draw"
 version = "0.0.0"
 edition = "2021"
 publish = false

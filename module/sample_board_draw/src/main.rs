@@ -1,6 +1,6 @@
 #![warn(missing_docs)]
 
-//! The sample which draw a chess desk and GUI side panel with combobox.
+//! The sample which draw a chess board and GUI side panel with combobox.
 
 use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
@@ -55,7 +55,7 @@ fn setup
 {
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
   commands.spawn_bundle( UiCameraBundle::default() );
-  // add resource with materials for chess desk
+  // add resource with materials for chess board
   commands.insert_resource( Materials
   {
     black : materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() ),
@@ -65,7 +65,7 @@ fn setup
 
 //
 
-// struct for desk position declaration
+// struct for board position declaration
 #[derive(Default, Copy, Clone, Eq, PartialEq, Hash)]
 struct Position
 {
@@ -73,7 +73,7 @@ struct Position
   y: i32,
 }
 
-// a struct to define size of chess desk square
+// a struct to define size of chess board square
 struct Size
 {
   width: f32,
@@ -142,7 +142,7 @@ fn spawn_board
 
 //
 
-// post system which resizes desk squares
+// post system which resizes board squares
 fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite )> )
 {
   let window = windows.get_primary().unwrap();
@@ -169,7 +169,7 @@ fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite )> )
 
 //
 
-// post system which sets desk squares positions
+// post system which sets board squares positions
 fn position_translation
 (
   windows: Res<Windows>,

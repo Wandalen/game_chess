@@ -1,9 +1,8 @@
 [package]
-name = "desk_draw"
-version = "0.0.0"
+name = "mouse_position_to_board"
+version = "0.0.1"
 edition = "2021"
 publish = false
 
 [dependencies]
 bevy = "0.5.0"
-bevy_egui = "0.8.0"
