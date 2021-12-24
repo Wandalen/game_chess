@@ -19,13 +19,36 @@ fn test_trivial()
 }
 
 #[test]
-fn test_export_and_import()
+fn test_game_export()
 {
   let mut game = Game::default();
   game.make_move( "a2a4" );
+  let serialized = serde_json::to_string( &game );
+  assert_eq!( serialized.is_ok(), true );
+}
 
-  let serialized = serde_json::to_value( &game ).unwrap();
-  let deserialized: Game = serde_json::from_value( serialized ).unwrap();
+#[test]
+fn test_game_import()
+{
+  let src = r#"{"board":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","history":[{"fen":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","uci_move":"a2a4"}]}"#;
+  let game: Game = serde_json::from_str( src ).unwrap();
+  assert_eq!( game.last_move().unwrap(), "a2a4" );
+}
 
-  assert_eq!( deserialized.last_move().unwrap(), game.last_move().unwrap() );
+#[test]
+fn test_board_to_fen()
+{
+  let mut board = Board::default();
+  board = board.make_move( "a2a4" ).unwrap();
+  assert_eq!( board.to_fen(), "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1".to_string() );
+}
+
+#[test]
+fn test_board_from_fen()
+{
+  //src is board after "a2a4" move from starting position
+  let src = "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1".to_string();
+  let board = Board::from_fen( &src );
+  assert_eq!( board.to_fen(), src );
+
 }

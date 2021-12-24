@@ -149,7 +149,7 @@ impl Board
   }
 
   /// Creates a ['Fen`] string of the board.
-  pub fn fen( &self ) -> Fen
+  pub fn to_fen( &self ) -> Fen
   {
     self.pleco_board.fen()
   }
@@ -212,7 +212,7 @@ impl Game
     if success
     {
       self.board = new_board.unwrap();
-      self.history.push( HistoryEntry{ fen : self.board.fen(), uci_move : uci_move.to_string() } );
+      self.history.push( HistoryEntry{ fen : self.board.to_fen(), uci_move : uci_move.to_string() } );
     }
     success
   }
@@ -271,5 +271,5 @@ fn board_serialize< S >( board : &Board, s: S ) -> Result< S::Ok, S::Error >
 where
     S: Serializer,
 {
-    s.serialize_str( &board.fen() )
+    s.serialize_str( &board.to_fen() )
 }
