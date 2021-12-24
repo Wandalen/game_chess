@@ -13,7 +13,7 @@ members = [
 exclude = [
   "module/sample*"
 ]
-default-members = [ "module/game" ]
+# default-members = [ "module/game" ]
 
 #
 # debug profile
