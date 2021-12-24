@@ -213,9 +213,12 @@ impl Game
     }
   }
 
-  pub fn make_move( &mut self, mv: &str ) -> bool
+  /// Makes a move on the board. Accepts move in UCI format. For example, "e2e4".
+  /// Returns `true` if move was succesfuly applied, otherwise returns `false`.
+  /// The board isn't changed in case of move fail.
+  pub fn make_move( &mut self, uci_move : &str ) -> bool
   {
-    let new_board = self.board.make_move( mv );
+    let new_board = self.board.make_move( uci_move );
     let success = !new_board.is_none();
     if success
     {
