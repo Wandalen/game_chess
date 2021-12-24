@@ -1,3 +1,7 @@
+#![warn(missing_docs)]
+
+//! Sample shows how to add text to Bevy window.
+
 use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
 
@@ -25,20 +29,24 @@ fn main()
 
 //
 
-pub fn setup
+fn setup
 (
   mut commands : Commands,
   asset_server : Res<AssetServer>,
 )
 {
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
+  // to show text on the screen the UiCameraBundle is required
   commands.spawn_bundle( UiCameraBundle::default() );
 
+  // the section with text
   let text_section = TextSection
   {
     value : "The text section".to_string(),
+    // style of the text
     style : TextStyle
     {
+      // user font, if it is not defined, the default font is used
       font : asset_server.load( "fonts/FiraSans-Bold.ttf" ),
       font_size : 40.0,
       color : Color::rgb( 1.0, 1.0, 1.0 ),
@@ -47,10 +55,14 @@ pub fn setup
 
   commands.spawn_bundle( TextBundle
   {
+    // style of bundle
     style: Style
     {
+      // align to right side of the window
       align_self : AlignSelf::FlexEnd,
+      // absolute position, fixed size
       position_type : PositionType::Absolute,
+      // position relative to right side and bottom of window
       position : Rect
       {
         bottom : Val::Px( 150.0 ),
@@ -62,6 +74,7 @@ pub fn setup
 
     text : Text
     {
+      // text values, can contain multiple text sections
       sections : vec![ text_section ],
       ..Default::default()
     },
