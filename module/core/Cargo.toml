@@ -1,0 +1,33 @@
+[package]
+name = "game_chess_core"
+version = "0.0.1"
+edition = "2021"
+authors = [
+  "Kostiantyn Wandalen <wandalen@obox.systems>",
+  "Volodymyr M. <volodymyr.migdal@gmail.com>",
+  "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>",
+]
+license = "MIT"
+readme = "Readme.md"
+documentation = "https://docs.rs/game_chess"
+repository = "https://github.com/Wandalen/game_chess/"
+homepage = "https://github.com/Wandalen/game_chess/"
+description = """
+Neutral cross-platform Rust game template.
+"""
+categories = [ "game-development", "game-engines" ]
+keywords = [ "chess", "gamedev" ]
+include = [
+  "/src",
+  "/Cargo.toml",
+  "/Readme.md",
+  "/License",
+]
+
+[lib]
+name = "game_chess_core"
+# crate-type = [ "staticlib", "lib", "cdylib" ]
+path = "./src/lib.rs"
+
+[dependencies]
+pleco = "0.5.0"
