@@ -15,12 +15,6 @@ The project uses GUI library [`Egui`](https://github.com/emilk/egui) and plugin 
 sudo apt install libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
 ```
 
-The project contains sample with text mesh. The sample uses library `ttf2mesh-sys`. To compile the library the `clang` is required. To install `clang` on GNU/Linux run:
-
-```
-sudo apt install clang
-```
-
 ## Platforms
 
 Supported platforms:
