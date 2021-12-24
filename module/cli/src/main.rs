@@ -71,6 +71,8 @@ Commands minimal
 
 use game_chess_core::*;
 
+//
+
 fn main()
 {
   let mut game: Option< Game > = None;
