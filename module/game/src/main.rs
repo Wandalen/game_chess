@@ -1,10 +1,13 @@
 #![warn( missing_docs )]
 
+//! Graphical interface
+
 use game_chess_core as core;
 use bevy::prelude::*;
 
 //
 
+#[allow( dead_code )]
 fn main()
 {
   let mut app = App::build();
@@ -19,6 +22,8 @@ fn main()
 
 //
 
+/// Startup system example
+#[allow( dead_code )]
 fn setup
 (
   mut commands : Commands,
@@ -38,6 +43,8 @@ fn setup
 
 //
 
+/// Startup system for the game
+#[allow( dead_code )]
 fn core_setup()
 {
   let mut game = core::Game::default();
