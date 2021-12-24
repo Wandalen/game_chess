@@ -40,5 +40,11 @@ fn setup
 
 fn core_setup()
 {
-  core::sample();
+  let mut game = core::Game::default();
+  game.print_current_turn();
+  game.apply_move_u8( 8, 16 );
+  game.print_current_turn();
+  game.apply_move_sq( core::SQ( 49 ), core::SQ( 41 ) );
+  game.print_current_turn();
+  println!( "Game status: {:?}", game.status() );
 }
