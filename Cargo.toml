@@ -11,6 +11,7 @@ members = [
   "module/*",
 ]
 exclude = [
+  "module/sample_text_mesh",
   "module/sample*"
 ]
 # default-members = [ "module/game" ]

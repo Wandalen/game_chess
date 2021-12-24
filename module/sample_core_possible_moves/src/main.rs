@@ -26,7 +26,6 @@ pub fn main()
 
   */
 
-  let fen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2";
   let board: pleco::Board = pleco::Board::default();
   board.pretty_print(); //Prints a prettified representation of the board.
   let legal_moves = board.generate_moves(); //All legal moves
