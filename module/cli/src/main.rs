@@ -66,5 +66,8 @@ fn command_status( game : &Game )
 fn command_move( game : &mut Game )
 {
   let uci_move = wca::input::ask( "Provide move in UCI format:" );
-  game.make_move( uci_move.as_str() );
+  if !game.make_move( uci_move.as_str() )
+  {
+    println!( "\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move );
+  }
 }
