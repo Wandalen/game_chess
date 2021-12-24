@@ -7,7 +7,7 @@ skip_crate_env_info = true
 
 # Private
 
-[tasks.boardtop_watch]
+[tasks.desktop_watch]
 private = true
 watch = { postpone = true, watch = [ "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../src/" ] }
 
@@ -55,31 +55,31 @@ exec sudo apt install mingw-w64
 
 # Public
 
-[tasks.boardtop_build]
-description = "Build debug of boardtop target."
+[tasks.desktop_build]
+description = "Build debug of desktop target."
 private = false
 category = "Desktop"
 command = "cargo"
 args = [
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "boardtop"
+  "--bin", "desktop"
 ]
 
-[tasks.boardtop_build_release]
-description = "Build release of boardtop target."
+[tasks.desktop_build_release]
+description = "Build release of desktop target."
 private = false
 category = "Desktop"
 command = "cargo"
 args = [
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "boardtop",
+  "--bin", "desktop",
   "--release"
 ]
 
-[tasks.boardtop_build_linux_on_mac]
-description = "Build boardtop target for GNU/Linux distributives on MacOS."
+[tasks.desktop_build_linux_on_mac]
+description = "Build desktop target for GNU/Linux distributives on MacOS."
 private = true
 category = "Desktop"
 dependencies = [ "prepare_linux_target_on_mac" ]
@@ -90,10 +90,10 @@ args = [
   "--target", "x86_64-unknown-linux-gnu",
   "--manifest-path",
   "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "boardtop"
+  "--bin", "desktop"
 ]
 
-[tasks.boardtop_build_windows_on_mac]
+[tasks.desktop_build_windows_on_mac]
 description = "Build target for Windows on MacOS."
 private = true
 category = "Desktop"
@@ -105,10 +105,10 @@ args = [
   "--target", "x86_64-pc-windows-gnu",
   "--manifest-path",
   "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "boardtop"
+  "--bin", "desktop"
 ]
 
-[tasks.boardtop_build_windows_on_linux]
+[tasks.desktop_build_windows_on_linux]
 description = "Build target for Windows on Debian-based GNU/Linux disributives."
 private = true
 category = "Desktop"
@@ -119,35 +119,35 @@ args = [
   "--release",
   "--target", "x86_64-pc-windows-gnu",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "boardtop"
+  "--bin", "desktop"
 ]
 
-[tasks.boardtop_rebuild]
-description = "Rebuild debug of boardtop target."
+[tasks.desktop_rebuild]
+description = "Rebuild debug of desktop target."
 private = false
 category = "Desktop"
 command = "cargo"
 args = [
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "boardtop"
+  "--bin", "desktop"
 ]
 
-[tasks.boardtop_run]
-description = "Run debug of boardtop target"
+[tasks.desktop_run]
+description = "Run debug of desktop target"
 private = false
 category = "Desktop"
 command = "cargo"
 args = [
   "run",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "boardtop"
+  "--bin", "desktop"
 ]
 
-[tasks.boardtop_run_watching]
-description = "Rerun debug boardtop target on file change."
+[tasks.desktop_run_watching]
+description = "Rerun debug desktop target on file change."
 category = "Desktop"
 private = false
-extend = "boardtop_watch"
-dependencies = [ "boardtop_run" ]
+extend = "desktop_watch"
+dependencies = [ "desktop_run" ]
 
