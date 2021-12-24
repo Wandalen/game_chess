@@ -1,5 +1,7 @@
 #![warn( missing_debug_implementations, missing_docs )]
 
+//! Command interface for chess game
+
 /*
 Commands
 
@@ -100,6 +102,7 @@ fn main()
 
 }
 
+/// Handler of command `.help`.
 fn command_help()
 {
   println!( "" );
@@ -115,12 +118,14 @@ fn command_help()
   println!( ".help     => Print this help" );
 }
 
+/// Handler of command `.exit`.
 fn command_exit()
 {
   println!( "Exiting.." );
   std::process::exit( 0 );
 }
 
+/// Handler of command `.game.new`.
 fn command_game_new() -> Game
 {
   let game = Game::default();
@@ -130,6 +135,7 @@ fn command_game_new() -> Game
   game
 }
 
+/// Handler of command `.status`.
 fn command_status( game : &Option<Game> )
 {
   if game.is_none()
@@ -153,6 +159,7 @@ fn command_status( game : &Option<Game> )
   }
 }
 
+/// Handler of command `.move`.
 fn command_move( game : &mut Option<Game>  )
 {
   if game.is_none()

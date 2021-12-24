@@ -1,5 +1,7 @@
 #![warn( missing_debug_implementations, missing_docs )]
 
+//! Core library of the chess game
+
 pub use pleco::
 {
   core::Player,
@@ -8,7 +10,7 @@ pub use pleco::
   board::piece_locations::PieceLocations, //Minimal board impl
 
   core::piece_move::MoveType,
-  core::piece_move::BitMove as Move, //https://docs.rs/pleco/latest/pleco/core/piece_move/index.html,
+  core::piece_move::BitMove as Move, //https://docs.rs/pleco/latest/pleco/core/piece_move/index.html
   core::move_list::MoveList,
 
   core::sq::SQ as Cell,
@@ -48,6 +50,7 @@ Game
 
 */
 
+/// Game board
 #[derive( Debug )]
 pub struct Board
 {
@@ -56,6 +59,7 @@ pub struct Board
 
 impl Board
 {
+  /// Constructs a board from the starting position
   pub fn default() -> Self
   {
     Self
@@ -64,6 +68,7 @@ impl Board
     }
   }
 
+  /// Creates board from a [`Fen`] string
   pub fn from_fen( fen: &Fen ) -> Self
   {
     match pleco::Board::from_fen( fen )
@@ -73,6 +78,7 @@ impl Board
     }
   }
 
+  /// Makes move on the board. Accepts move in UCI format.
   pub fn make_move( &mut self, uci_move : &str ) -> Option< Self >
   {
     let mut pleco_board : pleco::Board = self.pleco_board.clone();
@@ -87,6 +93,7 @@ impl Board
     }
   }
 
+  /// Checks if the move is valid. Accepts move in UCI format.
   pub fn move_is_valid( &self, uci_move : &str ) -> bool
   {
     match self.move_from_uci( uci_move )
@@ -96,6 +103,7 @@ impl Board
     }
   }
 
+  /// Makes [`Move`] from move in UCI format.
   pub fn move_from_uci( &self, uci_move : &str ) -> Option< Move >
   {
     let all_moves: MoveList = self.pleco_board.generate_moves();
@@ -104,36 +112,43 @@ impl Board
               .cloned()
   }
 
+  /// Evaluates the score of a [`Board`] for the current side to move.
   pub fn score( &self ) -> i32
   {
     0
   }
 
+  /// Return if the current side to move is in check mate.
   pub fn is_checkmate( &self ) -> bool
   {
     self.pleco_board.checkmate()
   }
 
+  /// Returns if the current side to move is in stalemate.
   pub fn is_stalemate( &self ) -> bool
   {
     self.pleco_board.stalemate()
   }
 
+  /// Return the [`Player`] whose turn it is to move.
   pub fn current_turn( &self ) -> Player
   {
     self.pleco_board.turn()
   }
 
+  /// Return the last move played, if any.
   pub fn last_move( &self ) -> Option<Move>
   {
     self.pleco_board.last_move()
   }
 
+  /// Prints board to the terminal
   pub fn print( &self )
   {
     self.pleco_board.pretty_print();
   }
 
+  /// Creates a ['Fen`] string of the board.
   pub fn fen( &self ) -> Fen
   {
     self.pleco_board.fen()
@@ -157,12 +172,16 @@ pub struct HistoryEntry
 #[derive( Debug, PartialEq )]
 pub enum GameStatus
 {
+  /// The game is not finished, and the game is still in play.
   Continuing,
+  /// The game has the winner.
   Checkmate,
+  /// The game is drawn.
   Stalemate
 }
 
 /// Interface for playing chess game
+/// Also it contains moves history enties
 #[derive( Serialize, Deserialize, Debug )]
 pub struct Game
 {
@@ -173,6 +192,7 @@ pub struct Game
 
 impl Game
 {
+  /// Constructs a new game with default board setup
   pub fn default() -> Self
   {
     Self
@@ -197,21 +217,19 @@ impl Game
     success
   }
 
+  /// Return the [`Player`] whose turn it is to move.
   pub fn current_turn( &self ) -> Player
   {
     self.board.current_turn()
   }
 
+  /// Prints board to the terminal.
   pub fn board_print( &self )
   {
     self.board.print();
   }
 
-  // pub fn print_current_turn( &self )
-  // {
-  //   println!( "Next move: {}", self.current_turn() );
-  // }
-
+  /// Returns current game status as [`GameStatus`].
   pub fn status( &self ) -> GameStatus
   {
     if self.board.is_checkmate()
@@ -228,7 +246,7 @@ impl Game
   }
 
   /// Returns last move as UCI string. For example: "a2a4"
-  /// Returns None if there are no moves
+  /// Returns None if there are no moves.
   pub fn last_move( &self ) -> Option<String>
   {
     match self.history.last()
