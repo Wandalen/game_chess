@@ -1,3 +1,7 @@
+#![warn(missing_docs)]
+
+//! Sample shows how mouse coordinates translates to board coordinates.
+
 use bevy::
 {
   prelude::*,
@@ -55,6 +59,7 @@ fn cursor_system
   let width = window.width();
   let height = window.height();
 
+  // number of pixels per square
   let x_multiplier = width / DESK_WIDTH as f32;
   let y_multiplier = height / DESK_HEIGHT as f32;
 
@@ -62,6 +67,7 @@ fn cursor_system
   {
     for event in cursor_moved_events.iter()
     {
+      // translate current position to position of square
       let x = ( event.position[ 0 ] / x_multiplier ) as u8;
       let y = ( event.position[ 1 ] / y_multiplier ) as u8;
       eprintln!( "Desk coords: {}/{}", x, y );

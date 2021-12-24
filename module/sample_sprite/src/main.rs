@@ -1,3 +1,6 @@
+#![warn(missing_docs)]
+
+//! Sample shows how to add sprite in Bevy.
 
 use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
@@ -33,8 +36,10 @@ fn setup
   mut materials : ResMut<Assets<ColorMaterial>>,
 )
 {
+  // loading sprite from image
   let texture_handle = asset_server.load( "icon.png" );
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
+  // adding sprite
   commands.spawn_bundle( SpriteBundle
   {
     material: materials.add( texture_handle.into() ),
