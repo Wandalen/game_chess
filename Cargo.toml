@@ -11,7 +11,7 @@ members = [
   "module/*",
 ]
 exclude = [
-  "*"
+  "module/sample*"
 ]
 default-members = [ "module/game" ]
 

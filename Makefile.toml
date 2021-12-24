@@ -1,9 +1,9 @@
 extend = [
-  { path = "./module/renderer/Makefile.toml" }
+  { path = "./module/game/Makefile.toml" }
 ]
 
 [config]
 default_to_workspace = false
 
 [env]
-CARGO_MAKE_WORKSPACE_SKIP_MEMBERS = [ "module/renderer/*" ]
+CARGO_MAKE_WORKSPACE_SKIP_MEMBERS = [ "module/game/*" ]
