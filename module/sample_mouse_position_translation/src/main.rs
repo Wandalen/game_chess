@@ -1,4 +1,8 @@
+#![warn(missing_docs)]
+
 use bevy::prelude::*;
+
+//! Sample shows how start of mouse coordinates to change to center of the window.
 
 const DISPLAY_HEIGHT : f32 = 300.0;
 const DISPLAY_WIDTH : f32 = 300.0;
@@ -53,10 +57,13 @@ fn cursor_system
   {
     let size = Vec2::new( primary_window.width() as f32, primary_window.height() as f32 );
 
+    // mouse coordinates related to center
     let p = pos - size / 2.0;
 
     let camera_transform = q_camera.single().unwrap();
 
+    // compute the coordinates by multiplying the camera matrix on vector of mouse coordinates
+    // related to center
     let pos_from_center = camera_transform.compute_matrix() * p.extend( 0.0 ).extend( 1.0 );
     eprintln!( "World coords: {}/{}", pos_from_center.x, pos_from_center.y );
   }
