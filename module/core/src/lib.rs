@@ -64,14 +64,13 @@ impl Board
     }
   }
 
-  pub fn make_from_fen( fen: &Fen ) -> Self
+  pub fn from_fen( fen: &Fen ) -> Self
   {
     match pleco::Board::from_fen( fen )
     {
       Ok( pleco_board ) => Self { pleco_board },
       _ => Self::default()
     }
-
   }
 
   pub fn make_move( &mut self, uci_move : &str ) -> Option< Self >
@@ -247,7 +246,7 @@ where
     D: Deserializer< 'de >,
 {
     let fen: String = Deserialize::deserialize( deserializer )?;
-    Ok( Board::make_from_fen( &fen ) )
+    Ok( Board::from_fen( &fen ) )
 }
 
 fn board_serialize< S >( board : &Board, s: S ) -> Result< S::Ok, S::Error >
