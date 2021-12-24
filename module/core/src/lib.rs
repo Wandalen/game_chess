@@ -152,6 +152,16 @@ impl Board
               .cloned()
   }
 
+  pub fn score( &self ) -> i32
+  {
+    0
+  }
+
+  pub fn current_turn( &self ) -> Player
+  {
+    self.pleco_board.turn()
+  }
+
   pub fn print( &self )
   {
     self.pleco_board.pretty_print();
@@ -166,9 +176,7 @@ impl Board
 pub type Fen = String;
 
 /// Interface for playing chess game
-/// ```
-/// let game = Game::default();
-/// ```
+
 pub struct Game
 {
   board : Board,
@@ -207,6 +215,21 @@ impl Game
     success
   }
 
+  pub fn current_turn( &self ) -> Player
+  {
+    self.board.current_turn()
+  }
+
+  pub fn board_print( &self )
+  {
+    self.board.print();
+  }
+
+  // pub fn print_current_turn( &self )
+  // {
+  //   println!( "Next move: {}", self.current_turn() );
+  // }
+
   // pub fn status( &self ) -> GameStatus
   // {
   //   if self.board.checkmate()
@@ -230,51 +253,6 @@ impl Game
 
   //   return GameStatus::Continuing
   // }
-
-  // pub fn apply_move_u8( &mut self, src : u8, dst : u8 ) -> bool
-  // {
-  //   let mv = BitMove::make_quiet( SQ( src ), SQ( dst ) );
-  //   self.apply_move( mv )
-  // }
-
-  // pub fn apply_move_sq( &mut self, src : SQ, dst : SQ ) -> bool
-  // {
-  //   let mv = BitMove::make_quiet( src, dst );
-  //   self.apply_move( mv )
-  // }
-
-  // pub fn apply_move( &mut self, mv : BitMove ) -> bool
-  // {
-  //   let result = self.move_is_valid( mv );
-
-  //   if result
-  //   {
-  //     self.board.apply_move( mv );
-  //   }
-
-  //   result
-  // }
-
-  // pub fn move_is_valid( &self, mv : BitMove ) -> bool
-  // {
-  //   self.board.pseudo_legal_move( mv ) && self.board.legal_move( mv )
-  // }
-
-  // pub fn current_turn( &self ) -> Player
-  // {
-  //   self.board.turn()
-  // }
-
-  // pub fn print_board( &self )
-  // {
-  //   self.board.pretty_print();
-  // }
-
-  // pub fn print_current_turn( &self )
-  // {
-  //   self.print_board();
-  //   println!( "Next move: {}", self.current_turn() );
-  // }
 }
 
 /*
@@ -286,14 +264,7 @@ fn test_game()
 {
   let mut game = Game::default();
 
-  game.board.print();
+  game.board_print();
   game.make_move( "a2a4" );
-  game.board.print();
-
-  // game.print_current_turn();
-  // game.apply_move_u8( 8, 16 );
-  // game.print_current_turn();
-  // game.apply_move_sq( SQ( 49 ), SQ( 41 ) );
-  // game.print_current_turn();
-  // println!( "Game status: {:?}", game.status() );
+  game.board_print();
 }
