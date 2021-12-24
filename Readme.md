@@ -15,6 +15,12 @@ The project uses GUI library [`Egui`](https://github.com/emilk/egui) and plugin 
 sudo apt install libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
 ```
 
+<!--
+  the add instruction is considered correct because the result of testing
+  https://github.com/Wandalen/game_chess/actions/runs/1618686028
+  is ok
+-->
+
 ## Platforms
 
 Supported platforms:
