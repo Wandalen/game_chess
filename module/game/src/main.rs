@@ -1,11 +1,13 @@
 #![warn( missing_docs )]
 
-//! Graphical interface
+//! Graphical interface for the chess game.
 
 use game_chess_core as core;
 use bevy::prelude::*;
 
-//
+///
+/// Main.
+///
 
 #[allow( dead_code )]
 fn main()
@@ -20,9 +22,10 @@ fn main()
   app.run();
 }
 
-//
+///
+/// Startup system example.
+///
 
-/// Startup system example
 #[allow( dead_code )]
 fn setup
 (
@@ -41,9 +44,10 @@ fn setup
   commands.spawn_bundle( sprite );
 }
 
-//
+///
+/// Startup system for the game.
+///
 
-/// Startup system for the game
 #[allow( dead_code )]
 fn core_setup()
 {
