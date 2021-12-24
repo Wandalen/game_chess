@@ -10,8 +10,8 @@ authors = [
 license = "MIT"
 readme = "Readme.md"
 documentation = "https://docs.rs/game_chess"
-repository = "https://github.com/obox-systems/game_chess/"
-homepage = "https://github.com/obox-systems/game_chess/"
+repository = "https://github.com/Wandalen/game_chess/"
+homepage = "https://github.com/Wandalen/game_chess/"
 description = """
 Neutral cross-platform Rust game template.
 """
@@ -45,7 +45,7 @@ name = "desktop"
 path = "./src/main.rs"
 
 [dependencies]
-core = { path = "../core" }
+game_chess_core = { version = "~0.0", path = "../core" }
 
 [target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
 bevy = { version = "0.5" }

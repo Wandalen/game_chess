@@ -15,7 +15,7 @@ exclude = [
   "module/renderer/wgpu",
   "module/renderer/bevy",
 ]
-default-members = [ "module/renderer" ]
+# default-members = [ "module/game" ]
 
 #
 # debug profile

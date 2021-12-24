@@ -1,8 +1,9 @@
 #![warn(missing_docs)]
 
-use core;
-
+use game_chess_core as core;
 use bevy::prelude::*;
+
+//
 
 fn main()
 {
@@ -15,6 +16,8 @@ fn main()
      app.add_startup_system( core_setup.system() );
      app.run();
 }
+
+//
 
 fn setup
 (
@@ -32,6 +35,8 @@ fn setup
   };
   commands.spawn_bundle( sprite );
 }
+
+//
 
 fn core_setup()
 {

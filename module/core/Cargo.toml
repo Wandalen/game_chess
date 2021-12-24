@@ -1,5 +1,5 @@
 [package]
-name = "core"
+name = "game_chess_core"
 version = "0.0.1"
 edition = "2021"
 authors = [
@@ -10,8 +10,8 @@ authors = [
 license = "MIT"
 readme = "Readme.md"
 documentation = "https://docs.rs/game_chess"
-repository = "https://github.com/obox-systems/game_chess/"
-homepage = "https://github.com/obox-systems/game_chess/"
+repository = "https://github.com/Wandalen/game_chess/"
+homepage = "https://github.com/Wandalen/game_chess/"
 description = """
 Neutral cross-platform Rust game template.
 """
@@ -25,8 +25,8 @@ include = [
 ]
 
 [lib]
-name = "core"
-crate-type = [ "staticlib", "lib", "cdylib" ]
+name = "game_chess_core"
+# crate-type = [ "staticlib", "lib", "cdylib" ]
 path = "./src/lib.rs"
 
 [dependencies]
