@@ -8,13 +8,13 @@ use bevy::prelude::*;
 fn main()
 {
   let mut app = App::build();
-     app.add_plugins( DefaultPlugins );
-     app.insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) );
-     #[cfg(target_arch = "wasm32")]
-     app.add_plugin( bevy_webgl2::WebGL2Plugin );
-     app.add_startup_system( setup.system() );
-     app.add_startup_system( core_setup.system() );
-     app.run();
+  app.add_plugins( DefaultPlugins );
+  app.insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) );
+  #[cfg(target_arch = "wasm32")]
+  app.add_plugin( bevy_webgl2::WebGL2Plugin );
+  app.add_startup_system( setup.system() );
+  app.add_startup_system( core_setup.system() );
+  app.run();
 }
 
 //
