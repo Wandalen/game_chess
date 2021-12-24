@@ -1,27 +1,40 @@
+#![warn( missing_debug_implementations )]
 
 pub use pleco::
 {
-  core::Piece,
-  core::PieceType,
   core::Player,
-  core::move_list::MoveList,
-  core::piece_move::BitMove, //https://docs.rs/pleco/latest/pleco/core/piece_move/index.html,
-  core::piece_move::MoveType,
-  core::sq::SQ,
+  core::PieceType,
+  core::Piece,
+  board::piece_locations::PieceLocations, //Minimal board impl
 
-  board::piece_locations::PieceLocations,
-  board::castle_rights::Castling,
-  board::Board, // Main struct in pleco
-  board::board_state::BoardState,
-  board::BoardError,
+  core::piece_move::MoveType,
+  core::piece_move::BitMove as Move, //https://docs.rs/pleco/latest/pleco/core/piece_move/index.html,
+  core::move_list::MoveList,
+
+  core::sq::SQ as Cell,
+  core::bitboard::BitBoard as CellsSet
+
+};
+
+/* Our structure:
+
+Game = History + Board
+   - history : Vec<Fen>
+   - move
+   - board
+Board
+  - pleco_board : pleco::Board
+  - move
+*/
+
+/* List of resources to show
 
   tools::eval::Eval,
-
   helper::Helper,
   helper::prelude,
-
   bot_prelude
-};
+
+*/
 
 /*
 Commands
@@ -92,24 +105,96 @@ Commands minimal
 
 */
 
-/*
+pub struct Board
+{
+  pleco_board : pleco::Board
+}
 
-Game = History + Board
-Board
+impl Board
+{
+  pub fn default() -> Self
+  {
+    Self
+    {
+      pleco_board : pleco::Board::start_pos()
+    }
+  }
 
-*/
+  pub fn make_move( &mut self, uci_move : &str ) -> Option< Self >
+  {
+    let mut pleco_board : pleco::Board = self.pleco_board.clone();
+    let result = pleco_board.apply_uci_move( &uci_move );
+    if result
+    {
+      Some( Self { pleco_board } )
+    }
+    else
+    {
+      None
+    }
+  }
 
+  pub fn move_is_valid( &self, uci_move : &str ) -> bool
+  {
+    match self.move_from_uci( uci_move )
+    {
+      Some( m ) => self.pleco_board.pseudo_legal_move( m ) && self.pleco_board.legal_move( m ),
+      _ => false
+    }
+  }
+
+  pub fn move_from_uci( &self, uci_move : &str ) -> Option< Move >
+  {
+    let all_moves: MoveList = self.pleco_board.generate_moves();
+    all_moves.iter()
+              .find(| m | m.stringify() == uci_move )
+              .cloned()
+  }
+
+  pub fn score( &self ) -> i32
+  {
+    0
+  }
+
+  pub fn is_checkmate( &self ) -> bool
+  {
+    self.pleco_board.checkmate()
+  }
+
+  pub fn is_stalemate( &self ) -> bool
+  {
+    self.pleco_board.stalemate()
+  }
+
+  pub fn current_turn( &self ) -> Player
+  {
+    self.pleco_board.turn()
+  }
+
+  pub fn last_move( &self ) -> Option<Move>
+  {
+    self.pleco_board.last_move()
+  }
+
+  pub fn print( &self )
+  {
+    self.pleco_board.pretty_print();
+  }
+
+  pub fn fen( &self ) -> Fen
+  {
+    self.pleco_board.fen()
+  }
+}
+
+pub type Fen = String;
 
 /// Interface for playing chess game
-/// ```
-/// let game = Game::default();
-/// game.print_board();
-/// ```
+
 pub struct Game
 {
-  board : Board
-
-  //moves history
+  board : Board,
+  history : Vec<Fen>
 }
 
 /// Status of the game
@@ -118,91 +203,74 @@ pub enum GameStatus
 {
   Continuing,
   Checkmate,
-  Stalemate,
-  Error( BoardError )
+  Stalemate
 }
-
-impl Default for Game
-{
-  fn default() -> Self
-  {
-    Self
-    {
-      board : Board::start_pos()
-    }
-  }
-}
-
 
 impl Game
 {
-  pub fn status( &self ) -> GameStatus
+  pub fn default() -> Self
   {
-    if self.board.checkmate()
+    Self
     {
-      return GameStatus::Checkmate;
+      board : Board::default(),
+      history : Vec::new(),
     }
-
-    if self.board.stalemate()
-    {
-      return GameStatus::Stalemate
-    }
-
-    if !self.board.is_ok_quick()
-    {
-      return match self.board.is_okay()
-      {
-        Ok( _ ) => panic!( "Unexpected behavior: board.is_ok_quick() returned false, but board.is_okay() says that board is ok" ),
-        Err( err ) => GameStatus::Error( err )
-      }
-    }
-
-    return GameStatus::Continuing
   }
 
-  pub fn apply_move_u8( &mut self, src : u8, dst : u8 ) -> bool
+  /// Makes a move on the board. Accepts move in UCI format. For example, "e2e4".
+  /// Updates histort and returns `true` if move was succesfuly applied, otherwise returns `false`.
+  /// The board and history are not changed in case of fail.
+  pub fn make_move( &mut self, uci_move : &str ) -> bool
   {
-    let mv = BitMove::make_quiet( SQ( src ), SQ( dst ) );
-    self.apply_move( mv )
-  }
-
-  pub fn apply_move_sq( &mut self, src : SQ, dst : SQ ) -> bool
-  {
-    let mv = BitMove::make_quiet( src, dst );
-    self.apply_move( mv )
-  }
-
-  pub fn apply_move( &mut self, mv : BitMove ) -> bool
-  {
-    let result = self.move_is_valid( mv );
-
-    if result
+    let new_board = self.board.make_move( uci_move );
+    let success = !new_board.is_none();
+    if success
     {
-      self.board.apply_move( mv );
+      self.board = new_board.unwrap();
+      self.history.push( self.board.fen() );
     }
-
-    result
-  }
-
-  pub fn move_is_valid( &self, mv : BitMove ) -> bool
-  {
-    self.board.pseudo_legal_move( mv ) && self.board.legal_move( mv )
+    success
   }
 
   pub fn current_turn( &self ) -> Player
   {
-    self.board.turn()
+    self.board.current_turn()
   }
 
-  pub fn print_board( &self )
+  pub fn board_print( &self )
   {
-    self.board.pretty_print();
+    self.board.print();
   }
 
-  pub fn print_current_turn( &self )
+  // pub fn print_current_turn( &self )
+  // {
+  //   println!( "Next move: {}", self.current_turn() );
+  // }
+
+  pub fn status( &self ) -> GameStatus
   {
-    self.print_board();
-    println!( "Next move: {}", self.current_turn() );
+    if self.board.is_checkmate()
+    {
+      return GameStatus::Checkmate;
+    }
+
+    if self.board.is_stalemate()
+    {
+      return GameStatus::Stalemate;
+    }
+
+    return GameStatus::Continuing;
+  }
+
+  /// Returns last move as UCI string. For example: "a2a4"
+  /// Returns None if there are no moves
+  pub fn last_move( &self ) -> Option<String>
+  {
+    match self.board.last_move()
+    {
+      Some( m ) => Some( m.stringify() ),
+      _ => None
+    }
   }
 }
 
@@ -214,10 +282,9 @@ cargo test test_game -- --show-output
 fn test_game()
 {
   let mut game = Game::default();
-  game.print_current_turn();
-  // game.apply_move_u8( 8, 16 );
-  // game.print_current_turn();
-  // game.apply_move_sq( SQ( 49 ), SQ( 41 ) );
-  // game.print_current_turn();
-  // println!( "Game status: {:?}", game.status() );
+
+  game.board_print();
+  game.make_move( "a2a4" );
+  game.board_print();
+  println!( "{:?}", game.status() );
 }

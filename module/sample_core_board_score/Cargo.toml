@@ -1,5 +1,5 @@
 [package]
-name = "core_move_profitability"
+name = "core_board_score"
 version = "0.0.1"
 edition = "2021"
 publish = false
