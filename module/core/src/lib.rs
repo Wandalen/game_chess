@@ -1,4 +1,4 @@
-#![warn( missing_debug_implementations )]
+#![warn( missing_debug_implementations, missing_docs )]
 
 pub use pleco::
 {
@@ -16,15 +16,27 @@ pub use pleco::
 
 };
 
-/* Our structure:
+use serde::
+{
+  ser::Serializer,
+  Serialize,
+  Deserialize,
+  Deserializer
 
-Game = History + Board
-   - history : Vec<Fen>
-   - move
-   - board
+};
+
+/* Structure:
+
 Board
-  - pleco_board : pleco::Board
-  - move
+  pleco_board : pleco::Board
+
+HistoryEntry
+  fen : String
+  uci_move : String
+
+Game
+   board : Board
+   history : Vec<HistoryEntry>
 */
 
 /* List of resources to show
@@ -36,75 +48,7 @@ Board
 
 */
 
-/*
-Commands
-
-.game.new - creates game with default board
-.game.from.fen - creates game [feature: game from fen]
-[issue: implement command game.from.fen]
-
-.games.list - list games [feature: persistence][issue: imlement persistency]
-.game.open [id] - opens the game from storage [feature: persistence]
-.game.save - saves cureent game state [feature: persistence]
-
-.quit - exit
-[issue: prompt for quit]
-[issue: prompt for save][feature:persistence]
-
-.resume [issue: implement timer ][feature: timer]
-.pause [feature: timer]
-
-.status - print board, current turn, last move
-[issue:extend status to print score][feature:board score]
-
-.move a1a2 - make a move
-
-.moves.list - prints list of legal moves
-[issue:moves list][feature:moves list]
-
-.move.random - make a random legal move
-[feature:moves list]
-[issue:random move][feature:random move]
-
-.moves.history - prints list of moves
-[issue: history]
-
-.move.undo - undo last move
-[feature:history]
-[issue:undo move][feature:undo move]
-
-.gg - current player forfeits
-[issue:forfeit][feature:forfeit]
-
-.online.new
-.online.list
-.online.join
-[feature: basic multiplayer]
-[issue: multiplayer]
-
-.online.spectate
-[feature: basic multiplayer]
-[feature: spectating]
-[issue: spectating]
-
-.online.msg
-[feature: basic multiplayer]
-[feature: chatting]
-[issue: chatting]
-
-*/
-
-/*
-
-Commands minimal
-
-.game.new - creates game with default board
-.quit - exit
-.status - print board, current turn, last move
-.move a1a2 - make a move
-
-*/
-
+#[derive( Debug )]
 pub struct Board
 {
   pleco_board : pleco::Board
@@ -117,6 +61,15 @@ impl Board
     Self
     {
       pleco_board : pleco::Board::start_pos()
+    }
+  }
+
+  pub fn from_fen( fen: &Fen ) -> Self
+  {
+    match pleco::Board::from_fen( fen )
+    {
+      Ok( pleco_board ) => Self { pleco_board },
+      _ => Self::default()
     }
   }
 
@@ -187,23 +140,35 @@ impl Board
   }
 }
 
+///Positions on the board in [FEN](https://www.chess.com/terms/fen-chess#what-is-fen) format
 pub type Fen = String;
 
-/// Interface for playing chess game
-
-pub struct Game
+/// Contains information about move made in the past.
+/// Field `fen` contains representation of the board as FEN string
+/// Field `uci_move` contains move in UCI format
+#[derive( Serialize, Deserialize, Debug )]
+pub struct HistoryEntry
 {
-  board : Board,
-  history : Vec<Fen>
+  fen : Fen,
+  uci_move : String
 }
 
 /// Status of the game
-#[derive( Debug )]
+#[derive( Debug, PartialEq )]
 pub enum GameStatus
 {
   Continuing,
   Checkmate,
   Stalemate
+}
+
+/// Interface for playing chess game
+#[derive( Serialize, Deserialize, Debug )]
+pub struct Game
+{
+  #[serde(deserialize_with = "board_deserialize", serialize_with = "board_serialize")]
+  board : Board,
+  history : Vec<HistoryEntry>
 }
 
 impl Game
@@ -227,7 +192,7 @@ impl Game
     if success
     {
       self.board = new_board.unwrap();
-      self.history.push( self.board.fen() );
+      self.history.push( HistoryEntry{ fen : self.board.fen(), uci_move : uci_move.to_string() } );
     }
     success
   }
@@ -266,12 +231,29 @@ impl Game
   /// Returns None if there are no moves
   pub fn last_move( &self ) -> Option<String>
   {
-    match self.board.last_move()
+    match self.history.last()
     {
-      Some( m ) => Some( m.stringify() ),
+      Some( h ) => Some( h.uci_move.clone() ),
       _ => None
     }
   }
+}
+
+//
+
+fn board_deserialize< 'de, D >( deserializer : D ) -> Result< Board, D::Error >
+where
+    D: Deserializer< 'de >,
+{
+    let fen: String = Deserialize::deserialize( deserializer )?;
+    Ok( Board::from_fen( &fen ) )
+}
+
+fn board_serialize< S >( board : &Board, s: S ) -> Result< S::Ok, S::Error >
+where
+    S: Serializer,
+{
+    s.serialize_str( &board.fen() )
 }
 
 /*
@@ -279,12 +261,26 @@ cargo test test_game -- --show-output
 */
 
 #[test]
-fn test_game()
+fn test_trivial()
 {
   let mut game = Game::default();
+  let target_move = "a2a4";
+  game.board_print();
+  game.make_move( target_move );
+  game.board_print();
+  assert_eq!( game.status(), GameStatus::Continuing );
+  assert_eq!( game.last_move().unwrap(), target_move );
 
-  game.board_print();
+}
+
+#[test]
+fn test_export_and_import()
+{
+  let mut game = Game::default();
   game.make_move( "a2a4" );
-  game.board_print();
-  println!( "{:?}", game.status() );
+
+  let serialized = serde_json::to_value( &game ).unwrap();
+  let deserialized: Game = serde_json::from_value( serialized ).unwrap();
+
+  assert_eq!( deserialized.last_move().unwrap(), game.last_move().unwrap() );
 }
