@@ -1,6 +1,9 @@
-#![warn( missing_debug_implementations, missing_docs )]
+#![warn( missing_debug_implementations )]
+#![warn( missing_docs )]
 
-//! Core library of the chess game
+//!
+//! Implement mechanics of the game chess.
+//!
 
 pub use pleco::
 {
@@ -15,7 +18,6 @@ pub use pleco::
 
   core::sq::SQ as Cell,
   core::bitboard::BitBoard as CellsSet
-
 };
 
 use serde::
@@ -23,8 +25,7 @@ use serde::
   ser::Serializer,
   Serialize,
   Deserialize,
-  Deserializer
-
+  Deserializer,
 };
 
 /* Structure:
@@ -59,7 +60,9 @@ pub struct Board
 
 impl Board
 {
-  /// Constructs a board from the starting position
+  ///
+  /// Constructs a board with the starting position
+  ///
   pub fn default() -> Self
   {
     Self
@@ -68,8 +71,10 @@ impl Board
     }
   }
 
-  /// Creates board from a [`Fen`] string
-  pub fn from_fen( fen: &Fen ) -> Self
+  ///
+  /// Creates board from a [Fen] string
+  ///
+  pub fn from_fen( fen : &Fen ) -> Self
   {
     match pleco::Board::from_fen( fen )
     {
@@ -78,7 +83,9 @@ impl Board
     }
   }
 
+  ///
   /// Makes move on the board. Accepts move in UCI format.
+  ///
   pub fn make_move( &mut self, uci_move : &str ) -> Option< Self >
   {
     let mut pleco_board : pleco::Board = self.pleco_board.clone();
@@ -93,7 +100,9 @@ impl Board
     }
   }
 
+  ///
   /// Checks if the move is valid. Accepts move in UCI format.
+  ///
   pub fn move_is_valid( &self, uci_move : &str ) -> bool
   {
     match self.move_from_uci( uci_move )
@@ -103,64 +112,85 @@ impl Board
     }
   }
 
-  /// Makes [`Move`] from move in UCI format.
+  ///
+  /// Makes [Move] from move in UCI format.
+  ///
   pub fn move_from_uci( &self, uci_move : &str ) -> Option< Move >
   {
-    let all_moves: MoveList = self.pleco_board.generate_moves();
+    let all_moves : MoveList = self.pleco_board.generate_moves();
     all_moves.iter()
-              .find(| m | m.stringify() == uci_move )
-              .cloned()
+    .find(| m | m.stringify() == uci_move )
+    .cloned()
   }
 
-  /// Evaluates the score of a [`Board`] for the current side to move.
+  ///
+  /// Evaluates the score of a [Board] for the current side to move.
+  ///
   pub fn score( &self ) -> i32
   {
     0
+    /* ttt : implement me */
   }
 
-  /// Return if the current side to move is in check mate.
+  ///
+  /// True if the current side to move is in check mate.
+  ///
   pub fn is_checkmate( &self ) -> bool
   {
     self.pleco_board.checkmate()
   }
 
-  /// Returns if the current side to move is in stalemate.
+  ///
+  /// Is the current side to move is in stalemate.
+  ///
   pub fn is_stalemate( &self ) -> bool
   {
     self.pleco_board.stalemate()
   }
 
-  /// Return the [`Player`] whose turn it is to move.
+  ///
+  /// Return the `Player` whose turn it is to move.
+  ///
   pub fn current_turn( &self ) -> Player
   {
     self.pleco_board.turn()
   }
 
+  ///
   /// Return the last move played, if any.
-  pub fn last_move( &self ) -> Option<Move>
+  ///
+  pub fn last_move( &self ) -> Option< Move >
   {
     self.pleco_board.last_move()
   }
 
-  /// Prints board to the terminal
-  pub fn print( &self )
+  ///
+  /// Prints board to the terminal.
+  ///
+  pub fn print( &self ) /* qqq : remove. instead return string */
   {
     self.pleco_board.pretty_print();
   }
 
-  /// Creates a ['Fen`] string of the board.
+  ///
+  /// Creates a 'Fen` string of the board.
+  ///
   pub fn to_fen( &self ) -> Fen
   {
     self.pleco_board.fen()
   }
 }
 
+///
 ///Positions on the board in [FEN](https://www.chess.com/terms/fen-chess#what-is-fen) format
+///
 pub type Fen = String;
 
+///
 /// Contains information about move made in the past.
 /// Field `fen` contains representation of the board as FEN string
 /// Field `uci_move` contains move in UCI format
+///
 #[derive( Serialize, Deserialize, Debug )]
 pub struct HistoryEntry
 {
@@ -168,7 +198,9 @@ pub struct HistoryEntry
   uci_move : String
 }
 
+///
 /// Status of the game
+///
 #[derive( Debug, PartialEq )]
 pub enum GameStatus
 {
@@ -180,8 +212,11 @@ pub enum GameStatus
   Stalemate
 }
 
-/// Interface for playing chess game
-/// Also it contains moves history enties
+///
+/// Interface for playing chess game.
+///
+/// Basically Board + History.
+///
 #[derive( Serialize, Deserialize, Debug )]
 pub struct Game
 {
@@ -192,7 +227,9 @@ pub struct Game
 
 impl Game
 {
+  ///
   /// Constructs a new game with default board setup
+  ///
   pub fn default() -> Self
   {
     Self
@@ -201,10 +238,13 @@ impl Game
       history : Vec::new(),
     }
   }
+  /* xxx : ? */
 
+  ///
   /// Makes a move on the board. Accepts move in UCI format. For example, "e2e4".
   /// Updates histort and returns `true` if move was succesfuly applied, otherwise returns `false`.
   /// The board and history are not changed in case of fail.
+  ///
   pub fn make_move( &mut self, uci_move : &str ) -> bool
   {
     let new_board = self.board.make_move( uci_move );
@@ -217,19 +257,25 @@ impl Game
     success
   }
 
-  /// Return the [`Player`] whose turn it is to move.
+  ///
+  /// Return the [Player] whose turn it is to move.
+  ///
   pub fn current_turn( &self ) -> Player
   {
     self.board.current_turn()
   }
 
+  ///
   /// Prints board to the terminal.
+  ///
   pub fn board_print( &self )
   {
     self.board.print();
   }
 
-  /// Returns current game status as [`GameStatus`].
+  ///
+  /// Returns current game status as [GameStatus].
+  ///
   pub fn status( &self ) -> GameStatus
   {
     if self.board.is_checkmate()
@@ -245,9 +291,11 @@ impl Game
     return GameStatus::Continuing;
   }
 
+  ///
   /// Returns last move as UCI string. For example: "a2a4"
   /// Returns None if there are no moves.
-  pub fn last_move( &self ) -> Option<String>
+  ///
+  pub fn last_move( &self ) -> Option< String >
   {
     match self.history.last()
     {
@@ -261,15 +309,15 @@ impl Game
 
 fn board_deserialize< 'de, D >( deserializer : D ) -> Result< Board, D::Error >
 where
-    D: Deserializer< 'de >,
+  D : Deserializer< 'de >,
 {
-    let fen: String = Deserialize::deserialize( deserializer )?;
-    Ok( Board::from_fen( &fen ) )
+  let fen: String = Deserialize::deserialize( deserializer )?;
+  Ok( Board::from_fen( &fen ) )
 }
 
-fn board_serialize< S >( board : &Board, s: S ) -> Result< S::Ok, S::Error >
+fn board_serialize< S >( board : &Board, s : S ) -> Result< S::Ok, S::Error >
 where
-    S: Serializer,
+  S: Serializer,
 {
-    s.serialize_str( &board.to_fen() )
+  s.serialize_str( &board.to_fen() )
 }

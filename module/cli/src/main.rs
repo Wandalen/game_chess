@@ -77,7 +77,7 @@ use game_chess_core::*;
 
 fn main()
 {
-  let mut game: Option< Game > = None;
+  let mut game : Option< Game > = None;
   let mut choice;
 
   command_help();
@@ -118,14 +118,20 @@ fn command_help()
   println!( ".help     => Print this help" );
 }
 
-/// Handler of command `.exit`.
+///
+/// Command to quit the game.
+///
+
 fn command_exit()
 {
   println!( "Exiting.." );
   std::process::exit( 0 );
 }
 
-/// Handler of command `.game.new`.
+///
+/// Command to start new game.
+///
+
 fn command_game_new() -> Game
 {
   let game = Game::default();
@@ -135,7 +141,10 @@ fn command_game_new() -> Game
   game
 }
 
-/// Handler of command `.status`.
+///
+/// Command to print status of the game.
+///
+
 fn command_status( game : &Option<Game> )
 {
   if game.is_none()
@@ -159,7 +168,10 @@ fn command_status( game : &Option<Game> )
   }
 }
 
-/// Handler of command `.move`.
+///
+/// Command to make a move.
+///
+
 fn command_move( game : &mut Option<Game>  )
 {
   if game.is_none()
