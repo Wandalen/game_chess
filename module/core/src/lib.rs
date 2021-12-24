@@ -145,7 +145,7 @@ impl Board
   /// Prints board to the terminal
   pub fn print( &self )
   {
-    self.pleco_board.pretty_print();
+    println!( "{}", self.pleco_board.pretty_string() );
   }
 
   /// Creates a ['Fen`] string of the board.
