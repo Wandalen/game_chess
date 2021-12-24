@@ -23,7 +23,7 @@ jobs:
     steps:
     - name: Install libraries
       if: ${{ matrix.os == 'ubuntu' }}
-      run: sudo apt install libudev-dev libalsa-ocaml-dev
+      run: sudo apt install libudev-dev libalsa-ocaml-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
     - uses: actions/checkout@v2
     - uses: actions/cache@v2
       with:
@@ -37,7 +37,7 @@ jobs:
     - name: Install latest stable toolchain
       uses: actions-rs/toolchain@v1
       with:
-          toolchain: nightly
+          toolchain: stable
           override: true
     - uses: davidB/rust-cargo-make@v1
 
