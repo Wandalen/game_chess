@@ -1,10 +1,13 @@
 #![warn( missing_docs )]
 
+//! Main module that create game window and prints chess board into console.
+
 use game_chess_core as core;
 use bevy::prelude::*;
 
 //
 
+#[allow( dead_code )]
 fn main()
 {
   let mut app = App::build();
@@ -19,6 +22,7 @@ fn main()
 
 //
 
+#[allow( dead_code )]
 fn setup
 (
   mut commands : Commands,
@@ -38,6 +42,7 @@ fn setup
 
 //
 
+#[allow( dead_code )]
 fn core_setup()
 {
   let mut game = core::Game::default();
