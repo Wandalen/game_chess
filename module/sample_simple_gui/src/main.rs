@@ -1,3 +1,7 @@
+#![warn(missing_docs)]
+
+//! Sample shows how to use Egui into Bevy window.
+
 use bevy::render::pass::ClearColor;
 use bevy::prelude::*;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
@@ -19,6 +23,7 @@ fn main() {
     ..Default::default()
   })
   .add_plugins( DefaultPlugins )
+  // add Egui plugin
   .add_plugin( EguiPlugin )
   .add_system( setup.system() )
   .run();
@@ -28,9 +33,11 @@ fn main() {
 
 fn setup( egui_context : Res<EguiContext> )
 {
+  // initialize Egui window
   egui::Window::new( "Menu" )
   .show( egui_context.ctx(), | ui |
   {
+    // add labels inside Egui window
     ui.label( "Game" );
     ui.label( "Options ");
   });
