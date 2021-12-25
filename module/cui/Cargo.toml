@@ -1,5 +1,5 @@
 [package]
-name = "game_cli"
+name = "game_chess_cui"
 version = "0.0.1"
 edition = "2021"
 authors = [
