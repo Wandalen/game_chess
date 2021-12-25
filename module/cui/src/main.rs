@@ -94,8 +94,8 @@ fn main()
     match choice.to_lowercase().trim()
     {
       ".game.new" => { game = Some( command_game_new() ) },
-      ".move" => command_move( &mut game ),
-      ".status" => command_status( &game ),
+      ".move" | ".m" => command_move( &mut game ),
+      ".status"| ".s" => command_status( &game ),
       ".quit" => command_exit(),
       ".help" => command_help(),
       command => println!( "Unknown command : {}\n", command ),
