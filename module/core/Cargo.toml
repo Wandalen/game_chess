@@ -1,6 +1,6 @@
 [package]
 name = "game_chess_core"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 authors = [
   "Kostiantyn Wandalen <wandalen@obox.systems>",
@@ -15,7 +15,7 @@ homepage = "https://github.com/Wandalen/game_chess/"
 description = """
 Mechanics of chess game implemented for educational purpose.
 """
-categories = [ "game-development", "game" ]
+categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
 include = [
   "/src",

@@ -15,7 +15,7 @@ homepage = "https://github.com/Wandalen/game_chess/"
 description = """
 Chess game implemented on Bevy for educational purpose.
 """
-categories = [ "game-development", "game" ]
+categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
 default-run = "desktop"
 include = [

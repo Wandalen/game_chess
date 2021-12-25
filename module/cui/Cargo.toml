@@ -15,7 +15,7 @@ homepage = "https://github.com/Wandalen/game_chess/"
 description = """
 Command user interface ( CLI ) for chess game implemented for educational purpose.
 """
-categories = [ "game-development", "game" ]
+categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
 include = [
   "/src",
