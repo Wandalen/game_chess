@@ -45,6 +45,7 @@ fn graphics_setup
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
 }
 
+
 ///
 /// Startup system for the game.
 ///
