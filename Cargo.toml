@@ -11,11 +11,9 @@ members = [
   "module/*",
 ]
 exclude = [
-  "*",
-  "module/renderer/wgpu",
-  "module/renderer/bevy",
+  "module/sample_text_mesh",
 ]
-default-members = [ "module/renderer" ]
+# default-members = [ "module/game" ]
 
 #
 # debug profile

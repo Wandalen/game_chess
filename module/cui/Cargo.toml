@@ -1,0 +1,29 @@
+[package]
+name = "game_chess_cui"
+version = "0.0.2"
+edition = "2021"
+authors = [
+  "Kostiantyn Wandalen <wandalen@obox.systems>",
+  "Volodymyr M. <volodymyr.migdal@gmail.com>",
+  "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>",
+]
+license = "MIT"
+readme = "Readme.md"
+documentation = "https://docs.rs/game_chess"
+repository = "https://github.com/Wandalen/game_chess/"
+homepage = "https://github.com/Wandalen/game_chess/"
+description = """
+Command user interface ( CLI ) for chess game implemented for educational purpose.
+"""
+categories = [ "game-development", "games" ]
+keywords = [ "chess", "gamedev" ]
+include = [
+  "/src",
+  "/Cargo.toml",
+  "/Readme.md",
+  "/License",
+]
+
+[dependencies]
+game_chess_core = { version = "~0.0", path = "../core" }
+wca = "0.1.0"

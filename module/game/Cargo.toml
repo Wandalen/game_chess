@@ -10,12 +10,12 @@ authors = [
 license = "MIT"
 readme = "Readme.md"
 documentation = "https://docs.rs/game_chess"
-repository = "https://github.com/obox-systems/game_chess/"
-homepage = "https://github.com/obox-systems/game_chess/"
+repository = "https://github.com/Wandalen/game_chess/"
+homepage = "https://github.com/Wandalen/game_chess/"
 description = """
-Neutral cross-platform Rust game template.
+Chess game implemented on Bevy for educational purpose.
 """
-categories = [ "game-development", "game-engines" ]
+categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
 default-run = "desktop"
 include = [
@@ -30,19 +30,22 @@ web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
 desktop = []
 default = [ "desktop" ]
 
-[lib]
-name = "game_chess"
-crate-type = [ "staticlib", "lib", "cdylib" ]
-path = "./src/main.rs"
+# [lib]
+# name = "game_chess"
+# crate-type = [ "staticlib", "lib", "cdylib" ]
+# path = "./src/main.rs"
 
-[[bin]]
-name = "web"
-path = "./src/main.rs"
-required-features = [ "web" ]
+# [[bin]]
+# name = "web"
+# path = "./src/main.rs"
+# required-features = [ "web" ]
 
 [[bin]]
 name = "desktop"
 path = "./src/main.rs"
+
+[dependencies]
+game_chess_core = { version = "~0.0", path = "../core" }
 
 [target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
 bevy = { version = "0.5" }
@@ -51,19 +54,4 @@ bevy = { version = "0.5" }
 bevy = { version = "0.5", default-features = false }
 tracing-wasm = "=0.2.0"
 bevy_webgl2 = "0.5"
-
-[dev-dependencies.bevy_text_mesh]
-version = "0.0.3"
-
-[[example]]
-name = "text"
-path = "../../module/sample_text/src/main.rs"
-
-[[example]]
-name = "text_mesh"
-path = "../../module/sample_text_mesh/src/main.rs"
-
-[[example]]
-name = "sprite"
-path = "../../module/sample_sprite/src/main.rs"
 
