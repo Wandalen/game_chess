@@ -54,9 +54,9 @@ fn board_setup
     for y in 0..board_dim.1
     {
       let material = if ( x + y ) % 2 == 0
-      { &white }
+      { white.clone() }
       else
-      { &black };
+      { black.clone() };
 
       let transform = Transform
       {
@@ -71,11 +71,12 @@ fn board_setup
 
       commands.spawn_bundle( SpriteBundle
       {
-        material : material.clone(),
+        material,
         sprite : Sprite::new( Vec2::new( side, side ) ),
         transform,
         .. Default::default()
       });
     }
   }
+
 }
