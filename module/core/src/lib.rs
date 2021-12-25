@@ -20,6 +20,14 @@ pub use pleco::
   core::bitboard::BitBoard as CellsSet
 };
 
+use serde::
+{
+  Serialize,
+  Deserialize,
+  Serializer,
+  Deserializer
+};
+
 /* Structure:
 
 Board
@@ -60,6 +68,18 @@ impl Board
     Self
     {
       pleco_board : pleco::Board::start_pos()
+    }
+  }
+
+  ///
+  /// Constructs a aborad from FEN
+  ///
+  pub fn from_fen( fen : &Fen ) -> Self
+  {
+    match pleco::Board::from_fen( &fen )
+    {
+      Ok( pleco_board ) => Self{ pleco_board },
+      _ => Self::default()
     }
   }
 
@@ -171,8 +191,8 @@ pub type Fen = String;
 /// Field `fen` contains representation of the board as FEN string
 /// Field `uci_move` contains move in UCI format
 ///
-#[derive( Debug )]
-#[allow( dead_code )]
+#[derive( Serialize, Deserialize, Debug )]
+
 pub struct HistoryEntry
 {
   fen : Fen,
@@ -198,9 +218,10 @@ pub enum GameStatus
 ///
 /// Basically Board + History.
 ///
-#[derive( Debug )]
+#[derive( Serialize, Deserialize, Debug )]
 pub struct Game
 {
+  #[serde( serialize_with = "board_ser", deserialize_with = "board_der" )]
   board : Board,
   history : Vec<HistoryEntry>
 }
@@ -283,4 +304,15 @@ impl Game
       _ => None
     }
   }
+}
+
+fn board_ser< S : Serializer>( board : &Board, s : S ) -> Result<S::Ok, S::Error>
+{
+  s.serialize_str( &board.to_fen() )
+}
+
+fn board_der< 'de, D : Deserializer< 'de > >( d : D ) -> Result< Board, D::Error>
+{
+  let fen : String = Deserialize::deserialize( d )?;
+  Ok( Board::from_fen( &fen ) )
 }
