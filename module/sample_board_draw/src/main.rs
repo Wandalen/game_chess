@@ -1,22 +1,30 @@
-#![warn(missing_docs)]
+#![warn( missing_docs )]
 
 //! The sample which draw a chess board and GUI side panel with combobox.
 
 use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
+use bevy::input::system::exit_on_esc_system;
+
 use bevy::window::WindowResizeConstraints;
 
 const DISPLAY_HEIGHT : f32 = 600.0;
 const DISPLAY_WIDTH : f32 = 800.0;
 
-const DESK_HEIGHT: u8 = 8;
-const DESK_WIDTH: u8 = 8;
+const DESK_HEIGHT : u8 = 8;
+const DESK_WIDTH : u8 = 8;
 
-//
+///
+/// Main.
+///
 
-fn main() {
+fn main()
+{
   App::build()
   .insert_resource( ClearColor( Color::rgb( 0.0, 0.0, 0.0 ) ) )
+  .add_startup_system( setup.system() )
+  .add_system( exit_on_esc_system.system() )
+  .add_startup_stage( "game_setup", SystemStage::single( spawn_board.system() ) )
   .insert_resource( WindowDescriptor
   {
     title : "Spawn board".to_string(),
@@ -31,8 +39,6 @@ fn main() {
     },
     ..Default::default()
   })
-  .add_startup_system( setup.system() )
-  .add_startup_stage( "game_setup", SystemStage::single( spawn_board.system() ) )
   .add_system_set_to_stage
   (
     CoreStage::PostUpdate,
@@ -44,17 +50,18 @@ fn main() {
   .run();
 }
 
-//
+///
+/// Start setup, adding main resources.
+///
 
-// start setup, adding main resources
 fn setup
 (
-  mut commands: Commands,
-  mut materials: ResMut<Assets<ColorMaterial>>,
+  mut commands : Commands,
+  mut materials : ResMut<Assets<ColorMaterial>>,
 )
 {
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
-  commands.spawn_bundle( UiCameraBundle::default() );
+  // commands.spawn_bundle( UiCameraBundle::default() );
   // add resource with materials for chess board
   commands.insert_resource( Materials
   {
@@ -63,50 +70,57 @@ fn setup
   });
 }
 
-//
+///
+/// Struct for board position declaration.
+///
 
-// struct for board position declaration
-#[derive(Default, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive( Default, Copy, Clone, Eq, PartialEq, Hash, Debug )]
 struct Position
 {
-  x: i32,
-  y: i32,
+  x : i32,
+  y : i32,
 }
 
-// a struct to define size of chess board square
+///
+/// Struct to define size of chess board cell.
+///
+
 struct Size
 {
-  width: f32,
-  height: f32,
+  width : f32,
+  height : f32,
 }
 
 impl Size
 {
-  fn square( x: f32 ) -> Self
+  fn cell( x : f32 ) -> Self
   {
     Self
     {
-      width: x,
-      height: x,
+      width : x,
+      height : x,
     }
   }
 }
 
-//
+///
+/// Struct to handle game materials.
+///
 
-// a struct to handle game matereals
 struct Materials
 {
-  black: Handle<ColorMaterial>,
-  white: Handle<ColorMaterial>,
+  black : Handle< ColorMaterial >,
+  white : Handle< ColorMaterial >,
 }
 
-//
+///
+/// Board as 64 sprites.
+///
 
 fn spawn_board
 (
-  mut commands: Commands,
-  materials: Res<Materials>,
+  mut commands : Commands,
+  materials : Res<Materials>,
 )
 {
   for x in 0..DESK_WIDTH
@@ -125,34 +139,36 @@ fn spawn_board
 
       commands.spawn_bundle( SpriteBundle
       {
-        material: material.clone(),
-        sprite: Sprite::new( Vec2::new( 10.0, 10.0 ) ),
+        material : material.clone(),
+        sprite : Sprite::new( Vec2::new( 10.0, 10.0 ) ),
         ..Default::default()
       })
       .insert( Position
       {
-        x: x as i32,
-        y: y as i32,
+        x : x as i32,
+        y : y as i32,
       })
-      .insert( Size::square( 0.95 ) )
+      .insert( Size::cell( 0.95 ) )
       .id();
     }
   }
 }
 
-//
+///
+/// Post system which resizes board cells
+///
 
-// post system which resizes board squares
 fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite )> )
 {
   let window = windows.get_primary().unwrap();
   let mut width = window.width();
   let mut height = window.height();
+
   if width > height
   {
     width = height;
   }
-  if width < height
+  else
   {
     height = width;
   }
@@ -167,21 +183,16 @@ fn size_scaling( windows : Res<Windows>, mut q : Query<( &Size, &mut Sprite )> )
   }
 }
 
-//
+///
+/// post system which sets board cells positions
+///
 
-// post system which sets board squares positions
 fn position_translation
 (
   windows: Res<Windows>,
-  mut q: Query<( &Position, &mut Transform ) >,
+  mut q : Query<( &Position, &mut Transform ) >,
 )
 {
-  fn convert( pos : f32, bound_window : f32, bound_game : f32 ) -> f32
-  {
-    let tile_size = bound_window / bound_game;
-    pos / bound_game * bound_window - ( bound_window / 2.0 ) + ( tile_size / 2.0 )
-  }
-
   let window = windows.get_primary().unwrap();
   let mut width = window.width();
   let mut height = window.height();
@@ -202,4 +213,11 @@ fn position_translation
       0.0,
     );
   }
+
+  fn convert( pos : f32, bound_window : f32, bound_game : f32 ) -> f32
+  {
+    let tile_size = bound_window / bound_game;
+    pos / bound_game * bound_window - ( bound_window / 2.0 ) + ( tile_size / 2.0 )
+  }
+
 }
