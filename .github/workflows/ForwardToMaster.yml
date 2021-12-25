@@ -1,10 +1,9 @@
 
-name: Production
+name: Forward
 
 on:
   push:
     branches: [ beta ]
-
 
 jobs:
 
