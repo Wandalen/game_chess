@@ -114,11 +114,12 @@ fn command_help()
 
   println!( "" );
 
-  println!( ".game.new => Create game with default board" );
-  println!( ".move     => Make a move by providing move in UCI format: \"a2a4\" " );
-  println!( ".status   => Print board, current turn, last move" );
-  println!( ".quit     => Exit from the game" );
-  println!( ".help     => Print this help" );
+  println!( ".game.new  => Create game with default board" );
+  println!( ".game.save => Save game to file" );
+  println!( ".move      => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".status    => Print board, current turn, last move" );
+  println!( ".quit      => Exit from the game" );
+  println!( ".help      => Print this help" );
 }
 
 ///
@@ -175,6 +176,25 @@ fn command_status( game : &Option<Game> )
     Some( m ) => println!( "Last move: {}", m ),
     _ => println!( "Last move: None" ),
   }
+}
+
+///
+/// Command to save game to file.
+///
+
+fn command_game_save( game : &Option<Game> )
+{
+  if game.is_none()
+  {
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  }
+
+  let game = game.as_ref().unwrap();
+
+  let save_path = game.save();
+
+  println!("Saved game to file: {}", save_path.unwrap());
 }
 
 ///
