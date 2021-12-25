@@ -347,6 +347,6 @@ fn board_ser<S: Serializer>(board: &Board, s: S) -> Result<S::Ok, S::Error>
 
 fn board_der<'de, D: Deserializer<'de>>(d: D) -> Result<Board, D::Error>
 {
-    let fen: String = Deserialize::deserialize(d)?;
-    Ok(Board::from_fen(&fen))
+  let fen : String = Deserialize::deserialize( d )?;
+  Ok( Board::from_fen( &fen ) )
 }

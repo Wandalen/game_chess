@@ -94,10 +94,9 @@ fn main()
     match choice.to_lowercase().trim()
     {
       ".game.new" => { game = Some( command_game_new() ) },
-      ".game.save" => command_game_save(&game),
-      ".move" => command_move( &mut game ),
-      ".status" => command_status( &game ),
-      ".quit" => command_exit( &game ),
+      ".move" | ".m" => command_move( &mut game ),
+      ".status"| ".s" => command_status( &game ),
+      ".quit" => command_exit(&game),
       ".help" => command_help(),
       command => println!( "Unknown command : {}\n", command ),
     }
@@ -127,18 +126,16 @@ fn command_help()
 /// Command to quit the game.
 ///
 
-fn command_exit(game : &Option<Game>)
+fn command_exit(game: &Option<Game>) 
 {
-    if !game.is_none()
-    {
-      let save_path = game.as_ref().unwrap().save();
-
-      println!("Auto saved game to file: {}", save_path.unwrap());
+  let uci_exit = wca::input::ask("Do you want to exit?");
+  match uci_exit.to_lowercase().trim() {
+    "yes" => {
+      println!("Exiting..");
+      std::process::exit(0);
     }
-
-  println!( "Exiting.." );
-
-  std::process::exit( 0 );
+    _ => command_status(&game),
+  }
 }
 
 ///
