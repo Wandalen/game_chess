@@ -1,5 +1,5 @@
 [package]
-name = "server"
+name = "game_chess_server"
 version = "0.0.1"
 edition = "2021"
 authors = [
@@ -13,9 +13,9 @@ documentation = "https://docs.rs/game_chess"
 repository = "https://github.com/obox-systems/game_chess/"
 homepage = "https://github.com/obox-systems/game_chess/"
 description = """
-Neutral cross-platform Rust game template.
+Chess game server implemented for educational purpose.
 """
-categories = [ "game-development", "game-engines" ]
+categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
 include = [
   "/src",
@@ -25,12 +25,13 @@ include = [
 ]
 
 [lib]
-name = "server"
-path = "./src/main.rs"
+name = "game_chess_server"
+path = "./src/lib.rs"
 
 [[bin]]
-name = "server"
+name = "game_chess_server"
 path = "./src/main.rs"
 
 [dependencies]
-rollo = "0.8.1"
+rollo = "~0.8"
+game_chess_core = { version = "~0.0", path = "../core" }

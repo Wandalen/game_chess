@@ -1,6 +1,9 @@
-#![warn( missing_debug_implementations, missing_docs )]
+#![warn( missing_debug_implementations )]
+#![warn( missing_docs )]
 
-//! Command interface for chess game
+//!
+//! Command user interface ( CLI ) for chess game implemented for educational purpose.
+//!
 
 /*
 Commands

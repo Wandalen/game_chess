@@ -1,6 +1,8 @@
 #![warn( missing_docs )]
 
-//! Graphical interface for the chess game.
+//!
+//! Chess game implemented on Bevy for educational purpose.
+//!
 
 use game_chess_core as core;
 use bevy::prelude::*;
