@@ -12,6 +12,7 @@ use bevy::input::system::exit_on_esc_system;
 /// Main.
 ///
 
+#[allow( dead_code )]
 fn main()
 {
   let mut app = App::build();
@@ -61,6 +62,7 @@ fn graphics_setup
 /// Startup system for the game.
 ///
 
+#[allow( dead_code )]
 fn core_setup()
 {
   let mut game = core::Game::default();
