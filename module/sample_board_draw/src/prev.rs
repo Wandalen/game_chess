@@ -1,10 +1,15 @@
-#![warn( missing_docs )]
+#![warn(missing_docs)]
 
 //! The sample which draw a chess board and GUI side panel with combobox.
 
 use bevy::prelude::*;
 use bevy::render::pass::ClearColor;
 use bevy::input::system::exit_on_esc_system;
+
+// use bevy::window::WindowResizeConstraints;
+
+// const DISPLAY_HEIGHT : f32 = 600.0;
+// const DISPLAY_WIDTH : f32 = 800.0;
 
 const DESK_HEIGHT : u8 = 8;
 const DESK_WIDTH : u8 = 8;
@@ -15,6 +20,20 @@ fn main()
 {
   App::build()
   .insert_resource( ClearColor( Color::rgb( 0.0, 0.0, 0.0 ) ) )
+  // .insert_resource( WindowDescriptor
+  // {
+  //   title : "Spawn board".to_string(),
+  //   width : DISPLAY_WIDTH,
+  //   height : DISPLAY_HEIGHT,
+  //   resizable : true,
+  //   resize_constraints : WindowResizeConstraints
+  //   {
+  //     min_width : DISPLAY_WIDTH,
+  //     min_height : DISPLAY_HEIGHT,
+  //     ..Default::default()
+  //   },
+  //   ..Default::default()
+  // })
   .add_startup_system( setup.system() )
   .add_system( exit_on_esc_system.system() )
   .add_startup_stage( "game_setup", SystemStage::single( spawn_board.system() ) )

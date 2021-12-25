@@ -6,6 +6,7 @@
 
 use game_chess_core as core;
 use bevy::prelude::*;
+use bevy::input::system::exit_on_esc_system;
 
 ///
 /// Main.
@@ -23,7 +24,7 @@ fn main()
   /* setup graphics */
   app.add_startup_system( graphics_setup.system() );
   /* escape on exit */
-  app.add_system( bevy::input::system::exit_on_esc_system.system() );
+  app.add_system( exit_on_esc_system.system() );
   /* for web target */
   #[cfg(target_arch = "wasm32")]
   app.add_plugin( bevy_webgl2::WebGL2Plugin );
