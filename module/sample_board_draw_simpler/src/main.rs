@@ -43,12 +43,11 @@ fn board_setup
   let board_margin_f = ( board_margin.0 as f32, board_margin.1 as f32 );
 
   let window = windows.get_primary().unwrap();
-  let width = window.width();
-  let height = window.height();
-  let side = if width < height
-  { width / ( board_dim_f.0 + ( board_margin_f.0 )*2.0 ) }
+  let size_in_pixels = ( window.width(), window.height() );
+  let side = if size_in_pixels.0 < size_in_pixels.1
+  { size_in_pixels.0 / ( board_dim_f.0 + ( board_margin_f.0 )*2.0 ) }
   else
-  { height / ( board_dim_f.1 + ( board_margin_f.1 )*2.0 ) };
+  { size_in_pixels.1 / ( board_dim_f.1 + ( board_margin_f.1 )*2.0 ) };
 
   for x in 0..board_dim.0
   {
