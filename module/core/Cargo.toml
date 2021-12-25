@@ -13,9 +13,9 @@ documentation = "https://docs.rs/game_chess"
 repository = "https://github.com/Wandalen/game_chess/"
 homepage = "https://github.com/Wandalen/game_chess/"
 description = """
-Neutral cross-platform Rust game template.
+Mechanics of chess game implemented for educational purpose.
 """
-categories = [ "game-development", "game-engines" ]
+categories = [ "game-development", "game" ]
 keywords = [ "chess", "gamedev" ]
 include = [
   "/src",
