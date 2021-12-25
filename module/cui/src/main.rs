@@ -94,6 +94,7 @@ fn main()
     match choice.to_lowercase().trim()
     {
       ".game.new" => { game = Some( command_game_new() ) },
+      ".game.save" => command_game_save(&game),
       ".move" | ".m" => command_move( &mut game ),
       ".status"| ".s" => command_status( &game ),
       ".quit" => command_exit(&game),
@@ -126,7 +127,7 @@ fn command_help()
 /// Command to quit the game.
 ///
 
-fn command_exit(game: &Option<Game>) 
+fn command_exit(game: &Option<Game>)
 {
   let uci_exit = wca::input::ask("Do you want to exit?");
   match uci_exit.to_lowercase().trim() {
