@@ -56,7 +56,7 @@ Game
 */
 
 const SAVES_FOLDER_NAME: &str = "saves";
-const SAVE_FILE_EXTENSION: &str = ".game.save";
+const SAVE_FILE_EXTENSION: &str = ".save";
 
 /// Game board
 #[derive(Debug)]
@@ -311,6 +311,9 @@ impl Game
         }
     }
 
+    ///
+    /// Saves game to file
+    ///
     pub fn save(&self) -> std::io::Result<String> {
         fs::create_dir_all(SAVES_FOLDER_NAME)?;
 
@@ -321,9 +324,10 @@ impl Game
 
         let mut file = File::create(filepath).unwrap();
 
-        file.write_all(serialized.as_bytes());
-
-        Ok(filename)
+        match file.write_all(serialized.as_bytes()) {
+            Ok(_) => Ok(filename),
+            Err(error) => Err(error)
+        }
     }
 }
 

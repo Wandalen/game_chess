@@ -94,9 +94,10 @@ fn main()
     match choice.to_lowercase().trim()
     {
       ".game.new" => { game = Some( command_game_new() ) },
+      ".game.save" => command_game_save(&game),
       ".move" => command_move( &mut game ),
       ".status" => command_status( &game ),
-      ".quit" => command_exit(),
+      ".quit" => command_exit( &game ),
       ".help" => command_help(),
       command => println!( "Unknown command : {}\n", command ),
     }
@@ -114,20 +115,29 @@ fn command_help()
 
   println!( "" );
 
-  println!( ".game.new => Create game with default board" );
-  println!( ".move     => Make a move by providing move in UCI format: \"a2a4\" " );
-  println!( ".status   => Print board, current turn, last move" );
-  println!( ".quit     => Exit from the game" );
-  println!( ".help     => Print this help" );
+  println!( ".game.new  => Create game with default board" );
+  println!( ".game.save => Save game to file" );
+  println!( ".move      => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".status    => Print board, current turn, last move" );
+  println!( ".quit      => Exit from the game" );
+  println!( ".help      => Print this help" );
 }
 
 ///
 /// Command to quit the game.
 ///
 
-fn command_exit()
+fn command_exit(game : &Option<Game>)
 {
+    if !game.is_none()
+    {
+      let save_path = game.as_ref().unwrap().save();
+
+      println!("Auto saved game to file: {}", save_path.unwrap());
+    }
+
   println!( "Exiting.." );
+
   std::process::exit( 0 );
 }
 
@@ -169,6 +179,25 @@ fn command_status( game : &Option<Game> )
     Some( m ) => println!( "Last move: {}", m ),
     _ => println!( "Last move: None" ),
   }
+}
+
+///
+/// Command to save game to file.
+///
+
+fn command_game_save( game : &Option<Game> )
+{
+  if game.is_none()
+  {
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  }
+
+  let game = game.as_ref().unwrap();
+
+  let save_path = game.save();
+
+  println!("Saved game to file: {}", save_path.unwrap());
 }
 
 ///
