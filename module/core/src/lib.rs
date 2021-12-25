@@ -165,11 +165,45 @@ impl Board
   }
 
   ///
+  /// Returns pretty-printed string representation of the board
+  ///
+  pub fn to_pretty_string(&self) -> String
+  {
+    let mut s = String::with_capacity(pleco::core::masks::SQ_CNT * 2 + 40);
+    let mut rank = 8;
+
+    for sq in pleco::core::masks::SQ_DISPLAY_ORDER.iter()
+    {
+      if sq % 8 == 0
+      {
+        s.push(char::from_digit(rank, 10).unwrap());
+        s.push_str(" | ");
+        rank -= 1;
+      }
+
+      let op = self.pleco_board.get_piece_locations().piece_at(pleco::SQ(*sq));
+      let char = if op != Piece::None { op.character_lossy() } else { '-' };
+      s.push(char);
+      s.push(' ');
+
+      if sq % 8 == 7
+      {
+        s.push('\n');
+      }
+    }
+
+    s.push_str("  ------------------\n");
+    s.push_str("    a b c d e f g h");
+
+    s
+  }
+
+  ///
   /// Prints board to the terminal.
   ///
-  pub fn print( &self ) /* qqq : remove. instead return string */
+  pub fn print(&self) /* qqq : remove. instead return string */
   {
-    println!( "{}", self.pleco_board.pretty_string() );
+    println!("{}", self.to_pretty_string());
   }
 
   ///
