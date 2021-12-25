@@ -6,4 +6,3 @@ publish = false
 
 [dependencies]
 bevy = "0.5.0"
-bevy_egui = "0.8.0"

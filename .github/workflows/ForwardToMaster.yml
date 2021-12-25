@@ -1,10 +1,9 @@
 
-name: Production
+name: Forward
 
 on:
   push:
     branches: [ beta ]
-
 
 jobs:
 
@@ -19,4 +18,5 @@ jobs:
           PULL_REQUEST_BRANCH: main
           PULL_REQUEST_TITLE: 'READY : Forward from beta to main'
           PASS_IF_EXISTS: true
+
 
