@@ -12,7 +12,6 @@ use bevy::input::system::exit_on_esc_system;
 /// Main.
 ///
 
-#[allow( dead_code )]
 fn main()
 {
   let mut app = App::build();
@@ -40,29 +39,17 @@ fn main()
 fn graphics_setup
 (
   mut commands : Commands,
-  asset_server : Res< AssetServer >,
-  mut materials : ResMut< Assets< ColorMaterial > >,
 )
 {
-  /* load image */
-  let texture_handle = asset_server.load( "icon.png" );
   /* camera */
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
-  /* sprie */
-  let sprite = SpriteBundle
-  {
-    material : materials.add( texture_handle.into() ),
-    ..Default::default()
-  };
-  /* go live */
-  commands.spawn_bundle( sprite );
 }
+
 
 ///
 /// Startup system for the game.
 ///
 
-#[allow( dead_code )]
 fn core_setup()
 {
   let mut game = core::Game::default();
