@@ -30,15 +30,15 @@ web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
 desktop = []
 default = [ "desktop" ]
 
-[lib]
-name = "game_chess"
-crate-type = [ "staticlib", "lib", "cdylib" ]
-path = "./src/main.rs"
+# [lib]
+# name = "game_chess"
+# crate-type = [ "staticlib", "lib", "cdylib" ]
+# path = "./src/main.rs"
 
-[[bin]]
-name = "web"
-path = "./src/main.rs"
-required-features = [ "web" ]
+# [[bin]]
+# name = "web"
+# path = "./src/main.rs"
+# required-features = [ "web" ]
 
 [[bin]]
 name = "desktop"
