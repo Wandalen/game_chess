@@ -6,6 +6,7 @@
 
 use game_chess_core as core;
 use bevy::prelude::*;
+use bevy::input::system::exit_on_esc_system;
 
 ///
 /// Main.
@@ -23,7 +24,7 @@ fn main()
   /* setup graphics */
   app.add_startup_system( graphics_setup.system() );
   /* escape on exit */
-  app.add_system( bevy::input::system::exit_on_esc_system.system() );
+  app.add_system( exit_on_esc_system.system() );
   /* for web target */
   #[cfg(target_arch = "wasm32")]
   app.add_plugin( bevy_webgl2::WebGL2Plugin );
@@ -38,23 +39,12 @@ fn main()
 fn graphics_setup
 (
   mut commands : Commands,
-  asset_server : Res< AssetServer >,
-  mut materials : ResMut< Assets< ColorMaterial > >,
 )
 {
-  /* load image */
-  let texture_handle = asset_server.load( "icon.png" );
   /* camera */
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
-  /* sprie */
-  let sprite = SpriteBundle
-  {
-    material : materials.add( texture_handle.into() ),
-    ..Default::default()
-  };
-  /* go live */
-  commands.spawn_bundle( sprite );
 }
+
 
 ///
 /// Startup system for the game.
