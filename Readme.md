@@ -3,7 +3,14 @@
 
 ## How to use
 
-This project uses [cargo-make](https://github.com/sagiegurari/cargo-make) task runner. It's required to build the project. To install it run:
+The latest stable version of Rust build toolchain is required by the project. To setup toolchain run:
+
+```
+rustup default stable
+rustup update
+```
+
+The project uses [cargo-make](https://github.com/sagiegurari/cargo-make) task runner. It's required to build the project. To install it run:
 
 ```
 cargo install cargo-make
