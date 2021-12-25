@@ -96,7 +96,7 @@ fn main()
       ".game.new" => { game = Some( command_game_new() ) },
       ".move" | ".m" => command_move( &mut game ),
       ".status"| ".s" => command_status( &game ),
-      ".quit" => command_exit(),
+      ".quit" => command_exit(&game),
       ".help" => command_help(),
       command => println!( "Unknown command : {}\n", command ),
     }
@@ -125,10 +125,16 @@ fn command_help()
 /// Command to quit the game.
 ///
 
-fn command_exit()
+fn command_exit(game: &Option<Game>) 
 {
-  println!( "Exiting.." );
-  std::process::exit( 0 );
+  let uci_exit = wca::input::ask("Do you want to exit?");
+  match uci_exit.to_lowercase().trim() {
+    "yes" => {
+      println!("Exiting..");
+      std::process::exit(0);
+    }
+    _ => command_status(&game),
+  }
 }
 
 ///
