@@ -7,7 +7,8 @@
 
 ## Samples
 
-- [sample_board_draw]("./sample_board_draw") - Draw the resizable chess board.
+- [sample_board_draw]("./sample_board_draw") - Drawing a resizable chess board.
+- [sample_board_draw_simpler]("./sample_board_draw_simpler") - Simpler drawing of chess board.
 - [sample_core_best_move]("./sample_core_best_move") - Find the best move for current game situation.
 - [sample_core_board_debug]("./sample_core_best_move") - Print debug info about current game state.
 - [sample_core_score]("./sample_core_score") - How profitable is a board for a player.
