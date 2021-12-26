@@ -11,9 +11,9 @@ members = [
   "module/*",
 ]
 exclude = [
-  "module/sample*"
+  "module/sample_text_mesh",
 ]
-default-members = [ "module/game" ]
+# default-members = [ "module/game" ]
 
 #
 # debug profile

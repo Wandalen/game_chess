@@ -1,8 +1,8 @@
 #![warn(missing_docs)]
 
-use bevy::prelude::*;
-
 //! Sample shows how start of mouse coordinates to change to center of the window.
+
+use bevy::prelude::*;
 
 const DISPLAY_HEIGHT : f32 = 300.0;
 const DISPLAY_WIDTH : f32 = 300.0;

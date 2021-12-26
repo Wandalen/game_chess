@@ -1,52 +1,118 @@
 #![warn( missing_docs )]
 
-//! Main module that create game window and prints chess board into console.
+//!
+//! Chess game implemented on Bevy for educational purpose.
+//!
 
 use game_chess_core as core;
 use bevy::prelude::*;
+use bevy::input::system::exit_on_esc_system;
 
-//
+///
+/// Main.
+///
 
-#[allow( dead_code )]
 fn main()
 {
   let mut app = App::build();
+  /* default plugins */
   app.add_plugins( DefaultPlugins );
+  /* background */
   app.insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) );
+  /* setup core */
+  app.add_startup_system( core_setup.system() );
+  /* setup graphics */
+  app.add_startup_system( graphics_setup.system() );
+  /* escape on exit */
+  app.add_system( exit_on_esc_system.system() );
+  /* for web target */
   #[cfg(target_arch = "wasm32")]
   app.add_plugin( bevy_webgl2::WebGL2Plugin );
-  app.add_startup_system( setup.system() );
-  app.add_startup_system( core_setup.system() );
+  /* run */
   app.run();
 }
 
-//
+///
+/// Graphics setup.
+///
 
-#[allow( dead_code )]
-fn setup
+fn graphics_setup
 (
   mut commands : Commands,
-  asset_server : Res< AssetServer >,
-  mut materials : ResMut<Assets< ColorMaterial > >,
+  windows : Res< Windows >,
+  mut materials : ResMut< Assets< ColorMaterial > >,
 )
 {
-  let texture_handle = asset_server.load( "icon.png" );
+  /* camera */
   commands.spawn_bundle( OrthographicCameraBundle::new_2d() );
-  let sprite = SpriteBundle
+
+  let window = windows.get_primary().unwrap();
+  let size_in_pixels = ( window.width(), window.height() );
+  let size_in_cells = ( 8, 8 );
+  let size_in_cells_f = ( size_in_cells.0 as f32, size_in_cells.1 as f32 );
+  let side_size = if size_in_pixels.0 < size_in_pixels.1
   {
-    material : materials.add(texture_handle.into()),
-    ..Default::default()
+    size_in_pixels.0 / size_in_cells_f.0
+  }
+  else
+  {
+    size_in_pixels.1 / size_in_cells_f.1
   };
-  commands.spawn_bundle( sprite );
+
+  let white = materials.add( ColorMaterial::color( Color::rgb( 0.9, 0.9, 0.7 ) ) );
+  let black = materials.add( ColorMaterial::color( Color::rgb( 0.2, 0.2, 0.1 ) ) );
+
+  for x in 0 .. size_in_cells.0
+  {
+    for y in 0 .. size_in_cells.1
+    {
+
+      let material = if ( x + y ) % 2 == 0
+      {
+        white.clone()
+      }
+      else
+      {
+        black.clone()
+      };
+
+      let sprite = Sprite
+      {
+        size : Vec2::new( side_size, side_size ),
+        .. Default::default()
+      };
+
+      let transform = Transform
+      {
+        translation : Vec3::new
+        (
+          ( x as f32 - size_in_cells_f.0 / 2. + 0.5 ) * side_size,
+          ( y as f32 - size_in_cells_f.0 / 2. + 0.5 ) * side_size,
+          0.
+        ),
+        .. Default::default()
+      };
+
+      commands.spawn_bundle( SpriteBundle
+      {
+        sprite,
+        material,
+        transform,
+        .. Default::default()
+      });
+
+    }
+  }
+
 }
 
-//
+///
+/// Startup system for the game.
+///
 
-#[allow( dead_code )]
 fn core_setup()
 {
   let mut game = core::Game::default();
-
   game.board_print();
   game.make_move( "a2a4" );
   game.board_print();
