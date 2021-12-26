@@ -3,7 +3,9 @@
 - [Rust](https://www.rust-lang.org/) v1.57 or newer.
 - [cargo-make](https://github.com/sagiegurari/cargo-make)
   Install with command: ```cargo install cargo-make```
-
+- [xcb](https://xcb.freedesktop.org/)
+- [libuv](https://github.com/libuv/libuv)
+- [libalsa](https://www.alsa-project.org/wiki/Main_Page)
 
 The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make). To install it run:
 
@@ -11,7 +13,7 @@ The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make)
 cargo install cargo-make
 ```
 
-To build `Bevy` apps on a Linux distributive the libraries `libuv` and `libalsa` are required. To install it run:
+To build `Bevy` on a Linux the libraries `libuv` and `libalsa` are required. To install it run:
 
 ```
 sudo apt install libudev-dev libalsa-ocaml-dev
@@ -27,11 +29,5 @@ sudo apt install libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
 
 To run desktop target execute:
 ```
-cargo make desktop_run
-```
-
-To get list of all command related this target run:
-
-```
-cargo make --list-all-steps
+cargo run
 ```
