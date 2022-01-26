@@ -12,6 +12,7 @@ members = [
 ]
 exclude = [
   "module/sample_text_mesh",
+  "module/sample_simple_grpc",
 ]
 # default-members = [ "module/game" ]
 
