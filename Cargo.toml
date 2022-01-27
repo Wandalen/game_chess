@@ -9,6 +9,7 @@ cargo-features = [
 resolver = "2"
 members = [
   "module/*",
+  "sample/*",
 ]
 exclude = [
   "module/sample_text_mesh",
