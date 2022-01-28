@@ -13,6 +13,13 @@
 - [libuv](https://github.com/libuv/libuv)
 - [libalsa](https://www.alsa-project.org/wiki/Main_Page)
 
+The latest stable version of Rust build toolchain is required by the project. To setup toolchain run:
+
+```
+rustup default stable
+rustup update
+```
+
 The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make). To install it run:
 
 ```
@@ -39,13 +46,6 @@ cargo run
 ```
 
 ## How to develop
-
-The latest stable version of Rust build toolchain is required by the project. To setup toolchain run:
-
-```
-rustup default stable
-rustup update
-```
 
 Before cloning the repository please maka a fork on github to been able to open pull requests.
 Please open pull request into the branch `alpha`.
