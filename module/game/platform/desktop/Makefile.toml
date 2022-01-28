@@ -53,6 +53,29 @@ exec sudo apt install mingw-w64
 # Build from Windows to Linux and MacOs has many restrictions
 # and needs many time to write some workable task
 
+[tasks.stable_setup]
+private = true
+script_runner = "@duckscript"
+script = '''
+exec rustup default stable
+'''
+
+[tasks.nightly_setup]
+private = true
+script_runner = "@duckscript"
+script = '''
+exec rustup default nightly
+'''
+
+[tasks.desktop_build_both_targets]
+dependencies = [ "stable_setup", "desktop_build", "desktop_build_release" ]
+private = true
+
+[tasks.desktop_build_three_targets]
+dependencies = [ "desktop_build_both_targets", "nightly_setup" ]
+private = true
+run_task = "desktop_build_release"
+
 # Public
 
 [tasks.desktop_build]
