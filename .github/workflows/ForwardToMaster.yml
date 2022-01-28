@@ -19,4 +19,3 @@ jobs:
           PULL_REQUEST_TITLE: 'READY : Forward from beta to main'
           PASS_IF_EXISTS: true
 
-
