@@ -72,8 +72,9 @@ dependencies = [ "stable_setup", "desktop_build", "desktop_build_release" ]
 private = true
 
 [tasks.desktop_build_three_targets]
+description = "Build debug, and release targets on stable and nightly toolchains."
 dependencies = [ "desktop_build_both_targets", "nightly_setup" ]
-private = true
+private = false
 run_task = "desktop_build_release"
 
 # Public
