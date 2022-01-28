@@ -8,6 +8,8 @@ cargo-features = [
 [workspace]
 resolver = "2"
 members = [
+  "module/sample_simple_grpc/client",
+  "module/sample_simple_grpc/server",
   "module/*",
 ]
 exclude = [
