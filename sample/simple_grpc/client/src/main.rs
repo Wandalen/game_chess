@@ -1,4 +1,4 @@
-
+#[allow(unused_imports)]
 use client::generated::chess_example::{Position, GameMoveRequest, MoveResultResponse};
 use client::generated::chess_example::chess_state_client::ChessStateClient;
 

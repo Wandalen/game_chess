@@ -26,6 +26,7 @@ List of samples
 - [mouse_event_detection](./mouse_event_detection) - Detect and handle mouse and cursor events.
 - [mouse_position_to_board](./mouse_position_to_board) - Translate current cursor position to chess board coordinates.
 - [mouse_position_translation](./mouse_position_translation) - Calculate current cursor position relative to the center of window.
+- [simple_grpc](./simple_grpc) - Example of communication between server and client using gRPC
 - [simple_gui](./simple_gui) - Draw simple GUI window inside Bevy.
 - [sprite](./sprite) - Draw sprite from asset image.
 - [sprite_partial](./sprite_partial) - Draw sprite from part of asset image.

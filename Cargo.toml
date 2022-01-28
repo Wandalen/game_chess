@@ -8,13 +8,13 @@ cargo-features = [
 [workspace]
 resolver = "2"
 members = [
-  "module/sample_simple_grpc/client",
-  "module/sample_simple_grpc/server",
   "module/*",
+  "sample/simple_grpc/client",
+  "sample/simple_grpc/server",
   "sample/*",
 ]
 exclude = [
-  "module/sample_simple_grpc",
+  "sample/simple_grpc",
 ]
 # default-members = [ "module/game" ]
 
