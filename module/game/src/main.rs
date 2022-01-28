@@ -1,4 +1,5 @@
 #![warn( missing_docs )]
+#![ warn( missing_debug_implementations ) ]
 
 //!
 //! Chess game implemented on Bevy for educational purpose.
@@ -12,7 +13,7 @@ use bevy::input::system::exit_on_esc_system;
 /// Main.
 ///
 
-fn main()
+pub fn main()
 {
   let mut app = App::build();
   /* default plugins */
@@ -36,7 +37,7 @@ fn main()
 /// Graphics setup.
 ///
 
-fn graphics_setup
+pub fn graphics_setup
 (
   mut commands : Commands,
   windows : Res< Windows >,
@@ -110,7 +111,7 @@ fn graphics_setup
 /// Startup system for the game.
 ///
 
-fn core_setup()
+pub fn core_setup()
 {
   let mut game = core::Game::default();
   game.board_print();

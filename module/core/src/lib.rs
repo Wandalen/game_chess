@@ -1,5 +1,5 @@
-#![warn(missing_debug_implementations)]
 #![warn(missing_docs)]
+#![warn(missing_debug_implementations)]
 
 //!
 //! Implement mechanics of the game chess.
@@ -58,7 +58,10 @@ Game
 const SAVES_FOLDER_NAME: &str = "saves";
 const SAVE_FILE_EXTENSION: &str = ".save";
 
+///
 /// Game board
+///
+
 #[derive(Debug)]
 pub struct Board
 {
@@ -223,6 +226,7 @@ impl Board
 ///
 ///Positions on the board in [FEN](https://www.chess.com/terms/fen-chess#what-is-fen) format
 ///
+
 pub type Fen = String;
 
 ///
@@ -230,6 +234,7 @@ pub type Fen = String;
 /// Field `fen` contains representation of the board as FEN string
 /// Field `uci_move` contains move in UCI format
 ///
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct HistoryEntry
 {
@@ -240,6 +245,7 @@ pub struct HistoryEntry
 ///
 /// Status of the game
 ///
+
 #[derive(Debug, PartialEq)]
 pub enum GameStatus
 {
@@ -256,6 +262,7 @@ pub enum GameStatus
 ///
 /// Basically Board + History.
 ///
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Game
 {
@@ -365,7 +372,11 @@ impl Game
     }
 }
 
-fn get_unix_timestamp(start: Option<SystemTime>) -> u64 {
+///
+/// Get unix timestamp in seconds.
+///
+
+pub fn get_unix_timestamp(start: Option<SystemTime>) -> u64 {
     let start = start.unwrap_or(SystemTime::now());
     let since_the_epoch = start
         .duration_since(UNIX_EPOCH)
@@ -374,12 +385,20 @@ fn get_unix_timestamp(start: Option<SystemTime>) -> u64 {
     since_the_epoch.as_secs()
 }
 
-fn board_ser<S: Serializer>(board: &Board, s: S) -> Result<S::Ok, S::Error>
+///
+/// Serialize game to string.
+///
+
+pub fn board_ser<S: Serializer>(board: &Board, s: S) -> Result<S::Ok, S::Error>
 {
     s.serialize_str(&board.to_fen())
 }
 
-fn board_der<'de, D: Deserializer<'de>>(d: D) -> Result<Board, D::Error>
+///
+/// Deserialize game from string to FEN and make board.
+///
+
+pub fn board_der<'de, D: Deserializer<'de>>(d: D) -> Result<Board, D::Error>
 {
   let fen : String = Deserialize::deserialize( d )?;
   Ok( Board::from_fen( &fen ) )
