@@ -11,5 +11,9 @@ env:
 jobs:
   build:
     if: "contains( github.event.head_commit.message, '[build]' )"
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@master
+    with:
+      artifacts: 'false'
+      build: 'fast'
+      toolchain: 'stable'
 

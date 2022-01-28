@@ -10,14 +10,35 @@ env:
 
 jobs :
 
+  desktop_fast:
+    if: "contains( github.event.head_commit.message, '[test_rapid]' )"
+    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@main
+    with:
+      artifacts: 'false'
+      build: 'fast'
+      toolchain: 'stable'
   desktop:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
     uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@main
     with:
       artifacts: 'true'
+      build: 'slow'
+      toolchain: 'nightly'
+
+  web_fast:
+    if: "contains( github.event.head_commit.message, '[test_rapid]' )"
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
+    with:
+      artifacts: 'false'
+      build: 'fast'
+      toolchain: 'stable'
   web:
     if: "contains( github.event.head_commit.message, '[build]' ) || startsWith( github.event.head_commit.message, 'Merge ' )"
     uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
+    with:
+      artifacts: 'true'
+      build: 'slow'
+      toolchain: 'nightly'
 
   forward :
     needs: [ desktop, web ]

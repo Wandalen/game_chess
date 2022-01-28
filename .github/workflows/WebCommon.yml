@@ -1,7 +1,18 @@
 
 name: WebCommon
 
-on: [ workflow_call ]
+on:
+  workflow_call:
+    inputs:
+      artifacts:
+        required: true
+        type: string
+      toolchain:
+        required: true
+        type: string
+      build:
+        required: true
+        type: string
 
 env:
   CARGO_TERM_COLOR: always
@@ -20,12 +31,27 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-      - name: Install latest stable toolchain
+      - name: Install latest toolchain
         uses: actions-rs/toolchain@v1
         with:
-            toolchain: stable
-            override: true
+          toolchain: ${{ inputs.toolchain }}
+          override: true
       - uses: davidB/rust-cargo-make@v1
 
-      # - name: Build project for web
-      #   run: cargo make web_build
+      - name: Build
+        if: ${{ inputs.build == 'fast' }}
+        run: cargo make web_build
+      - name: Install library
+        if: ${{ inputs.build != 'fast' }}
+        run: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+      - name: Build
+        if: ${{ inputs.build != 'fast' }}
+        run: cargo make web_build_release
+      - name: Upload
+        if: ${{ inputs.artifacts == 'true' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: web
+          path: target/web
+          retention-days: 1
+
