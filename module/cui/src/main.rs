@@ -1,5 +1,5 @@
-#![warn( missing_debug_implementations )]
 #![warn( missing_docs )]
+#![warn( missing_debug_implementations )]
 
 //!
 //! Command user interface ( CLI ) for chess game implemented for educational purpose.
@@ -76,9 +76,11 @@ Commands minimal
 
 use game_chess_core::*;
 
-//
+///
+/// Main. CLI game itself.
+///
 
-fn main()
+pub fn main()
 {
   let mut game : Option< Game > = None;
   let mut choice;
@@ -106,8 +108,11 @@ fn main()
 
 }
 
+///
 /// Handler of command `.help`.
-fn command_help()
+///
+
+pub fn command_help()
 {
   println!( "" );
 
@@ -127,7 +132,7 @@ fn command_help()
 /// Command to quit the game.
 ///
 
-fn command_exit(game: &Option<Game>)
+pub fn command_exit(game: &Option<Game>)
 {
   let uci_exit = wca::input::ask("Do you want to exit?");
   match uci_exit.to_lowercase().trim() {
@@ -143,7 +148,7 @@ fn command_exit(game: &Option<Game>)
 /// Command to start new game.
 ///
 
-fn command_game_new() -> Game
+pub fn command_game_new() -> Game
 {
   let game = Game::default();
   println!( "" );
@@ -156,7 +161,7 @@ fn command_game_new() -> Game
 /// Command to print status of the game.
 ///
 
-fn command_status( game : &Option<Game> )
+pub fn command_status( game : &Option<Game> )
 {
   if game.is_none()
   {
@@ -183,7 +188,7 @@ fn command_status( game : &Option<Game> )
 /// Command to save game to file.
 ///
 
-fn command_game_save( game : &Option<Game> )
+pub fn command_game_save( game : &Option<Game> )
 {
   if game.is_none()
   {
@@ -202,7 +207,7 @@ fn command_game_save( game : &Option<Game> )
 /// Command to make a move.
 ///
 
-fn command_move( game : &mut Option<Game>  )
+pub fn command_move( game : &mut Option<Game>  )
 {
   if game.is_none()
   {
