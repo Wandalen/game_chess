@@ -1,7 +1,10 @@
 
 name: Conditional
 
-on : [ pull_request ]
+on :
+  pull_request :
+    branches-ignore:
+      - main
 
 env:
   CARGO_TERM_COLOR: always
@@ -40,8 +43,14 @@ jobs:
     uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@main
     with:
       artifacts: 'false'
+      build: 'fast'
+      toolchain: 'stable'
   web:
     needs: check
     if: ${{ needs.check.outputs.shouldRun != 'false' }}
     uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
+    with:
+      artifacts: 'false'
+      build: 'fast'
+      toolchain: 'stable'
 

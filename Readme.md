@@ -1,14 +1,17 @@
 # game_chess
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml) [![web](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml)
 
-## How to use
+[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://img.shields.io/github/workflow/status/Wandalen/game_chess/DesktopPush?label=Desktop)](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml) [![web](https://img.shields.io/github/workflow/status/Wandalen/game_chess/WebPush?label=Web)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml) [![Beta](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml)
 
-The latest stable version of Rust build toolchain is required by the project. To setup toolchain run:
+<!-- [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml) [![web](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml) [![Beta](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml) -->
 
-```
-rustup default stable
-rustup update
-```
+## Desktop Prerequisites
+
+- [Rust](https://www.rust-lang.org/) v1.57 or newer.
+- [cargo-make](https://github.com/sagiegurari/cargo-make)
+  Install with command: ```cargo install cargo-make```
+- [xcb](https://xcb.freedesktop.org/)
+- [libuv](https://github.com/libuv/libuv)
+- [libalsa](https://www.alsa-project.org/wiki/Main_Page)
 
 The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make). To install it run:
 
@@ -16,7 +19,7 @@ The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make)
 cargo install cargo-make
 ```
 
-To build `Bevy` apps on a Linux distributive the libraries `libuv` and `libalsa` are required. To install it run:
+To build `Bevy` on a Linux the libraries `libuv` and `libalsa` are required. To install it run:
 
 ```
 sudo apt install libudev-dev libalsa-ocaml-dev
@@ -27,6 +30,25 @@ The project uses module [`Egui`](https://github.com/emilk/egui) and plugin [`bev
 ```
 sudo apt install libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
 ```
+
+## How to run on Desktop
+
+To run desktop target execute:
+```
+cargo run
+```
+
+## How to develop
+
+The latest stable version of Rust build toolchain is required by the project. To setup toolchain run:
+
+```
+rustup default stable
+rustup update
+```
+
+Before cloning the repository please maka a fork on github to been able to open pull requests.
+Please open pull request into the branch `alpha`.
 
 <!--
   the add instruction is considered correct because the result of testing
@@ -44,5 +66,5 @@ Supported platforms:
 To run the project on default platform execute:
 
 ```
-cargo make
+cargo run
 ```

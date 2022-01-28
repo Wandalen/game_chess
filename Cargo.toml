@@ -11,9 +11,9 @@ members = [
   "module/sample_simple_grpc/client",
   "module/sample_simple_grpc/server",
   "module/*",
+  "sample/*",
 ]
 exclude = [
-  "module/sample_text_mesh",
   "module/sample_simple_grpc",
 ]
 # default-members = [ "module/game" ]
