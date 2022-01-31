@@ -1,0 +1,22 @@
+syntax = "proto3"; 
+
+package chess_example;
+
+service ChessState {
+	rpc make_move (GameMoveRequest) returns (MoveResultResponse);
+}
+
+message GameMoveRequest {
+	int32 figure_id = 1;
+  Position to = 2;
+}
+
+message MoveResultResponse {
+	int32 status = 1;
+	string message = 2;
+}
+
+message Position {
+	int32 row = 1;
+	int32 column = 2;
+}
