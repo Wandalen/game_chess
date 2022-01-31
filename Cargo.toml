@@ -10,8 +10,10 @@ resolver = "2"
 members = [
   "module/*",
   "sample/*",
+  "sample/simple_grpc/*",
 ]
 exclude = [
+  "sample/simple_grpc",
 ]
 # default-members = [ "module/game" ]
 
