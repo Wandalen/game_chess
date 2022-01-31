@@ -9,9 +9,8 @@ cargo-features = [
 resolver = "2"
 members = [
   "module/*",
-  "sample/simple_grpc/client",
-  "sample/simple_grpc/server",
   "sample/*",
+  "sample/simple_grpc/*",
 ]
 exclude = [
   "sample/simple_grpc",
