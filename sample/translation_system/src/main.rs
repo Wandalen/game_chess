@@ -1,5 +1,5 @@
-#![warn(missing_docs)]
-#![warn(missing_debug_implementations)]
+#![ warn( missing_docs ) ]
+#![ warn( missing_debug_implementations ) ]
 
 //!
 //! Chess game implemented on Bevy for educational purpose.
@@ -19,8 +19,8 @@ use bevy::input::system::exit_on_esc_system;
 /// Main.
 ///
 
-#[derive(Debug, Clone, Reflect)]
-#[reflect(Component)]
+#[ derive( Debug, Clone, Reflect ) ]
+#[ reflect( Component ) ]
 pub struct ChessProjection
 {
   /// offset from left side
@@ -42,15 +42,15 @@ impl CameraProjection for ChessProjection
   ///
   /// Transform positions points to projection matrix.
   ///
-  fn get_projection_matrix(&self) -> Mat4
+  fn get_projection_matrix( &self ) -> Mat4
   {
-    Mat4::orthographic_rh(self.left, self.right, self.bottom, self.top, self.near, self.far)
+    Mat4::orthographic_rh( self.left, self.right, self.bottom, self.top, self.near, self.far )
   }
 
   ///
   /// Setup positions projection taking into account window size.
   ///
-  fn update(&mut self, width : f32, height : f32)
+  fn update( &mut self, width : f32, height : f32 )
   {
     if width > height
     {
@@ -75,7 +75,10 @@ impl CameraProjection for ChessProjection
   ///
   /// Sort entities by depth. Not used.
   ///
-  fn depth_calculation(&self) -> DepthCalculation { DepthCalculation::Distance }
+  fn depth_calculation( &self ) -> DepthCalculation
+  {
+    DepthCalculation::Distance
+  }
 }
 
 impl Default for ChessProjection
@@ -83,7 +86,8 @@ impl Default for ChessProjection
   /* Default settings. */
   fn default() -> Self
   {
-    ChessProjection {
+    ChessProjection
+    {
       left : -1.0,
       right : 1.0,
       bottom : -1.0,
@@ -98,7 +102,7 @@ impl Default for ChessProjection
 /// Alternative camera bundle that show up the game board.
 ///
 
-#[derive(Bundle, Debug)]
+#[ derive( Bundle, Debug ) ]
 pub struct ChessCameraBundle
 {
   /// Instance of camera.
@@ -121,17 +125,20 @@ impl ChessCameraBundle
   pub fn new() -> Self
   {
     let far = 1000.0;
-    ChessCameraBundle {
-      camera : Camera {
-        name : Some(CAMERA_2D.to_string()),
+    ChessCameraBundle
+    {
+      camera : Camera
+      {
+        name : Some( CAMERA_2D.to_string() ),
         ..Default::default()
       },
-      chess_projection : ChessProjection {
+      chess_projection : ChessProjection
+      {
         far,
         ..Default::default()
       },
       visible_entities : Default::default(),
-      transform : Transform::from_xyz(0.0, 0.0, far - 0.1),
+      transform : Transform::from_xyz( 0.0, 0.0, far - 0.1 ),
       global_transform : Default::default(),
     }
   }
@@ -141,22 +148,22 @@ fn main()
 {
   let mut app = App::build();
   /* default plugins */
-  app.add_plugins(DefaultPlugins);
+  app.add_plugins( DefaultPlugins );
   /* background */
-  app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
+  app.insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) );
   /* setup core */
-  app.add_startup_system(graphics_setup.system());
+  app.add_startup_system( graphics_setup.system() );
   /* escape on exit */
-  app.add_system(exit_on_esc_system.system());
+  app.add_system( exit_on_esc_system.system() );
   app.add_system_to_stage(
     CoreStage::PostUpdate,
     camera_system::<ChessProjection>
       .system()
-      .before(RenderSystem::VisibleEntities),
-  );
+      .before( RenderSystem::VisibleEntities ),
+ );
   /* for web target */
-  #[cfg(target_arch = "wasm32")]
-  app.add_plugin(bevy_webgl2::WebGL2Plugin);
+  #[ cfg( target_arch = "wasm32" ) ]
+  app.add_plugin( bevy_webgl2::WebGL2Plugin );
   /* run */
   app.run();
 }
@@ -165,24 +172,26 @@ fn main()
 /// Graphics setup.
 ///
 
-pub fn graphics_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
+pub fn graphics_setup( mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>> )
 {
   /* camera */
-  commands.spawn_bundle(ChessCameraBundle::new());
+  commands.spawn_bundle( ChessCameraBundle::new() );
 
-  let material = materials.add(ColorMaterial::color(Color::rgb(0.2, 0.2, 0.1)));
+  let material = materials.add( ColorMaterial::color( Color::rgb( 0.2, 0.2, 0.1 ) ) );
 
-  let sprite = Sprite {
-    size : Vec2::new(1.0, 1.0),
+  let sprite = Sprite
+  {
+    size : Vec2::new( 1.0, 1.0 ),
     ..Default::default()
   };
 
   let transform = Transform {
-    translation : Vec3::new(-0.5, -0.5, 0.0),
+    translation : Vec3::new( -0.5, -0.5, 0.0 ),
     ..Default::default()
   };
 
-  commands.spawn_bundle(SpriteBundle {
+  commands.spawn_bundle( SpriteBundle
+  {
     sprite,
     material : material.clone(),
     transform,
@@ -191,17 +200,20 @@ pub fn graphics_setup(mut commands : Commands, mut materials : ResMut<Assets<Col
 
   //
 
-  let sprite = Sprite {
-    size : Vec2::new(1.0, 1.0),
+  let sprite = Sprite
+  {
+    size : Vec2::new( 1.0, 1.0 ),
     ..Default::default()
   };
 
-  let transform = Transform {
-    translation : Vec3::new(0.5, 0.5, 0.0),
+  let transform = Transform
+  {
+    translation : Vec3::new( 0.5, 0.5, 0.0 ),
     ..Default::default()
   };
 
-  commands.spawn_bundle(SpriteBundle {
+  commands.spawn_bundle( SpriteBundle
+  {
     sprite,
     material,
     transform,
