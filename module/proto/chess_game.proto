@@ -33,11 +33,19 @@ message GameState {
   string player_id = 2;
 }
 
+enum Color {
+  WHITE = 0;
+  BLACK = 1;
+}
+
 message Game {
   string game_id = 1;
   repeated Player players = 2;
   repeated Player watchers = 3;
   optional string winner_id = 4;
+  GameState state = 5;
+  map<string, Color> player_colors = 6;
+  repeated string history = 7;
 }
 
 message Games {
@@ -61,6 +69,7 @@ message GameRequest {
 
 message CreateGame {
   Player player_id = 1;
+  optional Color color = 2;
 }
 
 message PlayerRequest {

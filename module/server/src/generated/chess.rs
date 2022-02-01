@@ -35,6 +35,12 @@ pub struct Game {
   pub watchers: ::prost::alloc::vec::Vec<Player>,
   #[prost(string, optional, tag = "4")]
   pub winner_id: ::core::option::Option<::prost::alloc::string::String>,
+  #[prost(message, optional, tag = "5")]
+  pub state: ::core::option::Option<GameState>,
+  #[prost(map = "string, enumeration(Color)", tag = "6")]
+  pub player_colors: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+  #[prost(string, repeated, tag = "7")]
+  pub history: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Games {
@@ -66,6 +72,8 @@ pub struct GameRequest {
 pub struct CreateGame {
   #[prost(message, optional, tag = "1")]
   pub player_id: ::core::option::Option<Player>,
+  #[prost(enumeration = "Color", optional, tag = "2")]
+  pub color: ::core::option::Option<i32>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerRequest {
@@ -80,6 +88,12 @@ pub struct Surrender {
   pub player_id: ::prost::alloc::string::String,
   #[prost(string, tag = "2")]
   pub game_id: ::prost::alloc::string::String,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Color {
+  White = 0,
+  Black = 1,
 }
 #[doc = r" Generated client implementations."]
 pub mod chess_client {
