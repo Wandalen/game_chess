@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package chess;
+
+service Chess {
+  rpc make_move (ChessMove) returns (OperationResult);
+  rpc game (GameRequest) returns (Game);
+  rpc games (google.protobuf.Empty) returns (Games);
+  rpc create_game (CreateGame) returns (Game);
+  rpc join_game (PlayerRequest) returns (Game);
+  rpc surrender (PlayerRequest) returns (Game);
+  rpc call_draw (PlayerRequest) returns (Game);
+  rpc leave (PlayerRequest) returns (Game);
+}
+
+message Player {
+  string player_id = 1;
+  string player_name = 2;
+}
+
+message GameState {
+  enum State {
+    CREATED = 0;
+    RUNNING = 1;
+    DRAW = 2;
+    SURRENDER = 3;
+    WIN = 4;
+    LEAVE = 5;
+  }
+  State state = 1;
+  string player_id = 2;
+}
+
+message Game {
+  string game_id = 1;
+  repeated Player players = 2;
+  repeated Player watchers = 3;
+  optional string winner_id = 4;
+}
+
+message Games {
+  repeated Game games = 1;
+}
+
+message ChessMove {
+  string game_id = 1;
+  string player_id = 2;
+  string move = 3;
+}
+
+message OperationResult {
+  bool success = 1;
+  optional string msg = 2;
+}
+
+message GameRequest {
+  string game_id = 1;
+}
+
+message CreateGame {
+  Player player_id = 1;
+}
+
+message PlayerRequest {
+  Player player_id = 1;
+  string game_id = 2;
+}
+
+message Surrender {
+  string player_id = 1;
+  string game_id = 2;
+}

@@ -4,3 +4,4 @@
 //!
 //! Chess game server implemented for educational purpose.
 //!
+pub mod generated;

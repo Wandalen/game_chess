@@ -14,6 +14,7 @@ members = [
 ]
 exclude = [
   "sample/simple_grpc",
+  "module/proto",
 ]
 # default-members = [ "module/game" ]
 

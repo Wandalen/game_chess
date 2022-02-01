@@ -35,3 +35,9 @@ path = "./src/main.rs"
 [dependencies]
 rollo = "~0.8"
 game_chess_core = { version = "~0.0", path = "../core" }
+tonic = "0.6"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+prost = "0.9"
+
+[build-dependencies]
+tonic-build = "0.6"
