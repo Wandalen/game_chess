@@ -1,17 +1,30 @@
-#![warn( missing_docs )]
-#![warn( missing_debug_implementations )]
-
-// use game_chess_server::*;
+#![warn(missing_docs)]
+#![warn(missing_debug_implementations)]
 
 //!
 //! Chess game server implemented for educational purpose.
 //!
 
+use game_chess_server::store::memory::MemoryStore;
+use game_chess_server::rpc_server::ChessRpcServer;
+use tonic::transport::Server;
+use game_chess_server::generated::chess::chess_server::ChessServer;
+
 ///
 /// Main.
 ///
+///
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+  let chess_grpc_server = ChessRpcServer::init();
 
-fn main()
-{
-  println!( "Hello, world!" );
+  let addr = "[::1]:50051".parse()?;
+  println!("Server listening on {}", addr);
+    
+  Server::builder()
+      .add_service(ChessServer::new(chess_grpc_server))
+      .serve(addr)
+      .await?;
+
+  Ok(())
 }
