@@ -19,10 +19,11 @@ pub mod game_state {
   pub enum State {
     Created = 0,
     Running = 1,
-    Draw = 2,
-    Surrender = 3,
-    Win = 4,
-    Leave = 5,
+    ProposeDraw = 2,
+    Draw = 3,
+    Surrender = 4,
+    Win = 5,
+    Leave = 6,
   }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -31,8 +32,6 @@ pub struct Game {
   pub game_id: ::prost::alloc::string::String,
   #[prost(message, repeated, tag = "2")]
   pub players: ::prost::alloc::vec::Vec<Player>,
-  #[prost(message, repeated, tag = "3")]
-  pub watchers: ::prost::alloc::vec::Vec<Player>,
   #[prost(string, optional, tag = "4")]
   pub winner_id: ::core::option::Option<::prost::alloc::string::String>,
   #[prost(message, optional, tag = "5")]
@@ -237,6 +236,19 @@ pub mod chess_client {
       let path = http::uri::PathAndQuery::from_static("/chess.Chess/call_draw");
       self.inner.unary(request.into_request(), path, codec).await
     }
+    pub async fn confirm_draw(
+      &mut self,
+      request: impl tonic::IntoRequest<super::PlayerRequest>,
+    ) -> Result<tonic::Response<super::Game>, tonic::Status> {
+      self
+        .inner
+        .ready()
+        .await
+        .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
+      let codec = tonic::codec::ProstCodec::default();
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/confirm_draw");
+      self.inner.unary(request.into_request(), path, codec).await
+    }
     pub async fn leave(
       &mut self,
       request: impl tonic::IntoRequest<super::PlayerRequest>,
@@ -278,6 +290,10 @@ pub mod chess_server {
       request: tonic::Request<super::PlayerRequest>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status>;
     async fn call_draw(
+      &self,
+      request: tonic::Request<super::PlayerRequest>,
+    ) -> Result<tonic::Response<super::Game>, tonic::Status>;
+    async fn confirm_draw(
       &self,
       request: tonic::Request<super::PlayerRequest>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status>;
@@ -496,6 +512,32 @@ pub mod chess_server {
           let fut = async move {
             let inner = inner.0;
             let method = call_drawSvc(inner);
+            let codec = tonic::codec::ProstCodec::default();
+            let mut grpc =
+              tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
+            let res = grpc.unary(method, req).await;
+            Ok(res)
+          };
+          Box::pin(fut)
+        }
+        "/chess.Chess/confirm_draw" => {
+          #[allow(non_camel_case_types)]
+          struct confirm_drawSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::PlayerRequest> for confirm_drawSvc<T> {
+            type Response = super::Game;
+            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+            fn call(&mut self, request: tonic::Request<super::PlayerRequest>) -> Self::Future {
+              let inner = self.0.clone();
+              let fut = async move { (*inner).confirm_draw(request).await };
+              Box::pin(fut)
+            }
+          }
+          let accept_compression_encodings = self.accept_compression_encodings;
+          let send_compression_encodings = self.send_compression_encodings;
+          let inner = self.inner.clone();
+          let fut = async move {
+            let inner = inner.0;
+            let method = confirm_drawSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);

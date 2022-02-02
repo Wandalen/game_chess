@@ -49,6 +49,10 @@ impl Chess for ChessRpcServer {
     todo!()
   }
 
+  async fn confirm_draw(&self, request: Request<PlayerRequest>) -> Result<Response<Game>, Status> {
+    todo!()
+  }
+
   async fn leave(&self, request: Request<PlayerRequest>) -> Result<Response<Game>, Status> {
     todo!()
   }

@@ -12,6 +12,7 @@ service Chess {
   rpc join_game (PlayerRequest) returns (Game);
   rpc surrender (PlayerRequest) returns (Game);
   rpc call_draw (PlayerRequest) returns (Game);
+  rpc confirm_draw (PlayerRequest) returns (Game);
   rpc leave (PlayerRequest) returns (Game);
 }
 
@@ -24,10 +25,11 @@ message GameState {
   enum State {
     CREATED = 0;
     RUNNING = 1;
-    DRAW = 2;
-    SURRENDER = 3;
-    WIN = 4;
-    LEAVE = 5;
+    PROPOSE_DRAW = 2;
+    DRAW = 3;
+    SURRENDER = 4;
+    WIN = 5;
+    LEAVE = 6;
   }
   State state = 1;
   string player_id = 2;
@@ -41,7 +43,6 @@ enum Color {
 message Game {
   string game_id = 1;
   repeated Player players = 2;
-  repeated Player watchers = 3;
   optional string winner_id = 4;
   GameState state = 5;
   map<string, Color> player_colors = 6;

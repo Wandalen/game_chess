@@ -1,4 +1,14 @@
 
+pub enum GameState {
+    Created,
+    Running,
+    ProposeDraw,
+    Draw,
+    Surrender,
+    Win,
+    Leave,
+}
+
 pub struct Player {
     // TODO
 }
