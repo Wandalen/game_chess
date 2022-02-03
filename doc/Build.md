@@ -1,10 +1,8 @@
 # How to build
 
-## General prerequisites
+## Prerequisites
 
-```
-cargo install cargo-make
-```
+Before moving forward please make sure that all [prerequisites](./Prerequisites.md) are met.
 
 ## How to run on Desktop
 
@@ -20,7 +18,7 @@ Run web target:
 cargo make web_run
 ```
 
-To speedup incremental builds use:
+To speed up incremental builds use:
 
 ```
 cargo make web_run_watching
@@ -31,7 +29,7 @@ This command doesn't perform crate installation checks to reduce total build tim
 
 ## Commands
 
-To get list of commands use command `cargo make --list-all-steps`
+To get the list of commands run: `cargo make --list-all-steps`
 
 ```
 Default
