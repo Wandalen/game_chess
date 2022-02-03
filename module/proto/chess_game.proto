@@ -5,15 +5,15 @@ import "google/protobuf/empty.proto";
 package chess;
 
 service Chess {
-  rpc make_move (ChessMove) returns (OperationResult);
-  rpc game (GameRequest) returns (Game);
-  rpc games (google.protobuf.Empty) returns (Games);
-  rpc create_game (CreateGame) returns (Game);
-  rpc join_game (PlayerRequest) returns (Game);
-  rpc surrender (PlayerRequest) returns (Game);
-  rpc call_draw (PlayerRequest) returns (Game);
-  rpc confirm_draw (PlayerRequest) returns (Game);
-  rpc leave (PlayerRequest) returns (Game);
+  rpc push_game_create (CreateGame) returns (GameId);
+  rpc push_game_accept (AcceptGame) returns (GameId);
+  rpc push_move (GameMove) returns (GameId);
+  rpc read_board_state (GameId) returns (Game);
+  rpc read_game_state (GameId) returns (Game);
+  rpc read_games_list (google.protobuf.Empty) returns (Games);
+  rpc push_game_gg (GamePlayer) returns (Game);
+  rpc push_mgs (Msg) returns (google.protobuf.Empty);
+  rpc read_msgs (GameId) returns (Msgs);
 }
 
 message Player {
@@ -21,64 +21,44 @@ message Player {
   string player_name = 2;
 }
 
-message GameState {
-  enum State {
-    CREATED = 0;
-    RUNNING = 1;
-    PROPOSE_DRAW = 2;
-    DRAW = 3;
-    SURRENDER = 4;
-    WIN = 5;
-    LEAVE = 6;
-  }
-  State state = 1;
-  string player_id = 2;
-}
-
-enum Color {
-  WHITE = 0;
-  BLACK = 1;
+message GamePlayer {
+  string player_id = 1;
+  string game_id = 2;
 }
 
 message Game {
   string game_id = 1;
   repeated Player players = 2;
-  optional string winner_id = 4;
-  GameState state = 5;
-  map<string, Color> player_colors = 6;
-  repeated string history = 7;
 }
 
 message Games {
-  repeated Game games = 1;
+  repeated string game_ids = 1;
 }
 
-message ChessMove {
+message GameMove {
   string game_id = 1;
   string player_id = 2;
   string move = 3;
 }
 
-message OperationResult {
-  bool success = 1;
-  optional string msg = 2;
-}
-
-message GameRequest {
+message AcceptGame {
   string game_id = 1;
+  Player player_id = 2;
 }
 
 message CreateGame {
   Player player_id = 1;
-  optional Color color = 2;
 }
 
-message PlayerRequest {
-  Player player_id = 1;
-  string game_id = 2;
+message GameId {
+  string game_id = 1;
 }
 
-message Surrender {
-  string player_id = 1;
-  string game_id = 2;
+message Msg {
+  GamePlayer player = 1;
+  string text = 2;
+}
+
+message Msgs {
+  repeated Msg messages = 1;
 }

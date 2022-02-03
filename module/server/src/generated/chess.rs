@@ -6,25 +6,11 @@ pub struct Player {
   pub player_name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GameState {
-  #[prost(enumeration = "game_state::State", tag = "1")]
-  pub state: i32,
-  #[prost(string, tag = "2")]
+pub struct GamePlayer {
+  #[prost(string, tag = "1")]
   pub player_id: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `GameState`.
-pub mod game_state {
-  #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-  #[repr(i32)]
-  pub enum State {
-    Created = 0,
-    Running = 1,
-    ProposeDraw = 2,
-    Draw = 3,
-    Surrender = 4,
-    Win = 5,
-    Leave = 6,
-  }
+  #[prost(string, tag = "2")]
+  pub game_id: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Game {
@@ -32,22 +18,14 @@ pub struct Game {
   pub game_id: ::prost::alloc::string::String,
   #[prost(message, repeated, tag = "2")]
   pub players: ::prost::alloc::vec::Vec<Player>,
-  #[prost(string, optional, tag = "4")]
-  pub winner_id: ::core::option::Option<::prost::alloc::string::String>,
-  #[prost(message, optional, tag = "5")]
-  pub state: ::core::option::Option<GameState>,
-  #[prost(map = "string, enumeration(Color)", tag = "6")]
-  pub player_colors: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
-  #[prost(string, repeated, tag = "7")]
-  pub history: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Games {
-  #[prost(message, repeated, tag = "1")]
-  pub games: ::prost::alloc::vec::Vec<Game>,
+  #[prost(string, repeated, tag = "1")]
+  pub game_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChessMove {
+pub struct GameMove {
   #[prost(string, tag = "1")]
   pub game_id: ::prost::alloc::string::String,
   #[prost(string, tag = "2")]
@@ -56,43 +34,33 @@ pub struct ChessMove {
   pub r#move: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationResult {
-  #[prost(bool, tag = "1")]
-  pub success: bool,
-  #[prost(string, optional, tag = "2")]
-  pub msg: ::core::option::Option<::prost::alloc::string::String>,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GameRequest {
+pub struct AcceptGame {
   #[prost(string, tag = "1")]
   pub game_id: ::prost::alloc::string::String,
+  #[prost(message, optional, tag = "2")]
+  pub player_id: ::core::option::Option<Player>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGame {
   #[prost(message, optional, tag = "1")]
   pub player_id: ::core::option::Option<Player>,
-  #[prost(enumeration = "Color", optional, tag = "2")]
-  pub color: ::core::option::Option<i32>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PlayerRequest {
-  #[prost(message, optional, tag = "1")]
-  pub player_id: ::core::option::Option<Player>,
-  #[prost(string, tag = "2")]
-  pub game_id: ::prost::alloc::string::String,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Surrender {
+pub struct GameId {
   #[prost(string, tag = "1")]
-  pub player_id: ::prost::alloc::string::String,
-  #[prost(string, tag = "2")]
   pub game_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum Color {
-  White = 0,
-  Black = 1,
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Msg {
+  #[prost(message, optional, tag = "1")]
+  pub player: ::core::option::Option<GamePlayer>,
+  #[prost(string, tag = "2")]
+  pub text: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Msgs {
+  #[prost(message, repeated, tag = "1")]
+  pub messages: ::prost::alloc::vec::Vec<Msg>,
 }
 #[doc = r" Generated client implementations."]
 pub mod chess_client {
@@ -148,84 +116,48 @@ pub mod chess_client {
       self.inner = self.inner.accept_gzip();
       self
     }
-    pub async fn make_move(
-      &mut self,
-      request: impl tonic::IntoRequest<super::ChessMove>,
-    ) -> Result<tonic::Response<super::OperationResult>, tonic::Status> {
-      self
-        .inner
-        .ready()
-        .await
-        .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
-      let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/make_move");
-      self.inner.unary(request.into_request(), path, codec).await
-    }
-    pub async fn game(
-      &mut self,
-      request: impl tonic::IntoRequest<super::GameRequest>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status> {
-      self
-        .inner
-        .ready()
-        .await
-        .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
-      let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/game");
-      self.inner.unary(request.into_request(), path, codec).await
-    }
-    pub async fn games(&mut self, request: impl tonic::IntoRequest<()>) -> Result<tonic::Response<super::Games>, tonic::Status> {
-      self
-        .inner
-        .ready()
-        .await
-        .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
-      let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/games");
-      self.inner.unary(request.into_request(), path, codec).await
-    }
-    pub async fn create_game(
+    pub async fn push_game_create(
       &mut self,
       request: impl tonic::IntoRequest<super::CreateGame>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status> {
+    ) -> Result<tonic::Response<super::GameId>, tonic::Status> {
       self
         .inner
         .ready()
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/create_game");
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/push_game_create");
       self.inner.unary(request.into_request(), path, codec).await
     }
-    pub async fn join_game(
+    pub async fn push_game_accept(
       &mut self,
-      request: impl tonic::IntoRequest<super::PlayerRequest>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status> {
+      request: impl tonic::IntoRequest<super::AcceptGame>,
+    ) -> Result<tonic::Response<super::GameId>, tonic::Status> {
       self
         .inner
         .ready()
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/join_game");
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/push_game_accept");
       self.inner.unary(request.into_request(), path, codec).await
     }
-    pub async fn surrender(
+    pub async fn push_move(
       &mut self,
-      request: impl tonic::IntoRequest<super::PlayerRequest>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status> {
+      request: impl tonic::IntoRequest<super::GameMove>,
+    ) -> Result<tonic::Response<super::GameId>, tonic::Status> {
       self
         .inner
         .ready()
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/surrender");
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/push_move");
       self.inner.unary(request.into_request(), path, codec).await
     }
-    pub async fn call_draw(
+    pub async fn read_board_state(
       &mut self,
-      request: impl tonic::IntoRequest<super::PlayerRequest>,
+      request: impl tonic::IntoRequest<super::GameId>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status> {
       self
         .inner
@@ -233,12 +165,12 @@ pub mod chess_client {
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/call_draw");
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/read_board_state");
       self.inner.unary(request.into_request(), path, codec).await
     }
-    pub async fn confirm_draw(
+    pub async fn read_game_state(
       &mut self,
-      request: impl tonic::IntoRequest<super::PlayerRequest>,
+      request: impl tonic::IntoRequest<super::GameId>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status> {
       self
         .inner
@@ -246,12 +178,25 @@ pub mod chess_client {
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/confirm_draw");
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/read_game_state");
       self.inner.unary(request.into_request(), path, codec).await
     }
-    pub async fn leave(
+    pub async fn read_games_list(
       &mut self,
-      request: impl tonic::IntoRequest<super::PlayerRequest>,
+      request: impl tonic::IntoRequest<()>,
+    ) -> Result<tonic::Response<super::Games>, tonic::Status> {
+      self
+        .inner
+        .ready()
+        .await
+        .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
+      let codec = tonic::codec::ProstCodec::default();
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/read_games_list");
+      self.inner.unary(request.into_request(), path, codec).await
+    }
+    pub async fn push_game_gg(
+      &mut self,
+      request: impl tonic::IntoRequest<super::GamePlayer>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status> {
       self
         .inner
@@ -259,7 +204,30 @@ pub mod chess_client {
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/leave");
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/push_game_gg");
+      self.inner.unary(request.into_request(), path, codec).await
+    }
+    pub async fn push_mgs(&mut self, request: impl tonic::IntoRequest<super::Msg>) -> Result<tonic::Response<()>, tonic::Status> {
+      self
+        .inner
+        .ready()
+        .await
+        .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
+      let codec = tonic::codec::ProstCodec::default();
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/push_mgs");
+      self.inner.unary(request.into_request(), path, codec).await
+    }
+    pub async fn read_msgs(
+      &mut self,
+      request: impl tonic::IntoRequest<super::GameId>,
+    ) -> Result<tonic::Response<super::Msgs>, tonic::Status> {
+      self
+        .inner
+        .ready()
+        .await
+        .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
+      let codec = tonic::codec::ProstCodec::default();
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/read_msgs");
       self.inner.unary(request.into_request(), path, codec).await
     }
   }
@@ -271,33 +239,30 @@ pub mod chess_server {
   #[doc = "Generated trait containing gRPC methods that should be implemented for use with ChessServer."]
   #[async_trait]
   pub trait Chess: Send + Sync + 'static {
-    async fn make_move(
-      &self,
-      request: tonic::Request<super::ChessMove>,
-    ) -> Result<tonic::Response<super::OperationResult>, tonic::Status>;
-    async fn game(&self, request: tonic::Request<super::GameRequest>) -> Result<tonic::Response<super::Game>, tonic::Status>;
-    async fn games(&self, request: tonic::Request<()>) -> Result<tonic::Response<super::Games>, tonic::Status>;
-    async fn create_game(
+    async fn push_game_create(
       &self,
       request: tonic::Request<super::CreateGame>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>;
-    async fn join_game(
+    ) -> Result<tonic::Response<super::GameId>, tonic::Status>;
+    async fn push_game_accept(
       &self,
-      request: tonic::Request<super::PlayerRequest>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>;
-    async fn surrender(
+      request: tonic::Request<super::AcceptGame>,
+    ) -> Result<tonic::Response<super::GameId>, tonic::Status>;
+    async fn push_move(&self, request: tonic::Request<super::GameMove>) -> Result<tonic::Response<super::GameId>, tonic::Status>;
+    async fn read_board_state(
       &self,
-      request: tonic::Request<super::PlayerRequest>,
+      request: tonic::Request<super::GameId>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status>;
-    async fn call_draw(
+    async fn read_game_state(
       &self,
-      request: tonic::Request<super::PlayerRequest>,
+      request: tonic::Request<super::GameId>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status>;
-    async fn confirm_draw(
+    async fn read_games_list(&self, request: tonic::Request<()>) -> Result<tonic::Response<super::Games>, tonic::Status>;
+    async fn push_game_gg(
       &self,
-      request: tonic::Request<super::PlayerRequest>,
+      request: tonic::Request<super::GamePlayer>,
     ) -> Result<tonic::Response<super::Game>, tonic::Status>;
-    async fn leave(&self, request: tonic::Request<super::PlayerRequest>) -> Result<tonic::Response<super::Game>, tonic::Status>;
+    async fn push_mgs(&self, request: tonic::Request<super::Msg>) -> Result<tonic::Response<()>, tonic::Status>;
+    async fn read_msgs(&self, request: tonic::Request<super::GameId>) -> Result<tonic::Response<super::Msgs>, tonic::Status>;
   }
   #[derive(Debug)]
   pub struct ChessServer<T: Chess> {
@@ -338,15 +303,15 @@ pub mod chess_server {
     fn call(&mut self, req: http::Request<B>) -> Self::Future {
       let inner = self.inner.clone();
       match req.uri().path() {
-        "/chess.Chess/make_move" => {
+        "/chess.Chess/push_game_create" => {
           #[allow(non_camel_case_types)]
-          struct make_moveSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::ChessMove> for make_moveSvc<T> {
-            type Response = super::OperationResult;
+          struct push_game_createSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::CreateGame> for push_game_createSvc<T> {
+            type Response = super::GameId;
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::ChessMove>) -> Self::Future {
+            fn call(&mut self, request: tonic::Request<super::CreateGame>) -> Self::Future {
               let inner = self.0.clone();
-              let fut = async move { (*inner).make_move(request).await };
+              let fut = async move { (*inner).push_game_create(request).await };
               Box::pin(fut)
             }
           }
@@ -355,7 +320,7 @@ pub mod chess_server {
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = make_moveSvc(inner);
+            let method = push_game_createSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
@@ -364,15 +329,67 @@ pub mod chess_server {
           };
           Box::pin(fut)
         }
-        "/chess.Chess/game" => {
+        "/chess.Chess/push_game_accept" => {
           #[allow(non_camel_case_types)]
-          struct gameSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::GameRequest> for gameSvc<T> {
+          struct push_game_acceptSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::AcceptGame> for push_game_acceptSvc<T> {
+            type Response = super::GameId;
+            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+            fn call(&mut self, request: tonic::Request<super::AcceptGame>) -> Self::Future {
+              let inner = self.0.clone();
+              let fut = async move { (*inner).push_game_accept(request).await };
+              Box::pin(fut)
+            }
+          }
+          let accept_compression_encodings = self.accept_compression_encodings;
+          let send_compression_encodings = self.send_compression_encodings;
+          let inner = self.inner.clone();
+          let fut = async move {
+            let inner = inner.0;
+            let method = push_game_acceptSvc(inner);
+            let codec = tonic::codec::ProstCodec::default();
+            let mut grpc =
+              tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
+            let res = grpc.unary(method, req).await;
+            Ok(res)
+          };
+          Box::pin(fut)
+        }
+        "/chess.Chess/push_move" => {
+          #[allow(non_camel_case_types)]
+          struct push_moveSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::GameMove> for push_moveSvc<T> {
+            type Response = super::GameId;
+            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+            fn call(&mut self, request: tonic::Request<super::GameMove>) -> Self::Future {
+              let inner = self.0.clone();
+              let fut = async move { (*inner).push_move(request).await };
+              Box::pin(fut)
+            }
+          }
+          let accept_compression_encodings = self.accept_compression_encodings;
+          let send_compression_encodings = self.send_compression_encodings;
+          let inner = self.inner.clone();
+          let fut = async move {
+            let inner = inner.0;
+            let method = push_moveSvc(inner);
+            let codec = tonic::codec::ProstCodec::default();
+            let mut grpc =
+              tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
+            let res = grpc.unary(method, req).await;
+            Ok(res)
+          };
+          Box::pin(fut)
+        }
+        "/chess.Chess/read_board_state" => {
+          #[allow(non_camel_case_types)]
+          struct read_board_stateSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::GameId> for read_board_stateSvc<T> {
             type Response = super::Game;
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::GameRequest>) -> Self::Future {
+            fn call(&mut self, request: tonic::Request<super::GameId>) -> Self::Future {
               let inner = self.0.clone();
-              let fut = async move { (*inner).game(request).await };
+              let fut = async move { (*inner).read_board_state(request).await };
               Box::pin(fut)
             }
           }
@@ -381,7 +398,7 @@ pub mod chess_server {
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = gameSvc(inner);
+            let method = read_board_stateSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
@@ -390,15 +407,41 @@ pub mod chess_server {
           };
           Box::pin(fut)
         }
-        "/chess.Chess/games" => {
+        "/chess.Chess/read_game_state" => {
           #[allow(non_camel_case_types)]
-          struct gamesSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<()> for gamesSvc<T> {
+          struct read_game_stateSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::GameId> for read_game_stateSvc<T> {
+            type Response = super::Game;
+            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
+            fn call(&mut self, request: tonic::Request<super::GameId>) -> Self::Future {
+              let inner = self.0.clone();
+              let fut = async move { (*inner).read_game_state(request).await };
+              Box::pin(fut)
+            }
+          }
+          let accept_compression_encodings = self.accept_compression_encodings;
+          let send_compression_encodings = self.send_compression_encodings;
+          let inner = self.inner.clone();
+          let fut = async move {
+            let inner = inner.0;
+            let method = read_game_stateSvc(inner);
+            let codec = tonic::codec::ProstCodec::default();
+            let mut grpc =
+              tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
+            let res = grpc.unary(method, req).await;
+            Ok(res)
+          };
+          Box::pin(fut)
+        }
+        "/chess.Chess/read_games_list" => {
+          #[allow(non_camel_case_types)]
+          struct read_games_listSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<()> for read_games_listSvc<T> {
             type Response = super::Games;
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
             fn call(&mut self, request: tonic::Request<()>) -> Self::Future {
               let inner = self.0.clone();
-              let fut = async move { (*inner).games(request).await };
+              let fut = async move { (*inner).read_games_list(request).await };
               Box::pin(fut)
             }
           }
@@ -407,7 +450,7 @@ pub mod chess_server {
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = gamesSvc(inner);
+            let method = read_games_listSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
@@ -416,15 +459,15 @@ pub mod chess_server {
           };
           Box::pin(fut)
         }
-        "/chess.Chess/create_game" => {
+        "/chess.Chess/push_game_gg" => {
           #[allow(non_camel_case_types)]
-          struct create_gameSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::CreateGame> for create_gameSvc<T> {
+          struct push_game_ggSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::GamePlayer> for push_game_ggSvc<T> {
             type Response = super::Game;
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::CreateGame>) -> Self::Future {
+            fn call(&mut self, request: tonic::Request<super::GamePlayer>) -> Self::Future {
               let inner = self.0.clone();
-              let fut = async move { (*inner).create_game(request).await };
+              let fut = async move { (*inner).push_game_gg(request).await };
               Box::pin(fut)
             }
           }
@@ -433,7 +476,7 @@ pub mod chess_server {
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = create_gameSvc(inner);
+            let method = push_game_ggSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
@@ -442,15 +485,15 @@ pub mod chess_server {
           };
           Box::pin(fut)
         }
-        "/chess.Chess/join_game" => {
+        "/chess.Chess/push_mgs" => {
           #[allow(non_camel_case_types)]
-          struct join_gameSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::PlayerRequest> for join_gameSvc<T> {
-            type Response = super::Game;
+          struct push_mgsSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::Msg> for push_mgsSvc<T> {
+            type Response = ();
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::PlayerRequest>) -> Self::Future {
+            fn call(&mut self, request: tonic::Request<super::Msg>) -> Self::Future {
               let inner = self.0.clone();
-              let fut = async move { (*inner).join_game(request).await };
+              let fut = async move { (*inner).push_mgs(request).await };
               Box::pin(fut)
             }
           }
@@ -459,7 +502,7 @@ pub mod chess_server {
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = join_gameSvc(inner);
+            let method = push_mgsSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
@@ -468,15 +511,15 @@ pub mod chess_server {
           };
           Box::pin(fut)
         }
-        "/chess.Chess/surrender" => {
+        "/chess.Chess/read_msgs" => {
           #[allow(non_camel_case_types)]
-          struct surrenderSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::PlayerRequest> for surrenderSvc<T> {
-            type Response = super::Game;
+          struct read_msgsSvc<T: Chess>(pub Arc<T>);
+          impl<T: Chess> tonic::server::UnaryService<super::GameId> for read_msgsSvc<T> {
+            type Response = super::Msgs;
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::PlayerRequest>) -> Self::Future {
+            fn call(&mut self, request: tonic::Request<super::GameId>) -> Self::Future {
               let inner = self.0.clone();
-              let fut = async move { (*inner).surrender(request).await };
+              let fut = async move { (*inner).read_msgs(request).await };
               Box::pin(fut)
             }
           }
@@ -485,85 +528,7 @@ pub mod chess_server {
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = surrenderSvc(inner);
-            let codec = tonic::codec::ProstCodec::default();
-            let mut grpc =
-              tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
-            let res = grpc.unary(method, req).await;
-            Ok(res)
-          };
-          Box::pin(fut)
-        }
-        "/chess.Chess/call_draw" => {
-          #[allow(non_camel_case_types)]
-          struct call_drawSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::PlayerRequest> for call_drawSvc<T> {
-            type Response = super::Game;
-            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::PlayerRequest>) -> Self::Future {
-              let inner = self.0.clone();
-              let fut = async move { (*inner).call_draw(request).await };
-              Box::pin(fut)
-            }
-          }
-          let accept_compression_encodings = self.accept_compression_encodings;
-          let send_compression_encodings = self.send_compression_encodings;
-          let inner = self.inner.clone();
-          let fut = async move {
-            let inner = inner.0;
-            let method = call_drawSvc(inner);
-            let codec = tonic::codec::ProstCodec::default();
-            let mut grpc =
-              tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
-            let res = grpc.unary(method, req).await;
-            Ok(res)
-          };
-          Box::pin(fut)
-        }
-        "/chess.Chess/confirm_draw" => {
-          #[allow(non_camel_case_types)]
-          struct confirm_drawSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::PlayerRequest> for confirm_drawSvc<T> {
-            type Response = super::Game;
-            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::PlayerRequest>) -> Self::Future {
-              let inner = self.0.clone();
-              let fut = async move { (*inner).confirm_draw(request).await };
-              Box::pin(fut)
-            }
-          }
-          let accept_compression_encodings = self.accept_compression_encodings;
-          let send_compression_encodings = self.send_compression_encodings;
-          let inner = self.inner.clone();
-          let fut = async move {
-            let inner = inner.0;
-            let method = confirm_drawSvc(inner);
-            let codec = tonic::codec::ProstCodec::default();
-            let mut grpc =
-              tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
-            let res = grpc.unary(method, req).await;
-            Ok(res)
-          };
-          Box::pin(fut)
-        }
-        "/chess.Chess/leave" => {
-          #[allow(non_camel_case_types)]
-          struct leaveSvc<T: Chess>(pub Arc<T>);
-          impl<T: Chess> tonic::server::UnaryService<super::PlayerRequest> for leaveSvc<T> {
-            type Response = super::Game;
-            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            fn call(&mut self, request: tonic::Request<super::PlayerRequest>) -> Self::Future {
-              let inner = self.0.clone();
-              let fut = async move { (*inner).leave(request).await };
-              Box::pin(fut)
-            }
-          }
-          let accept_compression_encodings = self.accept_compression_encodings;
-          let send_compression_encodings = self.send_compression_encodings;
-          let inner = self.inner.clone();
-          let fut = async move {
-            let inner = inner.0;
-            let method = leaveSvc(inner);
+            let method = read_msgsSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
