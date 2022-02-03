@@ -31,7 +31,7 @@ gui = []
 default = [ "gui" ]
 
 [[bin]]
-name = "web"
+name = "game_web"
 path = "./src/main.rs"
 required-features = [ "web" ]
 
@@ -49,4 +49,3 @@ bevy = { version = "0.5" }
 bevy = { version = "0.5", default-features = false }
 tracing-wasm = "=0.2.0"
 bevy_webgl2 = "0.5"
-
