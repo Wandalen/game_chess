@@ -1,5 +1,5 @@
 [package]
-name = "core_board_best_move"
+name = "sample_core_board_best_move"
 version = "0.0.1"
 edition = "2021"
 publish = false
