@@ -17,13 +17,13 @@ Chess game implemented on Bevy for educational purpose.
 """
 categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
-default-run = "game"
 include = [
   "/src",
   "/Cargo.toml",
   "/Readme.md",
   "/License",
 ]
+# default-run = "game"
 
 [features]
 web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]

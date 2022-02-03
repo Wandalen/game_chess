@@ -23,6 +23,7 @@ include = [
   "/Readme.md",
   "/License",
 ]
+default-run = "cui"
 
 [[bin]]
 name = "cui"
