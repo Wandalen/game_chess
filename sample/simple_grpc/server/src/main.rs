@@ -2,8 +2,8 @@ use tonic::{Request, Response, Status};
 use tonic::transport::Server;
 
 #[allow(unused_imports)]
-use server::generated::chess_example::{GameMoveRequest, Position, MoveResultResponse};
-use server::generated::chess_example::chess_state_server::{ChessState, ChessStateServer};
+use sample_server::generated::chess_example::{GameMoveRequest, Position, MoveResultResponse};
+use sample_server::generated::chess_example::chess_state_server::{ChessState, ChessStateServer};
 
 struct ChessStateManager;
 
