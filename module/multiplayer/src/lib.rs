@@ -1,3 +1,5 @@
+pub mod generated;
+
 use time::OffsetDateTime;
 
 pub struct MultiplayerMessage {

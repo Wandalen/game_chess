@@ -8,7 +8,7 @@
 use game_chess_server::store::memory::MemoryStore;
 use game_chess_server::rpc_server::ChessRpcServer;
 use tonic::transport::Server;
-use game_chess_server::generated::chess::chess_server::ChessServer;
+use multiplayer::generated::chess::chess_server::ChessServer;
 
 ///
 /// Main.

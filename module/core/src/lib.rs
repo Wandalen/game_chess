@@ -5,8 +5,6 @@
 //! Implement mechanics of the game chess.
 //!
 
-pub mod model;
-
 use std::fs;
 use std::fs::File;
 use std::io::Write;

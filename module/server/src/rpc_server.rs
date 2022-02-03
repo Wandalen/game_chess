@@ -2,9 +2,9 @@ use std::sync::{Arc, Mutex};
 
 use tonic::{Request, Response, Status};
 
-use crate::generated::chess::chess_server::Chess;
+use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
-use crate::generated::chess::{Game, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
+use multiplayer::generated::chess::{Game, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
 use crate::store::memory::MemoryStore;
 
 pub struct ChessRpcServer {

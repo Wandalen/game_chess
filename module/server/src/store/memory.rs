@@ -1,5 +1,5 @@
 use tonic::async_trait;
-use game_chess_core::model::Game;
+use multiplayer::MultiplayerGame as Game;
 
 use crate::store::GameStore;
 
