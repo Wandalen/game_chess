@@ -1,5 +1,5 @@
 [package]
-name = "mouse_event_detection"
+name = "sample_mouse_event_detection"
 version = "0.0.1"
 edition = "2021"
 publish = false

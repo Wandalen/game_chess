@@ -1,5 +1,5 @@
 [package]
-name = "core_possible_moves"
+name = "sample_core_possible_moves"
 version = "0.0.1"
 edition = "2021"
 publish = false
