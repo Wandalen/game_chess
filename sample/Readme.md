@@ -31,3 +31,4 @@ List of samples
 - [sprite](./sprite) - Draw sprite from asset image.
 - [sprite_partial](./sprite_partial) - Draw sprite from part of asset image.
 - [text](./text) - Draw text in the Bevy window.
+- [translation_system](./translation_system) - Draw using projection.

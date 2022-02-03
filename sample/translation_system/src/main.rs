@@ -12,7 +12,6 @@ use bevy::render::camera::DepthCalculation;
 use bevy::render::camera::VisibleEntities;
 use bevy::render::camera::camera_system;
 use bevy::render::render_graph::base::camera::CAMERA_2D;
-use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
 
@@ -49,7 +48,7 @@ impl CameraProjection for ChessProjection
   }
 
   ///
-  /// Setup projection points taking into account window size and board bounds.
+  /// Setup positions projection taking into account window size.
   ///
   fn update( &mut self, width : f32, height : f32 )
   {
@@ -153,17 +152,14 @@ fn main()
   /* background */
   app.insert_resource( ClearColor( Color::rgb( 0.9, 0.9, 0.9 ) ) );
   /* setup core */
-  app.add_startup_system( core_setup.system() );
-  /* setup graphics */
   app.add_startup_system( graphics_setup.system() );
   /* escape on exit */
   app.add_system( exit_on_esc_system.system() );
-  app.add_system_to_stage
-  (
+  app.add_system_to_stage(
     CoreStage::PostUpdate,
     camera_system::<ChessProjection>
-    .system()
-    .before( RenderSystem::VisibleEntities ),
+      .system()
+      .before( RenderSystem::VisibleEntities ),
  );
   /* for web target */
   #[ cfg( target_arch = "wasm32" ) ]
@@ -181,58 +177,46 @@ pub fn graphics_setup( mut commands : Commands, mut materials : ResMut<Assets<Co
   /* camera */
   commands.spawn_bundle( ChessCameraBundle::new() );
 
-  let size_in_cells = ( 8, 8 );
+  let material = materials.add( ColorMaterial::color( Color::rgb( 0.2, 0.2, 0.1 ) ) );
 
-  let white = materials.add( ColorMaterial::color( Color::rgb( 0.9, 0.9, 0.7 ) ) );
-  let black = materials.add( ColorMaterial::color( Color::rgb( 0.2, 0.2, 0.1 ) ) );
-
-  let size = 2.0 / 8.0;
-  let delta = 1.0 - size / 2.0;
-
-  for x in 0 .. size_in_cells.0
+  let sprite = Sprite
   {
-    for y in 0 .. size_in_cells.1
-    {
-      let material = if ( x + y ) % 2 == 0
-      {
-        black.clone()
-      }
-      else
-      {
-        white.clone()
-      };
+    size : Vec2::new( 1.0, 1.0 ),
+    ..Default::default()
+  };
 
-      let sprite = Sprite
-      {
-        size : Vec2::new( size, size ),
-        ..Default::default()
-      };
+  let transform = Transform {
+    translation : Vec3::new( -0.5, -0.5, 0.0 ),
+    ..Default::default()
+  };
 
-      let transform = Transform
-      {
-        translation : Vec3::new( ( x as f32 ) * size - delta, ( y as f32 ) * size - delta, 0.0 ),
-        ..Default::default()
-      };
+  commands.spawn_bundle( SpriteBundle
+  {
+    sprite,
+    material : material.clone(),
+    transform,
+    ..Default::default()
+  });
 
-      commands.spawn_bundle( SpriteBundle
-      {
-        sprite,
-        material,
-        transform,
-        ..Default::default()
-      });
-    }
-  }
-}
+  //
 
-///
-/// Startup system for the game.
-///
+  let sprite = Sprite
+  {
+    size : Vec2::new( 1.0, 1.0 ),
+    ..Default::default()
+  };
 
-pub fn core_setup()
-{
-  let mut game = core::Game::default();
-  game.board_print();
-  game.make_move( "a2a4" );
-  game.board_print();
+  let transform = Transform
+  {
+    translation : Vec3::new( 0.5, 0.5, 0.0 ),
+    ..Default::default()
+  };
+
+  commands.spawn_bundle( SpriteBundle
+  {
+    sprite,
+    material,
+    transform,
+    ..Default::default()
+  });
 }
