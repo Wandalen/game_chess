@@ -47,7 +47,7 @@ cargo run
 
 ## How to develop
 
-Before cloning the repository please maka a fork on github to been able to open pull requests.
+Before cloning the repository please make a fork on github to been able to open pull requests.
 Please open pull request into the branch `alpha`.
 
 <!--
