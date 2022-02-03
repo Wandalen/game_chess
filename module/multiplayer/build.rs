@@ -5,4 +5,5 @@ fn main() -> Result<(), Box<dyn std::error::Error>>
   .compile(&["../proto/chess_game.proto"], &["../proto"])
   .unwrap();
   Ok(())
+
 }

@@ -4,7 +4,8 @@ import "google/protobuf/empty.proto";
 
 package chess;
 
-service Chess {
+service Chess
+{
   rpc push_game_create (CreateGame) returns (GameId);
   rpc push_game_accept (AcceptGame) returns (GameId);
   rpc push_move (GameMove) returns (GameId);
@@ -16,49 +17,59 @@ service Chess {
   rpc read_msgs (GameId) returns (Msgs);
 }
 
-message Player {
+message Player
+{
   string player_id = 1;
   string player_name = 2;
 }
 
-message GamePlayer {
+message GamePlayer
+{
   string player_id = 1;
   string game_id = 2;
 }
 
-message Game {
+message Game
+{
   string game_id = 1;
   repeated Player players = 2;
 }
 
-message Games {
+message Games
+{
   repeated string game_ids = 1;
 }
 
-message GameMove {
+message GameMove
+{
   string game_id = 1;
   string player_id = 2;
   string move = 3;
 }
 
-message AcceptGame {
+message AcceptGame
+{
   string game_id = 1;
   Player player_id = 2;
 }
 
-message CreateGame {
+message CreateGame
+{
   Player player_id = 1;
 }
 
-message GameId {
+message GameId
+{
   string game_id = 1;
 }
 
-message Msg {
+message Msg
+{
   GamePlayer player = 1;
   string text = 2;
 }
 
-message Msgs {
+message Msgs
+{
   repeated Msg messages = 1;
 }
