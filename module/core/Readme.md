@@ -3,5 +3,5 @@
 
 Mechanics of chess game implemented for educational purpose.
 
-Based on Pleco.
+Based on [Pleco](https://github.com/sfleischman105/Pleco).
 
