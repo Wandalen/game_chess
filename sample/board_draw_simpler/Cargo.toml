@@ -1,5 +1,5 @@
 [package]
-name = "board_draw_simpler"
+name = "sample_board_draw_simpler"
 version = "0.0.0"
 edition = "2021"
 publish = false

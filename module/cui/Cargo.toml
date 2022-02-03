@@ -24,6 +24,10 @@ include = [
   "/License",
 ]
 
+[[bin]]
+name = "cui"
+path = "./src/main.rs"
+
 [dependencies]
 game_chess_core = { version = "~0.0", path = "../core" }
 wca = "0.1.0"

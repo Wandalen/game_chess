@@ -1,5 +1,5 @@
 [package]
-name = "gui_with_board"
+name = "sample_gui_with_board"
 version = "0.0.0"
 edition = "2021"
 publish = false

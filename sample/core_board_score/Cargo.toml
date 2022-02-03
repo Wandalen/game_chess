@@ -1,5 +1,5 @@
 [package]
-name = "core_board_score"
+name = "sample_core_board_score"
 version = "0.0.1"
 edition = "2021"
 publish = false

@@ -25,7 +25,7 @@ include = [
 ]
 
 [lib]
-name = "game_chess_core"
+name = "core"
 # crate-type = [ "staticlib", "lib", "cdylib" ]
 path = "./src/lib.rs"
 

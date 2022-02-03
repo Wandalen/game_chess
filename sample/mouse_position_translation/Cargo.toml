@@ -1,5 +1,5 @@
 [package]
-name = "mouse_position_translation"
+name = "sample_mouse_position_translation"
 version = "0.0.1"
 edition = "2021"
 publish = false

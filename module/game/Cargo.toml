@@ -17,7 +17,7 @@ Chess game implemented on Bevy for educational purpose.
 """
 categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
-default-run = "desktop"
+default-run = "game"
 include = [
   "/src",
   "/Cargo.toml",
@@ -27,8 +27,8 @@ include = [
 
 [features]
 web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
-desktop = []
-default = [ "desktop" ]
+gui = []
+default = [ "gui" ]
 
 [[bin]]
 name = "web"
@@ -36,7 +36,7 @@ path = "./src/main.rs"
 required-features = [ "web" ]
 
 [[bin]]
-name = "desktop"
+name = "game"
 path = "./src/main.rs"
 
 [dependencies]

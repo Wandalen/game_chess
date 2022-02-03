@@ -1,5 +1,5 @@
 [package]
-name = "text_mesh"
+name = "sample_text_mesh"
 version = "0.0.1"
 edition = "2021"
 publish = false
