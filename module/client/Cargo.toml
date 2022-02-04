@@ -6,6 +6,7 @@ authors = [
   "Kostiantyn Wandalen <wandalen@obox.systems>",
   "Volodymyr M. <volodymyr.migdal@gmail.com>",
   "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>",
+  "Pavlo Myroniuk <pspos.developqkation@gmail.com>",
 ]
 license = "MIT"
 readme = "Readme.md"
@@ -13,7 +14,7 @@ documentation = "https://docs.rs/game_chess"
 repository = "https://github.com/obox-systems/game_chess/"
 homepage = "https://github.com/obox-systems/game_chess/"
 description = """
-Chess game server implemented for educational purpose.
+Chess game client implemented for educational purpose.
 """
 categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]

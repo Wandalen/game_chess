@@ -2,6 +2,18 @@
 name = "multiplayer"
 version = "0.1.0"
 edition = "2021"
+authors = [
+  "Kostiantyn Wandalen <wandalen@obox.systems>",
+  "Volodymyr M. <volodymyr.migdal@gmail.com>",
+  "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>",
+  "Pavlo Myroniuk <pspos.developqkation@gmail.com>",
+]
+
+description = """
+Common multiplayer library.
+"""
+categories = [ "game-development", "games" ]
+keywords = [ "chess", "gamedev" ]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
