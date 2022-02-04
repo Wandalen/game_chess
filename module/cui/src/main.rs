@@ -179,7 +179,7 @@ pub fn command_status( game : &Option<Game> )
 
   match game.last_move()
   {
-    Some( m ) => println!( "Last move: {}", m ),
+    Some( m ) => println!( "Last move: {}", m.0 ),
     _ => println!( "Last move: None" ),
   }
 }
@@ -218,7 +218,7 @@ pub fn command_move( game : &mut Option<Game>  )
   let game = game.as_mut().unwrap();
 
   let uci_move = wca::input::ask( "Provide move in UCI format, for example 'a2a4'" );
-  if !game.make_move( uci_move.as_str() )
+  if !game.make_move( UCI( uci_move.clone() ) )
   {
     println!( "\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move );
   }
