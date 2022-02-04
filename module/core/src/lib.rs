@@ -33,7 +33,7 @@ Board
 
 HistoryEntry
   fen : String
-  uci_move : String
+  last_move : Move https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html
 
 Game
    board : Board
@@ -116,7 +116,7 @@ impl Board
   }
 
   ///
-  /// Makes [Move] from move in UCI format.
+  /// Makes [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html) from move in UCI format.
   ///
   pub fn move_from_uci(&self, uci_move : &str) -> Option<Move>
   {
@@ -210,14 +210,31 @@ pub type Fen = String;
 ///
 /// Contains information about move made in the past.
 /// Field `fen` contains representation of the board as FEN string
-/// Field `uci_move` contains move in UCI format
+/// Field `last_move` information about last [Move]https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html)
 ///
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct HistoryEntry
 {
   fen : Fen,
-  uci_move : String,
+  #[serde(serialize_with = "move_ser", deserialize_with = "move_der")]
+  last_move : Move,
+}
+
+///
+/// Serialize [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html)
+///
+
+pub fn move_ser<S : Serializer>(m : &Move, s : S) -> Result<S::Ok, S::Error> { s.serialize_u16(m.get_raw()) }
+
+///
+/// Deserialize [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html)
+///
+
+pub fn move_der<'de, D : Deserializer<'de>>(d : D) -> Result<Move, D::Error>
+{
+  let bits : u16 = Deserialize::deserialize(d)?;
+  Ok(Move::new(bits))
 }
 
 ///
@@ -285,9 +302,10 @@ impl Game
     if success
     {
       self.board = new_board.unwrap();
+      let last_move = self.board.last_move().unwrap();
       self.history.push(HistoryEntry {
         fen : self.board.to_fen(),
-        uci_move : uci_move.to_string(),
+        last_move
       });
     }
     success
@@ -329,7 +347,20 @@ impl Game
   {
     match self.history.last()
     {
-      Some(h) => Some(h.uci_move.clone()),
+      Some(h) => Some(h.last_move.stringify()),
+      _ => None,
+    }
+  }
+
+  ///
+  /// Returns last move as [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html))
+  /// Returns None if there are no moves.
+  ///
+  pub fn last_move_raw(&self) -> Option<Move>
+  {
+    match self.history.last()
+    {
+      Some(h) => Some(h.last_move.clone()),
       _ => None,
     }
   }
