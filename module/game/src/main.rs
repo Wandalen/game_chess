@@ -17,7 +17,7 @@ use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
 
 ///
-/// Main.
+/// Projection.
 ///
 
 #[ derive( Debug, Clone, Reflect ) ]
