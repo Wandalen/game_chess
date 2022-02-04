@@ -1,5 +1,5 @@
 [package]
-name = "sprite_partial"
+name = "sample_sprite_partial"
 version = "0.0.1"
 edition = "2021"
 publish = false
