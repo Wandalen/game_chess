@@ -1,0 +1,36 @@
+[package]
+name = "game_chess_client"
+version = "0.0.1"
+edition = "2021"
+authors = [
+  "Kostiantyn Wandalen <wandalen@obox.systems>",
+  "Volodymyr M. <volodymyr.migdal@gmail.com>",
+  "Dmytro Kryvoruchko <dm.vict.kr@gmail.com>",
+]
+license = "MIT"
+readme = "Readme.md"
+documentation = "https://docs.rs/game_chess"
+repository = "https://github.com/obox-systems/game_chess/"
+homepage = "https://github.com/obox-systems/game_chess/"
+description = """
+Chess game server implemented for educational purpose.
+"""
+categories = [ "game-development", "games" ]
+keywords = [ "chess", "gamedev" ]
+include = [
+  "/src",
+  "/Cargo.toml",
+  "/Readme.md",
+  "/License",
+]
+
+[[bin]]
+name = "client"
+path = "./src/main.rs"
+
+[dependencies]
+rollo = "~0.8"
+game_chess_core = { version = "~0.0", path = "../core" }
+tonic = "0.6"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+multiplayer = { path = "../multiplayer" }
