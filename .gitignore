@@ -13,6 +13,7 @@
 /package-lock.json
 /Cargo.lock
 /.vscode
+/.cargo/config.toml
 
 -*
 .module
