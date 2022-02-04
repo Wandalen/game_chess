@@ -28,6 +28,8 @@ use serde::{Serialize, Deserialize, Serializer, Deserializer};
 
 /* Structure:
 
+UCI( String )
+
 Board
   pleco_board : pleco::Board
 
@@ -51,6 +53,39 @@ Game
 
 const SAVES_FOLDER_NAME : &str = "saves";
 const SAVE_FILE_EXTENSION : &str = ".save";
+
+///
+/// Move in UCI format
+///
+
+#[derive(Debug)]
+pub struct UCI( pub String );
+
+impl From< &str > for UCI
+{
+  fn from( src: &str ) -> Self
+  {
+    Self( src.to_string() )
+  }
+}
+
+impl From< Move > for UCI
+{
+  fn from( src: Move ) -> Self
+  {
+    Self( src.stringify() )
+  }
+}
+
+impl TryFrom< UCI > for Move
+{
+  type Error = ();
+
+  fn try_from( _src: UCI ) -> Result< Self, Self::Error >
+  {
+    unimplemented!();
+  }
+}
 
 ///
 /// Game board
@@ -89,10 +124,10 @@ impl Board
   ///
   /// Makes move on the board. Accepts move in UCI format.
   ///
-  pub fn make_move(&mut self, uci_move : &str) -> Option<Self>
+  pub fn make_move(&mut self, uci_move : UCI) -> Option<Self>
   {
     let mut pleco_board : pleco::Board = self.pleco_board.clone();
-    let result = pleco_board.apply_uci_move(&uci_move);
+    let result = pleco_board.apply_uci_move(&uci_move.0);
     if result
     {
       Some(Self { pleco_board })
@@ -106,7 +141,7 @@ impl Board
   ///
   /// Checks if the move is valid. Accepts move in UCI format.
   ///
-  pub fn move_is_valid(&self, uci_move : &str) -> bool
+  pub fn move_is_valid(&self, uci_move : UCI) -> bool
   {
     match self.move_from_uci(uci_move)
     {
@@ -116,12 +151,12 @@ impl Board
   }
 
   ///
-  /// Makes [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html) from move in UCI format.
+  /// Looks for a valid [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html) from move in UCI format.
   ///
-  pub fn move_from_uci(&self, uci_move : &str) -> Option<Move>
+  pub fn move_from_uci(&self, uci_move : UCI) -> Option<Move>
   {
     let all_moves : MoveList = self.pleco_board.generate_moves();
-    all_moves.iter().find(|m| m.stringify() == uci_move).cloned()
+    all_moves.iter().find(|m| m.stringify() == uci_move.0).cloned()
   }
 
   ///
@@ -295,7 +330,7 @@ impl Game
   /// Updates histort and returns `true` if move was succesfuly applied, otherwise returns `false`.
   /// The board and history are not changed in case of fail.
   ///
-  pub fn make_move(&mut self, uci_move : &str) -> bool
+  pub fn make_move(&mut self, uci_move : UCI) -> bool
   {
     let new_board = self.board.make_move(uci_move);
     let success = !new_board.is_none();
@@ -343,11 +378,11 @@ impl Game
   /// Returns last move as UCI string. For example: "a2a4"
   /// Returns None if there are no moves.
   ///
-  pub fn last_move(&self) -> Option<String>
+  pub fn last_move(&self) -> Option<UCI>
   {
     match self.history.last()
     {
-      Some(h) => Some(h.last_move.stringify()),
+      Some(h) => Some(h.last_move.into()),
       _ => None,
     }
   }

@@ -233,6 +233,6 @@ pub fn core_setup()
 {
   let mut game = core::Game::default();
   game.board_print();
-  game.make_move( "a2a4" );
+  game.make_move( "a2a4".into() );
   game.board_print();
 }
