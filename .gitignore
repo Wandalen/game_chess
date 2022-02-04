@@ -15,6 +15,7 @@
 /.vscode
 /.cargo/config.toml
 
+bin
 -*
 .module
 target

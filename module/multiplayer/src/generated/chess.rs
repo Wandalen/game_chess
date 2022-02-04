@@ -1,4 +1,6 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Blank {}
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Player
 {
   #[prost(string, tag = "1")]
@@ -15,7 +17,7 @@ pub struct GamePlayer
   pub game_id : ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Game
+pub struct GameInfo
 {
   #[prost(string, tag = "1")]
   pub game_id : ::prost::alloc::string::String,
@@ -23,11 +25,26 @@ pub struct Game
   pub players : ::prost::alloc::vec::Vec<Player>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Games
+pub struct GameState
 {
-  #[prost(string, repeated, tag = "1")]
-  pub game_ids : ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+  #[prost(string, tag = "1")]
+  pub game_id : ::prost::alloc::string::String,
+  #[prost(message, repeated, tag = "2")]
+  pub players : ::prost::alloc::vec::Vec<Player>,
+  #[prost(message, optional, tag = "3")]
+  pub game_state : ::core::option::Option<Blank>,
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Board
+{
+  #[prost(string, tag = "1")]
+  pub game_id : ::prost::alloc::string::String,
+  #[prost(message, optional, tag = "2")]
+  pub board_state : ::core::option::Option<Blank>,
+}
+/// ?
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Games {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameMove
 {
@@ -35,8 +52,8 @@ pub struct GameMove
   pub game_id : ::prost::alloc::string::String,
   #[prost(string, tag = "2")]
   pub player_id : ::prost::alloc::string::String,
-  #[prost(string, tag = "3")]
-  pub r#move : ::prost::alloc::string::String,
+  #[prost(message, optional, tag = "3")]
+  pub r#move : ::core::option::Option<Blank>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceptGame
@@ -50,7 +67,7 @@ pub struct AcceptGame
 pub struct CreateGame
 {
   #[prost(message, optional, tag = "1")]
-  pub player_id : ::core::option::Option<Player>,
+  pub player : ::core::option::Option<Player>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameId
@@ -184,7 +201,7 @@ pub mod chess_client
     pub async fn read_board_state(
       &mut self,
       request : impl tonic::IntoRequest<super::GameId>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>
+    ) -> Result<tonic::Response<super::Board>, tonic::Status>
     {
       self
         .inner
@@ -199,7 +216,7 @@ pub mod chess_client
     pub async fn read_game_state(
       &mut self,
       request : impl tonic::IntoRequest<super::GameId>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>
+    ) -> Result<tonic::Response<super::GameState>, tonic::Status>
     {
       self
         .inner
@@ -229,7 +246,7 @@ pub mod chess_client
     pub async fn push_game_gg(
       &mut self,
       request : impl tonic::IntoRequest<super::GamePlayer>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>
+    ) -> Result<tonic::Response<()>, tonic::Status>
     {
       self
         .inner
@@ -292,16 +309,13 @@ pub mod chess_server
     async fn read_board_state(
       &self,
       request : tonic::Request<super::GameId>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>;
+    ) -> Result<tonic::Response<super::Board>, tonic::Status>;
     async fn read_game_state(
       &self,
       request : tonic::Request<super::GameId>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>;
+    ) -> Result<tonic::Response<super::GameState>, tonic::Status>;
     async fn read_games_list(&self, request : tonic::Request<()>) -> Result<tonic::Response<super::Games>, tonic::Status>;
-    async fn push_game_gg(
-      &self,
-      request : tonic::Request<super::GamePlayer>,
-    ) -> Result<tonic::Response<super::Game>, tonic::Status>;
+    async fn push_game_gg(&self, request : tonic::Request<super::GamePlayer>) -> Result<tonic::Response<()>, tonic::Status>;
     async fn push_mgs(&self, request : tonic::Request<super::Msg>) -> Result<tonic::Response<()>, tonic::Status>;
     async fn read_msgs(&self, request : tonic::Request<super::GameId>) -> Result<tonic::Response<super::Msgs>, tonic::Status>;
   }
@@ -447,7 +461,7 @@ pub mod chess_server
           impl<T : Chess> tonic::server::UnaryService<super::GameId> for read_board_stateSvc<T>
           {
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            type Response = super::Game;
+            type Response = super::Board;
 
             fn call(&mut self, request : tonic::Request<super::GameId>) -> Self::Future
             {
@@ -477,7 +491,7 @@ pub mod chess_server
           impl<T : Chess> tonic::server::UnaryService<super::GameId> for read_game_stateSvc<T>
           {
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            type Response = super::Game;
+            type Response = super::GameState;
 
             fn call(&mut self, request : tonic::Request<super::GameId>) -> Self::Future
             {
@@ -537,7 +551,7 @@ pub mod chess_server
           impl<T : Chess> tonic::server::UnaryService<super::GamePlayer> for push_game_ggSvc<T>
           {
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            type Response = super::Game;
+            type Response = ();
 
             fn call(&mut self, request : tonic::Request<super::GamePlayer>) -> Self::Future
             {

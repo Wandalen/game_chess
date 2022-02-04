@@ -9,12 +9,16 @@ service Chess
   rpc push_game_create (CreateGame) returns (GameId);
   rpc push_game_accept (AcceptGame) returns (GameId);
   rpc push_move (GameMove) returns (GameId);
-  rpc read_board_state (GameId) returns (Game);
-  rpc read_game_state (GameId) returns (Game);
+  rpc read_board_state (GameId) returns (Board);
+  rpc read_game_state (GameId) returns (GameState);
   rpc read_games_list (google.protobuf.Empty) returns (Games);
-  rpc push_game_gg (GamePlayer) returns (Game);
+  rpc push_game_gg (GamePlayer) returns (google.protobuf.Empty);
   rpc push_mgs (Msg) returns (google.protobuf.Empty);
   rpc read_msgs (GameId) returns (Msgs);
+}
+
+message Blank
+{
 }
 
 message Player
@@ -29,22 +33,35 @@ message GamePlayer
   string game_id = 2;
 }
 
-message Game
+message GameInfo
 {
   string game_id = 1;
   repeated Player players = 2;
 }
 
+message GameState
+{
+  string game_id = 1;
+  repeated Player players = 2;
+  Blank game_state = 3;
+}
+
+message Board
+{
+  string game_id = 1;
+  Blank board_state = 2;
+}
+
 message Games
 {
-  repeated string game_ids = 1;
+  // ?
 }
 
 message GameMove
 {
   string game_id = 1;
   string player_id = 2;
-  string move = 3;
+  Blank move = 3;
 }
 
 message AcceptGame
@@ -55,7 +72,7 @@ message AcceptGame
 
 message CreateGame
 {
-  Player player_id = 1;
+  Player player = 1;
 }
 
 message GameId
