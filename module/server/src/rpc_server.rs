@@ -8,7 +8,7 @@ use tonic::{Request, Response, Status};
 
 use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
-use multiplayer::generated::chess::{Game, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
+use multiplayer::generated::chess::{Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
 use crate::store::memory::MemoryStore;
 
 ///
@@ -55,12 +55,12 @@ impl Chess for ChessRpcServer
   ///
   /// Get info about current board state. There are only positions.
   ///
-  async fn read_board_state(&self, _request : Request<GameId>) -> Result<Response<Game>, Status> { todo!() }
+  async fn read_board_state(&self, _request : Request<GameId>) -> Result<Response<Board>, Status> { todo!() }
 
   ///
   /// Get info about current game state - positions and history.
   ///
-  async fn read_game_state(&self, _request : Request<GameId>) -> Result<Response<Game>, Status> { todo!() }
+  async fn read_game_state(&self, _request : Request<GameId>) -> Result<Response<GameState>, Status> { todo!() }
 
   ///
   /// Get list of games.
@@ -70,7 +70,7 @@ impl Chess for ChessRpcServer
   ///
   /// Send request to forfeit.
   ///
-  async fn push_game_gg(&self, _request : Request<GamePlayer>) -> Result<Response<Game>, Status> { todo!() }
+  async fn push_game_gg(&self, _request : Request<GamePlayer>) -> Result<Response<()>, Status> { todo!() }
 
   ///
   /// Send message to game chat.
