@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package chess;
+
+service Chess
+{
+  rpc push_game_create (CreateGame) returns (GameId);
+  rpc push_game_accept (AcceptGame) returns (GameId);
+  rpc push_move (GameMove) returns (GameId);
+  rpc read_board_state (GameId) returns (Game);
+  rpc read_game_state (GameId) returns (Game);
+  rpc read_games_list (google.protobuf.Empty) returns (Games);
+  rpc push_game_gg (GamePlayer) returns (Game);
+  rpc push_mgs (Msg) returns (google.protobuf.Empty);
+  rpc read_msgs (GameId) returns (Msgs);
+}
+
+message Player
+{
+  string player_id = 1;
+  string player_name = 2;
+}
+
+message GamePlayer
+{
+  string player_id = 1;
+  string game_id = 2;
+}
+
+message Game
+{
+  string game_id = 1;
+  repeated Player players = 2;
+}
+
+message Games
+{
+  repeated string game_ids = 1;
+}
+
+message GameMove
+{
+  string game_id = 1;
+  string player_id = 2;
+  string move = 3;
+}
+
+message AcceptGame
+{
+  string game_id = 1;
+  Player player_id = 2;
+}
+
+message CreateGame
+{
+  Player player_id = 1;
+}
+
+message GameId
+{
+  string game_id = 1;
+}
+
+message Msg
+{
+  GamePlayer player = 1;
+  string text = 2;
+}
+
+message Msgs
+{
+  repeated Msg messages = 1;
+}

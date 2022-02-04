@@ -1,5 +1,5 @@
 [package]
-name = "core_chess_game"
+name = "sample_core_chess_game"
 version = "0.0.1"
 edition = "2021"
 publish = false

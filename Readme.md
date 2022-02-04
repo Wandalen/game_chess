@@ -6,14 +6,13 @@
 
 ## Desktop Prerequisites
 
-- [Rust](https://www.rust-lang.org/) v1.57 or newer.
+- [Rust](https://www.rust-lang.org/tools/install) v1.57 or newer.
 - [cargo-make](https://github.com/sagiegurari/cargo-make)
-  Install with command: ```cargo install cargo-make```
 - [xcb](https://xcb.freedesktop.org/)
 - [libuv](https://github.com/libuv/libuv)
 - [libalsa](https://www.alsa-project.org/wiki/Main_Page)
 
-The latest stable version of Rust build toolchain is required by the project. To setup toolchain run:
+The latest stable version of the Rust build toolchain is required by the project. To setup toolchain run:
 
 ```
 rustup default stable
@@ -26,7 +25,7 @@ The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make)
 cargo install cargo-make
 ```
 
-To build `Bevy` on a Linux the libraries `libuv` and `libalsa` are required. To install it run:
+To build `Bevy` on Linux the libraries `libuv` and `libalsa` are required. To install it run:
 
 ```
 sudo apt install libudev-dev libalsa-ocaml-dev
@@ -47,7 +46,7 @@ cargo run
 
 ## How to develop
 
-Before cloning the repository please maka a fork on github to been able to open pull requests.
+Before cloning the repository please make a fork on github to been able to open pull requests.
 Please open pull request into the branch `alpha`.
 
 <!--
@@ -68,3 +67,8 @@ To run the project on default platform execute:
 ```
 cargo run
 ```
+
+## Frequently Asked Questions
+
+Take a look at [FAQ](./doc/FAQ.md) page.
+

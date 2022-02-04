@@ -1,6 +1,6 @@
 #[allow(unused_imports)]
-use client::generated::chess_example::{Position, GameMoveRequest, MoveResultResponse};
-use client::generated::chess_example::chess_state_client::ChessStateClient;
+use sample_client::generated::chess_example::{Position, GameMoveRequest, MoveResultResponse};
+use sample_client::generated::chess_example::chess_state_client::ChessStateClient;
 
 #[tokio::main]
 async fn main() {

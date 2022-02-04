@@ -87,7 +87,7 @@ command = "cargo"
 args = [
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "desktop"
+  "--bin", "game"
 ]
 
 [tasks.desktop_build_release]
@@ -98,7 +98,7 @@ command = "cargo"
 args = [
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "desktop",
+  "--bin", "game",
   "--release"
 ]
 
@@ -114,7 +114,7 @@ args = [
   "--target", "x86_64-unknown-linux-gnu",
   "--manifest-path",
   "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "desktop"
+  "--bin", "game"
 ]
 
 [tasks.desktop_build_windows_on_mac]
@@ -129,7 +129,7 @@ args = [
   "--target", "x86_64-pc-windows-gnu",
   "--manifest-path",
   "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "desktop"
+  "--bin", "game"
 ]
 
 [tasks.desktop_build_windows_on_linux]
@@ -143,7 +143,7 @@ args = [
   "--release",
   "--target", "x86_64-pc-windows-gnu",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "desktop"
+  "--bin", "game"
 ]
 
 [tasks.desktop_rebuild]
@@ -154,7 +154,7 @@ command = "cargo"
 args = [
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "desktop"
+  "--bin", "game"
 ]
 
 [tasks.desktop_run]
@@ -165,7 +165,7 @@ command = "cargo"
 args = [
   "run",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "desktop"
+  "--bin", "game"
 ]
 
 [tasks.desktop_run_watching]

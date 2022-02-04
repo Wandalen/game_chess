@@ -1,19 +1,16 @@
-## Web Prerequisites:
+## Prerequisites
+
+Before moving forward please make sure that all general [prerequisites](./Prerequisites.md) are met.
+
+## Web prerequisites
 
 - [Node.js](https://nodejs.org/) v14 or newer.
-- [Rust](https://www.rust-lang.org/) v1.57 or newer.
-- [cargo-make](https://github.com/sagiegurari/cargo-make)
-  Install with command: ```cargo install cargo-make```
 
-### Hw to run web
+### How to run web
 
 To run web target execute:
 ```
 cargo make web_run
 ```
 
-To get list of all command related this target run:
 
-```
-cargo make --list-all-steps
-```

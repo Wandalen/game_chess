@@ -17,30 +17,30 @@ Chess game implemented on Bevy for educational purpose.
 """
 categories = [ "game-development", "games" ]
 keywords = [ "chess", "gamedev" ]
-default-run = "desktop"
 include = [
   "/src",
   "/Cargo.toml",
   "/Readme.md",
   "/License",
 ]
+# default-run = "game"
 
 [features]
 web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
-desktop = []
-default = [ "desktop" ]
+gui = []
+default = [ "gui" ]
 
 [[bin]]
-name = "web"
+name = "game_web"
 path = "./src/main.rs"
 required-features = [ "web" ]
 
 [[bin]]
-name = "desktop"
+name = "game"
 path = "./src/main.rs"
 
 [dependencies]
-game_chess_core = { version = "~0.0", path = "../core" }
+game_chess_core = { package = "game_chess_core", version = "~0.0", path = "../core" }
 
 [target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
 bevy = { version = "0.5" }
@@ -49,4 +49,3 @@ bevy = { version = "0.5" }
 bevy = { version = "0.5", default-features = false }
 tracing-wasm = "=0.2.0"
 bevy_webgl2 = "0.5"
-

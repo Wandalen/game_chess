@@ -51,6 +51,9 @@ jobs:
     - name: Build
       if: ${{ inputs.build == 'fast' }}
       run: cargo make desktop_build
+    - name: Install component
+      if: ${{ inputs.build != 'fast' }}
+      run: rustup component add rustfmt
     - name: Build
       if: ${{ inputs.build != 'fast' }}
       run: cargo make desktop_build_three_targets
