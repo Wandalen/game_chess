@@ -8,17 +8,18 @@
 /builder
 /binding
 /target
-node_modules
+/node_modules
 /.module
-package-lock.json
+/package-lock.json
 /Cargo.lock
 /.vscode
-/private.*
-bin
+/.cargo/config.toml
 
 -*
 .module
 target
+node_modules
+package-lock.json
 Cargo.lock
 .warchive*
 *.log

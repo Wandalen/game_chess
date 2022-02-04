@@ -1,15 +1,15 @@
 ## Prerequisites
 
-- [Rust](https://www.rust-lang.org/tools/install) v1.57 or newer.
+- [Rust](https://www.rust-lang.org/tools/install)
 - [cargo-make](https://github.com/sagiegurari/cargo-make)
 - [xcb](https://xcb.freedesktop.org/)
 - [libuv](https://github.com/libuv/libuv)
 - [libalsa](https://www.alsa-project.org/wiki/Main_Page)
 
-The latest stable version of the Rust build toolchain is required by the project. To setup toolchain run:
+The nightly version of the Rust build toolchain is required by the project. To setup toolchain run:
 
 ```
-rustup default stable
+rustup default nightly
 rustup update
 ```
 

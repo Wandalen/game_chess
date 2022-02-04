@@ -11,17 +11,17 @@ fn test_trivial()
   let mut game = Game::default();
   let target_move = "a2a4";
   game.board_print();
-  game.make_move(target_move);
+  game.make_move(target_move.into());
   game.board_print();
   assert_eq!(game.status(), GameStatus::Continuing);
-  assert_eq!(game.last_move().unwrap(), target_move);
+  assert_eq!(game.last_move().unwrap().0, target_move);
 }
 
 #[test]
 fn test_board_to_fen()
 {
   let mut board = Board::default();
-  board = board.make_move("a2a4").unwrap();
+  board = board.make_move("a2a4".into()).unwrap();
   assert_eq!(
     board.to_fen(),
     "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1".to_string()
@@ -40,17 +40,20 @@ fn test_board_from_fen()
 #[test]
 fn test_game_import()
 {
-   let src = r#"{"board":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","history":[{"fen":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","uci_move":"a2a4"}],"date":{"secs_since_epoch":1640446438,"nanos_since_epoch":529150000}}"#;  let game : Game = serde_json::from_str(src).unwrap();
-  assert_eq!(game.last_move().unwrap(), "a2a4");
+   let src = r#"{"board":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","history":[{"fen":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","last_move":5640}],"date":{"secs_since_epoch":1643988263,"nanos_since_epoch":27317000}}"#;  let game : Game = serde_json::from_str(src).unwrap();
+   assert_eq!(game.last_move().unwrap().0, "a2a4");
+   assert_eq!(game.last_move_raw().unwrap().get_raw(), 5640 );
+
 }
 
 #[test]
 fn test_game_export()
 {
   let mut game = Game::default();
-  game.make_move("a2a4");
+  game.make_move("a2a4".into());
   let serialized = serde_json::to_string(&game);
   assert_eq!(serialized.is_ok(), true);
+
 }
 
 #[test]
