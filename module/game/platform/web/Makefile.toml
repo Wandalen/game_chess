@@ -64,7 +64,7 @@ command = "cargo"
 args = [
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "web",
+  "--bin", "game_web",
   "--target", "wasm32-unknown-unknown",
   "--features", "web",
 ]
@@ -77,7 +77,7 @@ args = [
   "+nightly",
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
-  "--bin", "web",
+  "--bin", "game_web",
   "--target", "wasm32-unknown-unknown",
   "--features", "web",
   "--profile", "release_web",
@@ -93,7 +93,7 @@ args = [
   "--target", "web",
   # "--browser"
   "--out-dir", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web",
-  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/wasm32-unknown-unknown/debug/web.wasm",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/wasm32-unknown-unknown/debug/game_web.wasm",
   "--debug",
   "--keep-debug",
 ]
@@ -114,7 +114,7 @@ args = [
   "--out-dir", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web",
   "--remove-name-section",
   "--remove-producers-section",
-  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/wasm32-unknown-unknown/release_web/web.wasm",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/wasm32-unknown-unknown/release_web/game_web.wasm",
 ]
 
 [tasks.web_build_copy_static]
@@ -132,8 +132,8 @@ command = "rust-script"
 args = [
   "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/step/wasm_opt.rs",
   "-Oz",
-  "-o", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web/web_bg.wasm",
-  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web/web_bg.wasm",
+  "-o", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web/game_web_bg.wasm",
+  "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../../../target/web/game_web_bg.wasm",
   "--strip-debug",
   "--simplify-globals",
   "--vacuum",
