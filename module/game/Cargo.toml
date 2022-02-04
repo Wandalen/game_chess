@@ -26,6 +26,7 @@ include = [
 # default-run = "game"
 
 [features]
+fast_build = [ "bevy/dynamic" ]
 web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
 gui = []
 default = [ "gui" ]
