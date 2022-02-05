@@ -10,41 +10,25 @@ env:
 
 jobs :
 
-  web:
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
-    with:
-      artifacts: 'true'
-      toolchain: 'nightly'
-
   artifacts_forward :
-    needs: [ web ]
     runs-on : ubuntu-latest
     steps :
-      - uses: actions/checkout@v2
-      - run: rm -rf build
-      - run: mkdir build
-      - name: Install latest toolchain
-        uses: actions-rs/toolchain@v1
+      - name: Build server and web on remote
+        uses: appleboy/ssh-action@master
         with:
-          toolchain: stable
-          override: true
-      - run : cargo doc
-      - run : cp -R target/doc build
-      - uses: actions/download-artifact@v2
-        with:
-          name: web
-          path: build
+          host: ${{ secrets.PRIVATE_SERVER_HOST }}
+          username: ${{ secrets.PRIVATE_SERVER_USER }}
+          key: ${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }}
+          command_timeout: 60m
+          script: |
+            git clone https://github.com/Wandalen/game_chess.git chess_mirror
+            cd chess_mirror
+            git pull
+            ~/.cargo/bin/cargo build --bin chess_server --release
+            ~/.cargo/bin/cargo make web_build_release
+            cp -R target/web/* ${{ secrets.PRIVATE_SERVER_PATH }}
+            killall chess_server ;
+            cp target/release/chess_server ~/chess_server
+            nohup ~/chess_server &
+            ps aux | grep -i chess_server
 
-
-      - name: host
-        run: "::set-output name=host::$(echo ${{ secrets.PRIVATE_SERVER }} | cut -d'@' -f1)"
-      - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
-        with:
-          ssh-private-key: ${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }}
-          ssh-host: ${{ steps.host.outputs.host }}
-      - run : sudo apt install sshfs
-      - run : mkdir mnt
-      - name : Setup mountpoin
-        run : sshfs -o follow_symlinks,StrictHostKeyChecking=no ${{ secrets.PRIVATE_SERVER }}:${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }} ./mnt
-      - run : cp -R build/* ./mnt
-      - run : umount ./mnt
