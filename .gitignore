@@ -8,6 +8,7 @@
 /builder
 /binding
 /target
+/saves
 /node_modules
 /.module
 /package-lock.json
