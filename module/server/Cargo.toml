@@ -30,7 +30,7 @@ name = "game_chess_server"
 path = "./src/lib.rs"
 
 [[bin]]
-name = "server"
+name = "chess_server"
 path = "./src/main.rs"
 
 [dependencies]

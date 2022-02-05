@@ -1,4 +1,3 @@
-
 /*
 How to get best move for current state of the board
 */
@@ -28,9 +27,9 @@ pub fn main()
       a  b  c  d  e  f  g  h
   */
 
-  let board: pleco::Board = pleco::Board::from_fen( "7k/1pR2P2/N1pb1K2/2B3N1/1P5p/3q1p2/2p5/7B w - - 0 1").unwrap(); //Board from generated fen
+  let board : pleco::Board = pleco::Board::from_fen("7k/1pR2P2/N1pb1K2/2B3N1/1P5p/3q1p2/2p5/7B w - - 0 1").unwrap(); //Board from generated fen
   board.pretty_print();
   let depth = 1;
-  let best_move = pleco::bots::MiniMaxSearcher::best_move( board.clone(), depth );// Return best move for current state of the board
-  println!( "Best move: {}", best_move );
+  let best_move = pleco::bots::MiniMaxSearcher::best_move(board.clone(), depth); // Return best move for current state of the board
+  println!("Best move: {}", best_move);
 }

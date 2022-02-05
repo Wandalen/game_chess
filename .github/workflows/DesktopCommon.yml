@@ -57,7 +57,8 @@ jobs:
       run: rustup component add rustfmt
     - name: Build
       if: ${{ inputs.build != 'fast' }}
-      run: cargo make desktop_build_three_targets
+      run: cargo make desktop_build
+      # run: cargo make desktop_build_three_targets
     - name: Run tests
       run: cargo test
     - name: Upload
@@ -65,7 +66,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.os }}
-        path: target/release/test
+        path: target/release/game
         retention-days: 1
 
 
