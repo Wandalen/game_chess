@@ -75,6 +75,7 @@ Commands minimal
 */
 
 use game_chess_core::*;
+use game_chess_client::*;
 
 ///
 /// Main. CLI game itself.

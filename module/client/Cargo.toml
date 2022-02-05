@@ -25,10 +25,6 @@ include = [
   "/License",
 ]
 
-[[bin]]
-name = "client"
-path = "./src/main.rs"
-
 [dependencies]
 rollo = "~0.8"
 game_chess_core = { version = "~0.0", path = "../core" }
