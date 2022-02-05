@@ -1,71 +1,27 @@
 
 ## Bevy
 
-- :star: [Introducing Bevy 0.1](https://bevyengine.org/news/introducing-bevy/)
-- :star: [Pong clone in rust with Bevy](https://www.youtube.com/playlist?list=PLOc_rMRI1KqnsZhPt1dhjRqi9PZYnyjCB)
+- :star: [Textual introduction to Bevy ( v0.1 )](https://bevyengine.org/news/introducing-bevy/)
+- :star: [Video introduction to Bevy ( v0.1 )](https://www.youtube.com/playlist?list=PLOc_rMRI1KqnsZhPt1dhjRqi9PZYnyjCB)
 - [Bevy's learn page](https://bevyengine.org/learn/)
 - [Unofficial Bevy Cheat Book](https://bevy-cheatbook.github.io/)
 - [Builtins](https://bevy-cheatbook.github.io/builtins.html)
 - [Documentation](https://docs.rs/bevy/latest/bevy/index.html)
-- [Entity Component System (ECS)](https://www.youtube.com/watch?v=s6TMa33niJo)
+- [ECS introduction](https://www.youtube.com/watch?v=s6TMa33niJo)
+- [Short ECS introduction](https://www.youtube.com/watch?v=2rW7ALyHaas)
 - [Examples](https://bevyengine.org/examples/)
 
-## Chess videos
+## Pleco
 
-- [Coding Adventure: Chess AI](https://www.youtube.com/watch?v=U4ogK0MIzqk&ab_channel=SebastianLague)
+- [Documentation](https://docs.rs/pleco/0.5.0/pleco/)
+- [Algorithms at tools::eval::Eval](https://github.com/sfleischman105/Pleco/blob/master/pleco/src/tools/eval.rs#L57)
+- [Algorithms at helper::Helper](https://github.com/sfleischman105/Pleco/blob/master/pleco/src/helper/mod.rs#L29)
+- [Algorithms at helper::prelude](https://docs.rs/pleco/0.5.0/pleco/helper/prelude/index.html)
+- [AI at bot_prelude](https://docs.rs/pleco/0.5.0/pleco/bot_prelude/index.html)
 
-## Chess crates
+## gRPC
 
-- [Pleco](https://github.com/sfleischman105/Pleco)
-  * Board representation and related functionality
-  * Board printing
-  * Movement generation
-  * Player moves
-  * Game status check
-  * Legal moves
-  * Have bots
-  * Can undo moves
-  * May not compile, need to check
-
-- [chess](https://github.com/jordanbray/chess)
-  * Movement generation
-  * Legal moves
-  * Player moves
-  * Moves history
-  * Game status check
-  * Need to check if it can print the board
-
-- [shakmaty](https://github.com/niklasf/shakmaty)
-  * Movement generation
-  * Legal moves
-  * Player moves
-  * Game status check
-  * Looks like can print board
-
-- [chess-engine](https://github.com/adam-mcdaniel/chess-engine)
-  * Can run in terminal
-  * Good examples
-  * AI
-
-- [cozy-chess](https://github.com/analog-hors/cozy-chess)
-  * Similar to chess crate
-  * Less unsafe code
-  * Less features
-
-## Multiplayer crates
-
-- [rollo](https://github.com/netskillzgh/rollo)
-- [crystalorb](https://github.com/ErnWong/crystalorb)
-- [laminar](https://github.com/TimonPost/laminar)
-- [naia](https://github.com/naia-rs/naia)
-- [quilkin](https://github.com/googleforgames/quilkin)
-- [open-match](https://github.com/googleforgames/open-match)
-
-## Unsorted chess crates
-
-- [littlewing](https://lib.rs/crates/littlewing)
-- [alcibiades](https://lib.rs/crates/alcibiades)
-- [uciengine](https://github.com/hyperchessbot/uciengine)
-- [crabfish](https://github.com/monlih/crabfish)
-- [myopic](https://github.com/th0masb/myopic/)
-- [legal_chess](https://github.com/paul-schaaf/legal_chess)
+- [Tutorial on RPC](https://medium.com/geekculture/quick-start-to-grpc-using-rust-c655785fc6f4)
+- [Tutorial on RPC in Russian](https://habr.com/ru/post/557600/)
+- [Documentation on tonic](https://docs.rs/tonic/0.6.2/tonic/)
+- [Documentation on prost](https://docs.rs/prost/0.9.0/prost/)

@@ -9,12 +9,12 @@ service Chess
   rpc push_game_create (CreateGame) returns (GameId);
   rpc push_game_accept (AcceptGame) returns (GameId);
   rpc push_move (GameMove) returns (GameId);
-  rpc read_board_state (GameId) returns (Board);
-  rpc read_game_state (GameId) returns (GameState);
-  rpc read_games_list (google.protobuf.Empty) returns (Games);
+  rpc pull_board_state (GameId) returns (Board);
+  rpc pull_game_state (GameId) returns (GameState);
+  rpc pull_games_list (google.protobuf.Empty) returns (Games);
   rpc push_game_gg (GamePlayer) returns (google.protobuf.Empty);
   rpc push_mgs (Msg) returns (google.protobuf.Empty);
-  rpc read_msgs (GameId) returns (Msgs);
+  rpc pull_msgs (GameId) returns (Msgs);
 }
 
 message Blank
