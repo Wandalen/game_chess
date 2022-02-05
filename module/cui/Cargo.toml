@@ -33,3 +33,4 @@ path = "./src/main.rs"
 game_chess_core = { version = "~0.0", path = "../core" }
 game_chess_client = { version = "~0.0", path = "../client" }
 wca = "0.1.0"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
