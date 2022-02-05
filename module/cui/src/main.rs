@@ -101,6 +101,7 @@ pub fn main()
       ".status" | ".s" => command_status(&game),
       ".quit" => command_exit(&game),
       ".help" => command_help(),
+      ".score" => command_score(&game),
       command => println!("Unknown command : {}\n", command),
     }
   }
@@ -225,4 +226,16 @@ pub fn command_move(game : &mut Option<Game>)
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
+}
+
+
+///
+/// Wrapper and control flow
+/// 
+
+pub fn command_score(game:&Option<Game>) {
+  match game {
+    Some(g) => println!("{}", g.count_score()),
+    None => println!("Game not found")
+  }
 }

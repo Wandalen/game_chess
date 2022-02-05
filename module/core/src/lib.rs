@@ -158,7 +158,8 @@ impl Board
   ///
   pub fn score(&self) -> i32
   {
-    0
+    pleco::tools::eval::Eval::eval_low(&self.pleco_board)
+    //0
     /* ttt : implement me */
   }
 
@@ -319,11 +320,21 @@ impl Game
 
   /* xxx : ? */
 
+///
+/// Calling member board
+/// 
+  
+  pub fn count_score(&self) -> i32 {
+    self.board.score()
+  }
+
   ///
   /// Makes a move on the board. Accepts move in UCI format. For example, "e2e4".
   /// Updates histort and returns `true` if move was succesfuly applied, otherwise returns `false`.
   /// The board and history are not changed in case of fail.
   ///
+
+
   pub fn make_move(&mut self, uci_move : UCI) -> bool
   {
     let new_board = self.board.make_move(uci_move);
