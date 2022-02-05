@@ -55,17 +55,17 @@ impl Chess for ChessRpcServer
   ///
   /// Get info about current board state. There are only positions.
   ///
-  async fn read_board_state(&self, _request : Request<GameId>) -> Result<Response<Board>, Status> { todo!() }
+  async fn pull_board_state(&self, _request : Request<GameId>) -> Result<Response<Board>, Status> { todo!() }
 
   ///
   /// Get info about current game state - positions and history.
   ///
-  async fn read_game_state(&self, _request : Request<GameId>) -> Result<Response<GameState>, Status> { todo!() }
+  async fn pull_game_state(&self, _request : Request<GameId>) -> Result<Response<GameState>, Status> { todo!() }
 
   ///
   /// Get list of games.
   ///
-  async fn read_games_list(&self, _request : Request<()>) -> Result<Response<Games>, Status> { todo!() }
+  async fn pull_games_list(&self, _request : Request<()>) -> Result<Response<Games>, Status> { todo!() }
 
   ///
   /// Send request to forfeit.
@@ -80,5 +80,5 @@ impl Chess for ChessRpcServer
   ///
   /// Get messages from chat.
   ///
-  async fn read_msgs(&self, _request : Request<GameId>) -> Result<Response<Msgs>, Status> { todo!() }
+  async fn pull_msgs(&self, _request : Request<GameId>) -> Result<Response<Msgs>, Status> { todo!() }
 }
