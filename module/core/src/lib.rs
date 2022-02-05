@@ -59,29 +59,23 @@ const SAVE_FILE_EXTENSION : &str = ".save";
 ///
 
 #[derive(Debug)]
-pub struct UCI( pub String );
+pub struct UCI(pub String);
 
-impl From< &str > for UCI
+impl From<&str> for UCI
 {
-  fn from( src: &str ) -> Self
-  {
-    Self( src.to_string() )
-  }
+  fn from(src : &str) -> Self { Self(src.to_string()) }
 }
 
-impl From< Move > for UCI
+impl From<Move> for UCI
 {
-  fn from( src: Move ) -> Self
-  {
-    Self( src.stringify() )
-  }
+  fn from(src : Move) -> Self { Self(src.stringify()) }
 }
 
-impl TryFrom< UCI > for Move
+impl TryFrom<UCI> for Move
 {
   type Error = ();
 
-  fn try_from( _src: UCI ) -> Result< Self, Self::Error >
+  fn try_from(_src : UCI) -> Result<Self, Self::Error>
   {
     unimplemented!();
   }
@@ -340,7 +334,7 @@ impl Game
       let last_move = self.board.last_move().unwrap();
       self.history.push(HistoryEntry {
         fen : self.board.to_fen(),
-        last_move
+        last_move,
       });
     }
     success

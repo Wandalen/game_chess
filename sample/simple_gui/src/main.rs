@@ -4,14 +4,15 @@
 
 use bevy::render::pass::ClearColor;
 use bevy::prelude::*;
-use bevy_egui::{ egui, EguiContext, EguiPlugin };
+use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 const DISPLAY_HEIGHT : f32 = 300.0;
 const DISPLAY_WIDTH : f32 = 300.0;
 
 //
 
-fn main() {
+fn main()
+{
   App::build()
   .insert_resource( ClearColor( Color::rgb( 0.04, 0.04, 0.04 ) ) )
   .insert_resource( WindowDescriptor
@@ -31,14 +32,12 @@ fn main() {
 
 //
 
-fn setup( egui_context : Res<EguiContext> )
+fn setup(egui_context : Res<EguiContext>)
 {
   // initialize Egui window
-  egui::Window::new( "Menu" )
-  .show( egui_context.ctx(), | ui |
-  {
+  egui::Window::new("Menu").show(egui_context.ctx(), |ui| {
     // add labels inside Egui window
-    ui.label( "Game" );
-    ui.label( "Options ");
+    ui.label("Game");
+    ui.label("Options ");
   });
 }
