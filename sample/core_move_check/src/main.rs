@@ -1,4 +1,3 @@
-
 /*
 How to get check if move is valid
 */
@@ -27,12 +26,18 @@ pub fn main()
       a  b  c  d  e  f  g  h
   */
 
-  let board: pleco::Board = pleco::Board::default();
-  let invalid_move = pleco::BitMove::make_quiet( pleco::SQ( 8 ), pleco::SQ( 9 ) ); //Creates move from 8 square to square 9
-  let valid_move = pleco::BitMove::make_quiet( pleco::SQ( 8 ), pleco::SQ( 16 ) ); //Creates move from 8 square to square 16
+  let board : pleco::Board = pleco::Board::default();
+  let invalid_move = pleco::BitMove::make_quiet(pleco::SQ(8), pleco::SQ(9)); //Creates move from 8 square to square 9
+  let valid_move = pleco::BitMove::make_quiet(pleco::SQ(8), pleco::SQ(16)); //Creates move from 8 square to square 16
 
-  println!( "Move {} is valid: {}", invalid_move.to_string(), board.pseudo_legal_move( invalid_move ) && board.legal_move( invalid_move ) );
-  println!( "Move {} is valid: {}", valid_move.to_string(), board.pseudo_legal_move( valid_move ) && board.legal_move( valid_move ) );
-
-
+  println!(
+    "Move {} is valid: {}",
+    invalid_move.to_string(),
+    board.pseudo_legal_move(invalid_move) && board.legal_move(invalid_move)
+  );
+  println!(
+    "Move {} is valid: {}",
+    valid_move.to_string(),
+    board.pseudo_legal_move(valid_move) && board.legal_move(valid_move)
+  );
 }

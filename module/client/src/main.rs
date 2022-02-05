@@ -14,4 +14,3 @@ async fn main()
 
   let /* mut */ _chess_client = ChessClient::connect("http://[::1]:50051").await.unwrap();
 }
-

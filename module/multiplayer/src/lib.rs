@@ -7,15 +7,14 @@ use time::OffsetDateTime;
 ///
 
 #[allow(dead_code)]
-pub struct MultiplayerMessage {
-    player_id: String,
-    text: String,
-    timestamp: OffsetDateTime,
+pub struct MultiplayerMessage
+{
+  player_id : String,
+  text : String,
+  timestamp : OffsetDateTime,
 }
 
-impl MultiplayerMessage {
-
-}
+impl MultiplayerMessage {}
 
 ///
 /// Player.
@@ -23,29 +22,27 @@ impl MultiplayerMessage {
 
 #[allow(dead_code)]
 #[derive(Debug)]
-pub struct MultiplayerPlayer {
-    id: String,
-    name: String,
+pub struct MultiplayerPlayer
+{
+  id : String,
+  name : String,
 }
 
-impl MultiplayerPlayer {
-
-}
+impl MultiplayerPlayer {}
 
 ///
 /// Move.
 ///
 
-pub struct MultiplayerMove {
-    /// Player id.
-    pub player_id: String,
-    /// Game id.
-    pub game_id: String,
+pub struct MultiplayerMove
+{
+  /// Player id.
+  pub player_id : String,
+  /// Game id.
+  pub game_id : String,
 }
 
-impl MultiplayerMove {
-
-}
+impl MultiplayerMove {}
 
 ///
 /// Multiplayer game.
@@ -53,11 +50,10 @@ impl MultiplayerMove {
 
 #[allow(dead_code)]
 #[derive(Debug)]
-pub struct MultiplayerGame {
-    id: String,
-    players: Vec<MultiplayerPlayer>,
+pub struct MultiplayerGame
+{
+  id : String,
+  players : Vec<MultiplayerPlayer>,
 }
 
-impl MultiplayerGame {
-
-}
+impl MultiplayerGame {}
