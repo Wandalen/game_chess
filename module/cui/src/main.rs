@@ -99,6 +99,7 @@ pub fn main()
       ".game.save" => command_game_save(&game),
       ".move" | ".m" => command_move(&mut game),
       ".moves.list" => command_moves_list(&game),
+      ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
       ".quit" => command_exit(&game),
       ".help" => command_help(),
@@ -123,6 +124,7 @@ pub fn command_help()
   println!(".game.save => Save game to file");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
   println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
+  println!(".move.ai   => Ask the AI to make a move for the player");
   println!(".status    => Print board, current turn, last move");
   println!(".quit      => Exit from the game");
   println!(".help      => Print this help");
@@ -233,8 +235,7 @@ pub fn command_move(game : &mut Option<Game>)
 /// Command to print available moves
 ///
 
-pub fn command_moves_list(game : &Option<Game>)
-{
+pub fn command_moves_list(game : &Option<Game>) 
   if game.is_none()
   {
     println!("Create a game first. Use command: .game.new");
@@ -248,3 +249,11 @@ pub fn command_moves_list(game : &Option<Game>)
   }
 }
 
+/// Command to ask the AI to make a move
+///
+
+pub fn command_move_ai(game : &mut Option<Game>)
+{ 
+  let game = game.as_mut().unwrap();
+  game.make_move_ai();
+}
