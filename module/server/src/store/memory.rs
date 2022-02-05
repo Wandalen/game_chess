@@ -35,12 +35,12 @@ impl GameStore for MemoryStore
   ///
   /// Add game to storage.
   ///
-  async fn add_game(&mut self, _game : Game) { self.games.push(_game) }
+  async fn add_game(&mut self, game : Game) { self.games.push(game) }
 
   ///
   /// Get game from storage by string ( slice ) id.
   ///
-  async fn get_game(&self, _game_id : &str) -> &Game { self.games.iter().find(|game| game.id == _game_id).unwrap() }
+  async fn get_game(&self, game_id : &str) -> &Game { self.games.iter().find(|game| game.id == game_id).unwrap() }
 
   ///
   /// Get all stored games.
@@ -50,15 +50,11 @@ impl GameStore for MemoryStore
   ///
   /// Update game in storage using string id and new instance of Game.
   ///
-  async fn update_game(&mut self, _game_id : &str, _new_game : Game)
+  async fn update_game(&mut self, game_id : &str, new_game : Game)
   {
-    for game in self.games.iter_mut()
+    if let Some(g) = self.games.iter_mut().find(|item| item.id == game_id)
     {
-      if game.id == _game_id
-      {
-        *game = _new_game;
-        break;
-      }
+      *g = new_game;
     }
   }
 }
