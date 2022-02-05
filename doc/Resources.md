@@ -1,8 +1,8 @@
 
 ## Bevy
 
-- :star: [Textual introducing to Bevy ( v0.1 )](https://bevyengine.org/news/introducing-bevy/)
-- :star: [Video introducing to Bevy ( v0.1 )](https://www.youtube.com/playlist?list=PLOc_rMRI1KqnsZhPt1dhjRqi9PZYnyjCB)
+- :star: [Textual introduction to Bevy ( v0.1 )](https://bevyengine.org/news/introducing-bevy/)
+- :star: [Video introduction to Bevy ( v0.1 )](https://www.youtube.com/playlist?list=PLOc_rMRI1KqnsZhPt1dhjRqi9PZYnyjCB)
 - [Bevy's learn page](https://bevyengine.org/learn/)
 - [Unofficial Bevy Cheat Book](https://bevy-cheatbook.github.io/)
 - [Builtins](https://bevy-cheatbook.github.io/builtins.html)
