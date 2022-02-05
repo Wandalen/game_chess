@@ -1,4 +1,3 @@
-
 /*
 How to get list of possible squares to move from a target square
 */
@@ -26,13 +25,13 @@ pub fn main()
 
   */
 
-  let board: pleco::Board = pleco::Board::default();
+  let board : pleco::Board = pleco::Board::default();
   board.pretty_print(); //Prints a prettified representation of the board.
   let legal_moves = board.generate_moves(); //All legal moves
-  let from_square = pleco::SQ( 8 ); //Source square
-  let legal_moves_for_target = legal_moves.iter().filter( | mv | mv.get_src() == from_square ); //Selects legal moves that have target as source
+  let from_square = pleco::SQ(8); //Source square
+  let legal_moves_for_target = legal_moves.iter().filter(|mv| mv.get_src() == from_square); //Selects legal moves that have target as source
   for legal_move in legal_moves_for_target
   {
-    println!( "{}", legal_move.to_string() );
+    println!("{}", legal_move.to_string());
   }
 }

@@ -1,4 +1,3 @@
-
 //!
 //! Implements in-memory storage.
 //!
@@ -13,7 +12,7 @@ use crate::store::GameStore;
 /// Storage structure.
 ///
 
-#[ derive( Debug ) ]
+#[derive(Debug)]
 pub struct MemoryStore
 {
   #[allow(dead_code)]
@@ -22,7 +21,6 @@ pub struct MemoryStore
 
 impl MemoryStore
 {
-
   ///
   /// Storage constructor.
   ///

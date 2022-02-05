@@ -40,10 +40,10 @@ fn test_board_from_fen()
 #[test]
 fn test_game_import()
 {
-   let src = r#"{"board":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","history":[{"fen":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","last_move":5640}],"date":{"secs_since_epoch":1643988263,"nanos_since_epoch":27317000}}"#;  let game : Game = serde_json::from_str(src).unwrap();
-   assert_eq!(game.last_move().unwrap().0, "a2a4");
-   assert_eq!(game.last_move_raw().unwrap().get_raw(), 5640 );
-
+  let src = r#"{"board":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","history":[{"fen":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","last_move":5640}],"date":{"secs_since_epoch":1643988263,"nanos_since_epoch":27317000}}"#;
+  let game : Game = serde_json::from_str(src).unwrap();
+  assert_eq!(game.last_move().unwrap().0, "a2a4");
+  assert_eq!(game.last_move_raw().unwrap().get_raw(), 5640);
 }
 
 #[test]
@@ -53,7 +53,6 @@ fn test_game_export()
   game.make_move("a2a4".into());
   let serialized = serde_json::to_string(&game);
   assert_eq!(serialized.is_ok(), true);
-
 }
 
 #[test]
