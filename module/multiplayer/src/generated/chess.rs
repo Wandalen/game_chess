@@ -1,4 +1,23 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GameUpdate
+{
+  #[prost(oneof = "game_update::GameUpdate", tags = "1, 2")]
+  pub game_update : ::core::option::Option<game_update::GameUpdate>,
+}
+/// Nested message and enum types in `GameUpdate`.
+pub mod game_update
+{
+  #[derive(Clone, PartialEq, ::prost::Oneof)]
+  pub enum GameUpdate
+  {
+    #[prost(message, tag = "1")]
+    GameMove(super::GameMove),
+    /// TODO: refactor chat messages to use streams when they are ready.
+    #[prost(message, tag = "2")]
+    GameEnd(super::GameEnd),
+  }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blank {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Player
@@ -54,6 +73,16 @@ pub struct GameMove
   pub player_id : ::prost::alloc::string::String,
   #[prost(message, optional, tag = "3")]
   pub r#move : ::core::option::Option<Blank>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GameEnd
+{
+  /// Can be empty if it's a draw.
+  #[prost(string, tag = "1")]
+  pub winner_id : ::prost::alloc::string::String,
+  /// Draw, Player won, Surrender.
+  #[prost(string, tag = "2")]
+  pub reason : ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceptGame
@@ -271,10 +300,10 @@ pub mod chess_client
       self.inner.unary(request.into_request(), path, codec).await
     }
 
-    pub async fn pull_msgs(
+    pub async fn pull_game_updates(
       &mut self,
       request : impl tonic::IntoRequest<super::GameId>,
-    ) -> Result<tonic::Response<super::Msgs>, tonic::Status>
+    ) -> Result<tonic::Response<tonic::codec::Streaming<super::GameUpdate>>, tonic::Status>
     {
       self
         .inner
@@ -282,8 +311,8 @@ pub mod chess_client
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/pull_msgs");
-      self.inner.unary(request.into_request(), path, codec).await
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/pull_game_updates");
+      self.inner.server_streaming(request.into_request(), path, codec).await
     }
   }
 }
@@ -317,7 +346,12 @@ pub mod chess_server
     async fn pull_games_list(&self, request : tonic::Request<()>) -> Result<tonic::Response<super::Games>, tonic::Status>;
     async fn push_game_gg(&self, request : tonic::Request<super::GamePlayer>) -> Result<tonic::Response<()>, tonic::Status>;
     async fn push_mgs(&self, request : tonic::Request<super::Msg>) -> Result<tonic::Response<()>, tonic::Status>;
-    async fn pull_msgs(&self, request : tonic::Request<super::GameId>) -> Result<tonic::Response<super::Msgs>, tonic::Status>;
+    #[doc = "Server streaming response type for the pull_game_updates method."]
+    type pull_game_updatesStream: futures_core::Stream<Item = Result<super::GameUpdate, tonic::Status>> + Send + 'static;
+    async fn pull_game_updates(
+      &self,
+      request : tonic::Request<super::GameId>,
+    ) -> Result<tonic::Response<Self::pull_game_updatesStream>, tonic::Status>;
   }
   #[derive(Debug)]
   pub struct ChessServer<T : Chess>
@@ -604,19 +638,20 @@ pub mod chess_server
           };
           Box::pin(fut)
         }
-        "/chess.Chess/pull_msgs" =>
+        "/chess.Chess/pull_game_updates" =>
         {
           #[allow(non_camel_case_types)]
-          struct pull_msgsSvc<T : Chess>(pub Arc<T>);
-          impl<T : Chess> tonic::server::UnaryService<super::GameId> for pull_msgsSvc<T>
+          struct pull_game_updatesSvc<T : Chess>(pub Arc<T>);
+          impl<T : Chess> tonic::server::ServerStreamingService<super::GameId> for pull_game_updatesSvc<T>
           {
-            type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
-            type Response = super::Msgs;
+            type Future = BoxFuture<tonic::Response<Self::ResponseStream>, tonic::Status>;
+            type Response = super::GameUpdate;
+            type ResponseStream = T::pull_game_updatesStream;
 
             fn call(&mut self, request : tonic::Request<super::GameId>) -> Self::Future
             {
               let inner = self.0.clone();
-              let fut = async move { (*inner).pull_msgs(request).await };
+              let fut = async move { (*inner).pull_game_updates(request).await };
               Box::pin(fut)
             }
           }
@@ -625,11 +660,11 @@ pub mod chess_server
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = pull_msgsSvc(inner);
+            let method = pull_game_updatesSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);
-            let res = grpc.unary(method, req).await;
+            let res = grpc.server_streaming(method, req).await;
             Ok(res)
           };
           Box::pin(fut)
