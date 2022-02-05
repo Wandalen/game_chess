@@ -234,7 +234,7 @@ pub fn command_move(game : &mut Option<Game>)
 /// 
 
 pub fn command_game_from_fen() -> Game {
-  let line = wca::input::ask("Input DEN");
+  let line = wca::input::ask("Input FEN");
   let game = Game::from_fen(&line);
   println!("");
   game.board_print();
