@@ -98,6 +98,7 @@ pub fn main()
       ".game.new" => game = Some(command_game_new()),
       ".game.save" => command_game_save(&game),
       ".move" | ".m" => command_move(&mut game),
+      ".moves.list" => command_moves_list(&game),
       ".status" | ".s" => command_status(&game),
       ".quit" => command_exit(&game),
       ".help" => command_help(),
@@ -121,6 +122,7 @@ pub fn command_help()
   println!(".game.new  => Create game with default board");
   println!(".game.save => Save game to file");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
+  println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".status    => Print board, current turn, last move");
   println!(".quit      => Exit from the game");
   println!(".help      => Print this help");
@@ -226,3 +228,23 @@ pub fn command_move(game : &mut Option<Game>)
   game.board_print();
   println!("Turn of {}", game.current_turn());
 }
+
+///
+/// Command to print available moves
+///
+
+pub fn command_moves_list(game : &Option<Game>)
+{
+  if game.is_none()
+  {
+    println!("Create a game first. Use command: .game.new");
+    return;
+  }
+
+  let game = game.as_ref().unwrap();
+  let moves_list = game.moves_list();
+  for legal_move in moves_list {
+    println!("{}", legal_move.to_string());
+  }
+}
+

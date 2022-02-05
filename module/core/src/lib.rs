@@ -317,6 +317,10 @@ impl Game
     }
   }
 
+  pub fn moves_list(&self) -> MoveList {
+    self.board.pleco_board.generate_moves()
+  }
+
   /* xxx : ? */
 
   ///
