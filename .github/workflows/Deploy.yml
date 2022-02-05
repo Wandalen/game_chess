@@ -26,8 +26,8 @@ jobs :
             git pull
             ~/.cargo/bin/cargo build --bin chess_server --release
             ~/.cargo/bin/cargo make web_build_release
-            killall chess_server || true
             cp -R target/web/* ${{ secrets.PRIVATE_SERVER_PATH }}
-            cp target/release/chess_server ~/chess_server
-            nohup ~/chess_server > ~/chess_server.log 2>&1
-            ps aux | grep -i chess_server
+            # killall chess_server || true
+            # cp target/release/chess_server ~/chess_server
+            # nohup ~/chess_server > ~/chess_server.log 2>&1
+            # ps aux | grep -i chess_server
