@@ -154,6 +154,39 @@ impl Board
   }
 
   ///
+  /// Looks for a move that results in the best board state for the current player and applies it
+  ///
+  pub fn make_move_ai(&mut self)
+  {
+    let turn = self.pleco_board.turn();
+
+    let best_move = self
+      .pleco_board
+      .generate_moves()
+      .into_iter()
+      .map(|m| {
+        self.pleco_board.apply_move(m);
+        let score = pleco::tools::eval::Eval::eval_low(&self.pleco_board);
+        self.pleco_board.undo_move();
+        (m, score)
+      })
+      .max_by(|(_, a), (_, b)| {
+        if turn == Player::Black
+        {
+          a.cmp(b)
+        }
+        else
+        {
+          b.cmp(a)
+        }
+      })
+      .unwrap()
+      .0;
+
+    self.pleco_board.apply_move(best_move);
+  }
+
+  ///
   /// Evaluates the score of a [Board] for the current side to move.
   ///
   pub fn score(&self) -> i32
@@ -353,6 +386,20 @@ impl Game
       });
     }
     success
+  }
+
+  ///
+  /// Looks for a move that results in the best board state for the current player and applies it.
+  /// Updates history with the applied move.
+  ///
+  pub fn make_move_ai(&mut self)
+  {
+    self.board.make_move_ai();
+    let last_move = self.board.last_move().unwrap();
+    self.history.push(HistoryEntry {
+      fen : self.board.to_fen(),
+      last_move,
+    });
   }
 
   ///
