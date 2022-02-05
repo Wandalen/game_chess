@@ -99,6 +99,7 @@ pub fn main()
       ".game.save" => command_game_save(&game),
       ".move" | ".m" => command_move(&mut game),
       ".status" | ".s" => command_status(&game),
+      ".moves.history" | ".m.h" => command_moves_history(&game),
       ".quit" => command_exit(&game),
       ".help" => command_help(),
       command => println!("Unknown command : {}\n", command),
@@ -118,12 +119,13 @@ pub fn command_help()
 
   println!("");
 
-  println!(".game.new  => Create game with default board");
-  println!(".game.save => Save game to file");
-  println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
-  println!(".status    => Print board, current turn, last move");
-  println!(".quit      => Exit from the game");
-  println!(".help      => Print this help");
+  println!(".game.new      => Create game with default board");
+  println!(".game.save     => Save game to file");
+  println!(".move          => Make a move by providing move in UCI format: \"a2a4\" ");
+  println!(".status        => Print board, current turn, last move");
+  println!(".moves.history => Print moves history");
+  println!(".quit          => Exit from the game");
+  println!(".help          => Print this help");
 }
 
 ///
@@ -225,4 +227,18 @@ pub fn command_move(game : &mut Option<Game>)
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
+}
+
+///
+/// Command to print moves history.
+///
+
+pub fn command_moves_history(game: &Option<Game>) {
+  println!();
+  if game.is_none() {
+    println!("There is no history yet");
+    return;
+  }
+
+  game.as_ref().unwrap().history_print();
 }
