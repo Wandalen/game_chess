@@ -1,5 +1,7 @@
 ## Tickets labeling
 
+To select a ticket please consult with your team and team lead. Suggest several tickets in the direction which your team chose to work on. To find available tickets in your direction use the labeling system of GitHub. All available and unlocked tickets are labeled with the label `available`.
+
 Labels:
 
 - Availability: `available`, `taken`, `locked`
