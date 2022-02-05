@@ -19,7 +19,7 @@ jobs :
           host: ${{ secrets.PRIVATE_SERVER_HOST }}
           username: ${{ secrets.PRIVATE_SERVER_USER }}
           key: ${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }}
-          command_timeout: 60m
+          command_timeout: 20m
           script: |
             git clone https://github.com/Wandalen/game_chess.git chess_mirror
             cd chess_mirror
