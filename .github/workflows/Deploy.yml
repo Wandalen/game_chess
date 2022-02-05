@@ -1,0 +1,50 @@
+
+name : Deploy
+
+on :
+  push:
+    branches : [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs :
+
+  web:
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
+    with:
+      artifacts: 'true'
+      toolchain: 'nightly'
+
+  artifacts_forward :
+    needs: [ web ]
+    runs-on : ubuntu-latest
+    steps :
+      - uses: actions/checkout@v2
+      - run: rm -rf build
+      - run: mkdir build
+      - name: Install latest toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - run : cargo doc
+      - run : cp -R target/doc build
+      - uses: actions/download-artifact@v2
+        with:
+          name: web
+          path: build
+
+
+      - name: host
+        run: "::set-output name=host::$(echo ${{ secrets.PRIVATE_SERVER }} | cut -d'@' -f1)"
+      - uses: kielabokkie/ssh-key-and-known-hosts-action@v1
+        with:
+          ssh-private-key: ${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }}
+          ssh-host: ${{ steps.host.outputs.host }}
+      - run : sudo apt install sshfs
+      - run : mkdir mnt
+      - name : Setup mountpoin
+        run : sshfs -o follow_symlinks,StrictHostKeyChecking=no ${{ secrets.PRIVATE_SERVER }}:${{ secrets.PRIVATE_SERVER_PRIVATE_KEY }} ./mnt
+      - run : cp -R build/* ./mnt
+      - run : umount ./mnt
