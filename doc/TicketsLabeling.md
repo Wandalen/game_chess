@@ -6,7 +6,6 @@ Labels:
 
 - Availability: `available`, `taken`, `locked`
 - Difficulty: `easy`, `medium`, `hard`
-- Type: `core`, `graphics`, `server`, `multiplayer`
 - Importance: `critical`
 
 The task with the label `critical` should be implemented first.
