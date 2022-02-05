@@ -52,7 +52,7 @@ impl MultiplayerMove {}
 #[derive(Debug)]
 pub struct MultiplayerGame
 {
-  id : String,
+  pub id : String,
   players : Vec<MultiplayerPlayer>,
 }
 
