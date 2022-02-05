@@ -97,6 +97,7 @@ pub fn main()
     {
       ".game.new" => game = Some(command_game_new()),
       ".game.save" => command_game_save(&game),
+      ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
       ".status" | ".s" => command_status(&game),
       ".quit" => command_exit(&game),
@@ -120,6 +121,7 @@ pub fn command_help()
 
   println!(".game.new  => Create game with default board");
   println!(".game.save => Save game to file");
+  println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
   println!(".status    => Print board, current turn, last move");
   println!(".quit      => Exit from the game");
@@ -225,4 +227,17 @@ pub fn command_move(game : &mut Option<Game>)
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
+}
+
+///
+/// Load game from FEN
+/// 
+
+pub fn command_game_from_fen() -> Game {
+  let line = wca::input::ask("Input DEN");
+  let game = Game::from_fen(&line);
+  println!("");
+  game.board_print();
+  println!("Turn of {}", game.current_turn());
+  game
 }
