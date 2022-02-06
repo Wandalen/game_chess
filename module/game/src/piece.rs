@@ -7,6 +7,7 @@
 
 use bevy::prelude::*;
 use game_chess_core as core;
+use crate::core::Piece;
 
 ///
 /// Piece texture atlas
@@ -70,10 +71,10 @@ pub fn pieces_draw(
       let cell_index = size_in_cells.0 * y + x;
 
       let piece = game.piece_at(cell_index);
-      if !piece.is_none()
+      if piece != Piece::None
       {
         let texture_atlas = texture_atlas_handle.0.clone();
-        let texture_id = *piece_to_texture.get(&(piece.unwrap() as u8)).unwrap();
+        let texture_id = *piece_to_texture.get(&(piece as u8)).unwrap();
 
         let transform = Transform {
           translation : Vec3::new((x as f32) * size - delta, (y as f32) * size - delta, 0.0),
