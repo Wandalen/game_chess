@@ -13,7 +13,7 @@ use tokio::sync::mpsc;
 
 use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
-use multiplayer::generated::chess::{self, Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg};
+use multiplayer::generated::chess::{self, Board, GameState, multiplayer_game::GameStatus, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
 use crate::store::memory::MemoryStore;
 
 type ResponseStream<T> = Pin<Box<dyn Stream<Item = Result<T, Status>> + Send>>;
@@ -100,7 +100,43 @@ impl Chess for ChessRpcServer
   ///
   /// Send request to forfeit.
   ///
-  async fn push_game_gg(&self, _request : Request<GamePlayer>) -> Result<Response<()>, Status> { todo!() }
+  async fn push_game_gg(&self, _request : Request<GamePlayer>) -> Result<Response<()>, Status> {
+    let message = _request.into_inner();
+    let game_id = message.game_id;
+    let player_id = message.player_id;
+
+    let winner =
+    {
+      let mut memory_store = self.store.lock().unwrap();
+      let mut winner = None;
+      let mut current_game = memory_store.get_game(&game_id).clone();
+
+      memory_store.update_game(&game_id, current_game.clone());
+      for player in &current_game.players {
+        if player.player_id != player_id {
+            winner = Some(player.clone());
+            break;
+        }
+      }
+
+      current_game.status = GameStatus::Givenup as i32;
+      winner
+    };
+    // Will be moved from function push_mgs
+    //
+    // let request;
+    // if let Some(winner) = winner {
+    //   let msg = format!("The player {} gave up. The player {} is the winner!", player_id, winner.player_id);
+    //   request = Request::new(Msg {
+    //     player: Some(message),
+    //     text: msg.into(),
+    //   });
+    // }
+
+    // return self.push_mgs(request).await;
+
+    Ok(Response::new(()))
+  }
 
   ///
   /// Send message to game chat.
