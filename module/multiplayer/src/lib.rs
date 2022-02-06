@@ -1,3 +1,4 @@
+#[allow(non_camel_case_types)]
 pub mod generated;
 
 use time::OffsetDateTime;
@@ -52,7 +53,7 @@ impl MultiplayerMove {}
 #[derive(Debug)]
 pub struct MultiplayerGame
 {
-  id : String,
+  pub id : String,
   players : Vec<MultiplayerPlayer>,
 }
 
