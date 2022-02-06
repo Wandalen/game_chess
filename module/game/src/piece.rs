@@ -7,6 +7,7 @@
 
 use bevy::prelude::*;
 use game_chess_core as core;
+use crate::core::Piece;
 
 ///
 /// Piece texture atlas
@@ -57,7 +58,7 @@ pub fn pieces_setup(mut commands : Commands, asset_server : Res< AssetServer >, 
       let cell_index = size_in_cells.0 * y + x;
 
       let piece = game.piece_at(cell_index);
-      if !piece.is_none()
+      if piece != Piece::None
       {
         let texture_atlas = texture_atlas_handle.clone();
         let texture_id = piece_to_texture.get( &( piece.unwrap() as u8 ) ).unwrap();
