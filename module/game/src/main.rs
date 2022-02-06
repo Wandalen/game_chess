@@ -5,8 +5,9 @@
 //! Chess game implemented on Bevy for educational purpose.
 //!
 
+use bevy::math::Vec4Swizzles;
 use bevy::render::RenderSystem;
-use bevy::render::camera::camera_system;
+use bevy::render::camera::{camera_system, Camera};
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
@@ -15,6 +16,7 @@ use bevy::audio::AudioPlugin;
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
+pub mod highlight;
 pub mod piece;
 pub mod common;
 
@@ -29,6 +31,7 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
   /* camera */
   commands
     .spawn_bundle(camera::ChessCameraBundle::new())
+    .insert(bevy_interact_2d::InteractionSource::default())
     .insert(Timer::from_seconds(2.0, false));
 
 
@@ -66,6 +69,22 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
   }
 
   // diagnostics_rect( &mut commands, &mut materials );
+}
+
+
+///
+/// Convert cursor position to cell number
+/// If cursor is outside of the board, may return values below zero or above 7
+///
+
+pub fn cursor_to_cell(cursor_pos : Vec2, window_size : Vec2, projection_matrix : Mat4) -> Vec2
+{
+  let clip_pos = (cursor_pos / (window_size / 2.0)) - Vec2::splat(1.0);
+  let clip_pos_4 = clip_pos.extend(0.0).extend(1.0);
+  let world_pos_4 = projection_matrix.inverse() * clip_pos_4;
+
+  let world_pos = world_pos_4.xy() / world_pos_4.w;
+  ((world_pos + Vec2::splat(1.0)) * 4.0).floor()
 }
 
 ///
@@ -152,6 +171,32 @@ pub fn timer_setup(egui_context : Res<EguiContext>) {
 }
 
 ///
+/// System that highlights cells under the cursor
+///
+
+fn highlight_under_cursor(
+  windows : Res<Windows>,
+  interaction : Res<bevy_interact_2d::InteractionState>,
+  q_camera : Query<&Camera>,
+  mut highlight : ResMut<highlight::Highlight>,
+)
+{
+  //highlight.highlight((1, 2), Color::rgba(1.0, 1.0, 1.0, 0.3));
+
+  let window = windows.get_primary().unwrap();
+  let window_size = Vec2::new(window.width(), window.height());
+
+  let camera = q_camera.single().unwrap();
+  let cell = cursor_to_cell(interaction.last_cursor_position, window_size, camera.projection_matrix);
+
+  if cell.x < 8.0 && cell.y < 8.0 && cell.x >= 0.0 && cell.y >= 0.0
+  {
+    highlight.highlight((cell.x as u8, cell.y as u8), Color::rgba(1.0, 1.0, 1.0, 0.2));
+  }
+}
+
+
+///
 /// Main
 ///
 
@@ -186,6 +231,14 @@ fn main()
   app.add_plugin(AudioPlugin);
   #[cfg(not(target_arch = "wasm32"))]
   app.add_startup_system(loss.system());
+
+  app.add_plugin(bevy_interact_2d::InteractionPlugin);
+
+  /* highlighting */
+  app.add_system(highlight_under_cursor.system());
+  app.add_plugin(highlight::HighlightPlugin {
+    clear_on_each_frame : true,
+  });
 
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
