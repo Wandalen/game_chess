@@ -6,7 +6,7 @@
 //!
 
 use bevy::render::RenderSystem;
-use bevy::render::camera::camera_system;
+use bevy::render::camera::{camera_system, Camera};
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
@@ -14,6 +14,7 @@ use bevy::audio::AudioPlugin;
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
+pub mod highlight;
 pub mod piece;
 pub mod common;
 
@@ -178,6 +179,11 @@ fn main()
   /* sound */
   app.add_plugin(AudioPlugin);
   app.add_startup_system(loss.system());
+
+  /* highlighting */
+  app.add_plugin(highlight::HighlightPlugin {
+    clear_on_each_frame : true,
+  });
 
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
