@@ -10,6 +10,7 @@ use bevy::render::camera::camera_system;
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
+#[cfg(not(target_arch = "wasm32"))]
 use bevy::audio::AudioPlugin;
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
@@ -118,21 +119,25 @@ fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state 
   }
 }
 //Sounds
+#[cfg(not(target_arch = "wasm32"))]
 fn loss(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/horror.mp3");
-  audio_output.play(music); 
+  audio_output.play(music);
 }
+#[cfg(not(target_arch = "wasm32"))]
 fn win(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/Windless Slopes.ogg");
-  audio_output.play(music); 
+  audio_output.play(music);
 }
+#[cfg(not(target_arch = "wasm32"))]
 fn draw(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/sad_trombone.mp3");
-  audio_output.play(music); 
+  audio_output.play(music);
 }
+#[cfg(not(target_arch = "wasm32"))]
 fn movement(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/hit.mp3");
-  audio_output.play(music); 
+  audio_output.play(music);
 }
 
 ///
@@ -176,7 +181,10 @@ fn main()
   app.add_startup_system(board_setup.system());
 
   /* sound */
+
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(AudioPlugin);
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_startup_system(loss.system());
 
   /* escape on exit */
