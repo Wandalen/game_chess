@@ -187,6 +187,19 @@ impl Board
   }
 
   ///
+  /// Returns the piece located at the square
+  ///
+  pub fn piece_at( &self, sq : u8 ) -> Option< Piece >
+  {
+    let piece = self.pleco_board.piece_at_sq( Cell( sq ) );
+    match piece
+    {
+      Piece::None => None,
+      _ => Some( piece )
+    }
+  }
+
+  ///
   /// Evaluates the score of a [Board] for the current side to move.
   ///
   pub fn score(&self) -> i32
@@ -481,6 +494,14 @@ impl Game
       Some(h) => Some(h.last_move.clone()),
       _ => None,
     }
+  }
+
+  ///
+  /// Returns the piece located at the square
+  ///
+  pub fn piece_at( &self, sq : u8 ) -> Option< Piece >
+  {
+    self.board.piece_at( sq )
   }
 
   ///
