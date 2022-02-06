@@ -9,6 +9,8 @@ use bevy::render::RenderSystem;
 use bevy::render::camera::camera_system;
 use game_chess_core as core;
 use bevy::prelude::*;
+use bevy_egui::{egui, EguiContext};
+use bevy_egui::{EguiPlugin};
 use bevy::input::system::exit_on_esc_system;
 
 pub mod camera;
@@ -154,23 +156,55 @@ fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state 
 
 /// my struct
 
+pub fn setup_egui(egui_context : Res<EguiContext>, mut color_schema: ResMut<CellColorSchema>)
+{
+  // add fixated panel
+  egui::SidePanel::left("Menu")
+    .resizable(false)
+    //.default_width(SIDE_PANEL_WIDTH)
+    .show(egui_context.ctx(), |ui| {
+      ui.heading("1");
+      ui.horizontal(|ui|{
+        //let mut color_white = [0.,0.,0.,0.];
+        if ui.color_edit_button_rgba_unmultiplied(&mut color_schema.white).changed() {
+          //dbg!(color_white);
+        }
+      }); 
+    });
+}
+
 pub struct Cell;
 
 pub struct CellWhite;
 pub struct CellBlack;
 
+pub struct CellColorSchema {
+  pub white : [f32; 4],
+  pub black : [f32; 4] 
+}
 
-///
-/// Main
-///
+impl Default for CellColorSchema {
+    fn default() -> Self {
+        Self
+        {
+          white: [1.0, 0.5, 0.5, 1.],
+          black: [4.0, 0.2, 0.2, 1.]
+        }
+    }
+}
 
 fn main()
 {
   let mut app = App::build();
   /* default plugins */
   app.add_plugins(DefaultPlugins);
+
+  app.add_plugin(EguiPlugin);
+  app.add_system(setup_egui.system());
+
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
+  app.insert_resource(CellColorSchema::default());
   app.add_state(GameState::Init);
   app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
   /* setup core */
