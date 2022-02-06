@@ -189,10 +189,7 @@ impl Board
   ///
   /// Returns the piece located at the square
   ///
-  pub fn piece_at(&self, sq : u8) -> Piece
-  {
-    self.pleco_board.piece_at_sq(Cell(sq))
-  }
+  pub fn piece_at(&self, sq : u8) -> Piece { self.pleco_board.piece_at_sq(Cell(sq)) }
 
   ///
   /// Evaluates the score of a [Board] for the current side to move.

@@ -91,7 +91,7 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 /// Startup system for the game.
 ///
 
-pub fn core_setup(mut commands : Commands )
+pub fn core_setup(mut commands : Commands)
 {
   let mut game = core::Game::default();
   game.board_print();
