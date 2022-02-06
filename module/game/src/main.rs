@@ -15,10 +15,10 @@ pub mod camera;
 pub mod piece;
 
 ///
-/// Graphics setup.
+/// Board setup.
 ///
 
-pub fn graphics_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>> )
+pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>> )
 {
   /* camera */
   commands.spawn_bundle(camera::ChessCameraBundle::new());
@@ -115,8 +115,8 @@ fn main()
   app.add_startup_system(core_setup.system());
   /* setup pieces */
   app.add_startup_system(piece::pieces_setup.system());
-  /* setup graphics */
-  app.add_startup_system(graphics_setup.system());
+  /* setup board */
+  app.add_startup_system(board_setup.system());
   /* draw piece */
   app.add_system(piece::pieces_draw.system());
   /* escape on exit */
