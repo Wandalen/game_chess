@@ -184,7 +184,7 @@ fn highlight_under_cursor(
   let camera = q_camera.single().unwrap();
   let cell = cursor_to_cell(interaction.last_cursor_position, window_size, camera.projection_matrix);
 
-  if (cell.x as u8) < 8 && (cell.y as u8) < 8
+  if cell.x < 8.0 && cell.y < 8.0 && cell.x >= 0.0 && cell.y >= 0.0
   {
     highlight.highlight((cell.x as u8, cell.y as u8), Color::rgba(1.0, 1.0, 1.0, 0.2));
   }
