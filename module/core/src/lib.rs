@@ -187,11 +187,17 @@ impl Board
   }
 
   ///
+  /// Returns the piece located at the square
+  ///
+  pub fn piece_at(&self, sq : u8) -> Piece { self.pleco_board.piece_at_sq(Cell(sq)) }
+
+  ///
   /// Evaluates the score of a [Board] for the current side to move.
   ///
   pub fn score(&self) -> i32
   {
-    0
+    pleco::tools::eval::Eval::eval_low(&self.pleco_board)
+    //0
     /* ttt : implement me */
   }
 
@@ -303,7 +309,7 @@ pub fn move_der<'de, D : Deserializer<'de>>(d : D) -> Result<Move, D::Error>
 /// Status of the game
 ///
 
-#[derive(Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum GameStatus
 {
   /// The game is not finished, and the game is still in play.
@@ -312,6 +318,8 @@ pub enum GameStatus
   Checkmate,
   /// The game is drawn.
   Stalemate,
+  /// Forfeit
+  GG,
 }
 
 ///
@@ -325,6 +333,7 @@ pub struct Game
 {
   #[serde(serialize_with = "board_ser", deserialize_with = "board_der")]
   board : Board,
+  is_forfeited : bool,
   history : Vec<HistoryEntry>,
   #[cfg(not(target_arch = "wasm32"))]
   date : SystemTime, // unix timestamp
@@ -342,6 +351,7 @@ impl Game
     Self {
       board : Board::default(),
       history : Vec::new(),
+      is_forfeited : false,
 
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
@@ -350,13 +360,45 @@ impl Game
     }
   }
 
+  ///
+  /// Constructs a new game from FEN.
+  ///
+
+  pub fn from_fen(fen : &String) -> Self
+  {
+    Self {
+      board : Board::from_fen(fen),
+      history : Vec::new(),
+      is_forfeited : false,
+
+      #[cfg(not(target_arch = "wasm32"))]
+      date : SystemTime::now(),
+      #[cfg(target_arch = "wasm32")]
+      date : js_sys::Date::now(),
+    }
+  }
+
+  ///
+  /// Generates moves list.
+  ///
+
+  pub fn moves_list(&self) -> MoveList { self.board.pleco_board.generate_moves() }
+
   /* xxx : ? */
+
+  ///
+  /// Calling member board
+  ///
+
+  pub fn count_score(&self) -> i32 { self.board.score() }
 
   ///
   /// Makes a move on the board. Accepts move in UCI format. For example, "e2e4".
   /// Updates histort and returns `true` if move was succesfuly applied, otherwise returns `false`.
   /// The board and history are not changed in case of fail.
   ///
+
+
   pub fn make_move(&mut self, uci_move : UCI) -> bool
   {
     let new_board = self.board.make_move(uci_move);
@@ -398,10 +440,26 @@ impl Game
   pub fn board_print(&self) { self.board.print(); }
 
   ///
+  /// Prints history to the terminal.
+  ///
+  pub fn history_print(&self)
+  {
+    for mov in &self.history
+    {
+      println!("{}", mov.last_move);
+    }
+  }
+
+  ///
   /// Returns current game status as [GameStatus].
   ///
   pub fn status(&self) -> GameStatus
   {
+    if self.is_forfeited
+    {
+      return GameStatus::GG;
+    }
+
     if self.board.is_checkmate()
     {
       return GameStatus::Checkmate;
@@ -442,6 +500,11 @@ impl Game
   }
 
   ///
+  /// Returns the piece located at the square
+  ///
+  pub fn piece_at(&self, sq : u8) -> Piece { self.board.piece_at(sq) }
+
+  ///
   /// Saves game to file
   ///
   pub fn save(&self) -> std::io::Result<String>
@@ -461,6 +524,11 @@ impl Game
       Err(error) => Err(error),
     }
   }
+
+  ///
+  /// Gives ability to forfeit
+  ///
+  pub fn forfeit(&mut self) { self.is_forfeited = true }
 }
 
 ///

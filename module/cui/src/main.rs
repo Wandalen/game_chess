@@ -75,18 +75,24 @@ Commands minimal
 */
 
 use game_chess_core::*;
+#[allow(unused_imports)]
 use game_chess_client::*;
 
 ///
 /// Main. CLI game itself.
 ///
-
-pub fn main()
+#[tokio::main]
+pub async fn main()
 {
   let mut game : Option<Game> = None;
   let mut choice;
 
   command_help();
+
+  /* Dmytro : please, use it with command for network game */
+  // let _chess_client = chess_client::ChessClient::connect("http://[::1]:50051")
+  //   .await
+  //   .expect("Failed to connect to the Chess server");
 
   loop
   {
@@ -98,11 +104,16 @@ pub fn main()
     {
       ".game.new" => game = Some(command_game_new()),
       ".game.save" => command_game_save(&game),
+      ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
+      ".gg" => command_forfeit(&mut game),
+      ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
+      ".moves.history" | ".m.h" => command_moves_history(&game),
       ".quit" => command_exit(&game),
       ".help" => command_help(),
+      ".score" => command_score(&game),
       command => println!("Unknown command : {}\n", command),
     }
   }
@@ -122,9 +133,13 @@ pub fn command_help()
 
   println!(".game.new  => Create game with default board");
   println!(".game.save => Save game to file");
+  println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
+  println!(".gg        => Forfeit the game ");
+  println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
   println!(".status    => Print board, current turn, last move");
+  println!(".moves.history => Print moves history");
   println!(".quit      => Exit from the game");
   println!(".help      => Print this help");
 }
@@ -228,6 +243,99 @@ pub fn command_move(game : &mut Option<Game>)
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
+}
+
+///
+/// Command to forfeit.
+///
+
+pub fn command_forfeit(game : &mut Option<Game>)
+{
+  if game.is_none()
+  {
+    println!("Create a game first. Use command: .game.new");
+    return;
+  }
+
+  let uci_exit = wca::input::ask("Do you want to forfeit?");
+  match uci_exit.to_lowercase().trim()
+  {
+    "yes" =>
+    {
+      let game = game.as_mut().unwrap();
+      game.forfeit();
+
+      let player = game.current_turn();
+      println!("{:?} lose the game.", player);
+
+      println!("Exiting..");
+      std::process::exit(0);
+    }
+    _ => command_status(&game),
+  }
+}
+
+///
+/// Wrapper and control flow
+///
+
+pub fn command_score(game : &Option<Game>)
+{
+  match game
+  {
+    Some(g) => println!("{}", g.count_score()),
+    None => println!("Game not found"),
+  }
+}
+
+///
+/// Command to print moves history.
+///
+
+pub fn command_moves_history(game : &Option<Game>)
+{
+  println!();
+  if game.is_none()
+  {
+    println!("There is no history yet");
+    return;
+  }
+
+  game.as_ref().unwrap().history_print();
+}
+
+///
+/// Command to print available moves
+///
+
+pub fn command_moves_list(game : &Option<Game>)
+{
+  if game.is_none()
+  {
+    println!("Create a game first. Use command: .game.new");
+    return;
+  }
+
+  let game = game.as_ref().unwrap();
+  let moves_list = game.moves_list();
+  for legal_move in moves_list
+  {
+    println!("{}", legal_move.to_string());
+  }
+}
+
+///
+/// Load game from FEN
+///
+
+pub fn command_game_from_fen() -> Game
+{
+  let line = wca::input::ask("Input FEN");
+  let game = Game::from_fen(&line);
+  println!("");
+  game.board_print();
+  println!("Turn of {}", game.current_turn());
+  game
 }
 
 ///
