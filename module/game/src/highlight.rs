@@ -83,7 +83,7 @@ fn setup_highlight(mut cmd : Commands, mut highlight : ResMut<Highlight>, mut ma
       let material = materials.add(ColorMaterial::color(Color::rgb(0.9, 0.0, 0.0)));
 
       let transform = Transform {
-        translation : Vec3::new((x as f32) * size - delta, (y as f32) * size - delta, 1.0),
+        translation : Vec3::new((x as f32) * size - delta, (y as f32) * size - delta, 0.5),
         ..Default::default()
       };
 
