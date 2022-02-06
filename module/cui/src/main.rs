@@ -251,6 +251,12 @@ pub fn command_move(game : &mut Option<Game>)
 
 pub fn command_forfeit(game : &mut Option<Game>)
 {
+  if game.is_none()
+  {
+    println!("Create a game first. Use command: .game.new");
+    return;
+  }
+
   let uci_exit = wca::input::ask("Do you want to forfeit?");
   match uci_exit.to_lowercase().trim()
   {
