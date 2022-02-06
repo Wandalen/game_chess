@@ -41,6 +41,7 @@ name = "game"
 path = "./src/main.rs"
 
 [dependencies]
+bevy_interact_2d = "0.5.3"
 game_chess_core = { package = "game_chess_core", version = "~0.0", path = "../core" }
 bevy_egui = "0.9.0"
 
