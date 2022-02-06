@@ -187,6 +187,11 @@ impl Board
   }
 
   ///
+  /// Returns the piece located at the square
+  ///
+  pub fn piece_at(&self, sq : u8) -> Piece { self.pleco_board.piece_at_sq(Cell(sq)) }
+
+  ///
   /// Evaluates the score of a [Board] for the current side to move.
   ///
   pub fn score(&self) -> i32
@@ -364,7 +369,7 @@ impl Game
     Self {
       board : Board::from_fen(fen),
       history : Vec::new(),
-      is_forfeited: false,
+      is_forfeited : false,
 
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
@@ -377,9 +382,7 @@ impl Game
   /// Generates moves list.
   ///
 
-  pub fn moves_list(&self) -> MoveList {
-    self.board.pleco_board.generate_moves()
-  }
+  pub fn moves_list(&self) -> MoveList { self.board.pleco_board.generate_moves() }
 
   /* xxx : ? */
 
@@ -497,6 +500,11 @@ impl Game
   }
 
   ///
+  /// Returns the piece located at the square
+  ///
+  pub fn piece_at(&self, sq : u8) -> Piece { self.board.piece_at(sq) }
+
+  ///
   /// Saves game to file
   ///
   pub fn save(&self) -> std::io::Result<String>
@@ -520,9 +528,7 @@ impl Game
   ///
   /// Gives ability to forfeit
   ///
-  pub fn forfeit(&mut self) {
-    self.is_forfeited = true
-  }
+  pub fn forfeit(&mut self) { self.is_forfeited = true }
 }
 
 ///

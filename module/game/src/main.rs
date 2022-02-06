@@ -14,13 +14,16 @@ use bevy::input::system::exit_on_esc_system;
 pub mod camera;
 
 ///
-/// Graphics setup.
+/// Board setup.
 ///
 
-pub fn graphics_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
+pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
 {
   /* camera */
-  commands.spawn_bundle(camera::ChessCameraBundle::new());
+  commands
+    .spawn_bundle(camera::ChessCameraBundle::new())
+    .insert(Timer::from_seconds(2.0, false));
+
 
   let size_in_cells = (8, 8);
 
@@ -88,12 +91,13 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 /// Startup system for the game.
 ///
 
-pub fn core_setup()
+pub fn core_setup(mut commands : Commands)
 {
   let mut game = core::Game::default();
   game.board_print();
   game.make_move("a2a4".into());
   game.board_print();
+  commands.insert_resource(game);
 }
 
 ///
@@ -107,10 +111,10 @@ fn main()
   app.add_plugins(DefaultPlugins);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
-  /* setup core */
+  /* setup board */
   app.add_startup_system(core_setup.system());
-  /* setup graphics */
-  app.add_startup_system(graphics_setup.system());
+  app.add_startup_system(board_setup.system());
+  /* setup core */
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(
