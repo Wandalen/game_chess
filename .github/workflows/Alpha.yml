@@ -54,3 +54,16 @@ jobs :
   #         target_branch : beta
   #         commit_message_template : 'Merge {source_ref} into {target_branch} [Automated]'
 
+
+  forward :
+    # needs: [ desktop, web ]
+    needs: [ desktop ]
+    runs-on : ubuntu-latest
+    steps :
+      - name: Automerge
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+          number: ${{ github.event.number }}
+          method: merge
+
