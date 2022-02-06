@@ -10,6 +10,7 @@ use bevy::render::camera::camera_system;
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
+use bevy::audio::AudioPlugin;
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
@@ -116,6 +117,23 @@ fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state 
     game_state.set(GameState::GameNew).unwrap();
   }
 }
+//Sounds
+fn loss(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/horror.mp3");
+  audio_output.play(music); 
+}
+fn win(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/Windless Slopes.ogg");
+  audio_output.play(music); 
+}
+fn draw(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/sad_trombone.mp3");
+  audio_output.play(music); 
+}
+fn movement(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/hit.mp3");
+  audio_output.play(music); 
+}
 
 ///
 /// Timer setup
@@ -156,6 +174,11 @@ fn main()
   app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
   /* setup board */
   app.add_startup_system(board_setup.system());
+
+  /* sound */
+  app.add_plugin(AudioPlugin);
+  app.add_startup_system(loss.system());
+
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(
