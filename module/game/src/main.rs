@@ -27,17 +27,18 @@ pub fn color_change
 (
   mut materials: ResMut<Assets<ColorMaterial>>,
    query_white: Query<&Handle<ColorMaterial>, With<CellWhite>>,
-   query_black: Query<&Handle<ColorMaterial>, With<CellBlack>>) 
+   query_black: Query<&Handle<ColorMaterial>, With<CellBlack>>, 
+    color_schema: Res<CellColorSchema>) 
     {
  
   for handle in query_white.iter() {
     let mut material = materials.get_mut(handle).unwrap();
-    material.color = Color::rgb(0.9, 0.0, 0.0);
+    material.color = Color::rgb(color_schema.white[0],color_schema.white[1], color_schema.white[2]);
   }
 
   for handle in query_black.iter() {
     let mut material = materials.get_mut(handle).unwrap();
-    material.color = Color::rgb(0.7, 1.0, 1.0);
+    material.color = Color::rgb(color_schema.black[0],color_schema.black[1], color_schema.black[2]);
   }
   /*commands.insert_resource(Materials {
   _white : materials.add(ColorMaterial::color(Color::rgb(0.9, 0.0, 0.0)));
