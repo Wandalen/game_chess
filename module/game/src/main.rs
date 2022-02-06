@@ -10,6 +10,7 @@ use bevy::render::camera::camera_system;
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
+use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
 pub mod piece;
@@ -103,6 +104,24 @@ pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
   game_state.set(GameState::GameStart).unwrap();
 }
 
+pub fn menu_setup(mut commands : Commands, mut game_state : ResMut<State<GameState>>, egui_context : ResMut<EguiContext>)
+{
+  egui::Window::new("Menu").show(egui_context.ctx(), |ui| {
+    let button = ui.button("Start Game");
+    if button.clicked()
+    {
+      game_state.set(GameState::GameNew);
+    }
+  });
+  // let mut game = core::Game::default();
+  // game.board_print();
+  // game.make_move("a2a4".into());
+  // game.board_print();
+  // commands.insert_resource(game);
+
+  // game_state.set(GameState::GameStart).unwrap();
+}
+
 ///
 /// Game state enum
 ///
@@ -137,17 +156,19 @@ fn main()
   let mut app = App::build();
   /* default plugins */
   app.add_plugins(DefaultPlugins);
+  app.add_plugin(EguiPlugin);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
   app.add_state(GameState::Init);
 
   /* setup core */
+  app.add_system_set(SystemSet::on_update(GameState::Init).with_system(menu_setup.system()));
   app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup.system()));
   app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
   /* setup board */
   app.add_startup_system(board_setup.system());
 
-  app.add_system(timer_system.system());
+  // app.add_system(timer_system.system());
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(

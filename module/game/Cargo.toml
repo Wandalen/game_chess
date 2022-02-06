@@ -15,26 +15,21 @@ homepage = "https://github.com/Wandalen/game_chess/"
 description = """
 Chess game implemented on Bevy for educational purpose.
 """
-categories = [ "game-development", "games" ]
-keywords = [ "chess", "gamedev" ]
-include = [
-  "/src",
-  "/Cargo.toml",
-  "/Readme.md",
-  "/License",
-]
+categories = ["game-development", "games"]
+keywords = ["chess", "gamedev"]
+include = ["/src", "/Cargo.toml", "/Readme.md", "/License"]
 default-run = "game"
 
 [features]
-fast_build = [ "bevy/dynamic" ]
-web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
+fast_build = ["bevy/dynamic"]
+web = ["bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png"]
 gui = []
-default = [ "gui" ]
+default = ["gui"]
 
 [[bin]]
 name = "game_web"
 path = "./src/main.rs"
-required-features = [ "web" ]
+required-features = ["web"]
 
 [[bin]]
 name = "game"
@@ -42,6 +37,7 @@ path = "./src/main.rs"
 
 [dependencies]
 game_chess_core = { package = "game_chess_core", version = "~0.0", path = "../core" }
+bevy_egui = "0.8.0"
 
 [target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
 bevy = { version = "0.5" }

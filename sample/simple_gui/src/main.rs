@@ -37,6 +37,9 @@ fn setup(egui_context : Res<EguiContext>)
   // initialize Egui window
   egui::Window::new("Menu").show(egui_context.ctx(), |ui| {
     // add labels inside Egui window
+    let button = ui.button("Start Game");
+    if button.clicked()
+    {}
     ui.label("Game");
     ui.label("Options ");
   });
