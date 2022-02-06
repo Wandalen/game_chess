@@ -11,7 +11,7 @@ use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
 use bevy::audio::AudioPlugin;
-
+use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
 pub mod piece;
@@ -136,6 +136,17 @@ fn movement(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
 }
 
 ///
+/// Timer setup
+///
+
+pub fn timer_setup(egui_context : Res<EguiContext>) {
+  egui::Window::new("Timer").show(egui_context.ctx(), |ui| {
+    // add labels inside Egui window
+    ui.label("Time: 00:00.00");
+  });
+}
+
+///
 /// Main
 ///
 
@@ -146,6 +157,16 @@ fn main()
   app.add_plugins(DefaultPlugins);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
+  /* timer gui */
+  app.insert_resource( WindowDescriptor {
+    title : "Timer GUI".to_string(),
+    width : 100.,
+    height : 20.,
+    resizable : true,
+    ..Default::default()
+  });
+  /* timer */
+  app.add_system(timer_setup.system()).add_plugin(EguiPlugin);
   app.add_state(GameState::Init);
   app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
   /* setup core */
@@ -153,6 +174,7 @@ fn main()
   app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
   /* setup board */
   app.add_startup_system(board_setup.system());
+
   /* sound */
   app.add_plugin(AudioPlugin);
   app.add_startup_system(loss.system());
