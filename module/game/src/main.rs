@@ -13,6 +13,10 @@ use bevy::input::system::exit_on_esc_system;
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
+pub mod piece;
+pub mod common;
+
+use common::GameState;
 
 ///
 /// Board setup.
@@ -92,13 +96,25 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 /// Startup system for the game.
 ///
 
-pub fn core_setup(mut commands : Commands)
+pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameState>>)
 {
   let mut game = core::Game::default();
   game.board_print();
   game.make_move("a2a4".into());
   game.board_print();
   commands.insert_resource(game);
+
+  game_state.set(GameState::GameStart).unwrap();
+}
+
+fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
+{
+  let mut timer = query.single_mut().unwrap();
+  timer.tick(time.delta());
+  if timer.finished()
+  {
+    game_state.set(GameState::GameNew).unwrap();
+  }
 }
 
 ///
@@ -131,12 +147,15 @@ fn main()
     resizable : true,
     ..Default::default()
   });
-  /* setup board */
-  app.add_startup_system(core_setup.system());
-  /* setup core */
-  app.add_startup_system(board_setup.system());
   /* timer */
   app.add_system(timer_setup.system()).add_plugin(EguiPlugin);
+  app.add_state(GameState::Init);
+  app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
+  /* setup core */
+  app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup.system()));
+  app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
+  /* setup board */
+  app.add_startup_system(board_setup.system());
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(

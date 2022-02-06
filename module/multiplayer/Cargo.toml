@@ -21,6 +21,7 @@ keywords = [ "chess", "gamedev" ]
 time = "~0.3"
 tonic = "~0.6"
 prost = "~0.9"
+game_chess_core = {path="../core"}
 
 [build-dependencies]
 tonic-build = "~0.6"
