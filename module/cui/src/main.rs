@@ -107,6 +107,7 @@ pub async fn main()
       ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
+      ".moves.history" | ".m.h" => command_moves_history(&game),
       ".quit" => command_exit(&game),
       ".help" => command_help(),
       command => println!("Unknown command : {}\n", command),
@@ -133,6 +134,7 @@ pub fn command_help()
   println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
   println!(".status    => Print board, current turn, last move");
+  println!(".moves.history => Print moves history");
   println!(".quit      => Exit from the game");
   println!(".help      => Print this help");
 }
@@ -236,6 +238,20 @@ pub fn command_move(game : &mut Option<Game>)
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
+}
+
+///
+/// Command to print moves history.
+///
+
+pub fn command_moves_history(game: &Option<Game>) {
+  println!();
+  if game.is_none() {
+    println!("There is no history yet");
+    return;
+  }
+
+  game.as_ref().unwrap().history_print();
 }
 
 ///

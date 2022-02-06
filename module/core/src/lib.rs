@@ -421,6 +421,15 @@ impl Game
   pub fn board_print(&self) { self.board.print(); }
 
   ///
+  /// Prints history to the terminal.
+  ///
+  pub fn history_print(&self) {
+    for mov in &self.history {
+      println!("{}", mov.last_move);
+    }
+  }
+
+  ///
   /// Returns current game status as [GameStatus].
   ///
   pub fn status(&self) -> GameStatus
