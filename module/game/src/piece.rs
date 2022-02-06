@@ -60,7 +60,8 @@ pub fn pieces_setup(
         let sprite = TextureAtlasSprite::new(*texture_id as u32);
 
         let transform = Transform {
-          translation : Vec3::new((x as f32) * size - delta, (y as f32) * size - delta, 0.0),
+          translation : Vec3::new((x as f32) * size - delta, (y as f32) * size - delta, 1.0),
+
           scale : Vec3::new(piece_scale, piece_scale, 1.0),
           ..Default::default()
         };

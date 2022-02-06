@@ -4,7 +4,9 @@ pub mod generated;
 use time::OffsetDateTime;
 
 use game_chess_core::GameStatus;
+
 pub use generated::chess::{Msg, MultiplayerGame};
+
 
 ///
 /// Message.
