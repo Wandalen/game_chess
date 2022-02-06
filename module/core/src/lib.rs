@@ -352,6 +352,14 @@ impl Game
   }
 
   ///
+  /// Generates moves list.
+  ///
+  
+  pub fn moves_list(&self) -> MoveList {
+    self.board.pleco_board.generate_moves()
+  }
+
+  ///
   /// Constructs a new game from FEN.
   ///
   pub fn from_fen(fen: &String) -> Self {
@@ -422,6 +430,15 @@ impl Game
   /// Prints board to the terminal.
   ///
   pub fn board_print(&self) { self.board.print(); }
+
+  ///
+  /// Prints history to the terminal.
+  ///
+  pub fn history_print(&self) {
+    for mov in &self.history {
+      println!("{}", mov.last_move);
+    }
+  }
 
   ///
   /// Returns current game status as [GameStatus].
