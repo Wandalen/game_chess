@@ -16,7 +16,9 @@ enum HighlightCommand
 }
 
 ///
+/// Resource responsible for highlighting cells
 ///
+
 #[derive(Debug)]
 pub struct Highlight
 {
@@ -46,6 +48,7 @@ struct HighlightEntity;
 #[derive(Debug)]
 pub struct HighlightPlugin
 {
+  /// If true, highlighing is removed on each frame
   pub clear_on_each_frame : bool,
 }
 impl Plugin for HighlightPlugin

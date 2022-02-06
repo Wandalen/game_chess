@@ -70,6 +70,12 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
   // diagnostics_rect( &mut commands, &mut materials );
 }
 
+
+///
+/// Convert cursor position to cell number
+/// If cursor is outside of the board, may return values below zero or above 7
+///
+
 pub fn cursor_to_cell(cursor_pos : Vec2, window_size : Vec2, projection_matrix : Mat4) -> Vec2
 {
   let clip_pos = (cursor_pos / (window_size / 2.0)) - Vec2::splat(1.0);
@@ -159,6 +165,10 @@ pub fn timer_setup(egui_context : Res<EguiContext>) {
   });
 }
 
+///
+/// System that highlights cells under the cursor
+///
+
 fn highlight_under_cursor(
   windows : Res<Windows>,
   interaction : Res<bevy_interact_2d::InteractionState>,
@@ -216,6 +226,8 @@ fn main()
 
   /* highlighting */
   app.add_plugin(bevy_interact_2d::InteractionPlugin);
+
+  /* setup highlighting */
   app.add_system(highlight_under_cursor.system());
   app.add_plugin(highlight::HighlightPlugin {
     clear_on_each_frame : true,
