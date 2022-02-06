@@ -354,18 +354,17 @@ impl Game
   ///
   /// Generates moves list.
   ///
-  
-  pub fn moves_list(&self) -> MoveList {
-    self.board.pleco_board.generate_moves()
-  }
+
+  pub fn moves_list(&self) -> MoveList { self.board.pleco_board.generate_moves() }
 
   ///
   /// Constructs a new game from FEN.
   ///
-  pub fn from_fen(fen: &String) -> Self {
+  pub fn from_fen(fen : &String) -> Self
+  {
     Self {
-      board: Board::from_fen(fen),
-      history: Vec::new(),
+      board : Board::from_fen(fen),
+      history : Vec::new(),
 
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
@@ -376,13 +375,11 @@ impl Game
 
   /* xxx : ? */
 
-///
-/// Calling member board
-/// 
-  
-  pub fn count_score(&self) -> i32 {
-    self.board.score()
-  }
+  ///
+  /// Calling member board
+  ///
+
+  pub fn count_score(&self) -> i32 { self.board.score() }
 
   ///
   /// Makes a move on the board. Accepts move in UCI format. For example, "e2e4".
@@ -434,8 +431,10 @@ impl Game
   ///
   /// Prints history to the terminal.
   ///
-  pub fn history_print(&self) {
-    for mov in &self.history {
+  pub fn history_print(&self)
+  {
+    for mov in &self.history
+    {
       println!("{}", mov.last_move);
     }
   }

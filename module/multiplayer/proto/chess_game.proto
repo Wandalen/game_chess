@@ -17,8 +17,10 @@ service Chess
   rpc pull_game_updates (GameId) returns (stream GameUpdate);
 }
 
-message GameUpdate {
-  oneof game_update {
+message GameUpdate
+{
+  oneof game_update
+  {
     GameMove game_move = 1;
     GameEnd game_end = 2;
     // TODO: refactor chat messages to use streams when they are ready.
