@@ -304,7 +304,7 @@ pub fn move_der<'de, D : Deserializer<'de>>(d : D) -> Result<Move, D::Error>
 /// Status of the game
 ///
 
-#[derive(Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum GameStatus
 {
   /// The game is not finished, and the game is still in play.
@@ -313,6 +313,8 @@ pub enum GameStatus
   Checkmate,
   /// The game is drawn.
   Stalemate,
+  /// Forfeit
+  GG,
 }
 
 ///
@@ -326,6 +328,7 @@ pub struct Game
 {
   #[serde(serialize_with = "board_ser", deserialize_with = "board_der")]
   board : Board,
+  is_forfeited : bool,
   history : Vec<HistoryEntry>,
   #[cfg(not(target_arch = "wasm32"))]
   date : SystemTime, // unix timestamp
@@ -343,6 +346,25 @@ impl Game
     Self {
       board : Board::default(),
       history : Vec::new(),
+      is_forfeited : false,
+
+      #[cfg(not(target_arch = "wasm32"))]
+      date : SystemTime::now(),
+      #[cfg(target_arch = "wasm32")]
+      date : js_sys::Date::now(),
+    }
+  }
+
+  ///
+  /// Constructs a new game from FEN.
+  ///
+
+  pub fn from_fen(fen : &String) -> Self
+  {
+    Self {
+      board : Board::from_fen(fen),
+      history : Vec::new(),
+      is_forfeited: false,
 
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
@@ -355,22 +377,8 @@ impl Game
   /// Generates moves list.
   ///
 
-  pub fn moves_list(&self) -> MoveList { self.board.pleco_board.generate_moves() }
-
-  ///
-  /// Constructs a new game from FEN.
-  ///
-  pub fn from_fen(fen : &String) -> Self
-  {
-    Self {
-      board : Board::from_fen(fen),
-      history : Vec::new(),
-
-      #[cfg(not(target_arch = "wasm32"))]
-      date : SystemTime::now(),
-      #[cfg(target_arch = "wasm32")]
-      date : js_sys::Date::now(),
-    }
+  pub fn moves_list(&self) -> MoveList {
+    self.board.pleco_board.generate_moves()
   }
 
   /* xxx : ? */
@@ -444,6 +452,11 @@ impl Game
   ///
   pub fn status(&self) -> GameStatus
   {
+    if self.is_forfeited
+    {
+      return GameStatus::GG;
+    }
+
     if self.board.is_checkmate()
     {
       return GameStatus::Checkmate;
@@ -502,6 +515,13 @@ impl Game
       Ok(_) => Ok(filename),
       Err(error) => Err(error),
     }
+  }
+
+  ///
+  /// Gives ability to forfeit
+  ///
+  pub fn forfeit(&mut self) {
+    self.is_forfeited = true
   }
 }
 
