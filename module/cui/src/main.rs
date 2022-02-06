@@ -80,13 +80,17 @@ use game_chess_client::*;
 ///
 /// Main. CLI game itself.
 ///
-
-pub fn main()
+#[tokio::main]
+pub async fn main()
 {
   let mut game : Option<Game> = None;
   let mut choice;
 
   command_help();
+
+  let _chess_client = chess_client::ChessClient::connect("http://[::1]:50051")
+    .await
+    .expect("Failed to connect to the Chess server");
 
   loop
   {
