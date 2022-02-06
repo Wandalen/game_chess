@@ -292,7 +292,7 @@ pub fn command_score(game : &Option<Game>)
 /// Command to print moves history.
 ///
 
-pub fn command_moves_history(game: &Option<Game>)
+pub fn command_moves_history(game : &Option<Game>)
 {
   println!();
   if game.is_none()

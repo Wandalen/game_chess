@@ -18,7 +18,7 @@ pub mod piece;
 /// Board setup.
 ///
 
-pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>> )
+pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
 {
   /* camera */
   commands.spawn_bundle(camera::ChessCameraBundle::new());
@@ -89,13 +89,13 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 /// Startup system for the game.
 ///
 
-pub fn core_setup( mut commands : Commands )
+pub fn core_setup(mut commands : Commands)
 {
   let mut game = core::Game::default();
   game.board_print();
   game.make_move("a2a4".into());
   game.board_print();
-  commands.insert_resource( game );
+  commands.insert_resource(game);
 }
 
 ///
