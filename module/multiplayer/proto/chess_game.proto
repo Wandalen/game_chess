@@ -53,7 +53,7 @@ message GameState
 {
   string game_id = 1;
   repeated Player players = 2;
-  Blank game_state = 3;
+  string game_status = 3;
 }
 
 message Board
@@ -62,9 +62,24 @@ message Board
   Blank board_state = 2;
 }
 
+message MultiplayerGame {
+  string id = 1;
+  repeated GamePlayer players = 2;
+  enum GameStatus {
+    Continuing = 0;
+    /// The game has the winner.
+    Checkmate = 1;
+    /// The game is drawn.
+    Stalemate = 2;
+    /// The player given up.
+    Givenup = 3;
+  }
+  GameStatus status = 3;
+}
+
 message Games
 {
-  // ?
+  repeated MultiplayerGame games = 1;
 }
 
 message GameMove

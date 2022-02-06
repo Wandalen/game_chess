@@ -3,6 +3,9 @@ pub mod generated;
 
 use time::OffsetDateTime;
 
+use game_chess_core::GameStatus;
+pub use generated::chess::MultiplayerGame;
+
 ///
 /// Message.
 ///
@@ -44,17 +47,5 @@ pub struct MultiplayerMove
 }
 
 impl MultiplayerMove {}
-
-///
-/// Multiplayer game.
-///
-
-#[allow(dead_code)]
-#[derive(Debug)]
-pub struct MultiplayerGame
-{
-  pub id : String,
-  players : Vec<MultiplayerPlayer>,
-}
 
 impl MultiplayerGame {}
