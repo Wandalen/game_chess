@@ -56,6 +56,33 @@ pub fn graphics_setup(mut commands : Commands, mut materials : ResMut<Assets<Col
     }
   }
 
+  // diagnostics_rect( &mut commands, &mut materials );
+}
+
+///
+/// Add sprite of size 2x2 for diagnostics purpose. The sprite should cover central zone of window.
+///
+
+pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets<ColorMaterial>>)
+{
+  let red = materials.add(ColorMaterial::color(Color::rgb(0.9, 0.2, 0.2)));
+
+  let sprite = Sprite {
+    size : Vec2::new(2., 2.),
+    ..Default::default()
+  };
+
+  let transform = Transform {
+    translation : Vec3::new(0.0, 0.0, 0.0),
+    ..Default::default()
+  };
+
+  commands.spawn_bundle(SpriteBundle {
+    sprite,
+    material : red,
+    transform,
+    ..Default::default()
+  });
 }
 
 ///
