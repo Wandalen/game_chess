@@ -14,6 +14,32 @@ use bevy::input::system::exit_on_esc_system;
 pub mod camera;
 pub mod piece;
 
+/// mut material  359
+/// My color change
+/// 
+
+pub fn color_change
+(
+  mut materials: ResMut<Assets<ColorMaterial>>,
+   query_white: Query<&Handle<ColorMaterial>, With<CellWhite>>,
+   query_black: Query<&Handle<ColorMaterial>, With<CellBlack>>) 
+    {
+ 
+  for handle in query_white.iter() {
+    let mut material = materials.get_mut(handle).unwrap();
+    material.color = Color::rgb(0.9, 0.0, 0.0);
+  }
+
+  for handle in query_black.iter() {
+    let mut material = materials.get_mut(handle).unwrap();
+    material.color = Color::rgb(0.7, 1.0, 1.0);
+  }
+  /*commands.insert_resource(Materials {
+  _white : materials.add(ColorMaterial::color(Color::rgb(0.9, 0.0, 0.0)));
+  _black : materials.add(ColorMaterial::color(Color::rgb(0.2, 0.8, 0.8)));
+  });*/
+}
+
 ///
 /// Board setup.
 ///
@@ -38,7 +64,8 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
   {
     for y in 0 .. size_in_cells.1
     {
-      let material = if (x + y) % 2 == 0 { black.clone() } else { white.clone() };
+      let isBlack = (x + y) % 2 == 0;
+      let  material = if isBlack { black.clone() } else { white.clone() };
 
       let sprite = Sprite {
         size : Vec2::new(size, size),
@@ -50,12 +77,21 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
         ..Default::default()
       };
 
+      let mut cell =
       commands.spawn_bundle(SpriteBundle {
         sprite,
         material,
         transform,
         ..Default::default()
-      });
+      }); //.insert(Cell)
+
+      cell.insert(Cell);
+      if isBlack {
+        cell.insert(CellBlack);
+      }
+      else {
+        cell.insert(CellWhite);
+      }
     }
   }
 
@@ -128,6 +164,14 @@ fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state 
   }
 }
 
+/// my struct
+
+pub struct Cell;
+
+pub struct CellWhite;
+pub struct CellBlack;
+
+
 ///
 /// Main
 ///
@@ -150,6 +194,9 @@ fn main()
   app.add_system(timer_system.system());
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
+
+  app.add_system(color_change.system());
+
   app.add_system_to_stage(
     CoreStage::PostUpdate,
     camera_system::<camera::ChessProjection>
