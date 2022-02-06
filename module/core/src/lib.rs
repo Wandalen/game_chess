@@ -154,11 +154,45 @@ impl Board
   }
 
   ///
+  /// Looks for a move that results in the best board state for the current player and applies it
+  ///
+  pub fn make_move_ai(&mut self)
+  {
+    let turn = self.pleco_board.turn();
+
+    let best_move = self
+      .pleco_board
+      .generate_moves()
+      .into_iter()
+      .map(|m| {
+        self.pleco_board.apply_move(m);
+        let score = pleco::tools::eval::Eval::eval_low(&self.pleco_board);
+        self.pleco_board.undo_move();
+        (m, score)
+      })
+      .max_by(|(_, a), (_, b)| {
+        if turn == Player::Black
+        {
+          a.cmp(b)
+        }
+        else
+        {
+          b.cmp(a)
+        }
+      })
+      .unwrap()
+      .0;
+
+    self.pleco_board.apply_move(best_move);
+  }
+
+  ///
   /// Evaluates the score of a [Board] for the current side to move.
   ///
   pub fn score(&self) -> i32
   {
-    0
+    pleco::tools::eval::Eval::eval_low(&self.pleco_board)
+    //0
     /* ttt : implement me */
   }
 
@@ -317,13 +351,43 @@ impl Game
     }
   }
 
+  ///
+  /// Generates moves list.
+  ///
+
+  pub fn moves_list(&self) -> MoveList { self.board.pleco_board.generate_moves() }
+
+  ///
+  /// Constructs a new game from FEN.
+  ///
+  pub fn from_fen(fen : &String) -> Self
+  {
+    Self {
+      board : Board::from_fen(fen),
+      history : Vec::new(),
+
+      #[cfg(not(target_arch = "wasm32"))]
+      date : SystemTime::now(),
+      #[cfg(target_arch = "wasm32")]
+      date : js_sys::Date::now(),
+    }
+  }
+
   /* xxx : ? */
+
+  ///
+  /// Calling member board
+  ///
+
+  pub fn count_score(&self) -> i32 { self.board.score() }
 
   ///
   /// Makes a move on the board. Accepts move in UCI format. For example, "e2e4".
   /// Updates histort and returns `true` if move was succesfuly applied, otherwise returns `false`.
   /// The board and history are not changed in case of fail.
   ///
+
+
   pub fn make_move(&mut self, uci_move : UCI) -> bool
   {
     let new_board = self.board.make_move(uci_move);
@@ -341,6 +405,20 @@ impl Game
   }
 
   ///
+  /// Looks for a move that results in the best board state for the current player and applies it.
+  /// Updates history with the applied move.
+  ///
+  pub fn make_move_ai(&mut self)
+  {
+    self.board.make_move_ai();
+    let last_move = self.board.last_move().unwrap();
+    self.history.push(HistoryEntry {
+      fen : self.board.to_fen(),
+      last_move,
+    });
+  }
+
+  ///
   /// Return the [Player] whose turn it is to move.
   ///
   pub fn current_turn(&self) -> Player { self.board.current_turn() }
@@ -349,6 +427,17 @@ impl Game
   /// Prints board to the terminal.
   ///
   pub fn board_print(&self) { self.board.print(); }
+
+  ///
+  /// Prints history to the terminal.
+  ///
+  pub fn history_print(&self)
+  {
+    for mov in &self.history
+    {
+      println!("{}", mov.last_move);
+    }
+  }
 
   ///
   /// Returns current game status as [GameStatus].

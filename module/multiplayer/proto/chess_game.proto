@@ -14,7 +14,17 @@ service Chess
   rpc pull_games_list (google.protobuf.Empty) returns (Games);
   rpc push_game_gg (GamePlayer) returns (google.protobuf.Empty);
   rpc push_mgs (Msg) returns (google.protobuf.Empty);
-  rpc pull_msgs (GameId) returns (Msgs);
+  rpc pull_game_updates (GameId) returns (stream GameUpdate);
+}
+
+message GameUpdate
+{
+  oneof game_update
+  {
+    GameMove game_move = 1;
+    GameEnd game_end = 2;
+    // TODO: refactor chat messages to use streams when they are ready.
+  }
 }
 
 message Blank
@@ -62,6 +72,14 @@ message GameMove
   string game_id = 1;
   string player_id = 2;
   Blank move = 3;
+}
+
+message GameEnd
+{
+  // Can be empty if it's a draw.
+  string winner_id = 1;
+  // Draw, Player won, Surrender.
+  string reason = 2;
 }
 
 message AcceptGame
