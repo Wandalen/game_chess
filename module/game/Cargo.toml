@@ -42,6 +42,8 @@ path = "./src/main.rs"
 
 [dependencies]
 game_chess_core = { package = "game_chess_core", version = "~0.0", path = "../core" }
+# Fork with a bug-fix: https://github.com/mvlabat/bevy_rei/commit/7d65492628a6dad3a50b2044d90d36fd5b8ea0f0
+bevy_interact_2d = { git = "https://github.com/mvlabat/bevy_rei.git" }
 
 [target.'cfg( not ( target_arch = "wasm32" ) )'.dependencies]
 bevy = { version = "0.5" }

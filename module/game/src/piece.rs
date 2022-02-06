@@ -7,6 +7,7 @@
 
 use bevy::prelude::*;
 use game_chess_core as core;
+use bevy_interact_2d::{Group, Interactable, InteractionPlugin, InteractionSource};
 
 type PieceToTexture = std::collections::HashMap<u8, u8>;
 
@@ -72,7 +73,10 @@ pub fn pieces_setup(
           ..Default::default()
         };
 
-        commands.spawn_bundle(piece);
+        commands.spawn_bundle(piece).insert(Interactable {
+          groups: vec![Group(1)],
+          bounding_box: (Vec2::splat(-size / 2.0), Vec2::splat(size / 2.0)),
+        });
       }
     }
   }

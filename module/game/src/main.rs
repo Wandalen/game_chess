@@ -6,7 +6,7 @@
 //!
 
 use bevy::render::RenderSystem;
-use bevy::render::camera::camera_system;
+use bevy::render::camera::{Camera, camera_system};
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
@@ -14,8 +14,11 @@ use bevy::input::system::exit_on_esc_system;
 pub mod camera;
 pub mod piece;
 pub mod common;
+pub mod input;
 
 use common::GameState;
+use bevy_interact_2d::{Group, Interactable, InteractionPlugin, InteractionSource};
+use input::interaction_system;
 
 ///
 /// Board setup.
@@ -26,6 +29,10 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
   /* camera */
   commands
     .spawn_bundle(camera::ChessCameraBundle::new())
+      .insert(InteractionSource {
+        groups: vec![Group(0), Group(1)],
+        ..Default::default()
+      })
     .insert(Timer::from_seconds(2.0, false));
 
 
@@ -58,7 +65,10 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
         material,
         transform,
         ..Default::default()
-      });
+      }).insert(Interactable {
+        groups: vec![Group(0)],
+        bounding_box: (Vec2::splat(-size / 2.0), Vec2::splat(size / 2.0)),
+      });;
     }
   }
 
@@ -125,18 +135,20 @@ fn main()
   let mut app = App::build();
   /* default plugins */
   app.add_plugins(DefaultPlugins);
+  app.add_plugin(InteractionPlugin);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
   app.add_state(GameState::Init);
   app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
   /* setup core */
   app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup.system()));
-  app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
+  app.add_system_set(SystemSet::on_enter(GameState::GameStart).with_system(piece::pieces_setup.system()));
   /* setup board */
   app.add_startup_system(board_setup.system());
 
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
+  app.add_system(interaction_system.system());
   app.add_system_to_stage(
     CoreStage::PostUpdate,
     camera_system::<camera::ChessProjection>
