@@ -13,6 +13,9 @@ use bevy::input::system::exit_on_esc_system;
 
 pub mod camera;
 pub mod piece;
+pub mod common;
+
+use common::GameState;
 
 /// mut material  359
 /// My color change
@@ -139,21 +142,6 @@ pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
   game_state.set(GameState::GameStart).unwrap();
 }
 
-///
-/// Game state enum
-///
-
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
-pub enum GameState
-{
-  /// Intial state
-  Init,
-  /// When we create a new game
-  GameNew,
-  /// When we start a new game
-  GameStart,
-}
-
 fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
 {
   let mut timer = query.single_mut().unwrap();
@@ -184,14 +172,13 @@ fn main()
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
   app.add_state(GameState::Init);
-
+  app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
   /* setup core */
   app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup.system()));
   app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
   /* setup board */
   app.add_startup_system(board_setup.system());
 
-  app.add_system(timer_system.system());
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
 
