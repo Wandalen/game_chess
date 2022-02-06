@@ -75,17 +75,22 @@ Commands minimal
 */
 
 use game_chess_core::*;
+use game_chess_client::*;
 
 ///
 /// Main. CLI game itself.
 ///
-
-pub fn main()
+#[tokio::main]
+pub async fn main()
 {
   let mut game : Option<Game> = None;
   let mut choice;
 
   command_help();
+
+  let _chess_client = chess_client::ChessClient::connect("http://[::1]:50051")
+    .await
+    .expect("Failed to connect to the Chess server");
 
   loop
   {
@@ -97,6 +102,7 @@ pub fn main()
     {
       ".game.new" => game = Some(command_game_new()),
       ".game.save" => command_game_save(&game),
+      ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
       ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
@@ -122,6 +128,7 @@ pub fn command_help()
 
   println!(".game.new  => Create game with default board");
   println!(".game.save => Save game to file");
+  println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
   println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
@@ -236,6 +243,7 @@ pub fn command_move(game : &mut Option<Game>)
 ///
 
 pub fn command_moves_list(game : &Option<Game>) 
+{
   if game.is_none()
   {
     println!("Create a game first. Use command: .game.new");
@@ -249,11 +257,32 @@ pub fn command_moves_list(game : &Option<Game>)
   }
 }
 
+///
+/// Load game from FEN
+/// 
+
+pub fn command_game_from_fen() -> Game {
+  let line = wca::input::ask("Input FEN");
+  let game = Game::from_fen(&line);
+  println!("");
+  game.board_print();
+  println!("Turn of {}", game.current_turn());
+  game
+}
+
+///
 /// Command to ask the AI to make a move
 ///
 
 pub fn command_move_ai(game : &mut Option<Game>)
-{ 
+{
+  if game.is_none()
+  {
+    println!("Create a game first. Use command: .game.new");
+    return;
+  }
+
   let game = game.as_mut().unwrap();
   game.make_move_ai();
 }
+
