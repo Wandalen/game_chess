@@ -10,6 +10,7 @@ use bevy::render::camera::camera_system;
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
+use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
 
@@ -101,6 +102,17 @@ pub fn core_setup(mut commands : Commands)
 }
 
 ///
+/// Timer setup
+///
+
+pub fn timer_setup(egui_context : Res<EguiContext>) {
+  egui::Window::new("Timer").show(egui_context.ctx(), |ui| {
+    // add labels inside Egui window
+    ui.label("Time: 00:00.00");
+  });
+}
+
+///
 /// Main
 ///
 
@@ -111,10 +123,20 @@ fn main()
   app.add_plugins(DefaultPlugins);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
+  /* timer gui */
+  app.insert_resource( WindowDescriptor {
+    title : "Timer GUI".to_string(),
+    width : 100.,
+    height : 20.,
+    resizable : true,
+    ..Default::default()
+  });
   /* setup board */
   app.add_startup_system(core_setup.system());
-  app.add_startup_system(board_setup.system());
   /* setup core */
+  app.add_startup_system(board_setup.system());
+  /* timer */
+  app.add_system(timer_setup.system()).add_plugin(EguiPlugin);
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(
