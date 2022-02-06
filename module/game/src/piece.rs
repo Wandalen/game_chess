@@ -61,7 +61,7 @@ pub fn pieces_setup(mut commands : Commands, asset_server : Res< AssetServer >, 
       if piece != Piece::None
       {
         let texture_atlas = texture_atlas_handle.clone();
-        let texture_id = piece_to_texture.get( &( piece.unwrap() as u8 ) ).unwrap();
+        let texture_id = piece_to_texture.get( &( piece as u8 ) ).unwrap();
 
         let transform = Transform {
           translation : Vec3::new((x as f32) * size - delta, (y as f32) * size - delta, 0.0),
