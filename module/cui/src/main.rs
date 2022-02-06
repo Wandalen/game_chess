@@ -104,6 +104,7 @@ pub async fn main()
       ".game.save" => command_game_save(&game),
       ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
+      ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
       ".quit" => command_exit(&game),
@@ -129,6 +130,7 @@ pub fn command_help()
   println!(".game.save => Save game to file");
   println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
+  println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
   println!(".status    => Print board, current turn, last move");
   println!(".quit      => Exit from the game");
@@ -237,6 +239,25 @@ pub fn command_move(game : &mut Option<Game>)
 }
 
 ///
+/// Command to print available moves
+///
+
+pub fn command_moves_list(game : &Option<Game>) 
+{
+  if game.is_none()
+  {
+    println!("Create a game first. Use command: .game.new");
+    return;
+  }
+
+  let game = game.as_ref().unwrap();
+  let moves_list = game.moves_list();
+  for legal_move in moves_list {
+    println!("{}", legal_move.to_string());
+  }
+}
+
+///
 /// Load game from FEN
 /// 
 
@@ -264,3 +285,4 @@ pub fn command_move_ai(game : &mut Option<Game>)
   let game = game.as_mut().unwrap();
   game.make_move_ai();
 }
+

@@ -351,6 +351,14 @@ impl Game
   }
 
   ///
+  /// Generates moves list.
+  ///
+  
+  pub fn moves_list(&self) -> MoveList {
+    self.board.pleco_board.generate_moves()
+  }
+
+  ///
   /// Constructs a new game from FEN.
   ///
   pub fn from_fen(fen: &String) -> Self {
