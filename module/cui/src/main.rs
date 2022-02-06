@@ -243,14 +243,16 @@ pub fn command_move(game : &mut Option<Game>)
 
 ///
 /// Wrapper and control flow
-/// 
+///
 
 pub fn command_score(game:&Option<Game>) {
   match game {
     Some(g) => println!("{}", g.count_score()),
     None => println!("Game not found")
+  }
+}
 
-///    
+///
 /// Command to print moves history.
 ///
 
@@ -268,7 +270,7 @@ pub fn command_moves_history(game: &Option<Game>) {
 /// Command to print available moves
 ///
 
-pub fn command_moves_list(game : &Option<Game>) 
+pub fn command_moves_list(game : &Option<Game>)
 {
   if game.is_none()
   {
@@ -285,7 +287,7 @@ pub fn command_moves_list(game : &Option<Game>)
 
 ///
 /// Load game from FEN
-/// 
+///
 
 pub fn command_game_from_fen() -> Game {
   let line = wca::input::ask("Input FEN");
