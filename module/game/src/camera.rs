@@ -2,7 +2,7 @@
 #![warn(missing_debug_implementations)]
 
 //!
-//! Chess game implemented on Bevy for educational purpose.
+//! The rendered content is scaled to maintain its aspect ratio while fitting within the windows.
 //!
 
 use bevy::prelude::*;
@@ -13,7 +13,7 @@ use bevy::render::camera::VisibleEntities;
 use bevy::render::render_graph::base::camera::CAMERA_2D;
 
 ///
-/// Projection.
+/// The rendered content is scaled to maintain its aspect ratio while fitting within the windows.
 ///
 
 #[derive(Debug, Clone, Reflect)]
