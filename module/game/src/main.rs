@@ -7,12 +7,14 @@
 
 use bevy::render::RenderSystem;
 use bevy::render::camera::camera_system;
+use common::GameState;
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
+pub mod common;
 pub mod piece;
 
 ///
@@ -120,21 +122,6 @@ pub fn menu_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
   // commands.insert_resource(game);
 
   // game_state.set(GameState::GameStart).unwrap();
-}
-
-///
-/// Game state enum
-///
-
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
-pub enum GameState
-{
-  /// Intial state
-  Init,
-  /// When we create a new game
-  GameNew,
-  /// When we start a new game
-  GameStart,
 }
 
 fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
