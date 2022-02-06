@@ -49,23 +49,32 @@ impl CameraProjection for ChessProjection
   ///
   fn update(&mut self, width : f32, height : f32)
   {
+    /* Margin size must be equals to cell size. */
+    /* Size of board in coordinates is 2.0. */
+    const BOARD_SIZE: f32 = 2.0;
+    const CELLS_COUNT: f32 = 8.0;
+    /* Size of cell in cordinates. */
+    const CELL_SIZE: f32 = BOARD_SIZE / CELLS_COUNT;
+    /* Board offset including margin. */
+    const OFFSET: f32 = 1.0 + CELL_SIZE;
+    
     if width > height
     {
       /* if width > height we need to shrink left and right sides by delta */
       let delta = width / height - 1.0;
-      self.left = -1.0 - delta;
-      self.right = 1.0 + delta;
-      self.top = 1.0;
-      self.bottom = -1.0;
+      self.left = -OFFSET - delta;
+      self.right = OFFSET + delta;
+      self.top = OFFSET;
+      self.bottom = -OFFSET;
     }
     else
     {
       /* if width > height we need to shrink bottom and top by delta */
       let delta = height / width - 1.0;
-      self.left = -1.0;
-      self.right = 1.0;
-      self.top = 1.0 + delta;
-      self.bottom = -1.0 - delta;
+      self.left = -OFFSET;
+      self.right = OFFSET;
+      self.top = OFFSET + delta;
+      self.bottom = -OFFSET - delta;
     }
   }
 

@@ -10,8 +10,14 @@ use bevy::render::camera::camera_system;
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
+use bevy::audio::AudioPlugin;
+use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
+pub mod piece;
+pub mod common;
+
+use common::GameState;
 
 ///
 /// Board setup.
@@ -91,13 +97,53 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 /// Startup system for the game.
 ///
 
-pub fn core_setup(mut commands : Commands)
+pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameState>>)
 {
   let mut game = core::Game::default();
   game.board_print();
   game.make_move("a2a4".into());
   game.board_print();
   commands.insert_resource(game);
+
+  game_state.set(GameState::GameStart).unwrap();
+}
+
+fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
+{
+  let mut timer = query.single_mut().unwrap();
+  timer.tick(time.delta());
+  if timer.finished()
+  {
+    game_state.set(GameState::GameNew).unwrap();
+  }
+}
+//Sounds
+fn loss(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/horror.mp3");
+  audio_output.play(music); 
+}
+fn win(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/Windless Slopes.ogg");
+  audio_output.play(music); 
+}
+fn draw(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/sad_trombone.mp3");
+  audio_output.play(music); 
+}
+fn movement(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
+  let music = asset_server.load("sound/hit.mp3");
+  audio_output.play(music); 
+}
+
+///
+/// Timer setup
+///
+
+pub fn timer_setup(egui_context : Res<EguiContext>) {
+  egui::Window::new("Timer").show(egui_context.ctx(), |ui| {
+    // add labels inside Egui window
+    ui.label("Time: 00:00.00");
+  });
 }
 
 ///
@@ -111,10 +157,28 @@ fn main()
   app.add_plugins(DefaultPlugins);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
-  /* setup board */
-  app.add_startup_system(core_setup.system());
-  app.add_startup_system(board_setup.system());
+  /* timer gui */
+  app.insert_resource( WindowDescriptor {
+    title : "Timer GUI".to_string(),
+    width : 100.,
+    height : 20.,
+    resizable : true,
+    ..Default::default()
+  });
+  /* timer */
+  app.add_system(timer_setup.system()).add_plugin(EguiPlugin);
+  app.add_state(GameState::Init);
+  app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
   /* setup core */
+  app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup.system()));
+  app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
+  /* setup board */
+  app.add_startup_system(board_setup.system());
+
+  /* sound */
+  app.add_plugin(AudioPlugin);
+  app.add_startup_system(loss.system());
+
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(
