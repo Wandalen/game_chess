@@ -12,7 +12,6 @@ use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
 
 pub mod camera;
-pub mod piece;
 
 ///
 /// Board setup.
@@ -21,7 +20,10 @@ pub mod piece;
 pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
 {
   /* camera */
-  commands.spawn_bundle(camera::ChessCameraBundle::new());
+  commands
+    .spawn_bundle(camera::ChessCameraBundle::new())
+    .insert(Timer::from_seconds(2.0, false));
+
 
   let size_in_cells = (8, 8);
 
@@ -109,16 +111,10 @@ fn main()
   app.add_plugins(DefaultPlugins);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
-  /* game state */
-  // app.add_state( GameState::Init );
-  /* setup core */
-  app.add_startup_system(core_setup.system());
-  /* setup pieces */
-  app.add_startup_system(piece::pieces_setup.system());
   /* setup board */
+  app.add_startup_system(core_setup.system());
   app.add_startup_system(board_setup.system());
-  /* draw piece */
-  app.add_system(piece::pieces_draw.system());
+  /* setup core */
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(
