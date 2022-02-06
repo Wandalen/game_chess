@@ -140,6 +140,8 @@ pub struct Msg
   pub player : ::core::option::Option<GamePlayer>,
   #[prost(string, tag = "2")]
   pub text : ::prost::alloc::string::String,
+  #[prost(string, tag = "3")]
+  pub game_id : ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Msgs

@@ -111,6 +111,7 @@ pub async fn main()
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
       ".moves.history" | ".m.h" => command_moves_history(&game),
+      ".online.msg" | ".o.m" => command_send_msg(&mut game),
       ".quit" => command_exit(&game),
       ".help" => command_help(),
       ".score" => command_score(&game),
@@ -243,6 +244,31 @@ pub fn command_move(game : &mut Option<Game>)
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
+}
+
+///
+/// Command to send a message.
+///
+
+pub fn command_send_msg(game : &mut Option<Game>)
+{
+  if game.is_none()
+  {
+    println!("Create a game first. Use command: .game.new");
+    return;
+  }
+
+  let game = game.as_mut().unwrap();
+
+  let uci_msg = wca::input::ask("Provide message");
+  // if !game.make_move(UCI(uci_msg.clone()))
+  // {
+  //   println!("\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move);
+  // }
+
+  // println!("");
+  // game.board_print();
+  // println!("Turn of {}", game.current_turn());
 }
 
 ///

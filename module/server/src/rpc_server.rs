@@ -141,7 +141,15 @@ impl Chess for ChessRpcServer
   ///
   /// Send message to game chat.
   ///
-  async fn push_mgs(&self, _request : Request<Msg>) -> Result<Response<()>, Status> { todo!() }
+  async fn push_mgs(&self, _request : Request<Msg>) -> Result<Response<()>, Status> {
+    let message = _request.into_inner();
+    let game_id = message.game_id;
+    let mut msg_store = self.store.lock().unwrap();
+
+    msg_store.send_msg(&game_id, message);
+
+    Ok(Response::new(()))
+  }
 
   async fn pull_game_updates(&self, request : Request<GameId>) -> Result<Response<Self::pull_game_updatesStream>, Status>
   {

@@ -7,6 +7,8 @@ use std::borrow::BorrowMut;
 #[allow(unused_imports)]
 use tonic::async_trait;
 use multiplayer::MultiplayerGame as Game;
+use multiplayer::{Chat, MultiplayerMessage};
+pub use  multiplayer::generated::chess::Msg;
 
 use crate::store::GameStore;
 
@@ -19,6 +21,7 @@ pub struct MemoryStore
 {
   #[allow(dead_code)]
   games : Vec<Game>,
+  chat : Vec<Chat>,
 }
 
 impl MemoryStore
@@ -26,7 +29,7 @@ impl MemoryStore
   ///
   /// Storage constructor.
   ///
-  pub fn new() -> Self { Self { games : Vec::new() } }
+  pub fn new() -> Self { Self { games : Vec::new(), chat : Vec::new() } }
 }
 
 #[tonic::async_trait]
@@ -55,6 +58,17 @@ impl GameStore for MemoryStore
     if let Some(g) = self.games.iter_mut().find(|item| item.id == game_id)
     {
       *g = new_game;
+    }
+  }
+
+  fn add_chat(&mut self, chat : Chat) { self.chat.push(chat) }
+
+  fn send_msg(&mut self, game_id : &str, msg : Msg) {
+    for chat_current in &self.chat {
+      if chat_current.game_id == game_id {
+          chat_current.messages.push(msg);
+          break;
+      }
     }
   }
 }
