@@ -49,23 +49,24 @@ impl CameraProjection for ChessProjection
   ///
   fn update(&mut self, width : f32, height : f32)
   {
+    let cell_size = 1.0 / 4.0;
     if width > height
     {
       /* if width > height we need to shrink left and right sides by delta */
       let delta = width / height - 1.0;
-      self.left = -1.0 - delta;
-      self.right = 1.0 + delta;
-      self.top = 1.0;
-      self.bottom = -1.0;
+      self.left = -1.0 - cell_size - delta;
+      self.right = 1.0 + cell_size + delta;
+      self.top = 1.0 + cell_size;
+      self.bottom = -1.0 - cell_size;
     }
     else
     {
       /* if width > height we need to shrink bottom and top by delta */
       let delta = height / width - 1.0;
-      self.left = -1.0;
-      self.right = 1.0;
-      self.top = 1.0 + delta;
-      self.bottom = -1.0 - delta;
+      self.left = -1.0 - cell_size;
+      self.right = 1.0 + cell_size;
+      self.top = 1.0 + cell_size + delta;
+      self.bottom = -1.0 - cell_size - delta;
     }
   }
 
