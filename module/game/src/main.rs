@@ -21,7 +21,10 @@ pub mod piece;
 pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
 {
   /* camera */
-  commands.spawn_bundle(camera::ChessCameraBundle::new());
+  commands
+    .spawn_bundle(camera::ChessCameraBundle::new())
+    .insert(Timer::from_seconds(2.0, false));
+
 
   let size_in_cells = (8, 8);
 
@@ -97,7 +100,22 @@ pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
   game.board_print();
   commands.insert_resource(game);
 
-  game_state.set(GameState::Game).unwrap();
+  game_state.set(GameState::GameStart).unwrap();
+}
+
+///
+/// Timer to simulate game creation
+///
+
+fn tick_system(time : Res<Time>, mut timer_query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
+{
+  let mut timer = timer_query.single_mut().unwrap();
+  timer.tick(time.delta());
+
+  if timer.just_finished()
+  {
+    game_state.set(GameState::GameCreate).unwrap();
+  }
 }
 
 ///
@@ -107,8 +125,12 @@ pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub enum GameState
 {
+  /// Intitialization
   Init = 0,
-  Game = 1,
+  /// When new game is created
+  GameCreate = 1,
+  /// When new game starts
+  GameStart = 2,
 }
 
 ///
@@ -125,12 +147,14 @@ fn main()
 
   app.add_state(GameState::Init);
 
-  /* setup core */
-  app.add_startup_system(core_setup.system());
   /* setup board */
   app.add_startup_system(board_setup.system());
+  /* setup core */
+  app.add_system_set(SystemSet::on_update(GameState::GameCreate).with_system(core_setup.system()));
   /* draw piece */
-  app.add_system_set(SystemSet::on_update(GameState::Game).with_system(piece::pieces_setup.system()));
+  app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
+
+  app.add_system(tick_system.system());
 
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
