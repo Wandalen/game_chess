@@ -192,12 +192,6 @@ impl Board
   pub fn piece_at(&self, sq : u8) -> Piece
   {
     self.pleco_board.piece_at_sq(Cell(sq))
-    // let piece = self.pleco_board.piece_at_sq(Cell(sq));
-    // match piece
-    // {
-    //   Piece::None => None,
-    //   _ => Some(piece),
-    // }
   }
 
   ///

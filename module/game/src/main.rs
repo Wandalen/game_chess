@@ -12,7 +12,6 @@ use bevy::prelude::*;
 use bevy::input::system::exit_on_esc_system;
 
 pub mod camera;
-pub mod piece;
 
 ///
 /// Board setup.
@@ -92,45 +91,13 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 /// Startup system for the game.
 ///
 
-pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameState>>)
+pub fn core_setup(mut commands : Commands )
 {
   let mut game = core::Game::default();
   game.board_print();
   game.make_move("a2a4".into());
   game.board_print();
   commands.insert_resource(game);
-
-  game_state.set(GameState::GameStart).unwrap();
-}
-
-///
-/// Timer to simulate game creation
-///
-
-fn tick_system(time : Res<Time>, mut timer_query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
-{
-  let mut timer = timer_query.single_mut().unwrap();
-  timer.tick(time.delta());
-
-  if timer.just_finished()
-  {
-    game_state.set(GameState::GameCreate).unwrap();
-  }
-}
-
-///
-/// Game states
-///
-
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
-pub enum GameState
-{
-  /// Intitialization
-  Init = 0,
-  /// When new game is created
-  GameCreate = 1,
-  /// When new game starts
-  GameStart = 2,
 }
 
 ///
@@ -144,18 +111,10 @@ fn main()
   app.add_plugins(DefaultPlugins);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
-
-  app.add_state(GameState::Init);
-
   /* setup board */
+  app.add_startup_system(core_setup.system());
   app.add_startup_system(board_setup.system());
   /* setup core */
-  app.add_system_set(SystemSet::on_update(GameState::GameCreate).with_system(core_setup.system()));
-  /* draw piece */
-  app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
-
-  app.add_system(tick_system.system());
-
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(
