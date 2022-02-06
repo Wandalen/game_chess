@@ -2,23 +2,30 @@
 //! RPC server that provides game API.
 //!
 
+use std::collections::HashMap;
+use std::net::SocketAddr;
+use std::pin::Pin;
 use std::sync::{Arc, Mutex};
+use futures::Stream;
 
 use tonic::{Request, Response, Status};
+use tokio::sync::mpsc;
 
 use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
-use multiplayer::generated::chess::{Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
+use multiplayer::generated::chess::{self, Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg};
 use crate::store::memory::MemoryStore;
+
+type ResponseStream<T> = Pin<Box<dyn Stream<Item = Result<T, Status>> + Send>>;
 
 ///
 /// Shared sever.
 ///
-
 #[allow(missing_debug_implementations, dead_code)]
 pub struct ChessRpcServer
 {
-  store : Arc<Mutex<Box<dyn GameStore + Send + Sync>>>,
+  store : Arc<Mutex<dyn GameStore + Send + Sync>>,
+  streams : Arc<Mutex<HashMap<SocketAddr, mpsc::UnboundedSender<Result<chess::GameUpdate, Status>>>>>,
 }
 
 impl ChessRpcServer
@@ -29,7 +36,27 @@ impl ChessRpcServer
   pub fn init() -> Self
   {
     Self {
-      store : Arc::new(Mutex::new(Box::new(MemoryStore::new()))),
+      store : Arc::new(Mutex::new(MemoryStore::new())),
+      streams : Arc::new(Mutex::new(HashMap::new())),
+    }
+  }
+}
+
+impl ChessRpcServer
+{
+  /// Broadcasts `GameUpdate` to all clients.
+  pub async fn push_game_update(&self, game_update : chess::game_update::GameUpdate)
+  {
+    let streams_lock = self.streams.lock().expect("Failed to lock the streams mutex");
+    for (client_addr, stream) in streams_lock.iter()
+    {
+      let game_update = chess::GameUpdate {
+        game_update : Some(game_update.clone()),
+      };
+      if let Err(err) = stream.send(Ok(game_update))
+      {
+        eprintln!("Failed to send GameUpdate to {}: {}", client_addr, err);
+      }
     }
   }
 }
@@ -37,6 +64,9 @@ impl ChessRpcServer
 #[tonic::async_trait]
 impl Chess for ChessRpcServer
 {
+  #[allow(non_camel_case_types)]
+  type pull_game_updatesStream = ResponseStream<chess::GameUpdate>;
+
   ///
   /// Apply request to create new game.
   ///
@@ -77,8 +107,14 @@ impl Chess for ChessRpcServer
   ///
   async fn push_mgs(&self, _request : Request<Msg>) -> Result<Response<()>, Status> { todo!() }
 
-  ///
-  /// Get messages from chat.
-  ///
-  async fn pull_msgs(&self, _request : Request<GameId>) -> Result<Response<Msgs>, Status> { todo!() }
+  async fn pull_game_updates(&self, request : Request<GameId>) -> Result<Response<Self::pull_game_updatesStream>, Status>
+  {
+    let mut streams = self.streams.lock().expect("Failed to lock the streams mutex");
+    let (tx, rx) = mpsc::unbounded_channel();
+    streams.insert(request.remote_addr().expect("Expected a client address"), tx);
+
+    Ok(Response::new(
+      Box::pin(tokio_stream::wrappers::UnboundedReceiverStream::new(rx)) as Self::pull_game_updatesStream,
+    ))
+  }
 }
