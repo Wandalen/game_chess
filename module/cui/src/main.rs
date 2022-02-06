@@ -75,6 +75,7 @@ Commands minimal
 */
 
 use game_chess_core::*;
+#[allow(unused_imports)]
 use game_chess_client::*;
 
 ///
@@ -88,9 +89,10 @@ pub async fn main()
 
   command_help();
 
-  let _chess_client = chess_client::ChessClient::connect("http://[::1]:50051")
-    .await
-    .expect("Failed to connect to the Chess server");
+  /* Dmytro : please, use it with command for network game */
+  // let _chess_client = chess_client::ChessClient::connect("http://[::1]:50051")
+  //   .await
+  //   .expect("Failed to connect to the Chess server");
 
   loop
   {
