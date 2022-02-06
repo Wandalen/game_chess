@@ -89,13 +89,26 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 /// Startup system for the game.
 ///
 
-pub fn core_setup(mut commands : Commands)
+pub fn core_setup(mut commands : Commands,mut game_state : ResMut< State < GameState > >)
 {
   let mut game = core::Game::default();
   game.board_print();
   game.make_move("a2a4".into());
   game.board_print();
   commands.insert_resource(game);
+
+  game_state.set( GameState::Game ).unwrap();
+}
+
+///
+/// Game states
+///
+
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub enum GameState
+{
+  Init = 0,
+  Game = 1
 }
 
 ///
@@ -109,16 +122,16 @@ fn main()
   app.add_plugins(DefaultPlugins);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
-  /* game state */
-  // app.add_state( GameState::Init );
+
+  app.add_state( GameState::Init );
+
   /* setup core */
   app.add_startup_system(core_setup.system());
-  /* setup pieces */
-  app.add_startup_system(piece::pieces_setup.system());
   /* setup board */
   app.add_startup_system(board_setup.system());
   /* draw piece */
-  app.add_system(piece::pieces_draw.system());
+  app.add_system_set( SystemSet::on_update( GameState::Game ).with_system( piece::pieces_setup.system() ) );
+
   /* escape on exit */
   app.add_system(exit_on_esc_system.system());
   app.add_system_to_stage(
