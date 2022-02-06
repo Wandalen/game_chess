@@ -224,10 +224,9 @@ fn main()
   app.add_plugin(AudioPlugin);
   app.add_startup_system(loss.system());
 
-  /* highlighting */
   app.add_plugin(bevy_interact_2d::InteractionPlugin);
 
-  /* setup highlighting */
+  /* highlighting */
   app.add_system(highlight_under_cursor.system());
   app.add_plugin(highlight::HighlightPlugin {
     clear_on_each_frame : true,
