@@ -5,6 +5,7 @@
 //! Chess game implemented on Bevy for educational purpose.
 //!
 
+use std::process::exit;
 use bevy::render::RenderSystem;
 use bevy::render::camera::camera_system;
 use common::GameState;
@@ -109,19 +110,19 @@ pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
 pub fn menu_setup(mut commands : Commands, mut game_state : ResMut<State<GameState>>, egui_context : ResMut<EguiContext>)
 {
   egui::Window::new("Menu").show(egui_context.ctx(), |ui| {
-    let button = ui.button("Start Game");
-    if button.clicked()
+    let start_button = ui.button("Start Game");
+    let mut exit_button = ui.button("Exit");
+
+    if start_button.clicked()
     {
       game_state.set(GameState::GameNew);
     }
-  });
-  // let mut game = core::Game::default();
-  // game.board_print();
-  // game.make_move("a2a4".into());
-  // game.board_print();
-  // commands.insert_resource(game);
+    if exit_button.clicked()
+    {
+      exit(0);
+    }
 
-  // game_state.set(GameState::GameStart).unwrap();
+  });
 }
 
 fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
