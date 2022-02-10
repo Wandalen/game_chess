@@ -5,6 +5,8 @@
 //! Implement mechanics of the game chess.
 //!
 
+pub mod ai;
+
 use std::fs;
 use std::fs::File;
 use std::io::Write;
@@ -23,7 +25,6 @@ pub use pleco::{
   core::sq::SQ as Cell,
   core::bitboard::BitBoard as CellsSet,
 };
-use pleco::tools::Searcher;
 
 use serde::{Serialize, Deserialize, Serializer, Deserializer};
 
@@ -323,82 +324,6 @@ pub enum GameStatus
   GG,
 }
 
-pub trait AIAlgorithm : Send + Sync
-{
-  fn name(&self) -> &'static str;
-  fn short_name(&self) -> &'static str;
-  fn best_move(&self, board: Board, depth: u16) -> Move;
-}
-
-macro_rules! implement_algorithm_trait {
-  ($name:ident, $searcher:ty, $short_name:expr) => {
-    struct $name;
-    impl AIAlgorithm for $name {
-      fn name( & self ) -> & 'static str {
-        <$searcher>::name()
-      }
-
-      fn short_name( & self ) -> & 'static str {
-        $short_name
-      }
-
-      fn best_move( & self, board: Board, depth: u16) -> Move {
-        <$searcher>::best_move(board.pleco_board, depth)
-      }
-    }
-  }
-}
-
-implement_algorithm_trait!(MinMaxAlgorithm,  pleco::bots::MiniMaxSearcher, "min_max");
-implement_algorithm_trait!(RandomAlgorithm,  pleco::bots::RandomBot, "random");
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct AIEngine {
-  #[serde(serialize_with = "ai_ser", deserialize_with = "ai_der")]
-  algorithm: Box<dyn AIAlgorithm>,
-  depth: u16
-}
-
-#[derive(Debug)]
-pub enum AICreationError {
-  UnknownAlgorithm
-}
-
-impl AIEngine {
-  pub fn new(name: String) -> Result<Self, AICreationError> {
-    Self::new_with_depth(name, 10)
-  }
-
-  pub fn new_with_depth(name: String, depth: u16) -> Result<Self, AICreationError> {
-    let algorithm = Self::new_algorithm(name)?;
-    Ok(AIEngine{algorithm, depth})
-  }
-
-  fn new_algorithm(name: String) -> Result<Box<dyn AIAlgorithm>, AICreationError> {
-    match name.as_str() {
-      "min_max" => Ok(Box::new(MinMaxAlgorithm{})),
-      "random" => Ok(Box::new(RandomAlgorithm{})),
-      _ => Err(AICreationError::UnknownAlgorithm),
-    }
-  }
-
-  fn best_move(&self, board: Board) -> Move {
-    self.algorithm.best_move(board, self.depth)
-  }
-}
-
-impl std::default::Default for Box<dyn AIAlgorithm> {
-  fn default() -> Box<dyn AIAlgorithm> {
-    Box::new(MinMaxAlgorithm {})
-  }
-}
-
-impl core::fmt::Debug for dyn AIAlgorithm {
-  fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-    write!(f, "AIAlgorithm{{{}}}", self.short_name())
-  }
-}
-
 ///
 /// Interface for playing chess game.
 ///
@@ -412,7 +337,10 @@ pub struct Game
   board : Board,
   is_forfeited : bool,
   history : Vec<HistoryEntry>,
-  pub ai: Option<AIEngine>,
+  ///
+  /// AI Engine responsible for finding best moves
+  ///
+  pub ai: Option<ai::Engine>,
   #[cfg(not(target_arch = "wasm32"))]
   date : SystemTime, // unix timestamp
   #[cfg(target_arch = "wasm32")]
@@ -494,6 +422,9 @@ impl Game
     success
   }
 
+  ///
+  /// Check if game has AI engine
+  ///
   pub fn has_ai(&self) -> bool {
     !self.ai.is_none()
   }
@@ -504,20 +435,15 @@ impl Game
   ///
   pub fn make_move_ai(&mut self)
   {
-    let last_move = match &self.ai {
-      Some(engine) => {
-        let mv = engine.best_move(self.board.clone());
-        self.board.pleco_board.apply_move(mv);
-        mv
-      },
-      None => {
-        self.board.make_move_ai();
-        self.board.last_move().unwrap()
-      },
+    match &self.ai {
+      Some(engine) =>  self.board.pleco_board.apply_move(engine.best_move(self.board.clone())),
+      None => self.board.make_move_ai()
     };
+
+    let last_move = self.board.last_move().unwrap();
     self.history.push(HistoryEntry {
       fen : self.board.to_fen(),
-      last_move,
+      last_move
     });
   }
 
@@ -657,23 +583,4 @@ pub fn board_der<'de, D : Deserializer<'de>>(d : D) -> Result<Board, D::Error>
 {
   let fen : String = Deserialize::deserialize(d)?;
   Ok(Board::from_fen(&fen))
-}
-
-///
-/// Serialize AIAlgorithm to string.
-///
-
-pub fn ai_ser<S : Serializer>(algorithm : &Box<dyn AIAlgorithm>, s : S)
-  -> Result<S::Ok, S::Error> {
-  s.serialize_str(&algorithm.short_name())
-}
-
-///
-/// Deserialize  AIAlgorithm from string.
-///
-
-pub fn ai_der<'de, D : Deserializer<'de>>(d : D) -> Result<Box<dyn AIAlgorithm>, D::Error>
-{
-  let short_name : String = Deserialize::deserialize(d)?;
-  Ok(AIEngine::new_algorithm(short_name).unwrap_or_default())
 }
