@@ -29,10 +29,10 @@ jobs:
       artifacts: 'false'
       build: 'fast'
       toolchain: 'stable'
-  web:
-    needs: check
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
-    with:
-      artifacts: 'false'
-      build: 'fast'
-      toolchain: 'nightly'
+  # web:
+  #   needs: check
+  #   uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
+  #   with:
+  #     artifacts: 'false'
+  #     build: 'fast'
+  #     toolchain: 'nightly'
