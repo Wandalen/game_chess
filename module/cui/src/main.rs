@@ -103,6 +103,7 @@ pub async fn main()
     match choice.to_lowercase().trim()
     {
       ".game.new" => game = Some(command_game_new()),
+      ".game.new.ai" | ".new.ai" => game = command_game_new_ai(),
       ".game.save" => command_game_save(&game),
       ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
@@ -132,6 +133,7 @@ pub fn command_help()
   println!("");
 
   println!(".game.new  => Create game with default board");
+  println!(".new.ai    => Create game with ai. Also shortcut for .game.new.ai");
   println!(".game.save => Save game to file");
   println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
@@ -153,7 +155,7 @@ pub fn command_exit(game : &Option<Game>)
   let uci_exit = wca::input::ask("Do you want to exit?");
   match uci_exit.to_lowercase().trim()
   {
-    "yes" =>
+    "yes" | "y" =>
     {
       println!("Exiting..");
       std::process::exit(0);
@@ -173,6 +175,45 @@ pub fn command_game_new() -> Game
   game.board_print();
   println!("Turn of {}", game.current_turn());
   game
+}
+
+///
+/// Command to start new game with AI
+///
+
+pub fn command_game_new_ai() -> Option<Game>
+{
+  let mut algorithm = wca::input::ask("\nPlease select the ai engine algorithm (default = iterative)");
+  if algorithm.is_empty() {
+    algorithm = String::from("iterative")
+  }
+  let mut engine = match ai::Engine::new(algorithm) {
+    Ok(engine) => engine,
+    Err(_) => {
+      println!("Unknown engine type, please try again.");
+      return None;
+    }
+  };
+
+  let mut depth= wca::input::ask("\nPlease select the ai engine depth (default = 5)");
+  if depth.is_empty() {
+    depth = String::from("5");
+  }
+  match depth.parse::<u16>() {
+    Ok(depth) => engine.depth = depth,
+    Err(_) => {
+      println!("Failed to parse number.");
+      return None;
+    }
+  };
+
+  let mut game = Game::default();
+  game.ai = Some(engine);
+
+  println!("");
+  game.board_print();
+  println!("Turn of {}", game.current_turn());
+  Some(game)
 }
 
 ///
@@ -236,10 +277,14 @@ pub fn command_move(game : &mut Option<Game>)
   let game = game.as_mut().unwrap();
 
   let uci_move = wca::input::ask("Provide move in UCI format, for example 'a2a4'");
-  if !game.make_move(UCI(uci_move.clone()))
-  {
+  if game.make_move(UCI(uci_move.clone())) {
+    if game.has_ai() {
+      game.make_move_ai();
+    }
+  } else {
     println!("\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move);
   }
+
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
@@ -352,4 +397,7 @@ pub fn command_move_ai(game : &mut Option<Game>)
 
   let game = game.as_mut().unwrap();
   game.make_move_ai();
+  println!("");
+  game.board_print();
+  println!("Turn of {}", game.current_turn());
 }
