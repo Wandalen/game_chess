@@ -107,8 +107,6 @@ pub async fn main()
       ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
       ".gg" => command_forfeit(&mut game),
-      ".online.new" => command_online_game_new().await,
-      ".online.join" => command_online_game_join().await,
       ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
@@ -138,8 +136,6 @@ pub fn command_help()
   println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
   println!(".gg        => Forfeit the game ");
-  println!(".online.new=> Create online multiplayer game ");
-  println!(".online.join=> Join online multiplayer game ");
   println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
   println!(".status    => Print board, current turn, last move");
@@ -356,49 +352,4 @@ pub fn command_move_ai(game : &mut Option<Game>)
 
   let game = game.as_mut().unwrap();
   game.make_move_ai();
-}
-
-
-///
-/// Command to start new online game.
-///
-
-pub async fn command_online_game_new()
-{
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    let player_id = wca::input::ask("Input Player ID");
-    let player_name = wca::input::ask("Input Player Name");
-    println!("");
-
-    let online_game = CreateGame { player: Some(game_chess_client::Player { player_id, player_name })};
-    let resp = chess_client.push_game_create(online_game).await.unwrap();
-    
-    println!("Your sharable game ID: {}", resp.get_ref().game_id);
-  } else {
-    println!("Failed to connect gRPC server");
-  }
-}
-
-///
-/// Command to join an online game.
-///
-/// 
-pub async fn command_online_game_join()
-{
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    let game_id = wca::input::ask("Input Game ID");
-    let player_id = wca::input::ask("Input Your Player ID");
-    let player_name = wca::input::ask("Input Your Player Name");
-    println!("");
-
-    let online_game = AcceptGame {
-      game_id, player_id: Some(game_chess_client::Player { player_id, player_name })
-    };
-    let resp = chess_client.push_game_accept(online_game).await.unwrap();
-    
-    println!("You have joined game ID: {}", resp.get_ref().game_id);
-    println!("Games list: {:?}", chess_client.pull_games_list(()).await)
-  } else {
-    println!("Failed to connect gRPC server");
-  }
 }

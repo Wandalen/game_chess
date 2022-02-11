@@ -64,7 +64,7 @@ message Board
 
 message Games
 {
-  repeated GameInfo games_info = 1;
+  // ?
 }
 
 message GameMove
