@@ -48,14 +48,6 @@ jobs :
         run : echo -e 'To save the application stability the repository uses a system to forward changes from an unstable branch to a stable.\nThe unstable branch is `alpha`. All user pull requests should be opened to this branch.\nThe staging branch is `beta`. Changes to this branch are forwarded by a pull request from branch `alpha` automatically.\nThe stable branch is `master`. Changes to this branch are forwarded by a pull request from branch `beta` automatically. Forwarded changes merge manually after review.\n\nThe base branch of this PR has been automatically changed to `alpha` taking into account the described system `alpha -> beta -> master`.\nPlease, check that there are no merge conflicts.'
 
 
-  desktop_fast:
-    needs: check
-    # if: ${{ needs.check.outputs.shouldRun != 'false' }}
-    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@main
-    with:
-      artifacts: 'false'
-      build: 'fast'
-      toolchain: 'stable'
   desktop:
     needs: check
     # if: ${{ needs.check.outputs.shouldRun != 'false' }}
@@ -65,14 +57,6 @@ jobs :
       build: 'slow'
       toolchain: 'nightly'
 
-  # web_fast:
-  #   needs: check
-  #   # if: ${{ needs.check.outputs.shouldRun != 'false' }}
-  #   uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
-  #   with:
-  #     artifacts: 'false'
-  #     build: 'fast'
-  #     toolchain: 'stable'
   # web:
   #   needs: check
   #   # if: ${{ needs.check.outputs.shouldRun != 'false' }}
@@ -82,16 +66,15 @@ jobs :
   #     build: 'slow'
   #     toolchain: 'nightly'
 
-  # forward :
-  #   # needs: [ desktop, web ]
-  #   needs: [ desktop ]
-  #   runs-on : ubuntu-latest
-  #   steps :
-  #     - uses: actions/checkout@v2
-  #     - uses : everlytic/branch-merge@1.1.2
-  #       with :
-  #         github_token : ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-  #         source_ref : alpha
-  #         target_branch : beta
-  #         commit_message_template : 'Merge {source_ref} into {target_branch} [Automated]'
-
+  forward :
+    needs:
+      - desktop
+      # - web
+    runs-on : ubuntu-latest
+    steps :
+      - name: Automerge passed pull request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+          number: ${{ github.event.number }}
+          method: merge
