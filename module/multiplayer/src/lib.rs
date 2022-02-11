@@ -1,5 +1,6 @@
 #[allow(non_camel_case_types)]
 pub mod generated;
+use generated::chess::Player;
 
 use time::OffsetDateTime;
 
@@ -29,7 +30,18 @@ pub struct MultiplayerPlayer
   name : String,
 }
 
-impl MultiplayerPlayer {}
+impl MultiplayerPlayer {
+  pub fn new(id: String, name: String) -> Self {
+    Self { id, name }
+  }
+
+  pub fn into_player(&self) -> Player {
+    Player {
+      player_id: self.id.to_string(),
+      player_name: self.name.to_string()
+    }
+  }
+}
 
 ///
 /// Move.
@@ -57,4 +69,21 @@ pub struct MultiplayerGame
   players : Vec<MultiplayerPlayer>,
 }
 
-impl MultiplayerGame {}
+impl MultiplayerGame {
+  pub fn new(id: String, player: MultiplayerPlayer) -> Self {
+    Self { id, players: Vec::from([player]) }
+  }
+
+  pub fn add_opponent(&mut self, player: MultiplayerPlayer) {
+    self.players.push(player)
+  }
+
+  pub fn get_first_player(&self) -> MultiplayerPlayer {
+    MultiplayerPlayer {
+      id: self.players[0].id.to_string(),
+      name: self.players[0].name.to_string()
+    }
+  }
+
+  pub fn get_players(&self) -> &Vec<MultiplayerPlayer> { self.players.as_ref() }
+}
