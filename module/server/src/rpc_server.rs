@@ -8,11 +8,12 @@ use std::pin::Pin;
 use std::sync::{Arc, Mutex};
 use futures::Stream;
 
+use multiplayer::MultiplayerPlayer;
 use tonic::{Request, Response, Status};
 use tokio::sync::mpsc;
 
 use multiplayer::generated::chess::chess_server::Chess;
-use crate::store::GameStore;
+use crate::store::{GameStore, self};
 use multiplayer::generated::chess::{self, Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg};
 use crate::store::memory::MemoryStore;
 
@@ -24,7 +25,7 @@ type ResponseStream<T> = Pin<Box<dyn Stream<Item = Result<T, Status>> + Send>>;
 #[allow(missing_debug_implementations, dead_code)]
 pub struct ChessRpcServer
 {
-  store : Arc<Mutex<dyn GameStore + Send + Sync>>,
+  store : Arc<tokio::sync::Mutex<dyn GameStore + Send + Sync>>,
   streams : Arc<Mutex<HashMap<SocketAddr, mpsc::UnboundedSender<Result<chess::GameUpdate, Status>>>>>,
 }
 
@@ -36,7 +37,7 @@ impl ChessRpcServer
   pub fn init() -> Self
   {
     Self {
-      store : Arc::new(Mutex::new(MemoryStore::new())),
+      store : Arc::new(tokio::sync::Mutex::new(MemoryStore::new())),
       streams : Arc::new(Mutex::new(HashMap::new())),
     }
   }
@@ -70,12 +71,58 @@ impl Chess for ChessRpcServer
   ///
   /// Apply request to create new game.
   ///
-  async fn push_game_create(&self, _request : Request<CreateGame>) -> Result<Response<GameId>, Status> { todo!() }
+  async fn push_game_create(&self, request : Request<CreateGame>) -> Result<Response<GameId>, Status>
+  {
+    let mut store = self.store.lock().await;
+
+    if let Some(player) = request.into_inner().player {
+      // Generates random game id each time!
+      use rand::{distributions::Alphanumeric, Rng};
+      let game_id: String = rand::thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(6)
+        .map(char::from)
+        .collect();
+
+      store.add_game(
+        multiplayer::MultiplayerGame::new(
+          game_id.clone(),
+          MultiplayerPlayer::new(player.player_id, player.player_name)
+        )
+      ).await;
+
+      Ok(Response::new(GameId { game_id }))
+    } else {
+      Err(Status::invalid_argument("No player found!"))
+    }
+  }
 
   ///
   /// Accept request to join game.
   ///
-  async fn push_game_accept(&self, _request : Request<AcceptGame>) -> Result<Response<GameId>, Status> { todo!() }
+  async fn push_game_accept(&self, request : Request<AcceptGame>) -> Result<Response<GameId>, Status>
+  {
+    let game_req = request.into_inner();
+    let mut store = self.store.lock().await;
+
+    if let Some(player) = game_req.player_id {
+      let game_id = game_req.game_id;
+
+      let game = store.get_game(&game_id).await;
+      let game_player = game.get_first_player();
+
+      let mut game = multiplayer::MultiplayerGame::new(game_id.clone(), game_player);
+      game.add_opponent(
+        MultiplayerPlayer::new(player.player_id, player.player_name)
+      );
+
+      store.update_game(&game_id, game).await;
+
+      Ok(Response::new(GameId { game_id }))
+    } else {
+      Err(Status::invalid_argument("No player found!"))
+    }
+  }
 
   ///
   /// Apply move.
@@ -95,7 +142,25 @@ impl Chess for ChessRpcServer
   ///
   /// Get list of games.
   ///
-  async fn pull_games_list(&self, _request : Request<()>) -> Result<Response<Games>, Status> { todo!() }
+  async fn pull_games_list(&self, _request : Request<()>) -> Result<Response<Games>, Status>
+  { 
+    let store = self.store.lock().await;
+    let games = store.get_games().await;
+
+    if games.len() > 0 {
+      let games_info: Vec<chess::GameInfo> = games.iter().map(|game| {
+        chess::GameInfo {
+          game_id: game.id.to_owned(),
+          players: game.get_players().iter().map(|item| { item.into_player() }).collect()
+        }}
+      )
+      .collect();
+
+      Ok(Response::new(Games { games_info: games_info }))
+    } else {
+      Err(Status::invalid_argument("No game found!"))
+    }
+  }
 
   ///
   /// Send request to forfeit.
