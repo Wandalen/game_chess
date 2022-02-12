@@ -464,7 +464,7 @@ mod online_multiplayer_game_tests
 {
   use super::*;
 
-  // Run following tests by running: `cargo test --bin cui`
+  // Run following tests with `cargo test --bin cui`
 
   #[tokio::test]
   async fn online_game_new()
