@@ -13,7 +13,9 @@ use tokio::sync::mpsc;
 
 use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
-use multiplayer::generated::chess::{self, Board, GameState, multiplayer_game::GameStatus, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
+use multiplayer::generated::chess::{
+  self, Board, GameState, multiplayer_game::GameStatus, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs,
+};
 use crate::store::memory::MemoryStore;
 
 type ResponseStream<T> = Pin<Box<dyn Stream<Item = Result<T, Status>> + Send>>;
@@ -74,24 +76,28 @@ impl Chess for ChessRpcServer
   {
     let mut store = self.store.lock().expect("Failed to lock the store mutex");
 
-    if let Some(player) = request.into_inner().player {
+    if let Some(player) = request.into_inner().player
+    {
       // Generates random game id each time!
       use rand::{distributions::Alphanumeric, Rng};
-      let game_id: String = rand::thread_rng()
+      let game_id : String = rand::thread_rng()
         .sample_iter(&Alphanumeric)
         .take(6)
         .map(char::from)
         .collect();
 
-      store.add_game(
-        multiplayer::MultiplayerGame::new(
-          game_id.to_string(),
-          GamePlayer { game_id: game_id.to_string(), player_id: player.player_id }
-        )
-      );
+      store.add_game(multiplayer::MultiplayerGame::new(
+        game_id.to_string(),
+        GamePlayer {
+          game_id : game_id.to_string(),
+          player_id : player.player_id,
+        },
+      ));
 
       Ok(Response::new(GameId { game_id }))
-    } else {
+    }
+    else
+    {
       Err(Status::invalid_argument("No player found!"))
     }
   }
@@ -104,24 +110,30 @@ impl Chess for ChessRpcServer
     let game_req = request.into_inner();
     let mut store = self.store.lock().expect("Failed to lock the store mutex");
 
-    if let Some(player) = game_req.player_id {
+    if let Some(player) = game_req.player_id
+    {
       let game_id = game_req.game_id;
       let player_id = player.player_id;
 
       let game = store.get_game(&game_id);
-      let mut game = multiplayer::MultiplayerGame::new( 
+      let mut game = multiplayer::MultiplayerGame::new(
         game_id.to_string(),
         GamePlayer {
-          game_id: game_id.to_string(),
-          player_id: game.players[0].player_id.to_string()
-        }
+          game_id : game_id.to_string(),
+          player_id : game.players[0].player_id.to_string(),
+        },
       );
 
-      game.add_opponent(GamePlayer { game_id: game_id.to_string(), player_id });
+      game.add_opponent(GamePlayer {
+        game_id : game_id.to_string(),
+        player_id,
+      });
       store.update_game(&game_id, game);
 
       Ok(Response::new(GameId { game_id }))
-    } else {
+    }
+    else
+    {
       Err(Status::not_found("No player found!"))
     }
   }
@@ -145,13 +157,16 @@ impl Chess for ChessRpcServer
   /// Get list of games.
   ///
   async fn pull_games_list(&self, _request : Request<()>) -> Result<Response<Games>, Status>
-  { 
+  {
     let store = self.store.lock().expect("Failed to lock the store mutex");
     let games = store.get_games();
 
-    if games.len() > 0 {
-      Ok(Response::new(Games { games: games.clone() }))
-    } else {
+    if games.len() > 0
+    {
+      Ok(Response::new(Games { games : games.clone() }))
+    }
+    else
+    {
       Err(Status::not_found("No game found on server!"))
     }
   }
@@ -159,22 +174,24 @@ impl Chess for ChessRpcServer
   ///
   /// Send request to forfeit.
   ///
-  async fn push_game_gg(&self, _request : Request<GamePlayer>) -> Result<Response<()>, Status> {
+  async fn push_game_gg(&self, _request : Request<GamePlayer>) -> Result<Response<()>, Status>
+  {
     let message = _request.into_inner();
     let game_id = message.game_id;
     let player_id = message.player_id;
 
-    let winner =
-    {
+    let winner = {
       let mut memory_store = self.store.lock().unwrap();
       let mut winner = None;
       let mut current_game = memory_store.get_game(&game_id).clone();
 
       memory_store.update_game(&game_id, current_game.clone());
-      for player in &current_game.players {
-        if player.player_id != player_id {
-            winner = Some(player.clone());
-            break;
+      for player in &current_game.players
+      {
+        if player.player_id != player_id
+        {
+          winner = Some(player.clone());
+          break;
         }
       }
 

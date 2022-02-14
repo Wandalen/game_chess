@@ -51,13 +51,13 @@ impl CameraProjection for ChessProjection
   {
     /* Margin size must be equals to cell size. */
     /* Size of board in coordinates is 2.0. */
-    const BOARD_SIZE: f32 = 2.0;
-    const CELLS_COUNT: f32 = 8.0;
+    const BOARD_SIZE : f32 = 2.0;
+    const CELLS_COUNT : f32 = 8.0;
     /* Size of cell in cordinates. */
-    const CELL_SIZE: f32 = BOARD_SIZE / CELLS_COUNT;
+    const CELL_SIZE : f32 = BOARD_SIZE / CELLS_COUNT;
     /* Board offset including margin. */
-    const OFFSET: f32 = 1.0 + CELL_SIZE;
-    
+    const OFFSET : f32 = 1.0 + CELL_SIZE;
+
     if width > height
     {
       /* if width > height we need to shrink left and right sides by delta */

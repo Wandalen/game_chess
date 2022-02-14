@@ -188,24 +188,30 @@ pub fn command_game_new() -> Game
 pub fn command_game_new_ai() -> Option<Game>
 {
   let mut algorithm = wca::input::ask("\nPlease select the ai engine algorithm (default = iterative)");
-  if algorithm.is_empty() {
+  if algorithm.is_empty()
+  {
     algorithm = String::from("iterative")
   }
-  let mut engine = match ai::Engine::new(algorithm) {
+  let mut engine = match ai::Engine::new(algorithm)
+  {
     Ok(engine) => engine,
-    Err(_) => {
+    Err(_) =>
+    {
       println!("Unknown engine type, please try again.");
       return None;
     }
   };
 
-  let mut depth= wca::input::ask("\nPlease select the ai engine depth (default = 5)");
-  if depth.is_empty() {
+  let mut depth = wca::input::ask("\nPlease select the ai engine depth (default = 5)");
+  if depth.is_empty()
+  {
     depth = String::from("5");
   }
-  match depth.parse::<u16>() {
+  match depth.parse::<u16>()
+  {
     Ok(depth) => engine.depth = depth,
-    Err(_) => {
+    Err(_) =>
+    {
       println!("Failed to parse number.");
       return None;
     }
@@ -281,11 +287,15 @@ pub fn command_move(game : &mut Option<Game>)
   let game = game.as_mut().unwrap();
 
   let uci_move = wca::input::ask("Provide move in UCI format, for example 'a2a4'");
-  if game.make_move(UCI(uci_move.clone())) {
-    if game.has_ai() {
+  if game.make_move(UCI(uci_move.clone()))
+  {
+    if game.has_ai()
+    {
       game.make_move_ai();
     }
-  } else {
+  }
+  else
+  {
     println!("\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move);
   }
 
@@ -412,18 +422,30 @@ pub fn command_move_ai(game : &mut Option<Game>)
 
 pub async fn command_online_game_new()
 {
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
+  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await
+  {
     let player_id = wca::input::ask("Input Player ID");
     let player_name = wca::input::ask("Input Player Name");
     println!("");
 
-    let online_game = CreateGame { player: Some(game_chess_client::Player { player_id, player_name })};
+    let online_game = CreateGame {
+      player : Some(game_chess_client::Player { player_id, player_name }),
+    };
     let result = chess_client.push_game_create(online_game).await;
-    match result {
-      Ok(resp) => { println!("Your sharable game ID: {}", resp.get_ref().game_id); }
-      Err(e) => { eprintln!("{}", e); }
+    match result
+    {
+      Ok(resp) =>
+      {
+        println!("Your sharable game ID: {}", resp.get_ref().game_id);
+      }
+      Err(e) =>
+      {
+        eprintln!("{}", e);
+      }
     }
-  } else {
+  }
+  else
+  {
     println!("Failed to connect gRPC server");
   }
 }
@@ -434,26 +456,34 @@ pub async fn command_online_game_new()
 ///
 pub async fn command_online_game_join()
 {
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
+  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await
+  {
     let game_id = wca::input::ask("Input Game ID");
     let player_id = wca::input::ask("Input Your Player ID");
     let player_name = wca::input::ask("Input Your Player Name");
     println!("");
 
     let online_game = AcceptGame {
-      game_id: game_id.to_string(),
-      player_id: Some(game_chess_client::Player { player_id, player_name })
+      game_id : game_id.to_string(),
+      player_id : Some(game_chess_client::Player { player_id, player_name }),
     };
 
     let result = chess_client.push_game_accept(online_game).await;
-    match result {
-      Ok(resp) => {
+    match result
+    {
+      Ok(resp) =>
+      {
         println!("You have joined game ID: {}", resp.get_ref().game_id);
         println!("Games list: {:?}", chess_client.pull_games_list(()).await)
       }
-      Err(e) => { eprintln!("{}\nGame ID: {} Not found on server", e, game_id); }
+      Err(e) =>
+      {
+        eprintln!("{}\nGame ID: {} Not found on server", e, game_id);
+      }
     }
-  } else {
+  }
+  else
+  {
     println!("Failed to connect gRPC server");
   }
 }
@@ -470,14 +500,15 @@ mod online_multiplayer_game_tests
   async fn online_game_new()
   {
     let online_game = CreateGame {
-      player: Some(game_chess_client::Player {
-        player_id: "01".to_string(),
-        player_name: "John Doe".to_string()
-      })
+      player : Some(game_chess_client::Player {
+        player_id : "01".to_string(),
+        player_name : "John Doe".to_string(),
+      }),
     };
 
     /* qqq : need to test server before or even start it */
-    if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
+    if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await
+    {
       let resp = chess_client.push_game_create(online_game).await;
       let game_id = resp.unwrap().get_ref().game_id.to_string();
 
@@ -493,23 +524,24 @@ mod online_multiplayer_game_tests
   async fn online_game_join()
   {
     let online_game = CreateGame {
-      player: Some(game_chess_client::Player {
-        player_id: "01".to_string(),
-        player_name: "John Doe".to_string()
-      })
+      player : Some(game_chess_client::Player {
+        player_id : "01".to_string(),
+        player_name : "John Doe".to_string(),
+      }),
     };
 
     /* qqq : need to test server before or even start it */
-    if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
+    if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await
+    {
       let resp = chess_client.push_game_create(online_game).await;
       let game_id = resp.unwrap().get_ref().game_id.to_string();
 
       let online_game = AcceptGame {
-        game_id: game_id.clone(),
-        player_id: Some(game_chess_client::Player {
-          player_id: "02".to_string(),
-          player_name: "Jane Doe".to_string()
-        })
+        game_id : game_id.clone(),
+        player_id : Some(game_chess_client::Player {
+          player_id : "02".to_string(),
+          player_name : "Jane Doe".to_string(),
+        }),
       };
 
       let resp = chess_client.push_game_accept(online_game).await;
