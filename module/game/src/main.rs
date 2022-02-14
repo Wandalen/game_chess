@@ -70,10 +70,10 @@ pub struct Materials
 
 pub fn setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
 {
-  commands
-    .spawn_bundle(camera::ChessCameraBundle::new())
-    .insert(bevy_interact_2d::InteractionSource::default())
-    .insert(Timer::from_seconds(2.0, false));
+  let mut camera = commands.spawn_bundle(camera::ChessCameraBundle::new());
+  #[cfg(not(target_arch = "wasm32"))]
+  camera.insert(bevy_interact_2d::InteractionSource::default());
+  camera.insert(Timer::from_seconds(2.0, false));
   commands.insert_resource(Materials {
     white : materials.add(ColorMaterial::color(Color::rgb(0.9, 0.9, 0.7))),
     black : materials.add(ColorMaterial::color(Color::rgb(0.2, 0.2, 0.1))),
