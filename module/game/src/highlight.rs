@@ -1,3 +1,8 @@
+
+//!
+//! Highlight cells
+//!
+
 use bevy::prelude::*;
 
 #[derive(Debug)]
@@ -28,10 +33,13 @@ pub struct Highlight
 
 impl Highlight
 {
+  /// Highlight cell with position
   pub fn highlight(&mut self, pos : (u8, u8), color : Color) { self.commands.push(HighlightCommand::Highlight { pos, color }); }
 
+  /// Clear highlight
   pub fn clear(&mut self, pos : (u8, u8)) { self.commands.push(HighlightCommand::Clear { pos }); }
 
+  /// Clear all cells highlightings
   pub fn clear_all(&mut self)
   {
     self.commands.clear();
@@ -44,6 +52,9 @@ struct ClearOnEachFrame(bool);
 #[derive(Default, Debug)]
 struct HighlightEntity;
 
+///
+/// Plugin for highlighting
+///
 
 #[derive(Debug)]
 pub struct HighlightPlugin

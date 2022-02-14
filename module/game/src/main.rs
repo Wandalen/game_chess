@@ -75,8 +75,8 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
   {
     for y in 0 .. size_in_cells.1
     {
-      let isBlack = (x + y) % 2 == 0;
-      let  material = if isBlack { black.clone() } else { white.clone() };
+      let is_black = (x + y) % 2 == 0;
+      let  material = if is_black { black.clone() } else { white.clone() };
 
       let sprite = Sprite {
         size : Vec2::new(size, size),
@@ -97,7 +97,7 @@ pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorM
       }); //.insert(Cell)
 
       cell.insert(Cell);
-      if isBlack {
+      if is_black {
         cell.insert(CellBlack);
       }
       else {
@@ -181,16 +181,19 @@ fn loss(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/horror.mp3");
   audio_output.play(music);
 }
+#[allow(dead_code)]
 #[cfg(not(target_arch = "wasm32"))]
 fn win(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/Windless Slopes.ogg");
   audio_output.play(music);
 }
+#[allow(dead_code)]
 #[cfg(not(target_arch = "wasm32"))]
 fn draw(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/sad_trombone.mp3");
   audio_output.play(music);
 }
+#[allow(dead_code)]
 #[cfg(not(target_arch = "wasm32"))]
 fn movement(asset_server: Res<AssetServer>, audio_output: Res<Audio>) {
   let music = asset_server.load("sound/hit.mp3");
@@ -266,13 +269,36 @@ fn highlight_under_cursor(
 //     });
 // }
 
+///
+/// Mark cells
+///
+
+#[derive(Debug)]
 pub struct Cell;
 
+///
+/// Mark white cells
+///
+
+#[derive(Debug)]
 pub struct CellWhite;
+
+///
+/// Mark black cells
+///
+
+#[derive(Debug)]
 pub struct CellBlack;
 
+///
+/// Game color schema
+///
+
+#[derive(Debug)]
 pub struct CellColorSchema {
+  /// White color
   pub white : [f32; 4],
+  /// Black color
   pub black : [f32; 4]
 }
 
