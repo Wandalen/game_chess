@@ -16,6 +16,7 @@ use bevy::audio::AudioPlugin;
 use bevy_egui::{egui, EguiContext, EguiPlugin};
 
 pub mod camera;
+#[cfg(not(target_arch = "wasm32"))]
 pub mod highlight;
 pub mod piece;
 pub mod common;
@@ -29,10 +30,10 @@ use common::GameState;
 pub fn board_setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMaterial>>)
 {
   /* camera */
-  commands
-    .spawn_bundle(camera::ChessCameraBundle::new())
-    .insert(bevy_interact_2d::InteractionSource::default())
-    .insert(Timer::from_seconds(2.0, false));
+  let mut camera = commands.spawn_bundle(camera::ChessCameraBundle::new());
+  #[cfg(not(target_arch = "wasm32"))]
+  camera.insert(bevy_interact_2d::InteractionSource::default());
+  camera.insert(Timer::from_seconds(2.0, false));
 
 
   let size_in_cells = (8, 8);
@@ -174,6 +175,7 @@ pub fn timer_setup(egui_context : Res<EguiContext>) {
 /// System that highlights cells under the cursor
 ///
 
+#[cfg(not(target_arch = "wasm32"))]
 fn highlight_under_cursor(
   windows : Res<Windows>,
   interaction : Res<bevy_interact_2d::InteractionState>,
@@ -232,10 +234,13 @@ fn main()
   #[cfg(not(target_arch = "wasm32"))]
   app.add_startup_system(loss.system());
 
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(bevy_interact_2d::InteractionPlugin);
 
   /* highlighting */
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_system(highlight_under_cursor.system());
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(highlight::HighlightPlugin {
     clear_on_each_frame : true,
   });
