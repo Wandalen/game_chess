@@ -5,6 +5,8 @@
 //! Implement mechanics of the game chess.
 //!
 
+pub mod ai;
+
 use std::fs;
 use std::fs::File;
 use std::io::Write;
@@ -85,7 +87,7 @@ impl TryFrom<UCI> for Move
 /// Game board
 ///
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Board
 {
   pleco_board : pleco::Board,
@@ -335,6 +337,10 @@ pub struct Game
   board : Board,
   is_forfeited : bool,
   history : Vec<HistoryEntry>,
+  ///
+  /// AI Engine responsible for finding best moves
+  ///
+  pub ai: Option<ai::Engine>,
   #[cfg(not(target_arch = "wasm32"))]
   date : SystemTime, // unix timestamp
   #[cfg(target_arch = "wasm32")]
@@ -352,7 +358,7 @@ impl Game
       board : Board::default(),
       history : Vec::new(),
       is_forfeited : false,
-
+      ai: None,
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
       #[cfg(target_arch = "wasm32")]
@@ -370,6 +376,7 @@ impl Game
       board : Board::from_fen(fen),
       history : Vec::new(),
       is_forfeited : false,
+      ai: None,
 
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
@@ -416,16 +423,27 @@ impl Game
   }
 
   ///
-  /// Looks for a move that results in the best board state for the current player and applies it.
+  /// Check if game has AI engine
+  ///
+  pub fn has_ai(&self) -> bool {
+    !self.ai.is_none()
+  }
+
+  ///
+  /// AI makes the move using internal AI algorithm
   /// Updates history with the applied move.
   ///
   pub fn make_move_ai(&mut self)
   {
-    self.board.make_move_ai();
+    match &self.ai {
+      Some(engine) =>  self.board.pleco_board.apply_move(engine.best_move(self.board.clone())),
+      None => self.board.make_move_ai()
+    };
+
     let last_move = self.board.last_move().unwrap();
     self.history.push(HistoryEntry {
       fen : self.board.to_fen(),
-      last_move,
+      last_move
     });
   }
 
