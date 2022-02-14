@@ -1,5 +1,6 @@
 #[allow(non_camel_case_types)]
 pub mod generated;
+use generated::chess::GamePlayer;
 
 use time::OffsetDateTime;
 
@@ -32,8 +33,6 @@ pub struct MultiplayerPlayer
   name : String,
 }
 
-impl MultiplayerPlayer {}
-
 ///
 /// Move.
 ///
@@ -48,4 +47,25 @@ pub struct MultiplayerMove
 
 impl MultiplayerMove {}
 
-impl MultiplayerGame {}
+///
+/// Multiplayer game.
+///
+
+// This struct is already brought into scope 
+// #[allow(dead_code)]
+// #[derive(Debug)]
+// pub struct MultiplayerGame
+// {
+//   pub id : String,
+//   players : Vec<MultiplayerPlayer>,
+// }
+
+impl MultiplayerGame
+{
+  pub fn new(id: String, player: GamePlayer) -> Self
+  {
+    Self { id, players: Vec::from([player]), status: 0 }
+  }
+
+  pub fn add_opponent(&mut self, player: GamePlayer) { self.players.push(player) }
+}
