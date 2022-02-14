@@ -1,4 +1,3 @@
-
 //!
 //! Common data structures
 //!

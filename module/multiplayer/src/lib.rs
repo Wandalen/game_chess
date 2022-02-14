@@ -51,7 +51,7 @@ impl MultiplayerMove {}
 /// Multiplayer game.
 ///
 
-// This struct is already brought into scope 
+// This struct is already brought into scope
 // #[allow(dead_code)]
 // #[derive(Debug)]
 // pub struct MultiplayerGame
@@ -62,10 +62,14 @@ impl MultiplayerMove {}
 
 impl MultiplayerGame
 {
-  pub fn new(id: String, player: GamePlayer) -> Self
+  pub fn new(id : String, player : GamePlayer) -> Self
   {
-    Self { id, players: Vec::from([player]), status: 0 }
+    Self {
+      id,
+      players : Vec::from([player]),
+      status : 0,
+    }
   }
 
-  pub fn add_opponent(&mut self, player: GamePlayer) { self.players.push(player) }
+  pub fn add_opponent(&mut self, player : GamePlayer) { self.players.push(player) }
 }
