@@ -18,6 +18,7 @@ use bevy::audio::AudioPlugin;
 
 pub mod camera;
 pub mod common;
+#[cfg(not(target_arch = "wasm32"))]
 pub mod highlight;
 pub mod piece;
 
@@ -275,6 +276,7 @@ pub fn egui_setup(
 /// System that highlights cells under the cursor
 ///
 
+#[cfg(not(target_arch = "wasm32"))]
 fn highlight_under_cursor
 (
   windows : Res<Windows>,
@@ -398,10 +400,13 @@ fn main()
   #[cfg(not(target_arch = "wasm32"))]
   app.add_startup_stage("loss", SystemStage::single(loss.system()));
 
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(bevy_interact_2d::InteractionPlugin);
 
   /* highlighting */
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_system(highlight_under_cursor.system());
+  #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(highlight::HighlightPlugin {
     clear_on_each_frame : true,
   });
