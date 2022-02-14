@@ -47,7 +47,7 @@ script = '''
 # add rustup toolchain
 exec rustup target add x86_64-pc-windows-gnu
 # install mingw for compilation Windows apps
-exec sudo apt install mingw-w64
+exec sudo apt install -y mingw-w64
 '''
 
 # Build from Windows to Linux and MacOs has many restrictions
