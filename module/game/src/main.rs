@@ -5,6 +5,8 @@
 //! Chess game implemented on Bevy for educational purpose.
 //!
 
+use common::GameState;
+use std::process::exit;
 use bevy::math::Vec4Swizzles;
 use bevy::render::RenderSystem;
 use bevy::render::camera::{camera_system, Camera};
@@ -129,6 +131,24 @@ pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
   game_state.set(GameState::GameStart).unwrap();
 }
 
+pub fn menu_setup(mut commands : Commands, mut game_state : ResMut<State<GameState>>, egui_context : ResMut<EguiContext>)
+{
+  egui::Window::new("Menu").show(egui_context.ctx(), |ui| {
+    let start_button = ui.button("Start Game");
+    let mut exit_button = ui.button("Exit");
+
+    if start_button.clicked()
+    {
+      game_state.set(GameState::GameNew);
+    }
+    if exit_button.clicked()
+    {
+      exit(0);
+    }
+
+  });
+}
+
 fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
 {
   let mut timer = query.single_mut().unwrap();
@@ -207,6 +227,7 @@ fn main()
   let mut app = App::build();
   /* default plugins */
   app.add_plugins(DefaultPlugins);
+  app.add_plugin(EguiPlugin);
   /* background */
   app.insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
   /* timer gui */
@@ -222,10 +243,13 @@ fn main()
   app.add_state(GameState::Init);
   app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
   /* setup core */
+  app.add_system_set(SystemSet::on_update(GameState::Init).with_system(menu_setup.system()));
   app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup.system()));
   app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
   /* setup board */
   app.add_startup_system(board_setup.system());
+
+  // app.add_system(timer_system.system());
 
   /* sound */
 
