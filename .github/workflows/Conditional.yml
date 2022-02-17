@@ -41,17 +41,17 @@ jobs:
   desktop:
     # needs: check
     # if: ${{ needs.check.outputs.shouldRun != 'false' }}
-    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@main
+    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@master
     with:
       artifacts: 'false'
       build: 'fast'
       toolchain: 'stable'
-  # web:
-  #   needs: check
-  #   if: ${{ needs.check.outputs.shouldRun != 'false' }}
-  #   uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@main
-  #   with:
-  #     artifacts: 'false'
-  #     build: 'fast'
-  #     toolchain: 'stable'
+  web:
+    # needs: check
+    # if: ${{ needs.check.outputs.shouldRun != 'false' }}
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@master
+    with:
+      artifacts: 'false'
+      build: 'fast'
+      toolchain: 'stable'
 

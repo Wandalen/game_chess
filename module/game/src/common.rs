@@ -1,3 +1,6 @@
+//!
+//! Common data structures
+//!
 
 ///
 /// Game state enum
