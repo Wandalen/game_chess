@@ -11,9 +11,10 @@ use futures::Stream;
 use tonic::{Request, Response, Status};
 use tokio::sync::mpsc;
 
+use multiplayer::MultiplayerStatus;
 use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
-use multiplayer::generated::chess::{self, Board, GameState, multiplayer_game::GameStatus, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
+use multiplayer::generated::chess::{self, Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
 use crate::store::memory::MemoryStore;
 
 type ResponseStream<T> = Pin<Box<dyn Stream<Item = Result<T, Status>> + Send>>;
@@ -75,22 +76,15 @@ impl Chess for ChessRpcServer
     let mut store = self.store.lock().expect("Failed to lock the store mutex");
 
     if let Some(player) = request.into_inner().player {
-      // Generates random game id each time!
-      use rand::{distributions::Alphanumeric, Rng};
-      let game_id: String = rand::thread_rng()
-        .sample_iter(&Alphanumeric)
-        .take(6)
-        .map(char::from)
-        .collect();
-
       store.add_game(
         multiplayer::MultiplayerGame::new(
-          game_id.to_string(),
-          GamePlayer { game_id: game_id.to_string(), player_id: player.player_id }
+          player.game_id.to_string(),
+          GamePlayer { game_id: player.game_id.to_string(), player_id: player.player_id },
+          MultiplayerStatus::NotStarted as i32
         )
       );
 
-      Ok(Response::new(GameId { game_id }))
+      Ok(Response::new(GameId { game_id: player.game_id }))
     } else {
       Err(Status::invalid_argument("No player found!"))
     }
@@ -102,27 +96,34 @@ impl Chess for ChessRpcServer
   async fn push_game_accept(&self, request : Request<AcceptGame>) -> Result<Response<GameId>, Status>
   {
     let game_req = request.into_inner();
+    let input_game_id = game_req.game_id;
+
     let mut store = self.store.lock().expect("Failed to lock the store mutex");
 
     if let Some(player) = game_req.player_id {
-      let game_id = game_req.game_id;
-      let player_id = player.player_id;
+      let input_player_id = player.player_id;
 
-      let game = store.get_game(&game_id);
+      // This will panic if `input_game_id` not found on he store
+      let game = store.get_game(&input_game_id);
+
       let mut game = multiplayer::MultiplayerGame::new( 
-        game_id.to_string(),
+        game.game_id.to_string(),
         GamePlayer {
-          game_id: game_id.to_string(),
+          game_id: game.players[0].game_id.to_string(),
           player_id: game.players[0].player_id.to_string()
-        }
+        },
+        MultiplayerStatus::Started as i32
       );
 
-      game.add_opponent(GamePlayer { game_id: game_id.to_string(), player_id });
-      store.update_game(&game_id, game);
+      game.add_opponent(GamePlayer {
+        game_id: input_game_id.to_string(),
+        player_id: input_player_id
+      });
 
-      Ok(Response::new(GameId { game_id }))
+      store.update_game(&input_game_id.to_string(), game);
+      Ok(Response::new(GameId { game_id: input_game_id }))
     } else {
-      Err(Status::not_found("No player found!"))
+      Err(Status::not_found("No player found on input!"))
     }
   }
 
@@ -178,7 +179,7 @@ impl Chess for ChessRpcServer
         }
       }
 
-      current_game.status = GameStatus::Givenup as i32;
+      current_game.status = MultiplayerStatus::Ended as i32;
       winner
     };
     // Will be moved from function push_mgs

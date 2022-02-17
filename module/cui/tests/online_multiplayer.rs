@@ -30,9 +30,9 @@ async fn online_game_new()
   run_test_server("0.0.0.0:3001").await;
 
   let online_game = CreateGame {
-    player: Some(game_chess_client::Player {
+    player: Some(game_chess_client::GamePlayer {
       player_id: "01".to_string(),
-      player_name: "John Doe".to_string()
+      game_id: "01".to_string()
     })
   };
 
@@ -40,9 +40,7 @@ async fn online_game_new()
   let resp = chess_client.push_game_create(online_game).await;
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
-  // `push_game_create` returns a Game ID
-  // `game_id` is a random string of length 6
-  assert_eq!(game_id.len(), 6);
+  assert_eq!(game_id, "01".to_owned());
 }
 
 #[tokio::test]
@@ -51,9 +49,9 @@ async fn online_game_join()
   run_test_server("0.0.0.0:3002").await;
 
   let online_game = CreateGame {
-    player: Some(game_chess_client::Player {
+    player: Some(game_chess_client::GamePlayer {
       player_id: "01".to_string(),
-      player_name: "John Doe".to_string()
+      game_id: "01".to_string()
     })
   };
 
@@ -62,10 +60,10 @@ async fn online_game_join()
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
   let online_game = AcceptGame {
-    game_id: game_id.clone(),
-    player_id: Some(game_chess_client::Player {
+    game_id: "01".to_string(),
+    player_id: Some(game_chess_client::GamePlayer {
       player_id: "02".to_string(),
-      player_name: "Jane Doe".to_string()
+      game_id: "01".to_string()
     })
   };
 

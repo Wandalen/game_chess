@@ -414,10 +414,13 @@ pub async fn command_online_game_new()
 {
   if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
     let player_id = wca::input::ask("Input Player ID");
-    let player_name = wca::input::ask("Input Player Name");
+    let game_id = wca::input::ask("Input Game ID");
     println!("");
 
-    let online_game = CreateGame { player: Some(game_chess_client::Player { player_id, player_name })};
+    let online_game = CreateGame {
+      player: Some(game_chess_client::GamePlayer { player_id, game_id })
+    };
+
     let result = chess_client.push_game_create(online_game).await;
     match result {
       Ok(resp) => { println!("Your sharable game ID: {}", resp.get_ref().game_id); }
@@ -435,14 +438,13 @@ pub async fn command_online_game_new()
 pub async fn command_online_game_join()
 {
   if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
+    let player_id = wca::input::ask("Input Player ID");
     let game_id = wca::input::ask("Input Game ID");
-    let player_id = wca::input::ask("Input Your Player ID");
-    let player_name = wca::input::ask("Input Your Player Name");
     println!("");
 
     let online_game = AcceptGame {
       game_id: game_id.to_string(),
-      player_id: Some(game_chess_client::Player { player_id, player_name })
+      player_id: Some(game_chess_client::GamePlayer { player_id, game_id: game_id.to_string() })
     };
 
     let result = chess_client.push_game_accept(online_game).await;
@@ -451,7 +453,7 @@ pub async fn command_online_game_join()
         println!("You have joined game ID: {}", resp.get_ref().game_id);
         println!("Games list: {:?}", chess_client.pull_games_list(()).await)
       }
-      Err(e) => { eprintln!("{}\nGame ID: {} Not found on server", e, game_id); }
+      Err(e) => { eprintln!("{}\nGame ID: {} Not found on the server!", e, game_id); }
     }
   } else {
     println!("Failed to connect gRPC server");
