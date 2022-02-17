@@ -27,7 +27,7 @@ async fn run_test_server(addr: &str)
 #[tokio::test]
 async fn online_game_new()
 {
-  run_test_server("127.0.0.1:1313").await;
+  run_test_server("0.0.0.0:3001").await;
 
   let online_game = CreateGame {
     player: Some(game_chess_client::Player {
@@ -36,7 +36,7 @@ async fn online_game_new()
     })
   };
 
-  let mut chess_client = chess_client::ChessClient::connect("http://127.0.0.1:1313").await.unwrap();
+  let mut chess_client = chess_client::ChessClient::connect("http://localhost:3001").await.unwrap();
   let resp = chess_client.push_game_create(online_game).await;
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
@@ -48,7 +48,7 @@ async fn online_game_new()
 #[tokio::test]
 async fn online_game_join()
 {
-  run_test_server("127.0.0.1:1314").await;
+  run_test_server("0.0.0.0:3002").await;
 
   let online_game = CreateGame {
     player: Some(game_chess_client::Player {
@@ -57,7 +57,7 @@ async fn online_game_join()
     })
   };
 
-  let mut chess_client = chess_client::ChessClient::connect("http://127.0.0.1:1314").await.unwrap();
+  let mut chess_client = chess_client::ChessClient::connect("http://localhost:3002").await.unwrap();
   let resp = chess_client.push_game_create(online_game).await;
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
