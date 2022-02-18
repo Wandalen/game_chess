@@ -11,6 +11,14 @@ env:
 
 jobs :
 
+  cancel:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: n1hility/cancel-previous-runs@v2
+      with:
+        token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+
   # check:
   #   runs-on : ubuntu-latest
   #   outputs:
@@ -36,7 +44,9 @@ jobs :
   #       id: run
   #       if: "!contains( steps.message.outputs.message, '[build]' ) && !startsWith( steps.message.outputs.message, 'Merge ' )"
   #       run: echo "::set-output name=shouldRun::false"
+
   check:
+    needs: cancel
     runs-on: ubuntu-latest
     steps:
       - uses: Vankka/pr-target-branch-action@v1.1
@@ -66,15 +76,15 @@ jobs :
       build: 'slow'
       toolchain: 'nightly'
 
-  # forward :
-  #   needs:
-  #     - desktop
-  #     # - web
-  #   runs-on : ubuntu-latest
-  #   steps :
-  #     - name: Automerge passed pull request
-  #       uses: juliangruber/merge-pull-request-action@v1
-  #       with:
-  #         github-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-  #         number: ${{ github.event.number }}
-  #         method: merge
+  forward :
+    needs:
+      - desktop
+      - web
+    runs-on : ubuntu-latest
+    steps :
+      - name: Automerge passed pull request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+          number: ${{ github.event.number }}
+          method: merge
