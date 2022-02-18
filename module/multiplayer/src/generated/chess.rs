@@ -20,14 +20,6 @@ pub mod game_update
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blank {}
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Player
-{
-  #[prost(string, tag = "1")]
-  pub player_id : ::prost::alloc::string::String,
-  #[prost(string, tag = "2")]
-  pub player_name : ::prost::alloc::string::String,
-}
-#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GamePlayer
 {
   #[prost(string, tag = "1")]
@@ -41,7 +33,7 @@ pub struct GameInfo
   #[prost(string, tag = "1")]
   pub game_id : ::prost::alloc::string::String,
   #[prost(message, repeated, tag = "2")]
-  pub players : ::prost::alloc::vec::Vec<Player>,
+  pub players : ::prost::alloc::vec::Vec<GamePlayer>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameState
@@ -49,7 +41,7 @@ pub struct GameState
   #[prost(string, tag = "1")]
   pub game_id : ::prost::alloc::string::String,
   #[prost(message, repeated, tag = "2")]
-  pub players : ::prost::alloc::vec::Vec<Player>,
+  pub players : ::prost::alloc::vec::Vec<GamePlayer>,
   #[prost(string, tag = "3")]
   pub game_status : ::prost::alloc::string::String,
 }
@@ -65,27 +57,11 @@ pub struct Board
 pub struct MultiplayerGame
 {
   #[prost(string, tag = "1")]
-  pub id : ::prost::alloc::string::String,
+  pub game_id : ::prost::alloc::string::String,
   #[prost(message, repeated, tag = "2")]
   pub players : ::prost::alloc::vec::Vec<GamePlayer>,
-  #[prost(enumeration = "multiplayer_game::GameStatus", tag = "3")]
+  #[prost(int32, tag = "3")]
   pub status : i32,
-}
-/// Nested message and enum types in `MultiplayerGame`.
-pub mod multiplayer_game
-{
-  #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-  #[repr(i32)]
-  pub enum GameStatus
-  {
-    Continuing = 0,
-    //// The game has the winner.
-    Checkmate = 1,
-    //// The game is drawn.
-    Stalemate = 2,
-    //// The player given up.
-    Givenup = 3,
-  }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Games
@@ -119,13 +95,13 @@ pub struct AcceptGame
   #[prost(string, tag = "1")]
   pub game_id : ::prost::alloc::string::String,
   #[prost(message, optional, tag = "2")]
-  pub player_id : ::core::option::Option<Player>,
+  pub player_id : ::core::option::Option<GamePlayer>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGame
 {
   #[prost(message, optional, tag = "1")]
-  pub player : ::core::option::Option<Player>,
+  pub player : ::core::option::Option<GamePlayer>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameId

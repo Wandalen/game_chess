@@ -11,6 +11,7 @@ use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
+use std::ops::Deref;
 #[cfg(not(target_arch = "wasm32"))]
 use std::time::{SystemTime, UNIX_EPOCH};
 pub use pleco::{
@@ -106,7 +107,7 @@ impl Board
   }
 
   ///
-  /// Constructs a aborad from FEN
+  /// Constructs a board from FEN
   ///
   pub fn from_fen(fen : &Fen) -> Self
   {
@@ -268,14 +269,27 @@ impl Board
   ///
   /// Creates a 'Fen` string of the board.
   ///
-  pub fn to_fen(&self) -> Fen { self.pleco_board.fen() }
+  pub fn to_fen(&self) -> Fen { Fen::from(self.pleco_board.fen()) }
 }
 
 ///
 ///Positions on the board in [FEN](https://www.chess.com/terms/fen-chess#what-is-fen) format
 ///
 
-pub type Fen = String;
+#[derive(Serialize, Deserialize, Debug)]
+pub struct FenString(String);
+
+impl Deref for FenString {
+  type Target = String;
+
+  fn deref(&self) -> &Self::Target { &self.0 }
+}
+
+impl From<String> for FenString {
+  fn from(value: String) -> Self { FenString(value) }
+}
+
+pub type Fen = FenString;
 
 ///
 /// Contains information about move made in the past.
@@ -373,7 +387,7 @@ impl Game
   pub fn from_fen(fen : &String) -> Self
   {
     Self {
-      board : Board::from_fen(fen),
+      board : Board::from_fen(&Fen::from(fen.clone())),
       history : Vec::new(),
       is_forfeited : false,
       ai: None,
@@ -582,5 +596,5 @@ pub fn board_ser<S : Serializer>(board : &Board, s : S) -> Result<S::Ok, S::Erro
 pub fn board_der<'de, D : Deserializer<'de>>(d : D) -> Result<Board, D::Error>
 {
   let fen : String = Deserialize::deserialize(d)?;
-  Ok(Board::from_fen(&fen))
+  Ok(Board::from_fen(&Fen::from(fen)))
 }
