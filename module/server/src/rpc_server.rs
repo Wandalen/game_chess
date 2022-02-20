@@ -213,6 +213,7 @@ impl Chess for ChessRpcServer
 
       // Broadcasts chat message to all clients.
       // TODO; send message to appropriate recipient
+      // How to identify opponent remote address???
       for (client_addr, stream) in streams.iter() {
         let game_update = chess::GameUpdate {
           game_update : Some(chess::game_update::GameUpdate::ChatMsg(msg.pretty_print())),
