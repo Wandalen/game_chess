@@ -289,6 +289,10 @@ impl From<String> for FenString {
   fn from(value: String) -> Self { FenString(value) }
 }
 
+///
+/// Type alias for `FenString`
+///
+
 pub type Fen = FenString;
 
 ///
