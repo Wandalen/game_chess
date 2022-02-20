@@ -1,7 +1,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameUpdate
 {
-  #[prost(oneof = "game_update::GameUpdate", tags = "1, 2")]
+  #[prost(oneof = "game_update::GameUpdate", tags = "1, 2, 3")]
   pub game_update : ::core::option::Option<game_update::GameUpdate>,
 }
 /// Nested message and enum types in `GameUpdate`.
@@ -15,6 +15,8 @@ pub mod game_update
     /// TODO: refactor chat messages to use streams when they are ready.
     #[prost(message, tag = "2")]
     GameEnd(super::GameEnd),
+    #[prost(string, tag = "3")]
+    ChatMsg(::prost::alloc::string::String),
   }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -292,7 +294,7 @@ pub mod chess_client
       self.inner.unary(request.into_request(), path, codec).await
     }
 
-    pub async fn push_mgs(&mut self, request : impl tonic::IntoRequest<super::Msg>)
+    pub async fn push_msg(&mut self, request : impl tonic::IntoRequest<super::Msg>)
       -> Result<tonic::Response<()>, tonic::Status>
     {
       self
@@ -301,7 +303,7 @@ pub mod chess_client
         .await
         .map_err(|e| tonic::Status::new(tonic::Code::Unknown, format!("Service was not ready: {}", e.into())))?;
       let codec = tonic::codec::ProstCodec::default();
-      let path = http::uri::PathAndQuery::from_static("/chess.Chess/push_mgs");
+      let path = http::uri::PathAndQuery::from_static("/chess.Chess/push_msg");
       self.inner.unary(request.into_request(), path, codec).await
     }
 
@@ -350,7 +352,7 @@ pub mod chess_server
     ) -> Result<tonic::Response<super::GameState>, tonic::Status>;
     async fn pull_games_list(&self, request : tonic::Request<()>) -> Result<tonic::Response<super::Games>, tonic::Status>;
     async fn push_game_gg(&self, request : tonic::Request<super::GamePlayer>) -> Result<tonic::Response<()>, tonic::Status>;
-    async fn push_mgs(&self, request : tonic::Request<super::Msg>) -> Result<tonic::Response<()>, tonic::Status>;
+    async fn push_msg(&self, request : tonic::Request<super::Msg>) -> Result<tonic::Response<()>, tonic::Status>;
     #[doc = "Server streaming response type for the pull_game_updates method."]
     type pull_game_updatesStream: futures_core::Stream<Item = Result<super::GameUpdate, tonic::Status>> + Send + 'static;
     async fn pull_game_updates(
@@ -613,11 +615,11 @@ pub mod chess_server
           };
           Box::pin(fut)
         }
-        "/chess.Chess/push_mgs" =>
+        "/chess.Chess/push_msg" =>
         {
           #[allow(non_camel_case_types)]
-          struct push_mgsSvc<T : Chess>(pub Arc<T>);
-          impl<T : Chess> tonic::server::UnaryService<super::Msg> for push_mgsSvc<T>
+          struct push_msgSvc<T : Chess>(pub Arc<T>);
+          impl<T : Chess> tonic::server::UnaryService<super::Msg> for push_msgSvc<T>
           {
             type Future = BoxFuture<tonic::Response<Self::Response>, tonic::Status>;
             type Response = ();
@@ -625,7 +627,7 @@ pub mod chess_server
             fn call(&mut self, request : tonic::Request<super::Msg>) -> Self::Future
             {
               let inner = self.0.clone();
-              let fut = async move { (*inner).push_mgs(request).await };
+              let fut = async move { (*inner).push_msg(request).await };
               Box::pin(fut)
             }
           }
@@ -634,7 +636,7 @@ pub mod chess_server
           let inner = self.inner.clone();
           let fut = async move {
             let inner = inner.0;
-            let method = push_mgsSvc(inner);
+            let method = push_msgSvc(inner);
             let codec = tonic::codec::ProstCodec::default();
             let mut grpc =
               tonic::server::Grpc::new(codec).apply_compression_config(accept_compression_encodings, send_compression_encodings);

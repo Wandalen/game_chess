@@ -13,7 +13,7 @@ service Chess
   rpc pull_game_state (GameId) returns (GameState);
   rpc pull_games_list (google.protobuf.Empty) returns (Games);
   rpc push_game_gg (GamePlayer) returns (google.protobuf.Empty);
-  rpc push_mgs (Msg) returns (google.protobuf.Empty);
+  rpc push_msg (Msg) returns (google.protobuf.Empty);
   rpc pull_game_updates (GameId) returns (stream GameUpdate);
 }
 
@@ -24,6 +24,8 @@ message GameUpdate
     GameMove game_move = 1;
     GameEnd game_end = 2;
     // TODO: refactor chat messages to use streams when they are ready.
+
+    string chat_msg = 3 ;
   }
 }
 

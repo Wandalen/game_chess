@@ -11,7 +11,7 @@ use futures::Stream;
 use tonic::{Request, Response, Status};
 use tokio::sync::mpsc;
 
-use multiplayer::MultiplayerStatus;
+use multiplayer::{MultiplayerStatus, MultiplayerMessage};
 use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
 use multiplayer::generated::chess::{self, Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
@@ -201,7 +201,33 @@ impl Chess for ChessRpcServer
   ///
   /// Send message to game chat.
   ///
-  async fn push_mgs(&self, _request : Request<Msg>) -> Result<Response<()>, Status> { todo!() }
+  async fn push_msg(&self, request : Request<Msg>) -> Result<Response<()>, Status>
+  {
+    let msg_req = request.into_inner();
+    let player = msg_req.player;
+
+    if let Some(player) = player {
+      let msg = MultiplayerMessage::new(player.player_id, msg_req.text);
+
+      let streams = self.streams.lock().expect("Failed to lock the streams mutex");
+
+      // Broadcasts chat message to all clients.
+      // TODO; send message to appropriate recipient
+      for (client_addr, stream) in streams.iter() {
+        let game_update = chess::GameUpdate {
+          game_update : Some(chess::game_update::GameUpdate::ChatMsg(msg.pretty_print())),
+        };
+        
+        if let Err(err) = stream.send(Ok(game_update)) {
+          eprintln!("Failed to send chat msg to {}: {}", client_addr, err);
+        }
+      }
+
+      Ok(Response::new(()))
+    } else {
+      Err(Status::not_found("No player found on input!"))
+    }
+  }
 
   async fn pull_game_updates(&self, request : Request<GameId>) -> Result<Response<Self::pull_game_updatesStream>, Status>
   {
