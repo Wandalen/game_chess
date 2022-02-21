@@ -110,6 +110,8 @@ pub async fn main()
       ".gg" => command_forfeit(&mut game),
       ".online.new" => command_online_game_new().await,
       ".online.join" => command_online_game_join().await,
+      ".online.msg" => command_online_game_send_msg().await,
+      ".online.msg.read" => command_online_game_read_msgs().await,
       ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
@@ -141,6 +143,9 @@ pub fn command_help()
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
   println!(".gg        => Forfeit the game ");
   println!(".online.new => Create online multiplayer game ");
+  println!(".online.join  => Join online multiplayer game ");
+  println!(".online.msg  => Send message to opponent ");
+  println!(".online.msg.read  => Read messages from opponent ");
   println!(".online.join  => Join online multiplayer game ");
   println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
@@ -434,7 +439,6 @@ pub async fn command_online_game_new()
 ///
 /// Command to join an online game.
 ///
-///
 pub async fn command_online_game_join()
 {
   if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
@@ -455,6 +459,44 @@ pub async fn command_online_game_join()
       }
       Err(e) => { eprintln!("{}\nGame ID: {} Not found on the server!", e, game_id); }
     }
+  } else {
+    println!("Failed to connect gRPC server");
+  }
+}
+
+///
+/// Command to send message to opponent.
+///
+pub async fn command_online_game_send_msg()
+{
+  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
+    let player_id = wca::input::ask("Input Player ID");
+    let game_id = wca::input::ask("Input Game ID");
+    let text = wca::input::ask("Write Your Message");
+    println!("");
+
+    let player = GamePlayer { player_id, game_id };
+    chess_client.push_msg(Msg { player: Some(player), text }).await.ok();
+  } else {
+    println!("Failed to connect gRPC server");
+  }
+}
+
+///
+/// Command to read messages from opponent.
+///
+pub async fn command_online_game_read_msgs()
+{
+  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
+    let player_id = wca::input::ask("Input Player ID");
+    let game_id = wca::input::ask("Input Game ID");
+    println!("");
+
+    let player = GamePlayer { player_id, game_id };
+
+    let result = chess_client.read_msgs(player).await;
+    let chats = result.unwrap().into_inner().messages;
+    for chat in chats { println!("{}", chat); }
   } else {
     println!("Failed to connect gRPC server");
   }

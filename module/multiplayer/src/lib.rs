@@ -12,9 +12,10 @@ pub use generated::chess::MultiplayerGame;
 ///
 
 #[allow(dead_code)]
+#[derive(Debug, Clone)]
 pub struct MultiplayerMessage
 {
-  player_id : String,
+  pub player_id : String,
   text : String,
   timestamp : OffsetDateTime,
 }
@@ -26,7 +27,10 @@ impl MultiplayerMessage {
 
   pub fn pretty_print(&self) -> String {
     let format = format_description::parse("[year]-[month]-[day] [hour]:[minute]:[second]").unwrap();
-    format!("[{}][{}]>> {}", self.player_id, self.timestamp.format(&format).unwrap(), self.text)
+    format!(
+      "[Player ID: {}][Date: {}]>> {}",
+      self.player_id, self.timestamp.format(&format).unwrap(), self.text
+    )
   }
 }
 

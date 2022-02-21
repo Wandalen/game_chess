@@ -2,11 +2,11 @@
 //! Implements in-memory storage.
 //!
 
-use std::borrow::BorrowMut;
+use std::{borrow::BorrowMut, collections::HashMap};
 
 #[allow(unused_imports)]
 use tonic::async_trait;
-use multiplayer::MultiplayerGame as Game;
+use multiplayer::{MultiplayerGame as Game, MultiplayerMessage as Chat};
 
 use crate::store::GameStore;
 
@@ -19,6 +19,7 @@ pub struct MemoryStore
 {
   #[allow(dead_code)]
   games : Vec<Game>,
+  chats: HashMap<String, Vec<Chat>>
 }
 
 impl MemoryStore
@@ -26,7 +27,7 @@ impl MemoryStore
   ///
   /// Storage constructor.
   ///
-  pub fn new() -> Self { Self { games : Vec::new() } }
+  pub fn new() -> Self { Self { games : Vec::new(), chats: HashMap::new() } }
 }
 
 #[tonic::async_trait]
@@ -56,5 +57,31 @@ impl GameStore for MemoryStore
     {
       *g = new_game;
     }
+  }
+
+  ///
+  /// Add chat messages to storage.
+  /// 
+  fn add_chat(&mut self, game_id: &str, message: Chat) {
+    if self.chats.contains_key(game_id) {
+      self.chats.get_mut(game_id).unwrap().push(message);
+    } else {
+      self.chats.insert(game_id.to_owned(), vec![message]);
+    }
+  }
+
+  ///
+  /// Get chat messages from storage by `game_id`.
+  /// 
+  fn get_chats(&self, game_id: &str, player_id: &str) -> Vec<Chat> {
+    let mut chats = Vec::new();
+
+    if self.chats.contains_key(game_id) {
+      let messages = self.chats.get(game_id).unwrap();
+      for msg in messages {
+        if msg.player_id != player_id { chats.push(msg.clone()) }
+      }
+    }
+    chats
   }
 }

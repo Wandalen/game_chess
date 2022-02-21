@@ -1,6 +1,6 @@
 pub mod memory;
 
-use multiplayer::MultiplayerGame;
+use multiplayer::{MultiplayerGame, MultiplayerMessage};
 
 ///
 /// Implements methods for server storage.
@@ -17,4 +17,8 @@ pub trait GameStore
   fn get_games(&self) -> &Vec<MultiplayerGame>;
   /// Update game in storage using string id and new instance of Game.
   fn update_game(&mut self, game_id : &str, new_game : MultiplayerGame);
+  /// Add chat messages to storage
+  fn add_chat(&mut self, game_id: &str, message: MultiplayerMessage);
+  /// Get chat messages from storage by `game_id`.
+  fn get_chats(&self, game_id: &str, player_id: &str) -> Vec<MultiplayerMessage>;
 }

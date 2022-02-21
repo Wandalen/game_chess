@@ -214,25 +214,31 @@ impl Chess for ChessRpcServer
     if let Some(player) = player {
       let msg = MultiplayerMessage::new(player.player_id, msg_req.text);
 
-      let streams = self.streams.lock().expect("Failed to lock the streams mutex");
-
-      // Broadcasts chat message to all clients.
-      // TODO; send message to appropriate recipient
-      // How to identify opponent remote address???
-      for (client_addr, stream) in streams.iter() {
-        let game_update = chess::GameUpdate {
-          game_update : Some(chess::game_update::GameUpdate::ChatMsg(msg.pretty_print())),
-        };
-        
-        if let Err(err) = stream.send(Ok(game_update)) {
-          eprintln!("Failed to send chat msg to {}: {}", client_addr, err);
-        }
-      }
+      let mut store = self.store.lock().expect("Failed to lock the store mutex");
+      store.add_chat(&player.game_id, msg);
 
       Ok(Response::new(()))
     } else {
       Err(Status::not_found("No player found on input!"))
     }
+  }
+
+  ///
+  /// Read messages from game chat.
+  ///
+  async fn read_msgs(&self, request : Request<GamePlayer>) -> Result<Response<Msgs>, Status>
+  {
+    let player = request.into_inner();
+    let mut msgs = Msgs { messages: Vec::new() };
+
+    let store = self.store.lock().expect("Failed to lock the store mutex");
+
+    // Does not guarantees ordered message
+    let chats = store.get_chats(&player.game_id, &player.player_id);
+    for msg in chats.iter() { msgs.messages.push(msg.pretty_print()); }
+    
+    if msgs.messages.len() == 0 { msgs.messages.push("No Chat Messages!".to_owned()); }
+    Ok(Response::new(msgs))
   }
 
   async fn pull_game_updates(&self, request : Request<GameId>) -> Result<Response<Self::pull_game_updatesStream>, Status>

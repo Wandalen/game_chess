@@ -14,6 +14,7 @@ service Chess
   rpc pull_games_list (google.protobuf.Empty) returns (Games);
   rpc push_game_gg (GamePlayer) returns (google.protobuf.Empty);
   rpc push_msg (Msg) returns (google.protobuf.Empty);
+  rpc read_msgs (GamePlayer) returns (Msgs);
   rpc pull_game_updates (GameId) returns (stream GameUpdate);
 }
 
@@ -25,7 +26,7 @@ message GameUpdate
     GameEnd game_end = 2;
     // TODO: refactor chat messages to use streams when they are ready.
 
-    string chat_msg = 3 ;
+    // string chat_msg = 3 ;
   }
 }
 
@@ -108,5 +109,5 @@ message Msg
 
 message Msgs
 {
-  repeated Msg messages = 1;
+  repeated string messages = 1;
 }
