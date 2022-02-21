@@ -79,6 +79,36 @@ use game_chess_core::*;
 use game_chess_client::*;
 
 ///
+/// Simple Session for Online MultiplayerGame
+/// 
+#[derive(Debug)]
+pub struct ToySession { player_id: Option<String>, game_id: Option<String> }
+
+impl ToySession {
+  fn create(&mut self, player_id: &str, game_id: &str)
+  {
+    self.player_id = Some(player_id.to_string());
+    self.game_id = Some(game_id.to_string());
+  }
+
+  fn get(&self) -> (String, String)
+  {
+    (self.player_id.clone().unwrap(), self.game_id.clone().unwrap())
+  }
+
+  fn expired(&self) -> bool
+  {
+    if self.player_id == None || self.game_id == None { true } else { false }
+  }
+
+  fn update(&mut self)
+  {
+    self.player_id = Some(wca::input::ask("Input Player ID"));
+    self.game_id = Some(wca::input::ask("Input Game ID"));
+  }
+}
+
+///
 /// Main. CLI game itself.
 ///
 #[tokio::main]
@@ -86,6 +116,8 @@ pub async fn main()
 {
   let mut game : Option<Game> = None;
   let mut choice;
+
+  let mut session = ToySession { player_id: None, game_id: None };
 
   command_help();
 
@@ -108,10 +140,10 @@ pub async fn main()
       ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
       ".gg" => command_forfeit(&mut game),
-      ".online.new" => command_online_game_new().await,
-      ".online.join" => command_online_game_join().await,
-      ".online.msg" => command_online_game_send_msg().await,
-      ".online.msg.read" => command_online_game_read_msgs().await,
+      ".online.new" => command_online_game_new(&mut session).await,
+      ".online.join" => command_online_game_join(&mut session).await,
+      ".online.msg" => command_online_game_send_msg(&mut session).await,
+      ".online.msg.read" => command_online_game_read_msgs(&mut session).await,
       ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
@@ -414,12 +446,15 @@ pub fn command_move_ai(game : &mut Option<Game>)
 /// Command to start new online game.
 ///
 
-pub async fn command_online_game_new()
+pub async fn command_online_game_new(session: &mut ToySession)
 {
   if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
     let player_id = wca::input::ask("Input Player ID");
     let game_id = wca::input::ask("Input Game ID");
     println!("");
+
+    // Initiates ToySession
+    session.create(&player_id, &game_id);
 
     let online_game = CreateGame {
       player: Some(game_chess_client::GamePlayer { player_id, game_id })
@@ -438,12 +473,15 @@ pub async fn command_online_game_new()
 ///
 /// Command to join an online game.
 ///
-pub async fn command_online_game_join()
+pub async fn command_online_game_join(session: &mut ToySession)
 {
   if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
     let player_id = wca::input::ask("Input Player ID");
     let game_id = wca::input::ask("Input Game ID");
     println!("");
+
+    // Initiates ToySession
+    session.create(&player_id, &game_id);
 
     let online_game = AcceptGame {
       game_id: game_id.to_string(),
@@ -466,11 +504,14 @@ pub async fn command_online_game_join()
 ///
 /// Command to send message to opponent.
 ///
-pub async fn command_online_game_send_msg()
+pub async fn command_online_game_send_msg(session: &mut ToySession)
 {
   if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    let player_id = wca::input::ask("Input Player ID");
-    let game_id = wca::input::ask("Input Game ID");
+    // Session guard for ToySession
+    if session.expired() { session.update(); }
+
+    let (player_id, game_id) = session.get();
+
     let text = wca::input::ask("Write Your Message");
     println!("");
 
@@ -484,12 +525,13 @@ pub async fn command_online_game_send_msg()
 ///
 /// Command to read messages from opponent.
 ///
-pub async fn command_online_game_read_msgs()
+pub async fn command_online_game_read_msgs(session: &mut ToySession)
 {
   if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    let player_id = wca::input::ask("Input Player ID");
-    let game_id = wca::input::ask("Input Game ID");
-    println!("");
+    // Session guard for ToySession
+    if session.expired() { session.update(); }
+
+    let (player_id, game_id) = session.get();
 
     let player = GamePlayer { player_id, game_id };
 
