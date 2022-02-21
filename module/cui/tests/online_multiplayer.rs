@@ -78,7 +78,7 @@ async fn online_game_send_receive_msg()
 {
   run_test_server("0.0.0.0:3003").await;
 
-  let mut chess_client = chess_client::ChessClient::connect("http://localhost:3002").await.unwrap();
+  let mut chess_client = chess_client::ChessClient::connect("http://localhost:3003").await.unwrap();
   let player = Some(GamePlayer{ player_id: "01".to_owned(), game_id: "01".to_owned() });
   chess_client.push_msg(Msg { player, text: "Hello, Player!".to_owned() }).await.ok();
 
