@@ -358,7 +358,7 @@ pub struct Game
   ///
   /// AI Engine responsible for finding best moves
   ///
-  pub ai: Option<ai::Engine>,
+  pub ai : Option<ai::Engine>,
   #[cfg(not(target_arch = "wasm32"))]
   date : SystemTime, // unix timestamp
   #[cfg(target_arch = "wasm32")]
@@ -376,7 +376,7 @@ impl Game
       board : Board::default(),
       history : Vec::new(),
       is_forfeited : false,
-      ai: None,
+      ai : None,
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
       #[cfg(target_arch = "wasm32")]
@@ -394,7 +394,7 @@ impl Game
       board : Board::from_fen(&Fen::from(fen.clone())),
       history : Vec::new(),
       is_forfeited : false,
-      ai: None,
+      ai : None,
 
       #[cfg(not(target_arch = "wasm32"))]
       date : SystemTime::now(),
@@ -443,9 +443,7 @@ impl Game
   ///
   /// Check if game has AI engine
   ///
-  pub fn has_ai(&self) -> bool {
-    !self.ai.is_none()
-  }
+  pub fn has_ai(&self) -> bool { !self.ai.is_none() }
 
   ///
   /// AI makes the move using internal AI algorithm
@@ -453,15 +451,16 @@ impl Game
   ///
   pub fn make_move_ai(&mut self)
   {
-    match &self.ai {
-      Some(engine) =>  self.board.pleco_board.apply_move(engine.best_move(self.board.clone())),
-      None => self.board.make_move_ai()
+    match &self.ai
+    {
+      Some(engine) => self.board.pleco_board.apply_move(engine.best_move(self.board.clone())),
+      None => self.board.make_move_ai(),
     };
 
     let last_move = self.board.last_move().unwrap();
     self.history.push(HistoryEntry {
       fen : self.board.to_fen(),
-      last_move
+      last_move,
     });
   }
 
