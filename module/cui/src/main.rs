@@ -146,7 +146,6 @@ pub fn command_help()
   println!(".online.join  => Join online multiplayer game ");
   println!(".online.msg  => Send message to opponent ");
   println!(".online.msg.read  => Read messages from opponent ");
-  println!(".online.join  => Join online multiplayer game ");
   println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
   println!(".status    => Print board, current turn, last move");
