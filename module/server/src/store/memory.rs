@@ -73,13 +73,17 @@ impl GameStore for MemoryStore
   ///
   /// Get chat messages from storage by `game_id`.
   /// 
-  fn get_chats(&self, game_id: &str, player_id: &str) -> Vec<Chat> {
+  fn get_chats(&self, game_id: &str, _player_id: &str) -> Vec<Chat> {
     let mut chats = Vec::new();
 
     if self.chats.contains_key(game_id) {
       let messages = self.chats.get(game_id).unwrap();
       for msg in messages {
-        if msg.player_id != player_id { chats.push(msg.clone()) }
+        // Toggle comment between following lines only if
+        // Opponent and spectator (if implemented) chats are desired.
+
+        chats.push(msg.clone())
+        // if msg.player_id != _player_id { chats.push(msg.clone()) }
       }
     }
     chats
