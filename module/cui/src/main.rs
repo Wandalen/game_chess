@@ -12,9 +12,9 @@ Commands
 .game.from.fen - creates game [feature: game from fen]
 [issue: implement command game.from.fen]
 
-.games.list - list games [feature: persistence][issue: imlement persistency]
+.games.list - list games [feature: persistence][issue: implement persistency]
 .game.open [id] - opens the game from storage [feature: persistence]
-.game.save - saves cureent game state [feature: persistence]
+.game.save - saves current game state [feature: persistence]
 
 .quit - exit
 [issue: prompt for quit]
@@ -78,35 +78,7 @@ use game_chess_core::*;
 #[allow(unused_imports)]
 use game_chess_client::*;
 
-///
-/// Simple Session for Online MultiplayerGame
-/// 
-#[derive(Debug)]
-pub struct ToySession { player_id: Option<String>, game_id: Option<String> }
-
-impl ToySession {
-  fn create(&mut self, player_id: &str, game_id: &str)
-  {
-    self.player_id = Some(player_id.to_string());
-    self.game_id = Some(game_id.to_string());
-  }
-
-  fn get(&self) -> (String, String)
-  {
-    (self.player_id.clone().unwrap(), self.game_id.clone().unwrap())
-  }
-
-  fn expired(&self) -> bool
-  {
-    if self.player_id == None || self.game_id == None { true } else { false }
-  }
-
-  fn update(&mut self)
-  {
-    self.player_id = Some(wca::input::ask("Input Player ID"));
-    self.game_id = Some(wca::input::ask("Input Game ID"));
-  }
-}
+mod multiplayer;
 
 ///
 /// Main. CLI game itself.
@@ -117,7 +89,10 @@ pub async fn main()
   let mut game : Option<Game> = None;
   let mut choice;
 
-  let mut session = ToySession { player_id: None, game_id: None };
+  let mut session = multiplayer::ToySession::init();
+
+  let remote_rpc = chess_client::ChessClient::connect("http://127.0.0.1:1313").await;
+  let mut remote_rpc = if let Ok(remote) = remote_rpc { Some(remote) } else { None };
 
   command_help();
 
@@ -140,10 +115,6 @@ pub async fn main()
       ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
       ".gg" => command_forfeit(&mut game),
-      ".online.new" => command_online_game_new(&mut session).await,
-      ".online.join" => command_online_game_join(&mut session).await,
-      ".online.msg" => command_online_game_send_msg(&mut session).await,
-      ".online.msg.read" => command_online_game_read_msgs(&mut session).await,
       ".moves.list" => command_moves_list(&game),
       ".move.ai" => command_move_ai(&mut game),
       ".status" | ".s" => command_status(&game),
@@ -151,6 +122,22 @@ pub async fn main()
       ".quit" => command_exit(&game),
       ".help" => command_help(),
       ".score" => command_score(&game),
+
+      ".online.new" =>
+        multiplayer::command_game_new(&mut session, &mut remote_rpc).await,
+      ".online.join" =>
+        multiplayer::command_game_join(&mut session, &mut remote_rpc).await,
+      ".online.move" =>
+        multiplayer::command_game_move(&mut session, &mut remote_rpc).await,
+      ".online.moves.list" =>
+        multiplayer::command_game_moves_list(&mut session, &mut remote_rpc).await,
+      ".online.msg" =>
+        multiplayer::command_game_send_msg(&mut session, &mut remote_rpc).await,
+      ".online.msg.read" =>
+        multiplayer::command_game_read_msgs(&mut session, &mut remote_rpc).await,
+      ".online.status" =>
+        multiplayer::command_game_status(&mut session, &mut remote_rpc).await,
+
       command => println!("Unknown command : {}\n", command),
     }
   }
@@ -162,11 +149,7 @@ pub async fn main()
 
 pub fn command_help()
 {
-  println!("");
-
-  println!("Commands:");
-
-  println!("");
+  println!("\nCommands:\n");
 
   println!(".game.new  => Create game with default board");
   println!(".new.ai    => Create game with ai. Also shortcut for .game.new.ai");
@@ -174,16 +157,14 @@ pub fn command_help()
   println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
   println!(".gg        => Forfeit the game ");
-  println!(".online.new => Create online multiplayer game ");
-  println!(".online.join  => Join online multiplayer game ");
-  println!(".online.msg  => Send message to opponent ");
-  println!(".online.msg.read  => Read messages from opponent ");
   println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
   println!(".move.ai   => Ask the AI to make a move for the player");
   println!(".status    => Print board, current turn, last move");
   println!(".moves.history => Print moves history");
   println!(".quit      => Exit from the game");
   println!(".help      => Print this help");
+
+  multiplayer::command_help();
 }
 
 ///
@@ -440,105 +421,4 @@ pub fn command_move_ai(game : &mut Option<Game>)
   println!("");
   game.board_print();
   println!("Turn of {}", game.current_turn());
-}
-
-///
-/// Command to start new online game.
-///
-
-pub async fn command_online_game_new(session: &mut ToySession)
-{
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    let player_id = wca::input::ask("Input Player ID");
-    let game_id = wca::input::ask("Input Game ID");
-    println!("");
-
-    // Initiates ToySession
-    session.create(&player_id, &game_id);
-
-    let online_game = CreateGame {
-      player: Some(game_chess_client::GamePlayer { player_id, game_id })
-    };
-
-    let result = chess_client.push_game_create(online_game).await;
-    match result {
-      Ok(resp) => { println!("Your sharable game ID: {}", resp.get_ref().game_id); }
-      Err(e) => { eprintln!("{}", e); }
-    }
-  } else {
-    println!("Failed to connect gRPC server");
-  }
-}
-
-///
-/// Command to join an online game.
-///
-pub async fn command_online_game_join(session: &mut ToySession)
-{
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    let player_id = wca::input::ask("Input Player ID");
-    let game_id = wca::input::ask("Input Game ID");
-    println!("");
-
-    // Initiates ToySession
-    session.create(&player_id, &game_id);
-
-    let online_game = AcceptGame {
-      game_id: game_id.to_string(),
-      player_id: Some(game_chess_client::GamePlayer { player_id, game_id: game_id.to_string() })
-    };
-
-    let result = chess_client.push_game_accept(online_game).await;
-    match result {
-      Ok(resp) => {
-        println!("You have joined game ID: {}", resp.get_ref().game_id);
-        println!("Games list: {:?}", chess_client.pull_games_list(()).await)
-      }
-      Err(e) => { eprintln!("{}\nGame ID: {} Not found on the server!", e, game_id); }
-    }
-  } else {
-    println!("Failed to connect gRPC server");
-  }
-}
-
-///
-/// Command to send message to opponent.
-///
-pub async fn command_online_game_send_msg(session: &mut ToySession)
-{
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    // Session guard for ToySession
-    if session.expired() { session.update(); }
-
-    let (player_id, game_id) = session.get();
-
-    let text = wca::input::ask("Write Your Message");
-    println!("");
-
-    let player = GamePlayer { player_id, game_id };
-    chess_client.push_msg(Msg { player: Some(player), text }).await.ok();
-  } else {
-    println!("Failed to connect gRPC server");
-  }
-}
-
-///
-/// Command to read messages from opponent.
-///
-pub async fn command_online_game_read_msgs(session: &mut ToySession)
-{
-  if let Ok(mut chess_client) = chess_client::ChessClient::connect("http://127.0.0.1:1313").await {
-    // Session guard for ToySession
-    if session.expired() { session.update(); }
-
-    let (player_id, game_id) = session.get();
-
-    let player = GamePlayer { player_id, game_id };
-
-    let result = chess_client.read_msgs(player).await;
-    let chats = result.unwrap().into_inner().messages;
-    for chat in chats { println!("{}", chat); }
-  } else {
-    println!("Failed to connect gRPC server");
-  }
 }

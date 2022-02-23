@@ -8,13 +8,15 @@ use std::pin::Pin;
 use std::sync::{Arc, Mutex};
 use futures::Stream;
 
+use tonic::codegen::http::request;
 use tonic::{Request, Response, Status};
 use tokio::sync::mpsc;
 
+use game_chess_core::{UCI, Player};
 use multiplayer::{MultiplayerStatus, MultiplayerMessage};
 use multiplayer::generated::chess::chess_server::Chess;
 use crate::store::GameStore;
-use multiplayer::generated::chess::{self, Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs};
+use multiplayer::generated::chess::{self, Board, GameState, Games, CreateGame, GameId, AcceptGame, GameMove, GamePlayer, Msg, Msgs, GameAvailableMoves};
 use crate::store::memory::MemoryStore;
 
 type ResponseStream<T> = Pin<Box<dyn Stream<Item = Result<T, Status>> + Send>>;
@@ -76,7 +78,7 @@ impl Chess for ChessRpcServer
     let mut store = self.store.lock().expect("Failed to lock the store mutex");
 
     if let Some(player) = request.into_inner().player {
-      store.add_game(
+      let new_game = store.add_game(
         multiplayer::MultiplayerGame::new(
           player.game_id.to_string(),
           GamePlayer { game_id: player.game_id.to_string(), player_id: player.player_id },
@@ -84,7 +86,8 @@ impl Chess for ChessRpcServer
         )
       );
 
-      Ok(Response::new(GameId { game_id: player.game_id }))
+      if let Err(e) = new_game { Err(Status::already_exists(e)) }
+      else { Ok(Response::new(GameId { game_id: player.game_id })) }
     } else {
       Err(Status::invalid_argument("No player found!"))
     }
@@ -130,12 +133,85 @@ impl Chess for ChessRpcServer
   ///
   /// Apply move.
   ///
-  async fn push_move(&self, _request : Request<GameMove>) -> Result<Response<GameId>, Status> { todo!() }
+  async fn push_move(&self, request : Request<GameMove>) -> Result<Response<Board>, Status>
+  {
+    let move_req = request.into_inner();
+    let (game_id, player_id, r#move) = (move_req.game_id, move_req.player_id, move_req.r#move);
+
+    let mut store = self.store.lock().expect("Failed to lock the store mutex");
+    if store.move_validity(&game_id, &r#move) {
+      // Check for legal player move
+      let current_turn = store.current_turn(&game_id);
+      let game = store.get_game(&game_id);
+
+      let mut turn_msg = String::new();
+      let illegal_turn_msg = "Illegal move! Now is your opponent's turn";
+
+      match current_turn {
+        Player::White => {
+          if game.players[0].player_id == player_id { store.make_move(&game_id, &r#move); }
+          else { turn_msg = illegal_turn_msg.to_string() }
+        }
+        Player::Black => {
+          if game.players[0].player_id != player_id { store.make_move(&game_id, &r#move); }
+          else { turn_msg = illegal_turn_msg.to_string() }
+        }
+      }
+
+      let mut board_state = store.get_board_state(&game_id).unwrap();
+
+      if turn_msg.len() == 0 {
+        let current_turn = store.current_turn(&game_id);
+        let last_move = store.last_move(&game_id);
+        default_board_view(&mut board_state, current_turn, last_move);
+
+        Ok(Response::new(Board { game_id, board_state }))
+      } else {
+        Ok(Response::new(
+          Board { game_id, board_state: turn_msg }
+        ))
+      }
+    } else {
+      Ok(Response::new(
+        Board {
+          game_id,
+          board_state: "Invalid move! For all available moves use command: .moves.list".to_owned()
+        }
+      ))
+    }
+  }
+
+  ///
+  /// Get available moves.
+  /// 
+  async fn pull_moves(&self, request : Request<GameId>) -> Result<Response<GameAvailableMoves>, Status>
+  {
+    let game_id = request.into_inner().game_id;
+    let mut store = self.store.lock().expect("Failed to lock the store mutex");
+
+    // Assumes game already exists
+    let moves_list = store.moves_list(&game_id);
+    let moves_list: Vec<String> = moves_list.iter().map(|r#move| r#move.to_string()).collect();
+    Ok(Response::new(GameAvailableMoves { moves_list }))
+  }
 
   ///
   /// Get info about current board state. There are only positions.
   ///
-  async fn pull_board_state(&self, _request : Request<GameId>) -> Result<Response<Board>, Status> { todo!() }
+  async fn pull_board_state(&self, request : Request<GameId>) -> Result<Response<Board>, Status> {
+    let game_id = request.into_inner().game_id;
+    let store = self.store.lock().expect("Failed to lock the store mutex");
+
+    if let Some(mut board_state) = store.get_board_state(&game_id) {
+      let current_turn = store.current_turn(&game_id);
+      let last_move = store.last_move(&game_id);
+      default_board_view(&mut board_state, current_turn, last_move);
+
+      Ok(Response::new(Board { game_id, board_state }))
+    } else {
+      Err(Status::not_found(format!("No game found by the Game ID: {}", game_id)))
+    }
+  }
 
   ///
   /// Get info about current game state - positions and history.
@@ -251,4 +327,13 @@ impl Chess for ChessRpcServer
       Box::pin(tokio_stream::wrappers::UnboundedReceiverStream::new(rx)) as Self::pull_game_updatesStream,
     ))
   }
+}
+
+fn default_board_view(board: &mut String, turn: Player, r#move: Option<UCI>) {
+  let turn_msg = format!("\n\nCurrent turn: {} - ", turn);
+  let last_move = if let Some(last_move) = r#move { format!("Last move: {}", last_move.0) }
+  else { "Last move: None".to_owned() };
+
+  board.push_str(&turn_msg);
+  board.push_str(&last_move);
 }

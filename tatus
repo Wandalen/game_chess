@@ -1,0 +1,3808 @@
+[33mcommit 468fe0934a5393415b50a86e997ccf0c552a16ed[m[33m ([m[1;36mHEAD -> [m[1;32malpha[m[33m, [m[1;31morigin/alpha[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Tue Feb 22 11:57:35 2022 +0600
+
+    Prints chat history for both players.
+
+[33mcommit 5d46cc9d1ffea83b4ea85cb86874392f15e342e3[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Mon Feb 21 23:27:52 2022 +0600
+
+    Adding a toy session on cui, for multiplayer.
+
+[33mcommit 758bcb723d23405836519ec10d7b2f7b8d133420[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Mon Feb 21 20:46:35 2022 +0600
+
+    Implements Messaging #60 without streams
+
+[33mcommit 1c537c3e8815292b35feb8fc782f6168602a9633[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Mon Feb 21 20:44:28 2022 +0600
+
+    Implements Messaging #60 without streams
+
+[33mcommit 2f695ac3a41c5c09cce3a85150624f47edec6973[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Mon Feb 21 20:42:29 2022 +0600
+
+    Implements Messaging #60 without streams
+
+[33mcommit ba20b5af0e1053e7a0ccf6f9ea26a9bd9669b57f[m
+Merge: 25328ed 3fdf074
+Author: al-mehedi <leftoverm9@gmail.com>
+Date:   Mon Feb 21 15:28:48 2022 +0600
+
+    Merge branch 'Wandalen:alpha' into alpha
+
+[33mcommit 3fdf074d4252e9985aa0fae6b8966e376d3fa845[m
+Merge: f0d0f72 71840a5
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 21 08:19:27 2022 +0200
+
+    Merge branch `beta` into alpha
+
+[33mcommit 25328ed360ac7d6dd3e652b72661d6ab99e0385a[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Sun Feb 20 21:21:31 2022 +0600
+
+    rpc push_msg() implementation for MultiplayerGame
+
+[33mcommit e69e5aa9c8b86b6539b3c3489d9cc4252c7a4ab1[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Sun Feb 20 21:08:01 2022 +0600
+
+    rpc push_msg() implementation for MultiplayerGame
+
+[33mcommit 07acd5a555acf7bb4e17eb8bb5a2226fd263d7a3[m
+Merge: c2dd274 f0d0f72
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Sun Feb 20 21:04:17 2022 +0600
+
+    Merge branch 'alpha' of https://github.com/al-mehedi/game_chess into alpha
+
+[33mcommit c2dd274473f9bcd586ff49a9ac8d309a00b6ab9a[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Sun Feb 20 21:03:17 2022 +0600
+
+     implementation for MultiplayerGame
+
+[33mcommit f0d0f72be60e76ee1a11eed59c2beffe02e599c0[m
+Merge: 2ba58c6 4f45650
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Feb 18 11:28:42 2022 +0200
+
+    Merge pull request #222 from al-mehedi/alpha
+    
+    NOT READY : Online multiplayer integration tests without RPC server dependency.
+
+[33mcommit 2ba58c6900310cb42517e7bf07c18ff57ae757c1[m
+Merge: 04ad535 6ba3df5
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 18 10:12:27 2022 +0200
+
+    Merge pull request #217 from Wandalen/doc
+    
+    READY : Extend doc about committing
+
+[33mcommit 04ad535f180a8591e0295f2f967f9a18fde6f415[m
+Merge: 129f9f0 1d579b1
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 18 10:11:54 2022 +0200
+
+    Merge pull request #224 from Wandalen/workflow
+    
+    READY : Disable automerge in workflow `Alpha`
+
+[33mcommit 1d579b1b0b87265895baf7c12281a86f63717b4a[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 18 09:17:36 2022 +0200
+
+    Disable automerge of pull request from branch `alpha` to `beta`, prevent fail on job `forward`
+
+[33mcommit 4f456501fe39763f74392a6db0ca0a3e1f948346[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Thu Feb 17 23:01:16 2022 +0600
+
+    Miscellaneous changes
+
+[33mcommit dddfafcbfc10b9a55663badbbbdaa15e911064c3[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Thu Feb 17 15:20:32 2022 +0600
+
+    Using non privileged port for RPC test server
+
+[33mcommit 3ec8f1e9d38c2433e37f68ab3c61a4a589ecab28[m
+Merge: a4c8a4e 129f9f0
+Author: al-mehedi <leftoverm9@gmail.com>
+Date:   Thu Feb 17 14:13:28 2022 +0600
+
+    Merge branch 'Wandalen:alpha' into alpha
+
+[33mcommit 71840a59d8b4b43c0e7d8082784e832ea51ab3af[m
+Merge: bcbae95 129f9f0
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 17 09:05:48 2022 +0200
+
+    Merge pull request #223 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit 129f9f0018ebb698f6cf4fe4f84181d536852958[m
+Merge: e83d095 cac44de
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 17 09:02:26 2022 +0200
+
+    Merge pull request #221 from Wandalen/workflow
+    
+    READY : Update links to common workflows
+
+[33mcommit a4c8a4ec46430e6bce664c55f00094b04e33c681[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Wed Feb 16 09:15:02 2022 +0600
+
+    Online multiplayer integration tests without RPC server dependency.
+
+[33mcommit cac44de66df61ec78c72ec8087461a28578fe05f[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 17:13:31 2022 +0200
+
+    Fix workflows, replace links to common workflows
+
+[33mcommit bcbae954c3f397e8d4836ff545e0fa1290df985d[m
+Merge: c51fa0b b816f1a
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 16:48:45 2022 +0200
+
+    Merge pull request #220 from Wandalen/pr201
+    
+    READY : Pr #201 without conflicts, pr #201 is closed for changes
+
+[33mcommit b816f1a2958158d01f240e80b46c86ce9b8324d6[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 16:16:34 2022 +0200
+
+    Fix web target, add condition for interation plugin
+
+[33mcommit c51fa0bec93ae6a0018905a8c5c876c0bd755130[m
+Merge: 89459a0 e83d095
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Mon Feb 14 15:41:23 2022 +0200
+
+    Merge pull request #215 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit 3bc5f4591a589e901f9c28af539564db5b226d3b[m
+Merge: 880703c e83d095
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 15:37:28 2022 +0200
+
+    Merge branch `alpha` into pr201
+
+[33mcommit 880703ccd86b78f21201116d5a622d8a95ad105a[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 15:32:35 2022 +0200
+
+    Rewrite systems to change color schema, use struct for color handles, format code
+
+[33mcommit e83d0958f03ca83932b8951bee50e72d4f6004a9[m
+Merge: 44f04d5 77c8e82
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Mon Feb 14 15:18:57 2022 +0200
+
+    Merge pull request #218 from Wandalen/web
+    
+    READY : Fix web build
+
+[33mcommit 44f04d5ba91a48da304f5a272780ab4ba147f30d[m
+Merge: 917b561 7eb5633
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Mon Feb 14 15:18:30 2022 +0200
+
+    Merge pull request #202 from Wandalen/workflow
+    
+    READY : Enable all workflow jobs
+
+[33mcommit 917b5610caabed5855a9e7d75c101dafd6df9ceb[m
+Merge: 5178e57 8cd02dd
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Mon Feb 14 15:18:17 2022 +0200
+
+    Merge pull request #219 from Wandalen/fix
+    
+    READY : Fix tests
+
+[33mcommit d613f2315b1556213427ea903dffe281736e8e11[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 14:21:51 2022 +0200
+
+    Fix all warnings, add simple documentation
+
+[33mcommit 967181e00a4901e70d40e5f2e0c99b9c172c41fb[m
+Merge: c682772 5178e57
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 12:44:35 2022 +0200
+
+    Merge branch `alpha` of https://github.com/Wandalen/game_chess into issue-54
+
+[33mcommit 7eb5633ca63e23e7b83723164f8ab36517552531[m
+Merge: 77f2cbb 5178e57
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 11:33:52 2022 +0200
+
+    Merge branch `alpha` into workflow
+
+[33mcommit 8cd02dd4604aafdbee75be67fef799f1e4a13f9e[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 11:31:10 2022 +0200
+
+    Fix tests for CUI multiplayer, skip panic if no connection exists, test should create
+    environment before
+
+[33mcommit 6ba3df5379e36fecc2d7dfc305e5709a55dab0cb[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 10:51:52 2022 +0200
+
+    Extend documentation about committing changes
+
+[33mcommit 77c8e829a887324fa59a6e21ef46a2cf54830062[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 10:36:52 2022 +0200
+
+    Fix scenario `web_build_copy_static`, copy all assets to destination
+
+[33mcommit 5ee0d70fe0ee0b82a4ecc559957f94f7370604f1[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 10:36:16 2022 +0200
+
+    Fix web build, disable plugin `InterationPlugin`
+
+[33mcommit 5178e579eab1647132e365a1fe4a90619a2277f8[m
+Merge: 778fcc3 0643cc5
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Mon Feb 14 10:33:16 2022 +0200
+
+    Merge pull request #216 from Wandalen/fix
+    
+    READY : Fix linux crossbuild scenario
+
+[33mcommit 0643cc593fff693e8d26a2e28acbc29de0860fc2[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Feb 14 07:54:10 2022 +0200
+
+    Fix build scenario `prepare_windows_target_on_linux`, install dependencies automatically
+
+[33mcommit 778fcc3ffbaf71f318220087baf0625af9bc56e3[m
+Merge: d39b3ed 6621f8e
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 13 21:15:34 2022 +0200
+
+    Merge pull request #212 from al-mehedi/alpha
+    
+    Draft: Issue 38
+
+[33mcommit 89459a0e68c49b26b0c2ca615a66cb5e5c62eb31[m
+Merge: 0f9bc7d d39b3ed
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Feb 12 19:38:15 2022 +0200
+
+    Merge pull request #213 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit d39b3ed7fce43e54d7e64f5e72f59ecf1bfe76fd[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Feb 12 19:10:16 2022 +0200
+
+    CD script : normal name of dir
+
+[33mcommit 6621f8ee04f44b547278dbc884a805ac85619bb0[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Sat Feb 12 18:34:12 2022 +0600
+
+    Draft: Issue 38 (with simple unit tests)
+
+[33mcommit 6697dd81158eb09bf15e01c47b0164ed5e78e116[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Sat Feb 12 17:22:22 2022 +0600
+
+    Draft rev-2: Issue 54 (with simple unit tests)
+
+[33mcommit 9a47511e6694ac5eb6f391ab6aa95f0357c781cf[m
+Author: Al Mehedi <leftoverm9@gmail.com>
+Date:   Sat Feb 12 16:36:53 2022 +0600
+
+    Draft rev-1: Issue 54
+
+[33mcommit 0f9bc7d62515aecae43d3f863ff5067c4988bd49[m
+Merge: 1e125f3 d2cc116
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Feb 11 21:43:50 2022 +0200
+
+    Merge pull request #209 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit d2cc116350f8260d76a38be0cf4b04b79af75cab[m
+Merge: a38ae61 8c4e319
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Feb 11 21:20:01 2022 +0200
+
+    Merge pull request #210 from Wandalen/fix
+    
+    READY : Fix run on branch beta
+
+[33mcommit 8c4e319016b6d63bcb2deb8eecda97fc6e1bb206[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 11 21:19:13 2022 +0200
+
+    Add temporary fix for workflow `Beta`, disable web build
+
+[33mcommit a38ae617f076f25891cb1425d179b8a8c9585211[m
+Merge: d27f592 21910e7
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Feb 11 21:16:36 2022 +0200
+
+    Merge pull request #205 from Wandalen/automerge
+    
+    READY : Extend workflow `Alpha`, add automerge
+
+[33mcommit 1e125f3d99645a9471a306140b36fbbe78cb0f60[m
+Merge: 2b40acd d27f592
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Feb 11 21:06:06 2022 +0200
+
+    Merge pull request #204 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit 21910e7cb9dbe47f2db1f6a7d0a95e7576c69149[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 11 11:30:37 2022 +0200
+
+    Extend workflow `Alpha`, add job for automerge
+
+[33mcommit d27f592389c8353179ef5d79ee0493b016910598[m
+Merge: 97f4128 73020fe
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Feb 11 10:34:02 2022 +0200
+
+    Merge pull request #203 from Wandalen/restrict_prs
+    
+    READY : Restrict PRs to be opened to valid branch
+
+[33mcommit 73020fee7144845d9a355b2c11d603371b3cce73[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 11 10:27:05 2022 +0200
+
+    Improve workflows `Alpha` and `Beta`, use check for valid source branch inside workflow
+
+[33mcommit 97f41283196b76aeb45c5769ad6bc4f7d2cbec47[m
+Merge: ea6fc86 62c3d8f
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 11 08:02:42 2022 +0200
+
+    Merge pull request #194 from Supremist/alpha
+    
+    Implement game with AI algoritms using dyn triats
+
+[33mcommit 62c3d8f4f0249256586938977f7e0e07316f28d3[m
+Author: Sergey Karvatskiy <sergey.karvatskiy@developex.net>
+Date:   Fri Feb 11 00:33:39 2022 +0200
+
+    Move AI to separate module
+    
+    Added docs
+
+[33mcommit 8855df81bdfe421633b9aa7080962593fcdc020a[m
+Merge: 114ecb2 ea6fc86
+Author: Sergey Karvatskiy <sergkarv@gmail.com>
+Date:   Fri Feb 11 00:32:15 2022 +0200
+
+    Merge branch 'Wandalen:alpha' into alpha
+
+[33mcommit 77f2cbb7602c564012868f96c4f5e6d5cb0372d7[m[33m ([m[1;31morigin/workflow[m[33m)[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Tue Feb 8 10:47:25 2022 +0200
+
+    Rename workflows for forwarding changes, use common pattern `ForwardFrom`
+
+[33mcommit 7d9c3faa54300c71e1577d1b57cf76243f08d51b[m[33m ([m[1;31morigin/restrict_prs[m[33m)[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Tue Feb 8 10:31:55 2022 +0200
+
+    Add workflows `BetaPrApprove` and `MainPrApprove`, check that PR was opened to valid branch, change base on fail
+
+[33mcommit 17eb09604dc37ddbb4fce81db74cff3151b603b8[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Tue Feb 8 08:54:31 2022 +0200
+
+    Update workflows, enable all builds without keyword check
+
+[33mcommit c6827728d41fc7a90e7703eb6997e10f6b418093[m
+Author: 26letterz <doctorbrown1885@gmail.com>
+Date:   Sun Feb 6 17:56:06 2022 +0200
+
+    color draft pt2
+
+[33mcommit 2f233a6f0a5de0320bfda6a4bb999938b62fa95f[m
+Author: 26letterz <doctorbrown1885@gmail.com>
+Date:   Sun Feb 6 17:56:06 2022 +0200
+
+    menu draft
+
+[33mcommit 114ecb27f76867475e8f5a5c8a3db947cabcd6aa[m
+Author: Supremist <sergkarv@gmail.com>
+Date:   Sun Feb 6 14:23:28 2022 +0200
+
+    Implement game with AI algoritms using dyn triats
+
+[33mcommit 2b40acd23bd59699733b43ccbb6d09c5fd89ac44[m[33m ([m[1;31morigin/beta[m[33m)[m
+Merge: c76f0ac ea6fc86
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 17:46:05 2022 +0200
+
+    Merge pull request #197 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit ea6fc8699fbc10c619f6a5e6821f2fb9f984fd3e[m
+Merge: 6ae9cd6 fa6f79e
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 17:45:29 2022 +0200
+
+    Merge pull request #195 from Epsylon42/highlight-cells
+    
+    Highlight cells
+
+[33mcommit 6ae9cd6e6a4e40cfed45c208a60c4a1db1ec9627[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 17:37:30 2022 +0200
+
+    Disable audio from web
+
+[33mcommit fa6f79e75fd9be83528758aef5ed1d91a6fae97b[m
+Author: Epsylon <eepsylon.3@gmail.com>
+Date:   Sun Feb 6 17:29:54 2022 +0200
+
+    Fix comments
+
+[33mcommit a93c0fb79be69a0b9ab88d0785305f7493c95584[m
+Author: Epsylon <eepsylon.3@gmail.com>
+Date:   Sun Feb 6 17:27:16 2022 +0200
+
+    Fix highlighting
+
+[33mcommit 6ea6a42692a8a029d2e67d5072b787d2e032eef8[m
+Author: Epsylon <eepsylon.3@gmail.com>
+Date:   Sun Feb 6 17:12:15 2022 +0200
+
+    Add highlighting
+
+[33mcommit 0f9ac51e1e0c0aea67665304225e3084bba28014[m
+Author: Epsylon <eepsylon.3@gmail.com>
+Date:   Sun Feb 6 17:04:54 2022 +0200
+
+    Highlight cell under cursor
+
+[33mcommit c76f0acfcec6821a10a45d5f68014f867abcc420[m
+Merge: ad6734e 6635e9e
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 17:24:14 2022 +0200
+
+    Merge pull request #189 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit 37782e8bb971a1e2b767b9e58f6fe1ec53a6cda4[m
+Author: Epsylon <eepsylon.3@gmail.com>
+Date:   Sun Feb 6 16:19:00 2022 +0200
+
+    Add cell highlighting plugin
+
+[33mcommit 6635e9e731c48c714ea46d3b0b77eca0f5240601[m
+Merge: baae1fc e17cc10
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 17:21:08 2022 +0200
+
+    Merge pull request #193 from FervorousGremlin/alpha
+    
+    Functions with sound
+
+[33mcommit e17cc101960d47dd113bd1d5cae2e44838c5295b[m
+Merge: 4232c08 baae1fc
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 17:21:03 2022 +0200
+
+    Merge branch 'alpha' into alpha
+
+[33mcommit baae1fc26f833fd87851f2e1c915cba9d744f958[m
+Merge: 9b57e06 93bf9b7
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 17:18:50 2022 +0200
+
+    Merge pull request #192 from twentyone212121/alpha
+    
+    Implemented GUI for timer
+
+[33mcommit 9b57e06d7f1784e3c2d344a9636b512162332cae[m
+Merge: cd87749 1f951a8
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 17:15:01 2022 +0200
+
+    Merge pull request #191 from Babrochky/feature/add_margins
+    
+    Board margins
+
+[33mcommit 7c0f6c10de9e7f293a376012faccd6865aaa2a3d[m
+Merge: 28b592d cd87749
+Author: 26letterz <doctorbrown1885@gmail.com>
+Date:   Sun Feb 6 17:11:09 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Wandalen/game_chess into alpha
+
+[33mcommit 28b592d1ff2bcd8f02ad19c0ffd0491aeb08c407[m
+Author: 26letterz <doctorbrown1885@gmail.com>
+Date:   Sun Feb 6 17:09:22 2022 +0200
+
+    Basic color change
+
+[33mcommit 1f951a81fb086e7c18e6264102cf6f35ab51fcf1[m
+Author: ihor-tarasov <mov.ax.38@gmail.com>
+Date:   Sun Feb 6 17:07:15 2022 +0200
+
+    Added comments
+
+[33mcommit 93bf9b7df58950308814f885ddbbb8fe116c3f49[m
+Merge: c1acf41 cd87749
+Author: twentyone212121 <71435127+twentyone212121@users.noreply.github.com>
+Date:   Sun Feb 6 17:00:40 2022 +0200
+
+    Merge branch 'alpha' into alpha
+
+[33mcommit 4232c086014ff8693009f3c193561afc1a984df3[m
+Author: fervorousgremlin <kriemhildgretchens@gmail.com>
+Date:   Sun Feb 6 16:50:50 2022 +0200
+
+    Functions with sound
+
+[33mcommit 57128af4be690d747d3ac54b12dba6058c59cba4[m
+Author: ihor-tarasov <mov.ax.38@gmail.com>
+Date:   Sun Feb 6 16:47:56 2022 +0200
+
+    Added margins
+
+[33mcommit c1acf41b4f7366eda017672ed1b517fdb2b89d2e[m
+Author: Denis Kyslytsyn <deniskyslytsyn@MacBook-Air-Denis.local>
+Date:   Sun Feb 6 16:47:10 2022 +0200
+
+    Implemented GUI for timer. Has to be binded with core timer, when issue#33 closes.
+
+[33mcommit cd8774919962f16a85e52e710fd2d4008ce7d9ef[m
+Merge: dfe56bc 8315045
+Author: Volodymyr Migdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 16:30:18 2022 +0200
+
+    Merge pull request #190 from Babrochky/feature/fix_timer
+    
+    Feature/fix timer
+
+[33mcommit 83150455312bfdee8bf75616b14f29b2471c4884[m
+Author: ihor-tarasov <mov.ax.38@gmail.com>
+Date:   Sun Feb 6 16:22:21 2022 +0200
+
+    Fix timer
+
+[33mcommit dfe56bcedd5ca37588a2be01af388b0e8a483d4b[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 16:22:17 2022 +0200
+
+    Fix workflow
+
+[33mcommit 8e2684c5c3459a9b7e9e23c9a5e319498d26a134[m
+Merge: 5b87419 a84bba0
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 16:08:29 2022 +0200
+
+    Merge pull request #187 from NastyaVicodin/forfait
+    
+    [multiplayer] Add push_game_gg function
+
+[33mcommit a6ddee1fa6dfac6fe6ae7efb0a4091999dfce6aa[m
+Merge: f7925d5 5b87419
+Author: ihor-tarasov <mov.ax.38@gmail.com>
+Date:   Sun Feb 6 16:04:13 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Babrochky/game_chess into alpha
+
+[33mcommit 5b87419077e52d5797015c2b450b134c9cfdbed4[m
+Merge: 81955a1 09df1ea
+Author: Volodymyr Migdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 15:48:33 2022 +0200
+
+    Merge pull request #188 from volodymyrmigdal/alpha
+    
+    READY : Implement pieces drawing
+
+[33mcommit 09df1eaaabe3d27448f64b05430f3f5db8e1ac05[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 15:47:14 2022 +0200
+
+    implement pieces drawing
+
+[33mcommit a84bba03667643ded0cfe7aff2907c6546a6a192[m
+Author: Anastasiia Lukianenko <vicooodin@gmail.com>
+Date:   Sun Feb 6 15:37:34 2022 +0200
+
+    [multiplayer] Add push_game_gg function
+    
+    Must be implemented:
+    - connection with command and server
+    - sending message to chat (push mgs functionality).
+    
+    Signed-off-by: Anastasiia Lukianenko <vicooodin@gmail.com>
+
+[33mcommit f7925d552c97e5ea92e1bc1fcd2ddf0c6fa22f5b[m
+Merge: d7c8c56 81955a1
+Author: ihor-tarasov <mov.ax.38@gmail.com>
+Date:   Sun Feb 6 14:26:00 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Babrochky/game_chess into alpha
+
+[33mcommit ad6734e79a2e2eef5a26d2f8062172d0f0acf69d[m
+Merge: c65bf96 81955a1
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 13:57:19 2022 +0200
+
+    Merge branch 'alpha' into beta
+
+[33mcommit 81955a18b790316fad4d67640af0876a35e96e76[m
+Merge: 296e92a 267f47f
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 13:55:20 2022 +0200
+
+    Merge pull request #185 from Wandalen/check
+    
+    READY : Improve workflow for forwarding from alpha to beta, check commit message
+
+[33mcommit 267f47fab15ca52457d3014fb868a24cc5a1e100[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 13:14:29 2022 +0200
+
+    Improve workflow `Alpha`, add job `check` to check pull request commit messages
+
+[33mcommit c65bf963bbd13799f008c7fc3aecfc42e1279724[m
+Merge: 874b93e 296e92a
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 13:01:35 2022 +0200
+
+    Merge branch 'alpha' into beta
+
+[33mcommit 296e92a1137d637506bfc839b2d27f97977cdf8f[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 12:57:21 2022 +0200
+
+    cleanup
+
+[33mcommit 94d4ea9b01e75f2e6eed4407a47d34da13d574b5[m
+Merge: b9faba2 b226dbc
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 12:52:08 2022 +0200
+
+    Merge pull request #182 from volodymyrmigdal/piece
+    
+    Piece
+
+[33mcommit b226dbce23fabcdfe17309ebc77c5099fe981aa4[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 12:51:54 2022 +0200
+
+    format
+
+[33mcommit fbf00e3d8d86784fb2da447289afd0bc3035a350[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 12:50:07 2022 +0200
+
+    cleanup
+
+[33mcommit 791cfb99df992e23b7bc7a14716ffd73e615d85c[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 12:25:04 2022 +0200
+
+    comments
+
+[33mcommit 4b0e6c7985c92f79bf82c830aff5d1079a996c29[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 11:52:47 2022 +0200
+
+    format
+
+[33mcommit 325a67944dac04a3e28012c02d1505e6ec33e90d[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 11:49:16 2022 +0200
+
+    repair build
+
+[33mcommit 06cf1a6e613060fdcd887dbd5d767689bda02b60[m
+Merge: 21c3ec2 b9faba2
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 11:48:02 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Wandalen/game_chess into piece
+
+[33mcommit 21c3ec2cbb9242e5378c79d9c7e63a1bee5d9310[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 11:47:30 2022 +0200
+
+    draw pieces on state
+
+[33mcommit b9faba248a0294c4f46a7a59d044016cc764ed69[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 11:43:54 2022 +0200
+
+    unwrap piece in function piece_at
+
+[33mcommit 4d4ca85c507e50820bd9346b60d41712e32b471e[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 11:19:54 2022 +0200
+
+    cargo format
+
+[33mcommit 3f4e407549568c7689c60c4a1042a94d8ce40239[m
+Merge: e00ce98 07d4c91
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 11:18:20 2022 +0200
+
+    Merge pull request #174 from volodymyrmigdal/piece
+    
+    Draw pieces
+
+[33mcommit e00ce98d690c6c2768f9d122228661050ce7b70e[m
+Merge: fe85804 6848f77
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 11:14:40 2022 +0200
+
+    Merge pull request #180 from Wandalen/fix
+    
+    READY : Fix command `.gg`, no exception
+
+[33mcommit 07d4c9110a5bc233e74bd41c98b25a69c318b928[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 11:13:21 2022 +0200
+
+    fix warnings
+
+[33mcommit 6848f777da86ef7716ea555bd07a72dad41d2572[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 11:04:22 2022 +0200
+
+    Extend routine `command_forfeit`, no exception if game is not created
+
+[33mcommit b8ccd10ea63a25cfaf475179190586bb9d2d8c18[m
+Merge: c45bbd4 fe85804
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 11:03:21 2022 +0200
+
+    Merge branch 'alpha' into piece
+
+[33mcommit c45bbd479d5ecdf91c07af1d6bec2bf8f00af26c[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 10:59:59 2022 +0200
+
+    move piece drawing
+
+[33mcommit 874b93efac949653dcb3f57604d54d4b341ab4e1[m
+Merge: 67311e2 fe85804
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 10:59:26 2022 +0200
+
+    Merge pull request #178 from Wandalen/alpha
+    
+    READY : Forward from alpha to beta
+
+[33mcommit fe85804ffe8db3887fc15d06a4d21d41413e1581[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 10:57:47 2022 +0200
+
+    game as default bin
+
+[33mcommit 66400330d4b68d21a6ecb13db38907b04ed0c72b[m
+Merge: 963ba58 88638ba
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 10:51:06 2022 +0200
+
+    Merge pull request #177 from Wandalen/workflow
+    
+    READY : Update workflows system, open PR from alpha to beta ( manual merge implemented )
+
+[33mcommit 88638bab29ac70b22cf6fc9b97350af17417b3e1[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 10:48:35 2022 +0200
+
+    Add workflow `Alpha`, run tests for forward from alpha to beta, update workflows
+    `ForwardTo*`, open pull requests for separate branches
+
+[33mcommit 67311e241ed95553ae2d0abd985ecf00a3571901[m
+Merge: ce1a620 963ba58
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sun Feb 6 10:46:32 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 963ba584b8d4d9a69307b0309ba551596ad62013[m
+Merge: c39b179 3e7e669
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Feb 6 10:43:06 2022 +0200
+
+    Merge pull request #175 from Wandalen/fix
+    
+    READY : Disable client from start
+
+[33mcommit c39b1798464019befbe11b9648a9a905271372b8[m
+Merge: d25eb03 7174de0
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 10:41:53 2022 +0200
+
+    Merge branch 'alpha' of github.com:Wandalen/game_chess into alpha
+
+[33mcommit d25eb0345eebee90bcaeb3fba62ce0a677a7edb5[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 10:41:46 2022 +0200
+
+    module game: implement function diagnostics_rect
+
+[33mcommit 3e7e669b2f3ae800fc646da4dd4517690ae39368[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 10:39:32 2022 +0200
+
+    Fix routine `main` of cui, disable client
+
+[33mcommit f48108a5b6cfa1371bae0fa95f1c499f2dab7a8f[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sun Feb 6 10:37:55 2022 +0200
+
+    draw pieces
+
+[33mcommit 7174de028412d77df9dbb33a8549b3aa50729fb6[m
+Merge: dcdd2be 3b197fb
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 10:26:22 2022 +0200
+
+    Merge pull request #162 from sinnrrr/feature/forfeit
+    
+    feat: forfeit
+
+[33mcommit 3b197fb1bcbc1edfbdae425cd582aa5eb1f9a3d1[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 10:25:35 2022 +0200
+
+    Merge branch 'alpha' into feature/forfeit
+
+[33mcommit dcdd2be545211807c23f785ded938874c23385b1[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 10:22:08 2022 +0200
+
+    missing file camera
+
+[33mcommit ce1a620d5252a5814d7c09d1ec355a075ea28460[m
+Merge: 08f95ed 26be60f
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sun Feb 6 10:19:25 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 26be60f1c3e9abe9e5b13c598593f5edb8ee65a7[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 10:14:40 2022 +0200
+
+    refactor out camera
+
+[33mcommit d09fe14521dba8e155b69311b2b6cd886603ba2d[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Feb 6 10:04:20 2022 +0200
+
+    adjust format
+
+[33mcommit 9495b6586ae582c9e141bf435d060969034ffa99[m
+Merge: a43193a c023c8a
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 09:55:00 2022 +0200
+
+    Merge pull request #165 from 26letterz/issue-41
+    
+    feature: implemented board score
+
+[33mcommit c023c8a71efebc1bf757e94d6be95d301630398b[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 09:50:58 2022 +0200
+
+    Fix merge artifacts
+
+[33mcommit 08f95edbcc54118881773a1454bd795696ebd59a[m
+Merge: 558e3a6 a43193a
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sun Feb 6 09:26:10 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit a43193a4da86a207f5eb4fd759c33e5655aa0369[m
+Merge: 76e8ef3 0229153
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 09:10:44 2022 +0200
+
+    Merge pull request #173 from Wandalen/workflow
+    
+    READY : Improve workflow, decrease build time
+
+[33mcommit 558e3a64f501189a9e96891a35ebcfb7e4a6d2ae[m
+Merge: c20eb01 76e8ef3
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sun Feb 6 09:10:09 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 0229153a6b283d45706702fd836b8e6811db4401[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 09:07:41 2022 +0200
+
+    Improve workflow `DesktopCommon`, disable build on MacOS, decrease build time
+
+[33mcommit 51730babe75b1a9e312f62c7e10914639942350c[m
+Merge: c065116 76e8ef3
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 09:01:59 2022 +0200
+
+    Merge branch 'alpha' into issue-41
+
+[33mcommit 76e8ef3c276dbbedce250d7019312025b3d9cfb4[m
+Merge: b9bd310 9389861
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 09:00:16 2022 +0200
+
+    Merge pull request #167 from twentyone212121/print-history
+    
+    Print history
+
+[33mcommit 9389861535c139ff4a5281cf8bebbf93f5051ba4[m
+Merge: 0d25a38 b9bd310
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 08:40:01 2022 +0200
+
+    Merge branch 'alpha' into print-history
+
+[33mcommit b9bd310f86f42ec5e415e69e6f0e66abc5d32164[m
+Merge: 27ec4c6 a98a8cb
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 08:38:50 2022 +0200
+
+    Merge pull request #163 from d-rooX/feature_31_list_available_moves
+    
+    Feature: List available moves
+
+[33mcommit c20eb01bc00a9e491737f4f650f8b26d180dc3b1[m
+Merge: 9f266dd 27ec4c6
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sun Feb 6 08:05:08 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit a98a8cbf5d17f22e48c0ca07d68054e5ed0c5aec[m
+Merge: 1e51136 27ec4c6
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 08:04:49 2022 +0200
+
+    Merge branch 'alpha' into feature_31_list_available_moves
+
+[33mcommit c06511615beb902b498b3486da4b64e54c5af728[m
+Merge: 29220fe 27ec4c6
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 07:49:04 2022 +0200
+
+    Merge branch 'alpha' into issue-41
+
+[33mcommit 0d25a38084a8f7bd8568436c3bae2de6ccb044b0[m
+Merge: 7c2cc87 27ec4c6
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 07:47:43 2022 +0200
+
+    Merge branch 'alpha' into print-history
+
+[33mcommit 27ec4c62cd8739b7bca21b450fcdec4fb256c2db[m
+Merge: 85c79dc 94fd1d9
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 07:43:12 2022 +0200
+
+    Merge pull request #166 from mvlabat/mvlabat/159-streams
+    
+    Use streams for receiving updates from a server
+
+[33mcommit 85c79dc51440d3e0d78a6702b6de194dfc05d4b4[m
+Merge: 2992852 055980b
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 07:42:30 2022 +0200
+
+    Merge pull request #172 from mvlabat/mvlabat/pass-chess-client
+    
+    Initiate GRPC connection in cui
+
+[33mcommit 29928521b0be929fd1c35bb9fa0875b6b22dd33f[m
+Merge: 58339d9 f56d204
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 07:41:25 2022 +0200
+
+    Merge pull request #170 from ihor-tarasov/feature/add_from_fan
+    
+    #26 Load game from FEN
+
+[33mcommit 58339d9099c7ed24e41441b46de69b25b3b83216[m
+Merge: 11ec956 269508f
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sun Feb 6 07:41:01 2022 +0200
+
+    Merge pull request #169 from kradenkov/feature/game-list-save-on-server
+    
+    Feature/game list save on server
+
+[33mcommit d7c8c565585725ff0aea6d283f8453c189a0e2fa[m
+Merge: 1652f31 11ec956
+Author: Ihor Tarasov <53966724+ihor-tarasov@users.noreply.github.com>
+Date:   Sat Feb 5 23:43:30 2022 +0200
+
+    Merge pull request #1 from Wandalen/alpha
+    
+    Alpha
+
+[33mcommit 055980b97e39cfe0847e67e13afd0550cd4d9ad5[m
+Author: mvlabat <mvlabat@gmail.com>
+Date:   Sat Feb 5 21:06:04 2022 +0200
+
+    Initiate GRPC connection in cui
+
+[33mcommit 94fd1d9549b76a864fdd52bc2f598f7d9a49f960[m
+Author: mvlabat <mvlabat@gmail.com>
+Date:   Sat Feb 5 17:42:55 2022 +0200
+
+    Use streams for receiving updates from a server
+
+[33mcommit f56d204c87f06ff65c995aef7f5c034502cad83a[m
+Merge: 1ed3352 11ec956
+Author: Ihor Tarasov <53966724+ihor-tarasov@users.noreply.github.com>
+Date:   Sat Feb 5 19:49:03 2022 +0200
+
+    Merge branch 'alpha' into feature/add_from_fan
+
+[33mcommit 269508f7a9e7a286357c394265ffc90afb2f7ac8[m
+Author: Alexander Kradenkov <kradenkov@macpaw.com>
+Date:   Sat Feb 5 18:20:34 2022 +0200
+
+    renamed _game to game, replaced for-in with iterator
+
+[33mcommit 6089d1a95535df97b046fcc05cbe58b483a51f1e[m
+Author: Alexander Kradenkov <kradenkov@macpaw.com>
+Date:   Sat Feb 5 18:01:44 2022 +0200
+
+    Store list of games on the server #112
+
+[33mcommit 9f266dd1eb3287041a9aa40009ecf664fb9fa3ed[m
+Merge: dda9392 11ec956
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Feb 5 18:21:27 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 7c2cc87b1ef67a63f2077422f68719560cc9058e[m
+Author: Denis Kyslytsyn <deniskyslytsyn@MacBook-Air-Denis.local>
+Date:   Sat Feb 5 18:18:57 2022 +0200
+
+    Added fn history_print to core and .moves.history command to cui
+
+[33mcommit 1ed3352f2328df4b95791ebc5efbf4cafc983e10[m
+Author: ihor-tarasov <mov.ax.38@gmail.com>
+Date:   Sat Feb 5 18:17:00 2022 +0200
+
+    Fix typo.
+
+[33mcommit 4bc991446222e3e599f4e429f5bdc23e20e73205[m
+Author: ihor-tarasov <mov.ax.38@gmail.com>
+Date:   Sat Feb 5 18:14:14 2022 +0200
+
+    Load game from FEN
+
+[33mcommit 11ec9568b64bb070ba55f9a31dc6c3ef9d9317ee[m
+Merge: 0e222c8 92a6b4c
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 18:08:18 2022 +0200
+
+    Merge pull request #164 from mvlabat/mvlabat/160-client-lib
+    
+    Convert game_chess_client to a lib, add is as cui dependency
+
+[33mcommit 1e511360e160e12285230415a5e9970583837147[m
+Merge: 1be68c4 0e222c8
+Author: droox <33902895+d-rooX@users.noreply.github.com>
+Date:   Sat Feb 5 18:04:01 2022 +0200
+
+    Merge branch 'alpha' into feature_31_list_available_moves
+
+[33mcommit 1be68c4eb02465d25fd55880649e01b53cfa9deb[m
+Author: d-rooX <bot0463@gmail.com>
+Date:   Sat Feb 5 19:55:35 2022 +0200
+
+    delete
+
+[33mcommit c1d66b7a2fb3f13b6904c4b115c4bb077087beea[m
+Author: d-rooX <bot0463@gmail.com>
+Date:   Sat Feb 5 19:30:07 2022 +0200
+
+    Feature: List available moves
+
+[33mcommit 0e222c8b13aac0bf44973e849bbca19252c28ad9[m
+Merge: 1652f31 25707a7
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 17:55:45 2022 +0200
+
+    Merge pull request #161 from Epsylon42/108-calculate-the-best-move
+    
+    Calculate the best move
+
+[33mcommit 29220feb989f21e4dfae9c1967bb7f7b581a95a0[m
+Author: 26letterz <doctorbrown1885@gmail.com>
+Date:   Sat Feb 5 17:44:53 2022 +0200
+
+    implemented board score
+
+[33mcommit 92a6b4c4af555d9e0a768d4abc4d8ea7a24db23b[m
+Author: mvlabat <mvlabat@gmail.com>
+Date:   Sat Feb 5 17:37:08 2022 +0200
+
+    Convert game_chess_client to a lib, add is as cui dependency
+
+[33mcommit 25707a70da9df259a7a58273ff2d635c322807f1[m
+Author: Epsylon <eepsylon.3@gmail.com>
+Date:   Sat Feb 5 17:23:21 2022 +0200
+
+    Add .move.ai command
+
+[33mcommit 31e49d8d4f943adb0348da4abbd6cba3776a38fb[m
+Author: Epsylon <eepsylon.3@gmail.com>
+Date:   Sat Feb 5 17:23:07 2022 +0200
+
+    Add functions to ask the AI to make a move
+
+[33mcommit d02ae6077e6161f4c6b8cb801f1895f429c6cee0[m
+Merge: 6e2e9d4 dda9392
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 14:05:06 2022 +0200
+
+    Merge pull request #158 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit dda93927aa99a8168e22cec7f1e820923f73a044[m
+Merge: a1e5cfb 1652f31
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 14:02:33 2022 +0200
+
+    Merge branch 'alpha' into beta
+
+[33mcommit 1652f312201464e5fdf8d81efd367e81b7e64401[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 13:59:27 2022 +0200
+
+    Disable autorestart of chess server
+
+[33mcommit 6e2e9d4273487e00dd2a99ae2027a8b7d690aaf4[m
+Merge: 72b1dfa a1e5cfb
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 13:34:29 2022 +0200
+
+    Merge pull request #152 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit a1e5cfb03a5a935dcd3336bc158580ec865d8b86[m
+Merge: c60b3a5 4129734
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Feb 5 13:26:30 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 41297340087e5cb076c281708d4892baa0607c0e[m
+Merge: 752c4f7 7f7e75a
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 12:50:52 2022 +0200
+
+    Merge pull request #157 from Wandalen/fix
+    
+    READY : Improve doc
+
+[33mcommit 7f7e75a004800b1112e19332170b8b01f67e92d8[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 12:50:21 2022 +0200
+
+    Remove declaration of types from file `TicketsLabeling`
+
+[33mcommit c60b3a51ec48347727102234d24f0dcdb98d1256[m
+Merge: 343fc32 752c4f7
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Feb 5 12:36:18 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 752c4f7a6c9ed6452f229c9bcbcc8b3c897f34a5[m
+Merge: 590a5e3 9c5c746
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 11:59:51 2022 +0200
+
+    Merge pull request #156 from Wandalen/workflow
+    
+    READY : Extend deploy workflow
+
+[33mcommit 9c5c74606e20571ab36249563cc3c77a7547746d[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 11:39:03 2022 +0200
+
+    Extend by rerun chess_server
+
+[33mcommit 343fc32b8040701e5a39ddce76389e2d04fbbc9c[m
+Merge: 8b80135 590a5e3
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Feb 5 11:13:04 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 590a5e3bb4d5b4f6701ebee00287a99d7369765c[m
+Merge: 9996431 f0fd433
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 11:04:11 2022 +0200
+
+    Merge pull request #155 from Wandalen/format
+    
+    READY : Format files with formatter
+
+[33mcommit 999643187e6393557503715fc70e9823e84e8255[m
+Merge: 81d7699 4edcf31
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 11:03:53 2022 +0200
+
+    Merge pull request #154 from Wandalen/fix
+    
+    READY : Reduce build time
+
+[33mcommit f0fd433e66e6bf0d0e1c2ffa265f4b6c0de43454[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 11:02:55 2022 +0200
+
+    Format files with `cargo fmt`
+
+[33mcommit 4edcf31170021cd33e97052974f59438f182cc32[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 10:51:27 2022 +0200
+
+    Improve workflow `DesktopCommon`, reduce build time
+
+[33mcommit 8b801355f75715b9aa8e994ba936e6c6bc655a4c[m
+Merge: a8e97ef 81d7699
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Feb 5 10:40:42 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 81d7699270a410cabc2a8c2d0a641f2897ddae33[m
+Merge: e513ca7 389e56c
+Author: Volodymyr Migdal <volodymyr.migdal@gmail.com>
+Date:   Sat Feb 5 10:38:51 2022 +0200
+
+    Merge pull request #153 from volodymyrmigdal/alpha
+    
+    READY : Change server name
+
+[33mcommit 389e56c06c0cf747594688af300e64471aabc070[m
+Merge: 1925c3c e513ca7
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Feb 5 10:37:16 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Wandalen/game_chess into alpha
+
+[33mcommit a8e97eff8b7d3d08c5d7a8bc2f913f200d3f2d57[m
+Merge: 5a2dd40 e513ca7
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Feb 5 10:34:37 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 1925c3c87b04c4a59bb44c2759f06ad63f035971[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Feb 5 10:16:40 2022 +0200
+
+    Update deploy script
+
+[33mcommit e513ca70cc70c1ddb584022de673c0f6cd35be7a[m
+Merge: 0d47e13 b6b9435
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 10:02:56 2022 +0200
+
+    Merge pull request #151 from Wandalen/workflow
+    
+    READY : Use remote server to deploy, not Github
+
+[33mcommit f31f1cc6006f9c0e1e1ed4b5e5b66f7ff5941143[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Feb 5 10:02:47 2022 +0200
+
+    Rename server
+
+[33mcommit b6b9435d57232ff0781993b5edbad0faff0a8e27[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 10:00:00 2022 +0200
+
+    Update workflow `Deploy`, use remote server to build targets, not Github
+
+[33mcommit 0d47e13f02e23f00efe4976b3bb1b7c3bff9b54a[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 09:50:33 2022 +0200
+
+    empty [build]
+
+[33mcommit 72b1dfa6c427aa8f5379a65449efdf8033a01253[m
+Merge: fc81213 5a2dd40
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 09:42:31 2022 +0200
+
+    Merge branch 'beta'
+
+[33mcommit 5a2dd402982b39710042e7b335501a9551cc4378[m
+Merge: 3552b41 cc50e97
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 09:41:58 2022 +0200
+
+    Merge branch 'alpha' into beta
+
+[33mcommit cc50e97a0050967bc12f09f6a3084ac657ffa280[m
+Merge: 21a74b5 ce46e77
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 09:41:25 2022 +0200
+
+    Merge pull request #149 from Wandalen/workflow
+    
+    READY : Disable build on Windows
+
+[33mcommit ce46e775a8a2fb1058450b2bdd53c14c5113ddf3[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 09:40:03 2022 +0200
+
+    Disable windows from build, extremely slow build
+
+[33mcommit 21a74b5a6c54fb88fab11c2f87070ec80d15f1a1[m
+Merge: 945d22a 3be9dd1
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Feb 5 09:28:33 2022 +0200
+
+    Merge pull request #148 from Wandalen/readme
+    
+    READY : Add content
+
+[33mcommit 3be9dd13beb31d19093b8baad870768405b2e995[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 08:55:33 2022 +0200
+
+    Add file `Readme.md`, write content
+
+[33mcommit 945d22aff2896316c837f66f4252472c60ca00eb[m
+Merge: 5ad89a3 9481bc4
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Feb 5 08:30:05 2022 +0200
+
+    Merge pull request #147 from Wandalen/fix
+    
+    READY : Fix build, no exception from samples
+
+[33mcommit 9481bc4dafd087b08039d14b526bce0ede02ff14[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Feb 5 08:21:17 2022 +0200
+
+    Fix sample `sample_mesh`, add empty main function
+
+[33mcommit 5ad89a3bcdc63a8fda3ef7f4b3208576d25c5898[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Feb 5 08:05:18 2022 +0200
+
+    extend doc 'tickets labeling'
+
+[33mcommit 16045e2252d0fb1a2f6c8263b70b719ed6b5ddf8[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Feb 5 07:42:23 2022 +0200
+
+    improve description of resource
+
+[33mcommit 0b6f319c25ee1178dc52c95f553fc5dd9bc37972[m
+Merge: dd26230 acdcbc8
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Feb 5 07:30:29 2022 +0200
+
+    Merge pull request #145 from zero-gear/ofranchuk/func_naming_change
+    
+    change server API names
+
+[33mcommit dd2623092af03a7970eb53ef367680797b8ed8ce[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Feb 5 07:29:46 2022 +0200
+
+    improve description of bevy resources. add extra resource
+
+[33mcommit acdcbc89b9866e8f6e26667db50bb55140df4fde[m
+Author: Oleh Franchuk <0x00.gear@gmail.com>
+Date:   Sat Feb 5 07:18:21 2022 +0200
+
+    change server API names
+
+[33mcommit b946a5d9457f09d8b454845e2d12534c0dcaed60[m
+Merge: 3e4e234 4321822
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Feb 5 06:44:39 2022 +0200
+
+    Merge branch 'alpha' of github.com:Wandalen/game_chess into alpha
+
+[33mcommit 3e4e234dc74e4b08dfa1821f713c11cdcc546e21[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Feb 5 06:44:35 2022 +0200
+
+    adjust address
+
+[33mcommit 432182232d22632550f48954d77afe1336794286[m
+Merge: f81d3b6 e52e671
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Feb 5 06:25:33 2022 +0200
+
+    Merge pull request #138 from Wandalen/deploy
+    
+    READY : Add workflow for deploy ( need to be optimized )
+
+[33mcommit f81d3b6372b297dab7d0474697d479dff922d8bb[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 22:36:36 2022 +0200
+
+    documentation : add research, extend resources
+
+[33mcommit fc81213b25156a38f2750901aca3a931a2eb8640[m
+Merge: bc03f37 3552b41
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 21:51:42 2022 +0200
+
+    Merge pull request #144 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 3552b412bfd9d1eaf691076694bcf45a63a2d7c5[m
+Merge: d65bfc7 fda2a7a
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Feb 4 20:34:00 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit fda2a7a87e1c35f5bf66f179ea8dfec03deabe77[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 20:23:52 2022 +0200
+
+    [build]
+
+[33mcommit 1837521759af4790e254370cfaaffee0b06e9b3d[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 20:23:34 2022 +0200
+
+    extend gitignore : exclud bin
+
+[33mcommit bc03f3755882bf3900673cb27639c32f00ad8374[m
+Merge: b15ac4c d65bfc7
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 20:14:14 2022 +0200
+
+    Merge pull request #142 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 478d5bda0c5686b32c3c942c3a0cadde6c304531[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 20:07:34 2022 +0200
+
+    evolve multiplayer protocol
+
+[33mcommit d65bfc79a67e5ccf7d1c7aad75ccddc2a19adf47[m
+Merge: ebac29e 1ddbf88
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Feb 4 20:04:45 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 1ddbf88b88b689f135709f17af99d53f5f12699e[m
+Merge: 502017a 0a99032
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 19:04:29 2022 +0200
+
+    Merge pull request #141 from volodymyrmigdal/alpha
+    
+    READY : Turn uci move into a tuple struct
+
+[33mcommit 0a9903241cfa3bb01bdb931728a2f35d098818ff[m
+Merge: b2663c9 502017a
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Feb 4 19:03:13 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Wandalen/game_chess into alpha
+
+[33mcommit b2663c9b35ca7cb2c15cef520ed364e2cfaea8ab[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Feb 4 19:01:16 2022 +0200
+
+    struct for uci move
+
+[33mcommit 502017aee9dd175c98c05ba97e5a304efc74773d[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 18:37:38 2022 +0200
+
+    move proto of multiplayer
+
+[33mcommit 0c2b94db0cd695985f62ae493a05ac8dbd0314d0[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 18:34:56 2022 +0200
+
+    describe modules
+
+[33mcommit 2bd61029f1ec43881db35eaa273b67ec6aa27eb2[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 18:33:01 2022 +0200
+
+    extend gitignore to exclude /.cargo/config.toml
+
+[33mcommit 3e186ae523df8768b2a40f9adc4e793d1a7b6fd1[m
+Merge: bd67e24 dbc89ee
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 18:26:33 2022 +0200
+
+    Merge branch 'alpha' of github.com:Wandalen/game_chess into alpha
+
+[33mcommit bd67e2496b41d0039c0c1793bfaa0d05500e7ab0[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 18:26:24 2022 +0200
+
+    faster build of Bevy. extend gitignore
+
+[33mcommit dbc89ee30039e86376bb8286e3b4fe8326b6ea4d[m
+Merge: 100033f b678f77
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 18:04:10 2022 +0200
+
+    Merge pull request #140 from volodymyrmigdal/alpha
+    
+    READY : HistoryEntry: use Move instead of uci string
+
+[33mcommit b678f77a84b10cf08b5ce07a974cc02609c4e9f0[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Feb 4 17:44:14 2022 +0200
+
+    HistoryEntry: use Move instead of uci string
+
+[33mcommit e52e671593a98fbc475d75b61b87f9abdf6916aa[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 15:33:33 2022 +0200
+
+    Add workflow `Deploy`, deploy files on the server
+
+[33mcommit 100033fc7394b811748e4e750fa0b615ac39bbed[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 15:23:09 2022 +0200
+
+    improve description [build]
+
+[33mcommit a7cb8650929c86a9a3aff344b1f055e7ffbaa925[m
+Merge: 58de4a9 4464bef
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 15:21:00 2022 +0200
+
+    Merge pull request #133 from Wandalen/warnings
+    
+    READY : Add doc and directives, clean warnings
+
+[33mcommit 58de4a9e7ae3cd788281826f81b69da24b6c28f3[m
+Merge: 0ab4410 f68b894
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 15:20:19 2022 +0200
+
+    Merge pull request #134 from Wandalen/fix
+    
+    READY : Fix makefiles for web build
+
+[33mcommit 0ab44100924f1d43be650a9979d5b45188f9b0a6[m
+Merge: 896a723 55bb571
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 15:20:06 2022 +0200
+
+    Merge pull request #135 from Wandalen/cargo
+    
+    READY : Add data to config files
+
+[33mcommit 896a72384afda8c570fd357786f4bdf2a4ff8db6[m
+Merge: 167b8b1 7601e3b
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 15:19:38 2022 +0200
+
+    Merge pull request #137 from volodymyrmigdal/alpha
+    
+    READY : Update prerequisites
+
+[33mcommit 7601e3bb9a897e80076eff3b8a7de7887253918f[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Feb 4 15:15:48 2022 +0200
+
+    Update prerequisites
+
+[33mcommit 55bb571804ffe2008bf9f55646f621fd81de26e8[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 10:38:41 2022 +0200
+
+    Add data about authors, add description for module `multiplayer`
+
+[33mcommit f68b894f922c7e98540ef3bd5e576dd74bcb945b[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 10:27:26 2022 +0200
+
+    Fix makefiles after renaming of binary for web
+
+[33mcommit 4464befd1aaf026a1cdebab090e2a9671f5bb281[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 09:43:37 2022 +0200
+
+    Improve modules, add documentation, add directives for some unused code
+
+[33mcommit b15ac4c32432a0b36c16321722634b7531b5c8fe[m
+Merge: e7fb815 ebac29e
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 08:44:45 2022 +0200
+
+    Merge branch 'beta'
+
+[33mcommit ebac29e78c9b5ba350fa843b8492afbb60f60091[m
+Merge: 6c67cdd 167b8b1
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 08:44:16 2022 +0200
+
+    Merge branch 'alpha' into beta
+
+[33mcommit 167b8b1e1d82a3aa1f9e64c3471dd0460b1cf6ee[m
+Merge: cf460a6 6e94034
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 08:36:48 2022 +0200
+
+    Merge pull request #131 from Wandalen/client
+    
+    READY : Add trivial module `client`
+
+[33mcommit cf460a6d466c81057c8d4ceca09e80cbdfebe744[m
+Merge: 9492722 c953d8a
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Feb 4 08:36:36 2022 +0200
+
+    Merge pull request #130 from Wandalen/fix
+    
+    READY : Fix workflow run on desktop
+
+[33mcommit 6e94034d78c749208a13d59d5274a2dd1c188ad6[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 08:34:46 2022 +0200
+
+    Add trivial module `client`
+
+[33mcommit c953d8a13aa37c0dad1da513f60147274e54dc36[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Feb 4 08:00:48 2022 +0200
+
+    Fix workflow `DesktopCommon`, add condition to install component for slow testing
+
+[33mcommit 9492722a8385e71a62c1d0d6f5381a1968128d85[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 00:37:07 2022 +0200
+
+    improve foramtting
+
+[33mcommit f76bc23c40302f1ac7d8887d9c69c40a8b8ae73e[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 00:27:27 2022 +0200
+
+    improve formatting
+
+[33mcommit 06375cdf2c63c26db8727c06772324c3127d0cb9[m
+Merge: 176db81 00a4812
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Feb 4 00:00:41 2022 +0200
+
+    Merge branch 'alpha' of github.com:Wandalen/game_chess into alpha
+
+[33mcommit 00a48129a84c6008ffae4449142b12dd484ea569[m
+Merge: f9d4007 afc5c04
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 23:55:41 2022 +0200
+
+    Merge pull request #123 from Wandalen/multiplayer_skeleton
+    
+    Multiplayer skeleton
+
+[33mcommit afc5c047be71c724876e1c314791e9e29a0585bd[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Thu Feb 3 23:31:49 2022 +0200
+
+    Format code
+
+[33mcommit a66c6f17d5cd641a9e40862adc5f1d8722a7a71b[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Thu Feb 3 23:24:46 2022 +0200
+
+    Remove trash code from core; move groto generated code to multiplayer model
+
+[33mcommit f9d4007dbb9d904764d93d6c9c97ebffd4c258ee[m
+Merge: 6632df0 94b140e
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 22:57:09 2022 +0200
+
+    Merge pull request #129 from volodymyrmigdal/alpha
+    
+    READY : FAQ
+
+[33mcommit 94b140e269405fa271a0ef27e1ef617e0859804f[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 22:48:22 2022 +0200
+
+    faq
+
+[33mcommit d43a520506fdb48cd5a61a1c957e6292ef501d6c[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Thu Feb 3 21:59:28 2022 +0200
+
+    Add multiplayer module; Improve server
+
+[33mcommit 176db818096e82d9bc44b221774cf866f494c79f[m
+Merge: 08d244f 6632df0
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Feb 3 17:27:42 2022 +0200
+
+    Merge branch 'alpha' of github.com:Wandalen/game_chess into alpha
+
+[33mcommit 08d244f7b1df83a4ab86116a9c400c53b80af977[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Feb 3 17:27:37 2022 +0200
+
+    [build]
+
+[33mcommit 6632df0b8476c651e389226f0612510b28da557d[m
+Merge: 0e3c202 2d18a8e
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 17:08:39 2022 +0200
+
+    Merge pull request #125 from Wandalen/doc
+    
+    NOT READY : Add simple tutorials
+
+[33mcommit 0e3c2028f69d3dcb737d7d01fe551916fe94f4ab[m
+Merge: b15ad7b ca6268d
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Feb 3 16:21:52 2022 +0200
+
+    Merge branch 'alpha' of github.com:Wandalen/game_chess into alpha
+
+[33mcommit b15ad7bfb846228ce86b79f7d5c190f610399c24[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Feb 3 16:21:44 2022 +0200
+
+    rename bins
+
+[33mcommit ca6268df106aa46082fd5151ef0208c7b76d4773[m
+Merge: 4979c2d f103bb7
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 15:45:26 2022 +0200
+
+    Merge pull request #128 from Wandalen/fix
+    
+    NOT READY : Fix samples, use valid sample crate name
+
+[33mcommit e7fb8155ab8ce7bb878ebb41f295177f1a4b9ff0[m
+Merge: 156f4d2 6c67cdd
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 15:38:21 2022 +0200
+
+    Merge pull request #111 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 4979c2d4c10079d265c7e3e504b1d65726ff5e7e[m
+Merge: e290517 a3a6750
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 15:34:37 2022 +0200
+
+    Merge pull request #126 from volodymyrmigdal/alpha
+    
+    READY : Fixate rust version, small changes in doc
+
+[33mcommit f103bb78721b61cb487c3b238defba59ad2a427a[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Feb 3 15:34:07 2022 +0200
+
+    Fix sample `simple_grpc`, add prefix to the crates names
+
+[33mcommit a3a6750e75b170106e4c91e82e1b5a1de704dd4e[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 15:03:48 2022 +0200
+
+    Adjust doc
+
+[33mcommit d8f999569f50394fc6080045b0413783abe55c08[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 14:50:16 2022 +0200
+
+    repair game
+
+[33mcommit 583f265b2f145555e384e6d68fa94e8231244b3f[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 14:42:17 2022 +0200
+
+    repair desktop build
+
+[33mcommit 5757e3bbf2b5ae154b323020ee1d88d425a7bbbc[m
+Merge: 5265ffe e290517
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 14:36:00 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Wandalen/game_chess into alpha
+
+[33mcommit e290517f0ad6b4dfcd8840c170a7305e5308930c[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Feb 3 14:08:32 2022 +0200
+
+    better naming
+
+[33mcommit c49b5bd2243976e97c007247c07542d063655738[m
+Merge: a4ec109 4cfc6a0
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 13:46:24 2022 +0200
+
+    Merge pull request #124 from Wandalen/workflow
+    
+    READY : Disable web build from branch `alpha`
+
+[33mcommit a4ec109e063536de462631844ae984117ed58a0e[m
+Merge: 390f8c0 01be1d0
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Thu Feb 3 13:42:43 2022 +0200
+
+    Merge pull request #127 from Wandalen/sample
+    
+    READY : Add prefix to sample names
+
+[33mcommit 01be1d00f4cb9d24ea173641d87ee4f0c5adde8f[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Feb 3 13:26:57 2022 +0200
+
+    Add prefix `sample_` to name of samples, make them visible on run
+
+[33mcommit 5265ffe485f6997449044cee01f1a20f7b3cbde6[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 13:26:33 2022 +0200
+
+    Improving docs
+
+[33mcommit c57f15b87f09373df0b145c5a6eb3dbec48fa98e[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 13:11:34 2022 +0200
+
+    Set rust version
+
+[33mcommit ffab9d6d4c35a3c9b29ba5ed25c1637363f3c745[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Feb 3 13:11:03 2022 +0200
+
+    Adjust readme of core and game
+
+[33mcommit 2d18a8e681b607fd9b8adcc22ad86b728a0514eb[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Feb 3 10:51:43 2022 +0200
+
+    Add simple instruction `PrOpen.md`
+
+[33mcommit 53474cbe290f2171d84ad944c71fcaad7dd5e78f[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Feb 3 10:32:54 2022 +0200
+
+    Add simple tutorial `ToolchainInstall.md`
+
+[33mcommit 4cfc6a097e2d1027955a3e64fb24f00db827ea5c[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Feb 3 08:19:01 2022 +0200
+
+    Change workflows, disable web build on PR into alpha and push into alpha, save for beta
+
+[33mcommit 694a5e0d5d51452215d33e46d7475b09173d3929[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Feb 2 11:52:51 2022 +0200
+
+    module: server: some improvements
+
+[33mcommit 1a3caaabecff4908449933b44550977ec2d86037[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Feb 2 10:46:55 2022 +0200
+
+    module: server: run server skeleton
+
+[33mcommit 4b11451dc10684a99496fd9c7504a096f5a02b96[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Feb 2 00:45:33 2022 +0200
+
+    module: server: add skeleton (store, rpc server, etc)
+
+[33mcommit 16d6c51ee174662d387c075b0ffb358983857f63[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Feb 2 00:08:28 2022 +0200
+
+    module: server: add proto
+
+[33mcommit 6c67cdd221f77c9fade0f4b643604afc22d2e91d[m
+Merge: c57cd54 390f8c0
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Tue Feb 1 17:02:30 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 390f8c0172cf750c4a8a4040b434d3b1369977dc[m
+Merge: 047a17a 2ab6363
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Tue Feb 1 16:25:32 2022 +0200
+
+    Merge pull request #110 from Wandalen/camera
+    
+    READY : Update drawing system ( consider to make sample from it, sample can be helpful for issue #74 )
+
+[33mcommit 2ab63636f7956db42588a63f9dd11b31a87cf730[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Tue Feb 1 15:18:52 2022 +0200
+
+    Rewrite main file to use range [ -1, 1 ] on each range
+
+[33mcommit 99518c42c37ac58c7cdb46ec5325feac131c0f90[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Tue Feb 1 13:18:15 2022 +0200
+
+    Add sample `translation_system`
+
+[33mcommit df04450462acc263b60fc2223964ac05e14aab94[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Tue Feb 1 09:26:52 2022 +0200
+
+    Update drawing system, use implementation of `energycsdx`,
+
+[33mcommit 156f4d21fa85ead9aff64d25506d79b049306cb1[m
+Merge: 9b65a3c c57cd54
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Mon Jan 31 21:20:20 2022 +0200
+
+    Merge pull request #109 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit c57cd547cd41e667963c6d67c571bbfd36c35527[m
+Merge: 69f5375 047a17a
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Mon Jan 31 20:41:40 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 047a17a70140907e74b3667e20ab8d4c48e8ac0d[m
+Merge: ae2c6a1 4dee196
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Mon Jan 31 20:04:07 2022 +0200
+
+    Merge pull request #104 from Wandalen/web
+    
+    READY : Fix web build
+
+[33mcommit ae2c6a1863694740f525181193d66fc73ff13801[m
+Merge: 78ef421 b951346
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Mon Jan 31 20:03:01 2022 +0200
+
+    Merge pull request #103 from Wandalen/fix
+    
+    READY : Fix build
+
+[33mcommit 4dee196aba5d5dc5811dabfc06605fbb4e5d26a9[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Jan 31 12:35:16 2022 +0200
+
+    Add dependency `js-sys` to `Cargo.toml` to build web target
+
+[33mcommit ea8d6eeb83a64375380ab19688fd6d4c9c34423f[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Jan 31 12:35:05 2022 +0200
+
+    Fix web build, add separate implementation for web platform
+
+[33mcommit b951346dde721fba8217026fc8a124b02758bb48[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Jan 31 08:54:32 2022 +0200
+
+    Fix file `Cargo.toml`, change path to namespaces
+
+[33mcommit 49fa59ea21242c005faaba1a3fa2aec0eefa6a04[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Mon Jan 31 08:20:44 2022 +0200
+
+    Fix budges, use same style for all, add logos
+
+[33mcommit 78ef421b6628eefd110309e8965fb05d1cc5327d[m
+Merge: dc8a877 c91fd75
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sun Jan 30 22:20:00 2022 +0200
+
+    Merge pull request #102 from volodymyrmigdal/alpha
+    
+    READY: Move rust toolchain install commands
+
+[33mcommit c91fd751fb080afb8802bd322d5c8b2f573c6b0d[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Jan 28 22:19:36 2022 +0200
+
+    Readme: move rust toolchain install commands
+
+[33mcommit dc8a877cb9801e6f74ca463cf3243aef1ea08ca9[m
+Merge: a22adf0 ba1c516
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Jan 28 20:43:09 2022 +0200
+
+    Merge pull request #92 from Wandalen/server_and_grps
+    
+    grps sample
+
+[33mcommit ba1c516b38b73bb008824ad324cae5d49809e6e4[m[33m ([m[1;31morigin/server_and_grps[m[33m)[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Fri Jan 28 20:39:45 2022 +0200
+
+    Move sample_simple_grpc into sample/ dir; Update samples README.md file;
+
+[33mcommit 86c5b7eb14fdecfe72774b8bfcb89e8be936f0e2[m
+Merge: a504b18 9b65a3c
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Fri Jan 28 20:32:32 2022 +0200
+
+    Merge branch 'main' of github.com:Wandalen/game_chess into server_and_grps
+
+[33mcommit a504b18cc3175af88485502ba7d719a79db5617e[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Fri Jan 28 20:26:20 2022 +0200
+
+    Format sample_simple_grpc code; Imrpove workspace structure
+
+[33mcommit 9b65a3c05ce06c5cb73c8a918bbd2d273b9d7935[m
+Merge: 2315d77 69f5375
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Jan 28 17:07:50 2022 +0200
+
+    Merge pull request #101 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 69f5375b767ebf6bcfb4b4b8770ffd950e505791[m
+Merge: a22adf0 aa8d38a
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 14:47:19 2022 +0200
+
+    Merge branch 'beta' of https://github.com/Wandalen/game_chess into beta
+
+[33mcommit 2315d7754e03ef69bebfc3af18d5393d51c2c1e2[m
+Merge: a22adf0 118b848
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 14:47:02 2022 +0200
+
+    Merge branch 'main' of https://github.com/Wandalen/game_chess
+
+[33mcommit 118b8488047271a9e79f5bbc860cd67f20aa73f6[m
+Merge: 66f87ec aa8d38a
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 14:46:01 2022 +0200
+
+    Merge pull request #100 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit a22adf0ef6cecbdecdc62fc9e0aa28f4ddf3d21e[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 14:28:03 2022 +0200
+
+    Fix badge
+
+[33mcommit aa8d38a39295730f699d008832a79e2c828effc2[m
+Merge: 66f87ec c1b0fba
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Jan 28 14:21:52 2022 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit c1b0fba9261cfdf920bcf8cd9ec878a713622ab7[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:36:11 2022 +0200
+
+    empty [build]
+
+[33mcommit 66f87ecfb02c32968e6f24a96805feb94ed8db36[m
+Merge: dc11e4b 0a8e215
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:28:38 2022 +0200
+
+    Merge branch 'alpha' of https://github.com/Wandalen/game_chess into alpha
+
+[33mcommit dc11e4b4556a6588e8daa780b6a20998a66fb0f0[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:28:26 2022 +0200
+
+    Fix branch name [build]
+
+[33mcommit 0a8e2156d92a638a78a0c2f7343e92f0cbb889f7[m
+Merge: 7039584 cf79e13
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:26:46 2022 +0200
+
+    Merge pull request #99 from Wandalen/readme
+    
+    READY : Fix `Readme.md` for samples
+
+[33mcommit cf79e13511bae65c1555a01c42078b97fd2bcc37[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:26:00 2022 +0200
+
+    Fix file `Readme.md` for samples
+
+[33mcommit 7039584ff2fcb447c99b4908ecebd056d0ee8af8[m
+Merge: 8d70f36 6cbbed3
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:14:19 2022 +0200
+
+    Merge pull request #98 from Wandalen/workflow
+    
+    READY : Fix desktop build on linux
+
+[33mcommit 6cbbed36d416025c62ef0f775eeb28269c63157b[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:13:49 2022 +0200
+
+    Add missed step in workflow for desktop build
+
+[33mcommit 8d70f36ae09a170de491accb3ec7a1a975d08df3[m
+Merge: a1b28a3 3ebe6fe
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:04:21 2022 +0200
+
+    Merge pull request #97 from Wandalen/workflow
+    
+    READY : Fix scenario
+
+[33mcommit 3ebe6fed9a8fd4f3d7f62a2d542e89682b777ae3[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 13:03:55 2022 +0200
+
+    Fix scenario, make public
+
+[33mcommit a1b28a3dc5cf8b095d1baf0e9bafb36ca6c1897d[m
+Merge: f634c53 8917590
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 12:35:09 2022 +0200
+
+    Merge pull request #96 from Wandalen/workflow
+    
+    READY : Add missed scenario
+
+[33mcommit 89175904ae55e47dc2c893c93654b32bb134dde8[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 12:34:44 2022 +0200
+
+    Fix file `Cargo.toml`, add target
+
+[33mcommit a47dd259ffb94ab5fc8d1bd248690cacf48f36a0[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 12:29:37 2022 +0200
+
+    Extend makefile for desktop build, add missed scenario
+
+[33mcommit f634c53f7507f6457bc7ec8d302fbcefa7bd9ce7[m
+Merge: 063bec6 488ecd2
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 12:25:33 2022 +0200
+
+    Merge pull request #95 from Wandalen/badges
+    
+    READY : Update badges
+
+[33mcommit 488ecd22bc411ba6c1de4fdbffaebba4a3b7d809[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 12:24:41 2022 +0200
+
+    Improve budges, change names
+
+[33mcommit 063bec695c780281f016c0567130ceab4d9b8c91[m
+Merge: d290805 ba6d06d
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Jan 28 11:51:42 2022 +0200
+
+    Merge pull request #93 from dmvict/main
+    
+    READY : Improve workflows, add conditions, add tracking of branch beta ( will work after workflow update on main )
+
+[33mcommit d2908053c7a84532384a64fb6b23184ad6aab12c[m
+Merge: 4ebd5e9 024d4c2
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Jan 28 11:51:18 2022 +0200
+
+    Merge pull request #94 from Wandalen/doc
+    
+    READY : Extend documentation of routines
+
+[33mcommit 024d4c2e3b896f3b1d6d2775d20b821a94b69869[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 10:52:15 2022 +0200
+
+    Add docs to not documented routines
+
+[33mcommit ba6d06d89c06b280c873356e73db937f8fa00c9a[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 09:45:35 2022 +0200
+
+    Update workflows, add conditions for fast build, add workflow for branch beta
+
+[33mcommit 0d76b826eaaff69a547a0e2dc92eed7d22015627[m
+Merge: 32fda11 1378b27
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 08:38:04 2022 +0200
+
+    Merge branch `master` of https://github.com/Wandalen/game_chess to master
+
+[33mcommit 4ebd5e92d305e8bc8021e301a896864a36b30cfc[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 08:28:59 2022 +0200
+
+    Restore setup
+
+[33mcommit d4c64e64e14aca4ea3cde49b4c05b95a7e29aa15[m
+Merge: a8fd08e 0265a10
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 08:20:50 2022 +0200
+
+    Merge pull request #90 from energycsdx/camera
+    
+    Add custom camera
+
+[33mcommit a8fd08e40369fec04bcaa78b8f3bc75ab94798ec[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Jan 28 07:56:45 2022 +0200
+
+    Remove extra sample, rename samples
+
+[33mcommit 9631ded56171e73d4b803dc3fb57074bdc4958a3[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Jan 27 08:55:19 2022 +0200
+
+    include samples as modules
+
+[33mcommit 03b6a0be5652e2daa46283df80941a772a64d8e6[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Jan 27 08:50:29 2022 +0200
+
+    move samples
+
+[33mcommit 3c7d97da6ee34af3f43c961f825fe23fa8db6c55[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Jan 26 23:40:58 2022 +0200
+
+    Write small REAME.md for sample_simple_grpc; Improve grps client sample
+
+[33mcommit d4b8b335134fa225f09849266f48ee74b8602888[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Jan 26 23:25:22 2022 +0200
+
+    Implement simple grps client
+
+[33mcommit bba44125eb886df9c8ea698bae897b1e99e7e5b0[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Jan 26 23:14:42 2022 +0200
+
+    Implement simple grps server
+
+[33mcommit 899b2b5ce649ad8c4712a087f13066dc45e5331e[m
+Author: Pavlo Myroniuk <pspos.developqkation@gmail.com>
+Date:   Wed Jan 26 23:13:44 2022 +0200
+
+    Init sample_simple_grpc; Add simple proto file
+
+[33mcommit 1378b27abd3b21b8364dabb45b975db74db3323b[m
+Merge: baf8605 6e9f0e4
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Tue Dec 28 10:50:45 2021 +0200
+
+    Merge pull request #89 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 16715d72fa9ca8a76731652336d79845f9520191[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Dec 26 06:54:12 2021 +0200
+
+    improve readme
+
+[33mcommit 3b2046f7053231ac90ae609167a0f527002419fe[m
+Merge: c4fa864 851a09f
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Dec 26 06:49:10 2021 +0200
+
+    Merge branch 'beta' into alpha
+
+[33mcommit 851a09fd16a73014d25aac2258cc80842c549f83[m
+Merge: 6e9f0e4 baf8605
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Dec 26 06:48:51 2021 +0200
+
+    Merge branch 'main' into beta
+
+[33mcommit baf8605f9d2c57f99c8c9676153c3feda7224649[m
+Merge: 35d05a5 3f87d22
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Dec 26 06:47:16 2021 +0200
+
+    merge
+
+[33mcommit c4fa8648a7acf9536b831328e690301286f9ff60[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sun Dec 26 06:44:41 2021 +0200
+
+    improve readme
+
+[33mcommit 0265a1025f81824d80ba1cadffac1a6621ea058e[m
+Author: Dmytro Panfilov <energycsdx@gmail.com>
+Date:   Sat Dec 25 22:00:53 2021 +0200
+
+    Add custom camera
+
+[33mcommit 4260c9b862cd1ae22f917e0050ba9b2100dc070d[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 18:49:38 2021 +0200
+
+    Resolve merge problems
+
+[33mcommit 1171cf2673193367b95a1e3feb91cdf88b666d25[m
+Merge: abf727e 6d8ae66
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 18:40:15 2021 +0200
+
+    Merge pull request #87 from sinnrrr/alpha
+    
+    Alpha
+
+[33mcommit 6d8ae66a7d6d829ff1caa5efc41f6bb7453ed7b0[m
+Merge: e4a1691 abf727e
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 18:30:18 2021 +0200
+
+    Merge branch 'alpha' into alpha
+
+[33mcommit 6e9f0e4caddf5e34d62e4466dddd1bd88c9aba37[m
+Merge: 8fa9efd abf727e
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Dec 25 18:19:44 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit abf727e7a88ccd01cf1e5ac0f3f4bdefbcf0b666[m
+Merge: ef63126 b38cc1f
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 18:12:27 2021 +0200
+
+    Merge pull request #88 from artemhlezin/alpha
+    
+    Modify CLI
+
+[33mcommit b38cc1f6610b5802ff67538dcf183c435c67abc9[m
+Author: Artem Hlezin <21369363+artemhlezin@users.noreply.github.com>
+Date:   Sat Dec 25 18:08:01 2021 +0200
+
+    Add prompt for quit
+
+[33mcommit e4a16916cccef47ad7df6c9711da27f2ddf66dea[m
+Author: Dmytro <dimasoltusyuk@gmail.com>
+Date:   Sat Dec 25 17:56:01 2021 +0200
+
+    feat: commands to save to files
+
+[33mcommit ef6312663791fcb66453b9835b208eabfa7e0e57[m
+Merge: 2dfdbe6 0ec5c71
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 17:55:10 2021 +0200
+
+    Merge pull request #86 from n-romaniv/alpha
+    
+    Add files and ranks to board output in CUI
+
+[33mcommit 0ec5c7105d14ca78781cd9b22fec7fa36b19bb95[m
+Author: Nazar Romaniv <nromaniv@icloud.com>
+Date:   Sat Dec 25 17:44:02 2021 +0200
+
+    Add files and ranks to board output in CUI
+    
+    Closes #68
+
+[33mcommit 518701d3d9152bd12c8d65c90ce6aac9dd2ce907[m
+Author: Dmytro <dimasoltusyuk@gmail.com>
+Date:   Sat Dec 25 17:40:02 2021 +0200
+
+    feat: game save to file
+
+[33mcommit 3f87d2213dc0648d0b8ef5942e2f43c17be44a41[m
+Merge: 2f201a4 8fa9efd
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 17:30:50 2021 +0200
+
+    Merge pull request #85 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 8fa9efd5d4974c519bf404d8d77a492ad4f6c965[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 17:28:58 2021 +0200
+
+    .
+
+[33mcommit 2dfdbe6579d30ab70fb1a247646a87ee3bd9fa26[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 17:27:30 2021 +0200
+
+    .
+
+[33mcommit 45150658e7d0a02cc50b0c9be2884fbb63d5f727[m
+Merge: 1cd65ad 2a06e54
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 17:22:50 2021 +0200
+
+    Merge branch 'beta' of https://github.com/Wandalen/game_chess into beta
+
+[33mcommit 1cd65ad123170181f738356fa9cb9f81fb8f0ddd[m
+Merge: 3f8aaf6 f463b80
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 17:22:32 2021 +0200
+
+    Merge branch 'alpha' into beta
+
+[33mcommit f463b80bac263730fb29382e6ddc53332007cbf5[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 17:21:16 2021 +0200
+
+    Fix merge artifacts
+
+[33mcommit 6d7958a0c2641e8dc941de61815d3825b26d8b48[m
+Author: Artem Hlezin <21369363+artemhlezin@users.noreply.github.com>
+Date:   Sat Dec 25 17:15:55 2021 +0200
+
+    Add aliases for commands
+
+[33mcommit 2a06e540edd874a7d8a3caf76604b2d9247ae9c3[m
+Merge: 3f8aaf6 a7a882e
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Dec 25 17:13:59 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit a7a882ed63b7c08f3d0e5dbe1cffa59241c1a79e[m
+Merge: 6206a2e 0be09ad
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 16:49:16 2021 +0200
+
+    Merge branch 'alpha' of github.com:obox-systems/game_chess into alpha
+
+[33mcommit 6206a2e1b7da92482f9ef8a8712c88d9dd48aea4[m
+Merge: b2ba33b 1494391
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 16:49:04 2021 +0200
+
+    implemen ticket #42 draw board
+
+[33mcommit 0be09ad57f88cfe1a309d4f3a6897b395b548999[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 16:17:40 2021 +0200
+
+    Core : Serialize/Deserialize Game/Board
+
+[33mcommit 2f201a49231d8e736806a5d57711cce553c787ad[m
+Merge: a34cac6 3f8aaf6
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 13:35:47 2021 +0200
+
+    Merge pull request #84 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 3f8aaf641904f47d97f537f22d3ef597fb14d8e2[m
+Merge: 16181d3 1494391
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Dec 25 12:24:55 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit a34cac62a24c55e13b3ba88137d6bccbac3d1c66[m
+Merge: 418e019 16181d3
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 12:07:39 2021 +0200
+
+    Merge pull request #83 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 418e0197a11164bd1944186e81e59872d7238612[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 12:04:50 2021 +0200
+
+    improve sample : simpler drawing [build]
+
+[33mcommit 16181d39e6fd3bfa687f7ddce04e116aca08f42c[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 12:04:14 2021 +0200
+
+    improve sample : simpler drawing [build]
+
+[33mcommit 1494391d3b53162b60ea6d7bcc4764c34610ca47[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 11:59:07 2021 +0200
+
+    improve sample : simpler drawing [build]
+
+[33mcommit 32fda11e5b3ea56bbe6ddd8f19a1659256b50bf6[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 08:03:15 2021 +0200
+
+    Simple update
+
+[33mcommit acce9a3e96b7624adc64dfa1c5ad0a0997c7e018[m
+Merge: 838ac84 b2ba33b
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 08:01:36 2021 +0200
+
+    Merge remote-tracking branch 'upstream/alpha'
+
+[33mcommit 838ac8476b6dfe8270d5e98d727065e7027880a6[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 08:00:14 2021 +0200
+
+    Update from fork
+
+[33mcommit b2ba33b25fa42b770efda9bec6ce949065c8d904[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 07:23:33 2021 +0200
+
+    readme : better how to use [build]
+
+[33mcommit 4cb2ae8cd0796718aeced09c7c1fba50b3acb553[m
+Merge: 22f3448 aaf5d8a
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 07:17:04 2021 +0200
+
+    Merge pull request #77 from Wandalen/fix
+    
+    READY : Update file `Readme`
+
+[33mcommit aaf5d8ab020e3668d8a1873a18f29eef1cf40482[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Sat Dec 25 07:10:08 2021 +0200
+
+    Add missed info to file `Readme.md`
+
+[33mcommit 48d8b2b67e774d9b332569f08c6306f912aba7b8[m
+Merge: 25b9de9 971e1cf
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 06:29:58 2021 +0200
+
+    Merge pull request #75 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 971e1cfdcbd32ce2558c2a23eea8de40d2f01ad7[m
+Merge: bb81794 22f3448
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Dec 25 05:47:30 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 22f34484ab636db81a69ced87639842d6b84c56d[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 05:46:16 2021 +0200
+
+    improve sample : simpler drawing [build]
+
+[33mcommit 68ef99fad4e8056cffaa5bb95d0702c75295967f[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 05:43:29 2021 +0200
+
+    improve sample : simpler drawing [build]
+
+[33mcommit b9e1ade113a8cd539d1405c56511f1d6e6a062e7[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 05:35:20 2021 +0200
+
+    improve sample : simpler drawing [build]
+
+[33mcommit 8da030af9f508cc391766c0dc64152ab8824726e[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 05:27:13 2021 +0200
+
+    add sample : simpler drawing [build]
+
+[33mcommit 25b9de9b7df9bb8fcae7a8968483e77d267121b7[m
+Merge: 6fffcb4 bb81794
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 05:00:18 2021 +0200
+
+    Merge pull request #73 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit bb817943798e788ebdb0b073f8ab6305c78347ca[m
+Merge: f3af56b 9a724f8
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Sat Dec 25 04:13:41 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 9a724f81a5cd4ef36c0a5f9cdc2582d554351f61[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:51:35 2021 +0200
+
+    experiment [build]
+
+[33mcommit 6fffcb4de681913066bfa21a1b7e49317ae484a4[m
+Merge: 35d05a5 f3af56b
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 03:49:12 2021 +0200
+
+    Merge pull request #72 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit f3af56b87669977dfb5bbe003a9a774ed5b1b116[m
+Merge: 0477175 35d05a5
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 03:49:04 2021 +0200
+
+    Merge branch 'main' into beta
+
+[33mcommit 0477175dce74aff396c60a1d633ed2ea85257b95[m
+Merge: 342a1d4 5c2d095
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:48:05 2021 +0200
+
+    merge
+
+[33mcommit 342a1d4e0f2637f1957a1d7edb087432eb17a339[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:45:22 2021 +0200
+
+    simplifing drawing sample
+
+[33mcommit beb66813c3cd1ba8bf834d550247e9113e0fbe17[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:44:52 2021 +0200
+
+    list modules and samples
+
+[33mcommit ce48d3b4604c17ed57fb3392d852049dc12fbb90[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:08:48 2021 +0200
+
+    [build]
+
+[33mcommit 7385fa9c86af2981bcea79bb4af5dfe1e95f325f[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:08:10 2021 +0200
+
+    reconfigure github scripts
+
+[33mcommit 07a5ad83c83a12b5e9496a125553c5bec78a83bd[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:05:05 2021 +0200
+
+    [build]
+
+[33mcommit 35d05a5a57677377d990857e3fc9d27e4612eab6[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:04:37 2021 +0200
+
+    switch off web build
+
+[33mcommit a947d72265dcb503d1b651cde367fa09ca799050[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:04:03 2021 +0200
+
+    switch off web build
+
+[33mcommit 1614ef5e5b617d00b8158737a4df9722e986fe5a[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 03:01:37 2021 +0200
+
+    adjust module server [build]
+
+[33mcommit c773cf81b9f9d09a32215442c064d1e11fdfd7f8[m
+Merge: 9e41fb4 bede124
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:53:24 2021 +0200
+
+    Merge branch 'alpha' into server
+
+[33mcommit bede124c98e249eabfdd6f595d547e03b32db91d[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:51:09 2021 +0200
+
+    [build]
+
+[33mcommit 34b99def6c05c4731f900e36749fcda4be189fd3[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:46:37 2021 +0200
+
+    publishing
+
+[33mcommit dbb50c0ff3be54a2d181a33b9bf370565f4e5eb6[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:45:22 2021 +0200
+
+    publishing
+
+[33mcommit 32cc307e69617d91b0850b5a813362d413eac950[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:43:38 2021 +0200
+
+    publishing
+
+[33mcommit c9176f2b2860b124cb6e12762b82b679e5fbc69f[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:32:19 2021 +0200
+
+    publishing
+
+[33mcommit cc391a8cbaa7e27ab9746240473a541e969e3d53[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:22:02 2021 +0200
+
+    rename module
+
+[33mcommit b87165cfcd8d71b3a94b5027ca7c8f5472d582ac[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 02:17:50 2021 +0200
+
+    styles
+
+[33mcommit b412f8fe4b5ede117fdb60d801c8145bf9bb9270[m
+Merge: 0f5abf6 35e0bcc
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 01:39:23 2021 +0200
+
+    Merge pull request #70 from Wandalen/core
+    
+    Small adjust
+
+[33mcommit 35e0bcc31f53100d261a5e5a985d676e1eb432f9[m
+Merge: 421a951 0f5abf6
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 01:37:19 2021 +0200
+
+    Merge branch 'alpha' into core
+
+[33mcommit 421a951c31a94532c2a614fa5bd533945b8cb8a3[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 01:36:52 2021 +0200
+
+    fix warnings
+
+[33mcommit 0f5abf69e2734e039aa5f34a982ec2e4b8ccd083[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 01:36:42 2021 +0200
+
+    styles
+
+[33mcommit d736b503164cc6d2220a491c5fb135615382a5e4[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 01:32:40 2021 +0200
+
+    styles
+
+[33mcommit 8fc1dc8c6dbcace7395f4efd6925594882f9c4d0[m
+Merge: bd57105 92b3ba5
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 01:31:57 2021 +0200
+
+    Merge branch 'alpha' into core
+
+[33mcommit bd57105d6f6a9e3c9e69d38fe3b14aee65487b6a[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 01:30:09 2021 +0200
+
+    Adjust board.print
+
+[33mcommit 92b3ba5db04f33493e3f98198fee7f71123dec9f[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Sat Dec 25 01:17:39 2021 +0200
+
+    fix root cargo file
+
+[33mcommit 056c4ceaebaf3bae1bb41559527d48d8fce992bf[m
+Merge: 885f221 d60246b
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 01:11:50 2021 +0200
+
+    Merge pull request #67 from Wandalen/core
+    
+    Core: Split tests
+
+[33mcommit d60246b6f5c231f6749ac8051ff6e793f0bae7ce[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 01:09:53 2021 +0200
+
+    Split tests
+
+[33mcommit 885f221068516965a22b2a63cf7d94d300cf13f4[m
+Merge: 012b655 a23a26f
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 00:40:32 2021 +0200
+
+    Merge pull request #66 from Wandalen/core
+    
+    Core: move tests
+
+[33mcommit a23a26f49e7822eafd865bb5419f3c5276534b24[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 00:39:15 2021 +0200
+
+    Core: move tests
+
+[33mcommit 012b6559dc81ad5cd974596c9a6758f0064d5955[m
+Merge: a2888a4 d5d245f
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 00:38:50 2021 +0200
+
+    Merge pull request #65 from Wandalen/core
+    
+    Core
+
+[33mcommit d5d245f1774a83ed844c4c3380fb22c1620cb771[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 00:35:09 2021 +0200
+
+    Fix warnings in game
+
+[33mcommit f8b201c04d413f659613b2cb9912866d74ff4ca3[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 00:31:10 2021 +0200
+
+    core: documenting
+
+[33mcommit a2888a4e072428d355a32146722d7a05f5538f0d[m
+Merge: a040a33 d4adda0
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 00:20:13 2021 +0200
+
+    Merge pull request #63 from Wandalen/core
+    
+    Core: Import/Export for Game
+
+[33mcommit ea46ad16e0e7e632ea04f1ba1ec6818e69ad1355[m
+Merge: 06db86a 5c2d095
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Sat Dec 25 00:14:11 2021 +0200
+
+    Merge pull request #62 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 5c2d09558c494a94a3ccdbc9dbe6bd30e5e775e7[m
+Merge: 77c2d62 06db86a
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 00:09:52 2021 +0200
+
+    Merge branch 'main' into beta
+
+[33mcommit d4adda0bb54435551d040702f06a7187a470f4f7[m
+Merge: ded1691 a040a33
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 00:08:25 2021 +0200
+
+    Merge branch 'alpha' into core
+
+[33mcommit ded1691123dedffe9b62d98df51fcbb546f332e8[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 00:06:44 2021 +0200
+
+    rename routine
+
+[33mcommit 97d9e2f90006850356c93e125f9b46dc32cc0173[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Sat Dec 25 00:05:38 2021 +0200
+
+    core: implement import/export
+
+[33mcommit fbda2b78f289c14cde6ce65dc0b9e63d0a1cfdd1[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 21:13:13 2021 +0200
+
+    core: add attributes
+
+[33mcommit 07156a750f38ef10d6f37d88c547dd5f5e31bb02[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 20:56:14 2021 +0200
+
+    CLI improvements
+
+[33mcommit a040a33ccae3d807a83b6240b58c0ac05d6b3980[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Dec 24 20:31:13 2021 +0200
+
+    styles
+
+[33mcommit 77c2d625c5ec914ab325106bc5719b101042caeb[m
+Merge: 1867cdf ec92c8b
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Dec 24 20:00:24 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit ec92c8b29d2be9e83e44b0740eb878a360ba22a3[m
+Merge: 9488a36 d184583
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 19:37:40 2021 +0200
+
+    Merge pull request #61 from Wandalen/core
+    
+    Core
+
+[33mcommit d184583bf97035fedbee82546b230aebe9f38a8d[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 19:35:16 2021 +0200
+
+    cli: check move result
+
+[33mcommit 06db86ac50a081ace1a12810d74108520cd341bd[m
+Merge: a8d4c9a 3210e64
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 19:32:52 2021 +0200
+
+    Merge pull request #39 from Wandalen/core
+    
+    READY : Implement structs in core, basic CLI
+
+[33mcommit 3210e64c1da3128b2c1457de8c1f84b2663bbedc[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 19:29:41 2021 +0200
+
+    basic cli
+
+[33mcommit 467594cc16169b3fce6871e8f80b2a704d5203d8[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 18:26:22 2021 +0200
+
+    Update description
+
+[33mcommit 4e6df05537e9ff33eeba6ab8ee85f05b07c08fd8[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 18:25:20 2021 +0200
+
+    Core: adjust Game.make_move
+
+[33mcommit 5f613a89643f63ed916c489f48a89f1cbe5089bf[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 18:13:59 2021 +0200
+
+    core: game status
+
+[33mcommit c34c40eb64132fa1c86077203a52fb01a7e10a62[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 18:07:56 2021 +0200
+
+    core: score placeholder, cleanup, update game
+
+[33mcommit 97701077c84f814c6d021efba3fb83b7ecd742f4[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 17:45:05 2021 +0200
+
+    Core: impl structs, wip
+
+[33mcommit 4e24ab7601c8f3232517f2d542114d65e4901999[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 17:23:22 2021 +0200
+
+    simplify sample
+
+[33mcommit a8d4c9a0009953112e7390251b9fa19992ecd3b5[m
+Merge: d221f3d dbb0700
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 17:14:19 2021 +0200
+
+    Merge pull request #25 from Wandalen/fix
+    
+    READY : Fix main file, add simple doc description
+
+[33mcommit dbb07002927186863350a2c2d2072046f71661e6[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 15:00:46 2021 +0200
+
+    Fix main file, add simple doc description, ignore warnings from target `lib`
+
+[33mcommit d221f3d0c3c2d8b13680ab9665ada3352a1d89e1[m
+Merge: c5cb37b 1867cdf
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 14:56:08 2021 +0200
+
+    Merge pull request #24 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 1867cdf7562ead1707cf56dfeac15e27ea6bb995[m
+Merge: 9d0fe64 9488a36
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Dec 24 14:10:16 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 9488a363bd6b053a282230ae866c891e74a50554[m
+Merge: 818a8c0 560674b
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 13:48:12 2021 +0200
+
+    Merge pull request #23 from Wandalen/core
+    
+    core: wip
+
+[33mcommit c5cb37b75e59a889d9ec43342348e3f7283814a9[m
+Merge: 3ef5eda 9d0fe64
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 13:47:57 2021 +0200
+
+    Merge pull request #22 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 560674b1eddc4ada6dda8f39cbfe2764440f1f28[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 13:47:23 2021 +0200
+
+    core: wip
+
+[33mcommit 9d0fe64a47b8fd195dfc70214b8c174cd6b081bb[m
+Merge: 62568fd 818a8c0
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Dec 24 13:14:06 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 818a8c06e0af57b581a703e1f89b739b2686b041[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 12:50:59 2021 +0200
+
+    Update workflows [build]
+
+[33mcommit 3ef5eda909514f1cc5d37094b949012b3c5e6272[m
+Merge: 9ce478f 62568fd
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 12:44:16 2021 +0200
+
+    Merge pull request #18 from Wandalen/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 65660fb97c112002af68f859fc529141eb4c3c38[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 12:40:26 2021 +0200
+
+    Fix autoreplacing mistake
+
+[33mcommit 62568fd7bb3cd8a5bcab9a49229e2240503cb7e5[m
+Merge: fb5f066 0be18ba
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Dec 24 12:37:55 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 0be18ba7c84939ca17e2507c7bb31035e0d8ea28[m
+Merge: c90c0b3 f052f98
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 12:17:32 2021 +0200
+
+    Merge pull request #17 from Wandalen/doc
+    
+    READY : Extend doc
+
+[33mcommit c90c0b37ddfbc60fff060838cf6c026a36416d90[m
+Merge: 7ef9f06 e2fe5ed
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 12:16:35 2021 +0200
+
+    Merge pull request #19 from Wandalen/sample
+    
+    READY : Add sample with board drawing, add `Readme.md` with description and links
+
+[33mcommit 7ef9f06d9918b70160aec881b4f75af5c19c0cd4[m
+Merge: 2e7e194 a117dfe
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 12:15:52 2021 +0200
+
+    Merge pull request #21 from Wandalen/workflow
+    
+    READY : Extend workflow, add missed libraries
+
+[33mcommit f052f9802bfe9807a5781e4a5577e118e8ac66f5[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 12:07:06 2021 +0200
+
+    Extend `Readme` by command to install user input and audio output libraries on GNU/Linux
+
+[33mcommit e2fe5edf52909d6691d5962c92bf0b5ee67b3087[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 11:59:24 2021 +0200
+
+    Rename files, replace `desk` to `board`
+
+[33mcommit 0e2876d47b5bf815d68e200ce20cfe922acd9133[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 11:54:40 2021 +0200
+
+    Add file `module/Readme.md`, list all samples with short description
+
+[33mcommit 5c09b1ecb591d53ba1717bf9b9ac55c26183ae7f[m
+Merge: e0c2513 2e7e194
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 11:23:34 2021 +0200
+
+    Merge branch 'alpha' into sample
+
+[33mcommit a0772ce2bdfd316eb6acaac8289d284ef74ae820[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 11:22:10 2021 +0200
+
+    Add link with results of testing
+
+[33mcommit 75ebd62a17a4b963fe2bad08da61e177f4e0b0f0[m
+Merge: b9fb385 2e7e194
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 11:14:30 2021 +0200
+
+    Merge branch 'alpha' into doc
+
+[33mcommit a117dfe50db19af3d63e9daf34bc683b3df099d5[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 11:12:33 2021 +0200
+
+    Extend and improve workflows, add missed libraries, change toolchain
+
+[33mcommit 2e7e19478b398feb2f4e398ce7ba29fa067414df[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 11:08:04 2021 +0200
+
+    import pleco structs
+
+[33mcommit e0c2513c22d507e6715e797ceae8da5725a9e800[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 10:51:02 2021 +0200
+
+    Add sample `sample_desk_draw`
+
+[33mcommit b9fb385b58f9b724e1d44010430bfc8ceadfcbb6[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 10:25:18 2021 +0200
+
+    .
+
+[33mcommit acf41a93d39f76016818a5f907e7d46c1499854b[m
+Merge: 58dcb4a 9a6bb63
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 10:10:20 2021 +0200
+
+    Merge branch `alpha` into doc
+
+[33mcommit 58dcb4aef41fc6f7559dc5e7eba07c3da83be338[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 10:09:14 2021 +0200
+
+    Disable sample, remove section from doc
+
+[33mcommit fb5f0666d5877d4185d7973fe170b6e1eaa6a9cb[m
+Merge: e2e0c25 9a6bb63
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Dec 24 10:07:10 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 9a6bb63765e5e1520a9cc86052ec6139d012093c[m
+Merge: 8fd2bd2 9ce478f
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 09:36:08 2021 +0200
+
+    Merge branch 'main' of https://github.com/Wandalen/game_chess into alpha
+
+[33mcommit 8fd2bd23fb88faeb07bc474d1828544466f628d4[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 09:30:31 2021 +0200
+
+    Fix workspaces
+
+[33mcommit 688a422bab395fdc984734d8229897c5dc5fa278[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 09:26:01 2021 +0200
+
+    Extend documentation about required dependencies
+
+[33mcommit 241fdc52b676d3fa93af8240eadc86fb0166c665[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 09:23:49 2021 +0200
+
+    Fix run
+
+[33mcommit 9ce478f376a2560156de22e6c3bf5ce9e2ff4e41[m
+Merge: 54bf2e1 e2e0c25
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 09:19:55 2021 +0200
+
+    Merge pull request #14 from obox-systems/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 32b18987fb327ad4272c42b1c434ecca1b81d388[m
+Merge: 2c3228a 467c221
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 09:19:34 2021 +0200
+
+    Merge pull request #16 from obox-systems/sample
+    
+    READY : Add comments to samples and simple descriptions
+
+[33mcommit 2c3228ac64041e723de5693a7ae759cbd482c067[m
+Merge: 0533004 c2bb5d3
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 09:19:11 2021 +0200
+
+    Merge pull request #15 from obox-systems/core
+    
+    READY : Core samples
+
+[33mcommit 05330040a8be5c9a7d5f65a63c4efd07e1b93556[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Dec 24 09:15:47 2021 +0200
+
+    styles
+
+[33mcommit 467c221121b21422663b8371ec42a20e575ff87b[m
+Merge: 8172757 648cb3e
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 08:53:12 2021 +0200
+
+    Merge branch 'alpha' into sample
+
+[33mcommit 81727578e32e13f0d8e01f0a4f146e64ff1f432e[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Fri Dec 24 08:51:30 2021 +0200
+
+    Add comments to samples and files `Readme`
+
+[33mcommit 648cb3eff6bfede146dd6a35f506de4f0dc69b09[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Dec 24 08:17:40 2021 +0200
+
+    styles
+
+[33mcommit c2bb5d34425dd0288b4c30e7ba0118cc20bd1a40[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Fri Dec 24 08:15:51 2021 +0200
+
+    core: move profitability sample
+
+[33mcommit 787163d92e9a44d5c1740135fdd073dcb6409479[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Fri Dec 24 08:11:42 2021 +0200
+
+    rename game. enable all submodules
+
+[33mcommit e2e0c25090cc7507707af679b3ddd0df0547bb16[m
+Merge: 57d1933 06ed56d
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Fri Dec 24 07:39:06 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 54bf2e1b6d932d908655a8b10f5f61cb8f8be76f[m
+Merge: 842950e 57d1933
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 07:17:36 2021 +0200
+
+    Merge pull request #8 from obox-systems/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit 06ed56d034aae6693b1ec4bdad24032a97aeb962[m
+Merge: 1c50489 fab0487
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 07:17:14 2021 +0200
+
+    Merge pull request #13 from obox-systems/sample
+    
+    READY : Add not trivial example with GUI
+
+[33mcommit 1c504895340d7f908f060fa7586c23e82b1d8bdf[m
+Merge: 5452795 e31617b
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Fri Dec 24 07:16:34 2021 +0200
+
+    Merge pull request #9 from obox-systems/core
+    
+    Add core module
+
+[33mcommit fab04879354c002f697100a002e74f802acc6621[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 17:31:49 2021 +0200
+
+    Add sample `sample_gui_with_desk`
+
+[33mcommit e31617bd7056ff425d2bed3cf0b5281712507b99[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 17:19:40 2021 +0200
+
+    core: sample for best move
+
+[33mcommit dc2e2193172fb0d53c65bd83303d8c41a7344ce2[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 16:22:18 2021 +0200
+
+    sample for possible moves from square
+
+[33mcommit 66c8cd8bae134a645458a272ee27f533e69b7c27[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 16:17:52 2021 +0200
+
+    adjust valid move check example
+
+[33mcommit 57d1933575ce6104c6edb1e5820263bf36e497db[m
+Merge: eeeca2e 5452795
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Thu Dec 23 15:11:54 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 54527950a61a42f5494cbac3f784a5d01d3c4b55[m
+Merge: 9c8ae30 cd726eb
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 14:51:38 2021 +0200
+
+    Merge pull request #11 from obox-systems/sample
+    
+    NOT READY : Add samples for mouse events, scenes, partial used images
+
+[33mcommit cd726eb4b751897c4727c4ad88235d3844e5b840[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 14:47:45 2021 +0200
+
+    Add sample `sample_mouse_position_to_desk`
+
+[33mcommit 4226046596d28d0b17178ea677f9d98239e847da[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 13:42:15 2021 +0200
+
+    sample for move check
+
+[33mcommit ea5c3f3e013fa0a1d3efea05685c41873b0b260c[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 12:58:45 2021 +0200
+
+    Add sample `sample_mouse_position_translation`
+
+[33mcommit 35a70024dd29895e8886773635d423008d98cf0b[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 12:41:06 2021 +0200
+
+    core: remove bin, add test
+
+[33mcommit 732a713d2ca0d1e6d67e9d108201c262d9c976a0[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 12:30:17 2021 +0200
+
+    core: board debug sample
+
+[33mcommit 46d0bf2243ee3255cf3584ebca803568dd3e987a[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 12:04:08 2021 +0200
+
+    core game sample using pleco
+
+[33mcommit 1352ab0e16ff803a35ab3a5b240d956676213dce[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 11:59:27 2021 +0200
+
+    Add sample `sample_sprite_partial`
+
+[33mcommit 8c730492b3a99171b90ce72ef66c75ad2442a6cf[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 10:42:04 2021 +0200
+
+    Add sample `sample_simple_gui`
+
+[33mcommit ae09a44eba2307bc289d76e2acfa6f58f86956d9[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 10:31:52 2021 +0200
+
+    use core in renderer
+
+[33mcommit 44d697640701ecdd4b46aa3b9d57c3807e9fe6f1[m
+Merge: 21f56c1 9c8ae30
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 10:19:46 2021 +0200
+
+    Merge branch 'alpha' into core
+
+[33mcommit 9c8ae3029eb12f0abc95093bd67b1e4593b30822[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 10:19:16 2021 +0200
+
+    Adjust main makefile
+
+[33mcommit ee323ab6c6417d9c1e18a421e05ad20ad947d5df[m
+Merge: d846afc 864df95
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 10:17:52 2021 +0200
+
+    Merge branch 'alpha' of https://github.com/obox-systems/game_chess into alpha
+
+[33mcommit d846afc7faac6cfd73ac718c059f27d91a1e63f1[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 10:17:23 2021 +0200
+
+    Name default task, make cross-compile tasks private
+
+[33mcommit 864df95dc96ca6a5d0a1b3d64c54ae31d7edfc0d[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 10:10:01 2021 +0200
+
+    Fix makefiles [build]
+
+[33mcommit 362aeed93b3b05a25749ad744273c0a21175e580[m
+Merge: b803773 d82d577
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 10:06:44 2021 +0200
+
+    Merge branch 'alpha' into sample
+
+[33mcommit b8037734ccebe26f9b75eda0e372b9e53ff5ead4[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 10:04:20 2021 +0200
+
+    Add sample `mouse_event_detection`
+
+[33mcommit d82d577f1896653f196674055e5ac980042f08d9[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 09:58:31 2021 +0200
+
+    Fix makefiles
+
+[33mcommit 2d97e8d77d93baefc9627daac3bababf2c4de2c9[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 09:20:52 2021 +0200
+
+    Remove samples from config file [build]
+
+[33mcommit 21f56c1d0869b6d889b852f5496398723808c35e[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 09:14:30 2021 +0200
+
+    Add readme to core
+
+[33mcommit ea3e36e55e7b10ad4597a1a348bea2539828bdef[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Thu Dec 23 09:12:36 2021 +0200
+
+    core module
+
+[33mcommit 9e41fb4f977fe0dd02b84317411e56cfcf39ff0a[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 09:10:58 2021 +0200
+
+    Add template of server
+
+[33mcommit 4c1a4a64de86bd25209161cc585c741bb3c9138a[m
+Merge: 026dae2 842950e
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Dec 23 09:00:11 2021 +0200
+
+    Merge branch 'alpha' of github.com:obox-systems/game_chess into alpha
+
+[33mcommit 026dae2acccca5e14cc6e3a98a25de1f7deac3f1[m
+Author: wandalen <wandalen.me@gmail.com>
+Date:   Thu Dec 23 08:39:20 2021 +0200
+
+    switch on optimization of dependencies in debug
+
+[33mcommit 842950ecae2d1422e9e8c5c3bdb6aa0f3e4a3de5[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 08:10:19 2021 +0200
+
+    Update samples [build]
+
+[33mcommit fcb03a258c5eb34c4d65e7655338bf5675ff47f6[m
+Merge: 66a9c5f a70a8e4
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 08:00:12 2021 +0200
+
+    Merge pull request #7 from obox-systems/sample
+    
+    READY : Add samples
+
+[33mcommit a70a8e4c51f5b7f6f96d79c6a6b7082da9f215b1[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Thu Dec 23 07:58:02 2021 +0200
+
+    Rewrite samples structure, write samples both as example and as module
+
+[33mcommit eeeca2e538718cf813ce26678ba40b1d08d5de1c[m
+Merge: 4cbd509 66a9c5f
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Thu Dec 23 07:47:25 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit 66a9c5fe721184e8a72d198986641a36c0ee823a[m
+Merge: 16ab5ba 4cbd509
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Wed Dec 22 16:57:56 2021 +0200
+
+    Merge pull request #6 from obox-systems/beta
+    
+    READY : Forward from beta to main
+
+[33mcommit fbf665691495cc961bf0b8390a7a6ae93dec6575[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 16:17:31 2021 +0200
+
+    Add sample `text_mesh`, and add dev dependency `bevy_text_mesh` to `Cargo.toml`
+
+[33mcommit 92e8afc1777829c28a274cbbee2094dbf74a8d1e[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 14:41:21 2021 +0200
+
+    Add sample `sprite.rs`
+
+[33mcommit da9cce1641892f81a27e438843b712d61ab7a612[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 14:30:59 2021 +0200
+
+    Add sample `text.rs`
+
+[33mcommit b673bb9af8d97f22ccbc3a1bd8b2109264e7174a[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 14:30:46 2021 +0200
+
+    Add asset with font to example `text.rs`
+
+[33mcommit 16ab5ba0c25a40bffa962e1b7727a2adf2a3191c[m
+Merge: 8185813 bcc4655
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 14:27:43 2021 +0200
+
+    Merge branch 'main' of https://github.com/obox-systems/game_chess
+
+[33mcommit 8185813c792eced4cfee992a265451c81c02b65e[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 14:27:39 2021 +0200
+
+    Extend resources list
+
+[33mcommit f8c41ad9f3097ad4bfd6028279a996adda8c1051[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 14:07:26 2021 +0200
+
+    Add resources file
+
+[33mcommit 4cbd509fef10d495123548bd3b61592a773730ff[m
+Merge: 54f70ce ab85d1c
+Author: wbot <69343704+wtools-bot@users.noreply.github.com>
+Date:   Wed Dec 22 12:59:37 2021 +0200
+
+    Merge alpha into beta [Automated]
+
+[33mcommit ab85d1cc089d2b8422e0576647fd46c3323341bb[m
+Merge: 5084275 1e1502f
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:54:03 2021 +0200
+
+    Merge pull request #5 from obox-systems/exp
+    
+    READY : Experiment with CD
+
+[33mcommit 1e1502f30d4434f9f6bd1d1addc2c819e1c90d0d[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:53:03 2021 +0200
+
+    Experiment regular
+
+[33mcommit 5084275f1385fe43c243402ac5efc9ce4debf4a4[m
+Merge: 79560a3 a76b1ec
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:32:59 2021 +0200
+
+    Merge pull request #4 from obox-systems/exp
+    
+    READY : Experiment with CD
+
+[33mcommit a76b1ec8253a7203206c56d6293a5739fc542c58[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:28:43 2021 +0200
+
+    Experiment with [build]
+
+[33mcommit a327caabca4023272dcf3b8c7206d6a3875b27a3[m
+Merge: 05d2b17 bcc4655
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:28:08 2021 +0200
+
+    Merge branch 'main' into alpha
+
+[33mcommit bcc46554558fb58f12f6979e7831b8934b0f414c[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:27:45 2021 +0200
+
+    Fix workflow `Forward`, change links, remove extra jobs
+
+[33mcommit 79560a3847118f5a3d065dd81bd4a9f7fb7add22[m
+Merge: 05d2b17 b229640
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:24:10 2021 +0200
+
+    Merge pull request #3 from obox-systems/exp
+    
+    READY : Experiment with CD
+
+[33mcommit b2296404181b3103727939994160e2d8310383ae[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:12:44 2021 +0200
+
+    Experiment with [build]
+
+[33mcommit 05d2b173ae5a79bf0a5d86c8779475cfc0762782[m
+Merge: cfeee06 8a1cb9c
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:11:39 2021 +0200
+
+    Merge branch 'main' into alpha
+
+[33mcommit 8a1cb9cc16cf81827de88dac589e507c63a0ae53[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:10:52 2021 +0200
+
+    Fix workflow `Forward`, change links, remove extra jobs
+
+[33mcommit cfeee06ee2cc43645fa3d5c67ec821d2ad83c3aa[m
+Merge: 542d7e7 77f92da
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:05:55 2021 +0200
+
+    Merge pull request #2 from obox-systems/exp
+    
+    READY : Experiment with CD
+
+[33mcommit 77f92da32b1fefeb4c5497fe80e8ee8963daec84[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 12:05:27 2021 +0200
+
+    Delete unused workflow `Push`
+
+[33mcommit 8c3845f514881606fefb57f65498365f31fe0964[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 11:57:51 2021 +0200
+
+    Experiment with [build]
+
+[33mcommit 542d7e7e7cbdc6b9fd776647724335b776b8af40[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 11:54:12 2021 +0200
+
+    Extend workflow `DesktopCommon`, install missed development libraries on Ubuntu
+
+[33mcommit 47e84ecfa4d4d9c0ba21bf17190905f6e459a8bb[m
+Merge: 712936c af97a9e
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 11:50:59 2021 +0200
+
+    Merge branch 'main' of https://github.com/obox-systems/game_chess
+
+[33mcommit 712936cb35d79430f4852a26241cab9ae3ee660e[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 11:50:56 2021 +0200
+
+    Missing dep
+
+[33mcommit af97a9e7f6a883ca7861565be2eed60788708127[m
+Merge: 5b3ce0b ae79a00
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 11:07:05 2021 +0200
+
+    Merge branch 'alpha'
+
+[33mcommit ae79a00f6096f6e4e2f4edda892f329ad001264c[m
+Merge: 54f70ce 00112ea
+Author: Dmytry Victorovich <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 11:04:50 2021 +0200
+
+    Merge pull request #1 from obox-systems/workflow
+    
+    READY : Update workflows
+
+[33mcommit 5b3ce0bb70eb89174e9a45c9d71d1402fd3f948d[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 10:48:46 2021 +0200
+
+    Adjust browsersync script
+
+[33mcommit 00112eaf5640253c9466a0be898cc9f442130236[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 10:44:34 2021 +0200
+
+    Fix workflow `Conditional`, use valid condition for check
+
+[33mcommit 9d460c5254dde0ac34e9124d24e14e91e13e1542[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 10:27:41 2021 +0200
+
+    enable web target
+
+[33mcommit e8a95d8de0fed398bef829cd7f15ac26fdaa19e1[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 10:15:05 2021 +0200
+
+    Fix workflows, use valid default branch name `main`
+
+[33mcommit e0a2a4ce87fbfabdeeec7b31b06235ae7ef9f7d3[m
+Author: dmvict <dm.vict.kr@gmail.com>
+Date:   Wed Dec 22 10:06:26 2021 +0200
+
+    Update workflows, add missed features, improve credentials handling
+
+[33mcommit 0474492e5b904fc344f60a7db419819029a36f04[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 09:34:52 2021 +0200
+
+    Format entry file
+
+[33mcommit 54f70ce6911639235223ccd6e3fe4f545bab46f2[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 09:19:25 2021 +0200
+
+    simplify example
+
+[33mcommit 0399be2ae631a648954f08f2fe63f4a76286fd81[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 08:38:57 2021 +0200
+
+    Update readme
+
+[33mcommit 9cb52ebeb140ba92fae7d75ba31c65901e4dd098[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 08:37:49 2021 +0200
+
+    rm file
+
+[33mcommit 3c74cff01a05ad4d9c51388bb596ee1c49613849[m
+Merge: bc4544b fd31a06
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 08:34:21 2021 +0200
+
+    Merge branch 'main' of https://github.com/obox-systems/game_chess
+
+[33mcommit bc4544b8af84fe1013496c3487df10acee41a3d4[m
+Author: volodymyrmigdal <volodymyr.migdal@gmail.com>
+Date:   Wed Dec 22 08:32:07 2021 +0200
+
+    generate files structure
+
+[33mcommit fd31a0623dd59f4b84acda5978ba2328caf9db1a[m
+Author: Wandalen <Wandalen@users.noreply.github.com>
+Date:   Tue Dec 21 15:29:28 2021 +0200
+
+    Initial commit
