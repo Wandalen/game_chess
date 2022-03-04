@@ -106,24 +106,34 @@ impl Chess for ChessRpcServer
     if let Some(player) = game_req.player_id {
       let input_player_id = player.player_id;
 
-      // This will panic if `input_game_id` not found on he store
-      let game = store.get_game(&input_game_id);
+      let mut game = match store.get_game(&input_game_id) {
+        Some(game) => {
+          if game.players.len() < 2 {
+            multiplayer::MultiplayerGame::new(
+              game.game_id.clone(),
+              GamePlayer {
+                game_id: game.players[0].game_id.clone(),
+                player_id: game.players[0].player_id.clone()
+              },
+              MultiplayerStatus::Started as i32
+            )
+          } else {
+            let other_player = &game.players[1].player_id;
+            let err_msg = format!("Oops! Game ID: {input_game_id} is already joined by {other_player}");
+            return Err(Status::not_found(&err_msg));
+          }
+        }
+        None => {
+          let err_msg = format!("No game found by the Game ID: {input_game_id}");
+          return Err(Status::not_found(&err_msg));
+        }
+      };
 
-      let mut game = multiplayer::MultiplayerGame::new(
-        game.game_id.to_string(),
-        GamePlayer {
-          game_id: game.players[0].game_id.to_string(),
-          player_id: game.players[0].player_id.to_string()
-        },
-        MultiplayerStatus::Started as i32
+      game.add_opponent(
+        GamePlayer { game_id: input_game_id.clone(), player_id: input_player_id }
       );
 
-      game.add_opponent(GamePlayer {
-        game_id: input_game_id.to_string(),
-        player_id: input_player_id
-      });
-
-      store.update_game(&input_game_id.to_string(), game);
+      store.update_game(&input_game_id, game);
       Ok(Response::new(GameId { game_id: input_game_id }))
     } else {
       Err(Status::not_found("No player found on input!"))
@@ -142,7 +152,14 @@ impl Chess for ChessRpcServer
     if store.move_validity(&game_id, &r#move) {
       // Check for legal player move
       let current_turn = store.current_turn(&game_id);
-      let game = store.get_game(&game_id);
+
+      let game = match store.get_game(&game_id) {
+        Some(game) => game,
+        None => {
+          let err_msg = format!("No game found by the Game ID: {game_id}");
+          return Err(Status::not_found(&err_msg));
+        }
+      };
 
       let mut turn_msg = String::new();
       let illegal_turn_msg = "Illegal move! Now is your opponent's turn";
@@ -187,7 +204,7 @@ impl Chess for ChessRpcServer
   async fn pull_moves(&self, request : Request<GameId>) -> Result<Response<GameAvailableMoves>, Status>
   {
     let game_id = request.into_inner().game_id;
-    let mut store = self.store.lock().expect("Failed to lock the store mutex");
+    let store = self.store.lock().expect("Failed to lock the store mutex");
 
     // Assumes game already exists
     let moves_list = store.moves_list(&game_id);
@@ -248,7 +265,7 @@ impl Chess for ChessRpcServer
     let winner = {
       let mut memory_store = self.store.lock().unwrap();
       let mut winner = None;
-      let mut current_game = memory_store.get_game(&game_id).clone();
+      let mut current_game = memory_store.get_game(&game_id).unwrap().clone();
 
       memory_store.update_game(&game_id, current_game.clone());
       for player in &current_game.players
@@ -332,7 +349,7 @@ impl Chess for ChessRpcServer
 fn default_board_view(board: &mut String, turn: Player, r#move: Option<UCI>) {
   let turn_msg = format!("\n\nCurrent turn: {} - ", turn);
   let last_move = if let Some(last_move) = r#move { format!("Last move: {}", last_move.0) }
-  else { "Last move: None".to_owned() };
+  else { "Enjoy the game!".to_owned() };
 
   board.push_str(&turn_msg);
   board.push_str(&last_move);

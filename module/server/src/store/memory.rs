@@ -56,9 +56,9 @@ impl GameStore for MemoryStore
   ///
   /// Get game from storage by string ( slice ) id.
   ///
-  fn get_game(&self, game_id : &str) -> &Game
+  fn get_game(&self, game_id : &str) -> Option<&Game>
   {
-    self.games.iter().find(|game| game.game_id == game_id).unwrap()
+    self.games.iter().find(|game| game.game_id == game_id)
   }
 
   ///

@@ -64,26 +64,29 @@ pub async fn command_game_new(session: &mut ToySession, rpc_server: &mut Option<
     let game_id = wca::input::ask("Input Game ID");
     println!("");
 
-    // Initiates ToySession
-    session.create(&player_id, &game_id);
-
     let online_game = CreateGame {
-      player: Some(game_chess_client::GamePlayer { player_id, game_id: game_id.to_string() })
+      player: Some(game_chess_client::GamePlayer {
+        player_id: player_id.clone(),
+        game_id: game_id.clone()
+      })
     };
 
     let result = rpc_server.push_game_create(online_game).await;
     match result {
       Ok(resp) => {
-        println!("Invite others by sharing this Game ID: {}", resp.get_ref().game_id);
-        let result = rpc_server.pull_board_state(GameId { game_id }).await;
+        // Initiates ToySession
+        session.create(&player_id, &game_id);
 
-        print!("\x1B[2J\x1B[1;1H"); // Moves cursor at the start
+        clear_screen();
+        println!("Invite others by sharing this Game ID: {}", resp.get_ref().game_id);
+
+        let result = rpc_server.pull_board_state(GameId { game_id }).await;
         print_board_status(result);
       }
-      Err(e) => { eprintln!("{}", e); }
+      Err(e) => { eprintln!("{}", e.message()); }
     }
   } else {
-    println!("Failed to connect gRPC server");
+    eprintln!("Failed to connect gRPC server");
   }
 }
 
@@ -97,27 +100,30 @@ pub async fn command_game_join(session: &mut ToySession, rpc_server: &mut Option
     let game_id = wca::input::ask("Input Game ID");
     println!("");
 
-    // Initiates ToySession
-    session.create(&player_id, &game_id);
-
     let online_game = AcceptGame {
-      game_id: game_id.to_string(),
-      player_id: Some(game_chess_client::GamePlayer { player_id, game_id: game_id.to_string() })
+      game_id: game_id.clone(),
+      player_id: Some(game_chess_client::GamePlayer {
+        player_id: player_id.clone(),
+        game_id: game_id.clone()
+      })
     };
 
     let result = rpc_server.push_game_accept(online_game).await;
     match result {
       Ok(resp) => {
-        println!("You have joined game ID: {}", resp.get_ref().game_id);
-        let result = rpc_server.pull_board_state(GameId { game_id }).await;
+        // Initiates ToySession
+        session.create(&player_id, &game_id);
 
-        print!("\x1B[2J\x1B[1;1H"); // Moves cursor at the start
+        clear_screen();
+        println!("You have successfully joined Game ID: {}", resp.get_ref().game_id);
+
+        let result = rpc_server.pull_board_state(GameId { game_id }).await;
         print_board_status(result);
       }
-      Err(e) => { eprintln!("{}\nGame ID: {} Not found on the server!", e, game_id); }
+      Err(e) => { eprintln!("{}", e.message()); }
     }
   } else {
-    println!("Failed to connect gRPC server");
+    eprintln!("Failed to connect gRPC server");
   }
 }
 
@@ -136,10 +142,10 @@ pub async fn command_game_move(session: &mut ToySession, rpc_server: &mut Option
 
     let result = rpc_server.push_move(GameMove { player_id, game_id, r#move }).await.ok();
 
-    print!("\x1B[2J\x1B[1;1H"); // Moves cursor at the start
+    clear_screen();
     println!("\n{}", result.unwrap().into_inner().board_state);
   } else {
-    println!("Failed to connect gRPC server");
+    eprintln!("Failed to connect gRPC server");
   }
 }
 
@@ -159,7 +165,7 @@ pub async fn command_game_moves_list(session: &mut ToySession, rpc_server: &mut 
     println!("********[ Available Moves ]********");
     for r#move in moves_list { println!("{}", r#move); } 
   } else {
-    println!("Failed to connect gRPC server");
+    eprintln!("Failed to connect gRPC server");
   }
 }
 
@@ -180,7 +186,7 @@ pub async fn command_game_send_msg(session: &mut ToySession, rpc_server: &mut Op
     rpc_server.push_msg(Msg { player: Some(player), text }).await.ok();
     println!("Your message has been sent");
   } else {
-    println!("Failed to connect gRPC server");
+    eprintln!("Failed to connect gRPC server");
   }
 }
 
@@ -203,7 +209,7 @@ pub async fn command_game_read_msgs(session: &mut ToySession, rpc_server: &mut O
     println!("********[ Chat Messages ]********");
     for chat in chats { println!("{}", chat); }
   } else {
-    println!("Failed to connect gRPC server");
+    eprintln!("Failed to connect gRPC server");
   }
 }
 
@@ -221,7 +227,7 @@ pub async fn command_game_status(session: &mut ToySession, rpc_server: &mut Opti
 
     print_board_status(result);
   } else {
-    println!("Failed to connect gRPC server");
+    eprintln!("Failed to connect gRPC server");
   }
 }
 
@@ -232,7 +238,13 @@ fn print_board_status(board: Result<tonic::Response<game_chess_client::Board>, t
       println!("\n{}", board.into_inner().board_state);
     }
     Err(e) => {
-      println!("\n{}", e);
+      eprintln!("\n{}", e.message());
     }
+  }
+}
+
+fn clear_screen() {
+  if let Err(_) = std::process::Command::new("clear").status() {
+    std::process::Command::new("cmd").args(&["/c", "cls"]).status().ok();
   }
 }

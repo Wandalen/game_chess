@@ -13,7 +13,7 @@ pub trait GameStore
   /// Add game to storage.
   fn add_game(&mut self, game : MultiplayerGame) -> Result<(), String>;
   /// Get game from storage by string ( slice ) id.
-  fn get_game(&self, game_id : &str) -> &MultiplayerGame;
+  fn get_game(&self, game_id : &str) -> Option<&MultiplayerGame>;
   /// Get all stored games.
   fn get_games(&self) -> &Vec<MultiplayerGame>;
   /// Update game in storage using string id and new instance of Game.
