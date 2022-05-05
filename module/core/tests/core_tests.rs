@@ -23,7 +23,7 @@ fn test_board_to_fen()
   let mut board = Board::default();
   board = board.make_move("a2a4".into()).unwrap();
   assert_eq!(
-    board.to_fen(),
+    *board.to_fen(),
     "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1".to_string()
   );
 }
@@ -33,8 +33,8 @@ fn test_board_from_fen()
 {
   //src is board after "a2a4" move from starting position
   let src = "rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1".to_string();
-  let board = Board::from_fen(&src);
-  assert_eq!(board.to_fen(), src);
+  let board = Board::from_fen(&Fen::from(src.clone()));
+  assert_eq!(*board.to_fen(), src);
 }
 
 #[test]

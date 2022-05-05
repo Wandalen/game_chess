@@ -31,12 +31,6 @@ message Blank
 {
 }
 
-message Player
-{
-  string player_id = 1;
-  string player_name = 2;
-}
-
 message GamePlayer
 {
   string player_id = 1;
@@ -46,13 +40,13 @@ message GamePlayer
 message GameInfo
 {
   string game_id = 1;
-  repeated Player players = 2;
+  repeated GamePlayer players = 2;
 }
 
 message GameState
 {
   string game_id = 1;
-  repeated Player players = 2;
+  repeated GamePlayer players = 2;
   string game_status = 3;
 }
 
@@ -63,18 +57,9 @@ message Board
 }
 
 message MultiplayerGame {
-  string id = 1;
+  string game_id = 1;
   repeated GamePlayer players = 2;
-  enum GameStatus {
-    Continuing = 0;
-    /// The game has the winner.
-    Checkmate = 1;
-    /// The game is drawn.
-    Stalemate = 2;
-    /// The player given up.
-    Givenup = 3;
-  }
-  GameStatus status = 3;
+  int32 status = 3;
 }
 
 message Games
@@ -100,12 +85,12 @@ message GameEnd
 message AcceptGame
 {
   string game_id = 1;
-  Player player_id = 2;
+  GamePlayer player_id = 2;
 }
 
 message CreateGame
 {
-  Player player = 1;
+  GamePlayer player = 1;
 }
 
 message GameId

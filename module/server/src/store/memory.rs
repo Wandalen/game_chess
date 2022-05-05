@@ -40,7 +40,7 @@ impl GameStore for MemoryStore
   ///
   /// Get game from storage by string ( slice ) id.
   ///
-  fn get_game(&self, game_id : &str) -> &Game { self.games.iter().find(|game| game.id == game_id).unwrap() }
+  fn get_game(&self, game_id : &str) -> &Game { self.games.iter().find(|game| game.game_id == game_id).unwrap() }
 
   ///
   /// Get all stored games.
@@ -52,7 +52,7 @@ impl GameStore for MemoryStore
   ///
   fn update_game(&mut self, game_id : &str, new_game : Game)
   {
-    if let Some(g) = self.games.iter_mut().find(|item| item.id == game_id)
+    if let Some(g) = self.games.iter_mut().find(|item| item.game_id == game_id)
     {
       *g = new_game;
     }
