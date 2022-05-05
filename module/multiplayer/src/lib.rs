@@ -47,29 +47,18 @@ pub struct MultiplayerMove
 
 impl MultiplayerMove {}
 
-///
-/// Multiplayer game.
-///
-
-// This struct is already brought into scope
-// #[allow(dead_code)]
-// #[derive(Debug)]
-// pub struct MultiplayerGame
-// {
-//   pub id : String,
-//   players : Vec<MultiplayerPlayer>,
-// }
+pub enum MultiplayerStatus {
+  NotStarted = 0,
+  Started = 1,
+  Ended = 2
+}
 
 impl MultiplayerGame
 {
-  pub fn new(id : String, player : GamePlayer) -> Self
+  pub fn new(id: String, player: GamePlayer, status: i32) -> Self
   {
-    Self {
-      id,
-      players : Vec::from([player]),
-      status : 0,
-    }
+    Self { game_id: id, players: Vec::from([player]), status }
   }
 
-  pub fn add_opponent(&mut self, player : GamePlayer) { self.players.push(player) }
+  pub fn add_opponent(&mut self, player: GamePlayer) { self.players.push(player) }
 }
