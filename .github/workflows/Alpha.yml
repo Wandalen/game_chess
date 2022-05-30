@@ -60,7 +60,7 @@ jobs :
           target: beta
           exclude: Wandalen:alpha
           comment : |
-            To save the application stability the repository uses a system to forward changes from an unstable branch to a stable.
+            To save the application stability the repository uses a system for forwarding changes from an unstable branch to a stable.
             The unstable branch is `alpha`. All user pull requests should be opened to this branch.
             The staging branch is `beta`. Changes to this branch are forwarded by a pull request from branch `alpha` automatically.
             The stable branch is `master`. Changes to this branch are forwarded by a pull request from branch `beta` automatically. Forwarded changes merge manually after review.
@@ -68,10 +68,9 @@ jobs :
             The pull request was automatically converted to draft. Please, change base branch taking into account the described system `alpha -> beta -> master`.
       - name: Convert to draft
         if : ${{ steps.validation.outputs.wrong-target == 'true' }}
-        uses: raviraipuria/convert-to-draft@v1.0.1
+        uses: voiceflow/draft-pr@latest
         with:
-          repo-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-          days-before-convert-draft: 0
+          token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
 
   desktop:
     needs: check
