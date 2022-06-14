@@ -10,10 +10,22 @@ env:
 
 jobs:
   build:
-    # if: "contains( github.event.head_commit.message, '[build]' )"
+    if: "contains( github.event.head_commit.message, '!test' )"
     uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@master
     with:
       artifacts: 'false'
       build: 'fast'
       toolchain: 'stable'
+
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Install latest nightly toolchain
+  #       uses: actions-rs/toolchain@v1
+  #       with:
+  #         toolchain: nightly
+  #         override: true
+  #     - run: rustup component add rustfmt
+  #     - run: cargo +nightly fmt --check
 
