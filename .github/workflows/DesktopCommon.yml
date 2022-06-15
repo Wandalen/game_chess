@@ -1,5 +1,5 @@
 
-name: DesktopCommon
+name: desktop_common
 
 on:
   workflow_call:
@@ -13,6 +13,11 @@ on:
       build:
         required: true
         type: string
+
+concurrency :
+
+  group : desktop_${{ inputs.toolchain }}_${{ inputs.build }}
+  cancel-in-progress : true
 
 env:
   CARGO_TERM_COLOR: always
