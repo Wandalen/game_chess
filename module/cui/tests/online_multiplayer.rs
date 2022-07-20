@@ -72,3 +72,20 @@ async fn online_game_join()
 
   assert_eq!(game_id, joined_game_id);
 }
+
+#[tokio::test]
+async fn online_game_send_receive_msg()
+{
+  run_test_server("0.0.0.0:3003").await;
+
+  let mut chess_client = chess_client::ChessClient::connect("http://localhost:3003").await.unwrap();
+  let player = Some(GamePlayer{ player_id: "01".to_owned(), game_id: "01".to_owned() });
+  chess_client.push_msg(Msg { player, text: "Hello, Player!".to_owned() }).await.ok();
+
+  let player = GamePlayer{ player_id: "02".to_owned(), game_id: "01".to_owned() };
+  let resp = chess_client.read_msgs(player).await;
+  let chats = resp.unwrap().into_inner().messages;
+  let chat: Vec<&str> = chats[0].split(">> ").collect();
+
+  assert_eq!(chat[1], "Hello, Player!");
+}

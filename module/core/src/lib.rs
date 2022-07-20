@@ -289,6 +289,10 @@ impl From<String> for FenString {
   fn from(value: String) -> Self { FenString(value) }
 }
 
+///
+/// Type alias for `FenString`
+///
+
 pub type Fen = FenString;
 
 ///
@@ -560,6 +564,19 @@ impl Game
   /// Gives ability to forfeit
   ///
   pub fn forfeit(&mut self) { self.is_forfeited = true }
+
+
+  // FOLLOWING METHODS ARE ADDED FOR MULTIPLAYER FUNCTIONALITY
+
+  ///
+  /// Returns board state as `String` for `MultiPlayer`.
+  ///
+  pub fn board_state_printable(&self) -> String { self.board.to_pretty_string() }
+
+  ///
+  /// Checks validity of a given move for `MultiPlayer`.
+  ///
+  pub fn move_is_valid(&self, uci_move: UCI) -> bool { self.board.move_is_valid(uci_move) }
 }
 
 ///
