@@ -21,9 +21,9 @@ on :
 jobs :
 
   forward :
-    uses : Wandalen/game_chess/.github/workflows/AutoPr.yml@master
+    uses : Wandalen/wTools/.github/workflows/AutoPr.yml@alpha
     with :
       src_branch : '${{ github.ref_name }}'
       dst_branch : 'alpha'
     secrets :
-      PRIVATE_GITHUB_TOKEN : '${{ secrets.PRIVATE_GITHUB_TOKEN }}'
+      PRIVATE_GITHUB_BOT_TOKEN : '${{ secrets.PRIVATE_GITHUB_BOT_TOKEN }}'

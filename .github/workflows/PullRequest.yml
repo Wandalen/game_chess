@@ -43,7 +43,7 @@ jobs :
   desktop:
     needs: check
     if : ${{ needs.check.outputs.should_run == 'true' }}
-    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@master
+    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@alpha
     with:
       artifacts: 'false'
       build: 'fast'
@@ -51,7 +51,7 @@ jobs :
   web:
     needs: check
     if : ${{ needs.check.outputs.should_run == 'true' }}
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@master
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@alpha
     with:
       artifacts: 'false'
       build: 'fast'

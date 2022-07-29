@@ -11,7 +11,7 @@ env:
 jobs:
   build:
     if: "contains( github.event.head_commit.message, '!test' )"
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@master
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@alpha
     with:
       artifacts: 'false'
       build: 'fast'

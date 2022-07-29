@@ -17,13 +17,13 @@ env:
 jobs:
 
   desktop:
-    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@master
+    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@alpha
     with:
       artifacts: 'false'
       build: 'fast'
       toolchain: 'stable'
   web:
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@master
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@alpha
     with:
       artifacts: 'false'
       build: 'fast'
