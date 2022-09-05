@@ -279,14 +279,16 @@ impl Board
 #[derive(Serialize, Deserialize, Debug)]
 pub struct FenString(String);
 
-impl Deref for FenString {
+impl Deref for FenString
+{
   type Target = String;
 
   fn deref(&self) -> &Self::Target { &self.0 }
 }
 
-impl From<String> for FenString {
-  fn from(value: String) -> Self { FenString(value) }
+impl From<String> for FenString
+{
+  fn from(value : String) -> Self { FenString(value) }
 }
 
 ///
@@ -565,7 +567,6 @@ impl Game
   ///
   pub fn forfeit(&mut self) { self.is_forfeited = true }
 
-
   // FOLLOWING METHODS ARE ADDED FOR MULTIPLAYER FUNCTIONALITY
 
   ///
@@ -576,7 +577,7 @@ impl Game
   ///
   /// Checks validity of a given move for `MultiPlayer`.
   ///
-  pub fn move_is_valid(&self, uci_move: UCI) -> bool { self.board.move_is_valid(uci_move) }
+  pub fn move_is_valid(&self, uci_move : UCI) -> bool { self.board.move_is_valid(uci_move) }
 }
 
 ///

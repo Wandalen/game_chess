@@ -277,8 +277,7 @@ pub fn egui_setup(
 ///
 
 #[cfg(not(target_arch = "wasm32"))]
-fn highlight_under_cursor
-(
+fn highlight_under_cursor(
   windows : Res<Windows>,
   interaction : Res<bevy_interact_2d::InteractionState>,
   q_camera : Query<&Camera>,

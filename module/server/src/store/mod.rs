@@ -19,19 +19,19 @@ pub trait GameStore
   /// Update game in storage using string id and new instance of Game.
   fn update_game(&mut self, game_id : &str, new_game : MultiplayerGame);
   /// Add chat messages to storage
-  fn add_chat(&mut self, game_id: &str, message: MultiplayerMessage);
+  fn add_chat(&mut self, game_id : &str, message : MultiplayerMessage);
   /// Get chat messages from storage by `game_id`.
-  fn get_chats(&self, game_id: &str, player_id: &str) -> Vec<MultiplayerMessage>;
+  fn get_chats(&self, game_id : &str, player_id : &str) -> Vec<MultiplayerMessage>;
   /// Get board state from storage by `game_id`.
-  fn get_board_state(&self, game_id: &str) -> Option<String>;
+  fn get_board_state(&self, game_id : &str) -> Option<String>;
   /// Return the `Player` e.g. [Black/White] whose turn it is to move.
-  fn current_turn(&self, game_id: &str) -> Player;
+  fn current_turn(&self, game_id : &str) -> Player;
   /// Return the last move played, if any.
-  fn last_move(&self, game_id: &str) -> Option<UCI>;
+  fn last_move(&self, game_id : &str) -> Option<UCI>;
   /// Checks the validity of a given move.
-  fn move_validity(&self, game_id: &str, r#move: &str) -> bool;
+  fn move_validity(&self, game_id : &str, r#move : &str) -> bool;
   /// Makes a move on the board.
-  fn make_move(&mut self, game_id: &str, r#move: &str) -> bool;
+  fn make_move(&mut self, game_id : &str, r#move : &str) -> bool;
   /// Returns available moves on the board.
-  fn moves_list(&self, game_id: &str) -> MoveList;
+  fn moves_list(&self, game_id : &str) -> MoveList;
 }

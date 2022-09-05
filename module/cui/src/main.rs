@@ -123,20 +123,13 @@ pub async fn main()
       ".help" => command_help(),
       ".score" => command_score(&game),
 
-      ".online.new" =>
-        multiplayer::command_game_new(&mut session, &mut remote_rpc).await,
-      ".online.join" =>
-        multiplayer::command_game_join(&mut session, &mut remote_rpc).await,
-      ".online.move" =>
-        multiplayer::command_game_move(&mut session, &mut remote_rpc).await,
-      ".online.moves.list" =>
-        multiplayer::command_game_moves_list(&mut session, &mut remote_rpc).await,
-      ".online.msg" =>
-        multiplayer::command_game_send_msg(&mut session, &mut remote_rpc).await,
-      ".online.msg.read" =>
-        multiplayer::command_game_read_msgs(&mut session, &mut remote_rpc).await,
-      ".online.status" =>
-        multiplayer::command_game_status(&mut session, &mut remote_rpc).await,
+      ".online.new" => multiplayer::command_game_new(&mut session, &mut remote_rpc).await,
+      ".online.join" => multiplayer::command_game_join(&mut session, &mut remote_rpc).await,
+      ".online.move" => multiplayer::command_game_move(&mut session, &mut remote_rpc).await,
+      ".online.moves.list" => multiplayer::command_game_moves_list(&mut session, &mut remote_rpc).await,
+      ".online.msg" => multiplayer::command_game_send_msg(&mut session, &mut remote_rpc).await,
+      ".online.msg.read" => multiplayer::command_game_read_msgs(&mut session, &mut remote_rpc).await,
+      ".online.status" => multiplayer::command_game_status(&mut session, &mut remote_rpc).await,
 
       command => println!("Unknown command : {}\n", command),
     }
@@ -205,24 +198,30 @@ pub fn command_game_new() -> Game
 pub fn command_game_new_ai() -> Option<Game>
 {
   let mut algorithm = wca::input::ask("\nPlease select the ai engine algorithm (default = iterative)");
-  if algorithm.is_empty() {
+  if algorithm.is_empty()
+  {
     algorithm = String::from("iterative")
   }
-  let mut engine = match ai::Engine::new(algorithm) {
+  let mut engine = match ai::Engine::new(algorithm)
+  {
     Ok(engine) => engine,
-    Err(_) => {
+    Err(_) =>
+    {
       println!("Unknown engine type, please try again.");
       return None;
     }
   };
 
-  let mut depth= wca::input::ask("\nPlease select the ai engine depth (default = 5)");
-  if depth.is_empty() {
+  let mut depth = wca::input::ask("\nPlease select the ai engine depth (default = 5)");
+  if depth.is_empty()
+  {
     depth = String::from("5");
   }
-  match depth.parse::<u16>() {
+  match depth.parse::<u16>()
+  {
     Ok(depth) => engine.depth = depth,
-    Err(_) => {
+    Err(_) =>
+    {
       println!("Failed to parse number.");
       return None;
     }
@@ -298,11 +297,15 @@ pub fn command_move(game : &mut Option<Game>)
   let game = game.as_mut().unwrap();
 
   let uci_move = wca::input::ask("Provide move in UCI format, for example 'a2a4'");
-  if game.make_move(UCI(uci_move.clone())) {
-    if game.has_ai() {
+  if game.make_move(UCI(uci_move.clone()))
+  {
+    if game.has_ai()
+    {
       game.make_move_ai();
     }
-  } else {
+  }
+  else
+  {
     println!("\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move);
   }
 

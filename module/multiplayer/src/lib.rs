@@ -20,16 +20,25 @@ pub struct MultiplayerMessage
   timestamp : OffsetDateTime,
 }
 
-impl MultiplayerMessage {
-  pub fn new(player_id: String, text: String) -> Self {
-    Self { player_id, text, timestamp: OffsetDateTime::now_utc() }
+impl MultiplayerMessage
+{
+  pub fn new(player_id : String, text : String) -> Self
+  {
+    Self {
+      player_id,
+      text,
+      timestamp : OffsetDateTime::now_utc(),
+    }
   }
 
-  pub fn pretty_print(&self) -> String {
+  pub fn pretty_print(&self) -> String
+  {
     let format = format_description::parse("[year]-[month]-[day] [hour]:[minute]:[second]").unwrap();
     format!(
       "[Player ID: {}][Date: {}]>> {}",
-      self.player_id, self.timestamp.format(&format).unwrap(), self.text
+      self.player_id,
+      self.timestamp.format(&format).unwrap(),
+      self.text
     )
   }
 }
@@ -60,18 +69,23 @@ pub struct MultiplayerMove
 
 impl MultiplayerMove {}
 
-pub enum MultiplayerStatus {
+pub enum MultiplayerStatus
+{
   NotStarted = 0,
   Started = 1,
-  Ended = 2
+  Ended = 2,
 }
 
 impl MultiplayerGame
 {
-  pub fn new(id: String, player: GamePlayer, status: i32) -> Self
+  pub fn new(id : String, player : GamePlayer, status : i32) -> Self
   {
-    Self { game_id: id, players: Vec::from([player]), status }
+    Self {
+      game_id : id,
+      players : Vec::from([player]),
+      status,
+    }
   }
 
-  pub fn add_opponent(&mut self, player: GamePlayer) { self.players.push(player) }
+  pub fn add_opponent(&mut self, player : GamePlayer) { self.players.push(player) }
 }
