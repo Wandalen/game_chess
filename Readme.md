@@ -12,6 +12,9 @@
 - [libuv](https://github.com/libuv/libuv)
 - [libalsa](https://www.alsa-project.org/wiki/Main_Page)
 
+To start using Rust, download the installer, then run the program and follow the onscreen instructions.  [Install Rust](https://www.rust-lang.org/tools/install)
+You may need to install the [Visual Studio C++ Build tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) when prompted to do so. If you are not on Windows see ["Other Installation Methods"](https://forge.rust-lang.org/infra/other-installation-methods.html).
+
 The nightly version of the Rust build toolchain is required by the project. To setup toolchain run:
 
 ```
