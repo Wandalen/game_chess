@@ -9,14 +9,12 @@ use bevy::prelude::*;
 use bevy::render::camera::Camera;
 use bevy::render::camera::CameraProjection;
 use bevy::render::camera::DepthCalculation;
-use bevy::render::camera::VisibleEntities;
-use bevy::render::render_graph::base::camera::CAMERA_2D;
 
 ///
 /// The rendered content is scaled to maintain its aspect ratio while fitting within the windows.
 ///
 
-#[derive(Debug, Clone, Reflect)]
+#[derive(Component, Debug, Clone, Reflect)]
 #[reflect(Component)]
 pub struct ChessProjection
 {
@@ -82,6 +80,9 @@ impl CameraProjection for ChessProjection
   /// Sort entities by depth. Not used.
   ///
   fn depth_calculation(&self) -> DepthCalculation { DepthCalculation::Distance }
+
+  /// Far.
+  fn far(&self) -> f32 { self.far }
 }
 
 impl Default for ChessProjection
@@ -104,15 +105,13 @@ impl Default for ChessProjection
 /// Alternative camera bundle that show up the game board.
 ///
 
-#[derive(Bundle, Debug)]
+#[derive(Component, Bundle, Debug)]
 pub struct ChessCameraBundle
 {
   /// Instance of camera.
   pub camera : Camera,
   /// Custom projection.
   pub chess_projection : ChessProjection,
-  /// Default settings for visible entities.
-  pub visible_entities : VisibleEntities,
   /// Local transform.
   pub transform : Transform,
   /// Global transform.
@@ -128,15 +127,11 @@ impl ChessCameraBundle
   {
     let far = 1000.0;
     ChessCameraBundle {
-      camera : Camera {
-        name : Some(CAMERA_2D.to_string()),
-        ..Default::default()
-      },
+      camera : Camera { ..Default::default() },
       chess_projection : ChessProjection {
         far,
         ..Default::default()
       },
-      visible_entities : Default::default(),
       transform : Transform::from_xyz(0.0, 0.0, far - 0.1),
       global_transform : Default::default(),
     }

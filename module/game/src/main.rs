@@ -6,13 +6,13 @@
 //!
 
 use bevy::math::Vec4Swizzles;
-use bevy::render::RenderSystem;
+// use bevy::render::RenderStage;
 use bevy::render::camera::{camera_system, Camera};
 use game_chess_core as core;
 use bevy::prelude::*;
 use bevy_egui::{egui, EguiContext};
 use bevy_egui::{EguiPlugin};
-use bevy::input::system::exit_on_esc_system;
+// use bevy::input::system::exit_on_esc_system;
 #[cfg(not(target_arch = "wasm32"))]
 use bevy::audio::AudioPlugin;
 
@@ -73,31 +73,25 @@ pub fn setup(mut commands : Commands, mut materials : ResMut<Assets<ColorMateria
   let mut camera = commands.spawn_bundle(camera::ChessCameraBundle::new());
   #[cfg(not(target_arch = "wasm32"))]
   camera.insert(bevy_interact_2d::InteractionSource::default());
-  camera.insert(Timer::from_seconds(2.0, false));
+  // camera.insert(Timer::from_seconds(2.0, false));
   commands.insert_resource(Materials {
-    white : materials.add(ColorMaterial::color(Color::rgb(0.9, 0.9, 0.7))),
-    black : materials.add(ColorMaterial::color(Color::rgb(0.2, 0.2, 0.1))),
+    white : materials.add(ColorMaterial::from(Color::rgb(0.9, 0.9, 0.7))),
+    black : materials.add(ColorMaterial::from(Color::rgb(0.2, 0.2, 0.1))),
   });
 }
 ///
 /// Board setup.
 ///
 
-pub fn board_setup(mut commands : Commands, materials : Res<Materials>)
+pub fn board_setup(mut commands : Commands, materials : Res<Assets<ColorMaterial>>, materials_handles : Res<Materials> )
 {
-  /* camera */
-  // commands
-  //   .spawn_bundle(camera::ChessCameraBundle::new())
-  //   .insert(bevy_interact_2d::InteractionSource::default())
-  //   .insert(Timer::from_seconds(2.0, false));
-
   let size_in_cells = (8, 8);
-
-  // let white = materials.add(ColorMaterial::color(Color::rgb(0.9, 0.9, 0.7)));
-  // let black = materials.add(ColorMaterial::color(Color::rgb(0.2, 0.2, 0.1)));
 
   let size = 2.0 / 8.0;
   let delta = 1.0 - size / 2.0;
+
+  let black = materials.get(&materials_handles.black).unwrap();
+  let white = materials.get(&materials_handles.white).unwrap();
 
   for x in 0 .. size_in_cells.0
   {
@@ -106,15 +100,16 @@ pub fn board_setup(mut commands : Commands, materials : Res<Materials>)
       let is_black = (x + y) % 2 == 0;
       let material = if is_black
       {
-        materials.black.clone()
+        black.clone()
       }
       else
       {
-        materials.white.clone()
+        white.clone()
       };
 
       let sprite = Sprite {
-        size : Vec2::new(size, size),
+        custom_size : Some(Vec2::new(size, size)),
+        color : material.color,
         ..Default::default()
       };
 
@@ -126,26 +121,14 @@ pub fn board_setup(mut commands : Commands, materials : Res<Materials>)
       // let mut cell = commands.spawn_bundle(SpriteBundle {
       commands.spawn_bundle(SpriteBundle {
         sprite,
-        material,
         transform,
         ..Default::default()
       }); //.insert(Cell)
-
-      // cell.insert(Cell);
-      // if is_black
-      // {
-      //   cell.insert(CellBlack);
-      // }
-      // else
-      // {
-      //   cell.insert(CellWhite);
-      // }
     }
   }
 
   // diagnostics_rect( &mut commands, &mut materials );
 }
-
 
 ///
 /// Convert cursor position to cell number
@@ -168,10 +151,12 @@ pub fn cursor_to_cell(cursor_pos : Vec2, window_size : Vec2, projection_matrix :
 
 pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets<ColorMaterial>>)
 {
-  let red = materials.add(ColorMaterial::color(Color::rgb(0.9, 0.2, 0.2)));
+  let color = Color::rgb(0.9, 0.2, 0.2);
+  materials.add(ColorMaterial::from(color));
 
   let sprite = Sprite {
-    size : Vec2::new(2., 2.),
+    custom_size : Some(Vec2::new(2., 2.)),
+    color,
     ..Default::default()
   };
 
@@ -182,7 +167,6 @@ pub fn diagnostics_rect(commands : &mut Commands, materials : &mut ResMut<Assets
 
   commands.spawn_bundle(SpriteBundle {
     sprite,
-    material : red,
     transform,
     ..Default::default()
   });
@@ -203,15 +187,15 @@ pub fn core_setup(mut commands : Commands, mut game_state : ResMut<State<GameSta
   game_state.set(GameState::GameStart).unwrap();
 }
 
-fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
-{
-  let mut timer = query.single_mut().unwrap();
-  timer.tick(time.delta());
-  if timer.finished()
-  {
-    game_state.set(GameState::GameNew).unwrap();
-  }
-}
+// fn timer_system(time : Res<Time>, mut query : Query<&mut Timer>, mut game_state : ResMut<State<GameState>>)
+// {
+//   let mut timer = query.single_mut().unwrap();
+//   timer.tick(time.delta());
+//   if timer.finished()
+//   {
+//     game_state.set(GameState::GameNew).unwrap();
+//   }
+// }
 //Sounds
 #[cfg(not(target_arch = "wasm32"))]
 fn loss(asset_server : Res<AssetServer>, audio_output : Res<Audio>)
@@ -246,12 +230,12 @@ fn movement(asset_server : Res<AssetServer>, audio_output : Res<Audio>)
 ///
 
 pub fn egui_setup(
-  egui_context : Res<EguiContext>,
+  mut egui_context : ResMut<EguiContext>,
   mut materials : ResMut<Assets<ColorMaterial>>,
   materials_handles : Res<Materials>,
 )
 {
-  egui::Window::new("Timer").show(egui_context.ctx(), |ui| {
+  egui::Window::new("Timer").show(egui_context.ctx_mut(), |ui| {
     // add labels inside Egui window
     ui.label("Time: 00:00.00");
   });
@@ -259,7 +243,7 @@ pub fn egui_setup(
   egui::SidePanel::left("Menu")
     .resizable(false)
     //.default_width(SIDE_PANEL_WIDTH)
-    .show(egui_context.ctx(), |ui|
+    .show(egui_context.ctx_mut(), |ui|
     {
       ui.heading("\"White\" cells color");
       let material = materials.get_mut(&materials_handles.white).unwrap();
@@ -289,8 +273,8 @@ fn highlight_under_cursor(
   let window = windows.get_primary().unwrap();
   let window_size = Vec2::new(window.width(), window.height());
 
-  let camera = q_camera.single().unwrap();
-  let cell = cursor_to_cell(interaction.last_cursor_position, window_size, camera.projection_matrix);
+  let camera = q_camera.single();
+  let cell = cursor_to_cell(interaction.last_cursor_position, window_size, camera.projection_matrix());
 
   if cell.x < 8.0 && cell.y < 8.0 && cell.x >= 0.0 && cell.y >= 0.0
   {
@@ -365,7 +349,7 @@ fn highlight_under_cursor(
 
 fn main()
 {
-  let mut app = App::build();
+  let mut app = App::new();
   /* default plugins */
   app.add_plugins(DefaultPlugins);
 
@@ -381,45 +365,43 @@ fn main()
     ..Default::default()
   });
   app.add_plugin(EguiPlugin);
-  app.add_system(egui_setup.system());
+  app.add_system(egui_setup);
   app.add_state(GameState::Init);
-  /* timer */
-  app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system.system()));
+  // /* timer */
+  // app.add_system_set(SystemSet::on_update(GameState::Init).with_system(timer_system));
   /* setup core */
-  app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup.system()));
-  app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup.system()));
+  app.add_system_set(SystemSet::on_update(GameState::GameNew).with_system(core_setup));
+  app.add_system_set(SystemSet::on_update(GameState::GameStart).with_system(piece::pieces_setup));
   /* setup board */
-  app.add_startup_system(setup.system());
-  app.add_startup_stage("board_setup", SystemStage::single(board_setup.system()));
+  app.add_startup_system(setup);
+  app.add_startup_stage("board_setup", SystemStage::single(board_setup));
 
   /* sound */
 
   #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(AudioPlugin);
   #[cfg(not(target_arch = "wasm32"))]
-  app.add_startup_stage("loss", SystemStage::single(loss.system()));
+  app.add_startup_stage("loss", SystemStage::single(loss));
 
   #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(bevy_interact_2d::InteractionPlugin);
 
   /* highlighting */
   #[cfg(not(target_arch = "wasm32"))]
-  app.add_system(highlight_under_cursor.system());
+  app.add_system(highlight_under_cursor);
   #[cfg(not(target_arch = "wasm32"))]
   app.add_plugin(highlight::HighlightPlugin {
     clear_on_each_frame : true,
   });
 
-  /* escape on exit */
-  app.add_system(exit_on_esc_system.system());
+  // /* escape on exit */
+  // app.add_system(exit_on_esc_system);
 
-  // app.add_system(color_change.system());
+  // app.add_system(color_change);
 
   app.add_system_to_stage(
     CoreStage::PostUpdate,
-    camera_system::<camera::ChessProjection>
-      .system()
-      .before(RenderSystem::VisibleEntities),
+    camera_system::<camera::ChessProjection>, // .before(RenderStage::Prepare),
   );
   /* for web target */
   #[cfg(target_arch = "wasm32")]

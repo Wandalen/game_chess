@@ -65,7 +65,7 @@ impl Plugin for HighlightPlugin
 {
   fn name(&self) -> &str { "chess_game_highlight" }
 
-  fn build(&self, app : &mut AppBuilder)
+  fn build(&self, app : &mut App)
   {
     let highlight_data = Highlight {
       data : Vec::with_capacity(8 * 8),
@@ -74,8 +74,8 @@ impl Plugin for HighlightPlugin
 
     app.insert_resource(highlight_data);
     app.insert_resource(ClearOnEachFrame(self.clear_on_each_frame));
-    app.add_startup_system(setup_highlight.system());
-    app.add_system(apply_requests.system());
+    app.add_startup_system(setup_highlight);
+    app.add_system(apply_requests);
   }
 }
 
@@ -88,12 +88,8 @@ fn setup_highlight(mut cmd : Commands, mut highlight : ResMut<Highlight>, mut ma
   {
     for y in 0 .. 8
     {
-      let sprite = Sprite {
-        size : Vec2::splat(size),
-        ..Default::default()
-      };
-
-      let material = materials.add(ColorMaterial::color(Color::rgb(0.9, 0.0, 0.0)));
+      let color = Color::rgb(0.9, 0.0, 0.0);
+      materials.add(ColorMaterial::from(color));
 
       let transform = Transform {
         translation : Vec3::new((x as f32) * size - delta, (y as f32) * size - delta, 0.5),
@@ -105,15 +101,16 @@ fn setup_highlight(mut cmd : Commands, mut highlight : ResMut<Highlight>, mut ma
       let ent = cmd
         .spawn()
         .insert_bundle(SpriteBundle {
-          sprite,
+          sprite : Sprite
+          {
+            color,
+            custom_size : Some(Vec2::splat(size)),
+            .. Default::default()
+          },
           transform,
-          material,
           ..Default::default()
         })
-        .insert(Visible {
-          is_visible : false,
-          is_transparent : true,
-        })
+        .insert(Visibility { is_visible : false })
         .id();
 
       highlight.data.push((ent, None));
@@ -126,7 +123,7 @@ fn pos_to_index((x, y) : (u8, u8)) -> usize { x as usize * 8 + y as usize }
 fn apply_requests(
   clear_on_each_frame : Res<ClearOnEachFrame>,
   mut highlight : ResMut<Highlight>,
-  mut query : Query<(&mut Handle<ColorMaterial>, &mut Visible)>,
+  mut query : Query<(&mut Sprite, &mut Visibility)>,
   mut materials : ResMut<Assets<ColorMaterial>>,
 )
 {
@@ -145,9 +142,9 @@ fn apply_requests(
         }
         data[idx].1 = Some(color);
 
-        let (mut material, mut visible) = query.get_mut(data[idx].0).unwrap();
+        let (sprite, mut visible) = query.get_mut(data[idx].0).unwrap();
         visible.is_visible = true;
-        *material = materials.add(ColorMaterial::color(color));
+        materials.add(ColorMaterial::from(sprite.color));
       }
 
       HighlightCommand::Clear { pos } =>

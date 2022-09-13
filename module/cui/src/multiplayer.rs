@@ -49,7 +49,6 @@ impl ToySession
   }
 }
 
-
 ///
 /// Handler of multiplayer command `.help`.
 ///
@@ -307,7 +306,6 @@ pub async fn command_game_status(session : &mut ToySession, rpc_server : &mut Op
     eprintln!("Failed to connect gRPC server");
   }
 }
-
 
 fn print_board_status(board : Result<tonic::Response<game_chess_client::Board>, tonic::Status>)
 {

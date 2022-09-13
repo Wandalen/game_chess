@@ -425,7 +425,6 @@ impl Game
   /// The board and history are not changed in case of fail.
   ///
 
-
   pub fn make_move(&mut self, uci_move : UCI) -> bool
   {
     let new_board = self.board.make_move(uci_move);

@@ -34,7 +34,7 @@ condition = { files_not_exist = [ "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DI
 args = [
   "local-install",
   "wasm-bindgen-cli",
-  "--version", "0.2.69",
+  "--version", "0.2.82",
   "--root", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}",
   "--locked",
   "--no-path-warning"
