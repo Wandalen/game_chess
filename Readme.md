@@ -12,11 +12,11 @@
 - [libuv](https://github.com/libuv/libuv)
 - [libalsa](https://www.alsa-project.org/wiki/Main_Page)
 
-The nightly version of the Rust build toolchain is required by the project. To setup toolchain run:
+The rustup version v1.58  is required by the project. This is a workaround to respect Bevy library dependencies. To setup toolchain run:
 
 ```
-rustup default nightly
-rustup update
+rustup install 1.58
+rustup override set 1.58
 ```
 
 The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make). To install it run:
