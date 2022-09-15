@@ -408,9 +408,6 @@ fn main()
     CoreStage::PostUpdate,
     camera_system::< camera::ChessProjection >,
   );
-  /* for web target */
-  #[ cfg( target_arch = "wasm32" ) ]
-  app.add_plugin( bevy_webgl2::WebGL2Plugin );
-  /* run */
+
   app.run();
 }
