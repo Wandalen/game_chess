@@ -7,7 +7,6 @@ use tonic::transport::Server;
 use game_chess_server::rpc_server::ChessRpcServer;
 use game_chess_client::*;
 
-
 async fn run_test_server(addr : &str)
 {
   let chess_grpc_server = ChessRpcServer::init();
@@ -23,7 +22,6 @@ async fn run_test_server(addr : &str)
       .unwrap();
   });
 }
-
 
 #[tokio::test]
 async fn online_game_new()

@@ -1,8 +1,9 @@
 #![ warn( missing_docs ) ]
 
-//! Sample shows how to add sprite in Bevy.
+//! Sample shows how to add mesh in Bevy.
 
 use bevy::prelude::*;
+use bevy::sprite::MaterialMesh2dBundle;
 
 const DISPLAY_HEIGHT : f32 = 300.0;
 const DISPLAY_WIDTH : f32 = 300.0;
@@ -28,13 +29,15 @@ fn main()
 
 //
 
-fn setup( mut commands : Commands, asset_server : Res< AssetServer > )
+fn setup( mut commands : Commands, mut meshes : ResMut< Assets< Mesh > >, mut materials : ResMut< Assets< ColorMaterial > > )
 {
   commands.spawn_bundle( Camera2dBundle::default() );
-  // adding sprite
-  commands.spawn_bundle( SpriteBundle
+  // adding mesh
+  commands.spawn_bundle( MaterialMesh2dBundle
   {
-    texture : asset_server.load( "icon.png" ),
+    mesh : meshes.add( shape::Quad::new( Vec2::new( 100.0, 100.0 ) ).into() ).into(),
+    material : materials.add( ColorMaterial::from( Color::rgb( 0.0, 0.0, 0.0 ) ) ),
+    transform : Transform::from_translation( Vec3::new( 0.0, 0.0, 0.0 ) ),
     .. Default::default()
   });
 }
