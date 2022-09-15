@@ -9,6 +9,7 @@ use bevy::prelude::*;
 #[ cfg( not( target_arch = "wasm32" ) ) ]
 use bevy::audio::AudioPlugin;
 use bevy::math::Vec4Swizzles;
+#[ allow( unused_imports ) ] // qqq : remove with Timer implementation
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
@@ -68,6 +69,7 @@ pub struct Materials
 
 pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMaterial > > )
 {
+  #[ allow( unused_mut, unused_variables ) ] // qqq : remove with Timer implementation
   let mut camera = commands.spawn_bundle( camera::ChessCameraBundle::new() );
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   camera.insert( bevy_interact_2d::InteractionSource::default() );
