@@ -29,6 +29,7 @@ default-run = "game"
 fast_build = [ "bevy/dynamic" ]
 web = [ "bevy/bevy_gltf", "bevy/bevy_winit", "bevy/render", "bevy/png" ]
 gui = []
+diagnostic = []
 default = [ "gui" ]
 
 [[bin]]
