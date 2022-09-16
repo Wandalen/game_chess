@@ -7,7 +7,7 @@
 
 use bevy::prelude::*;
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-use bevy::audio::AudioPlugin;
+use bevy_kira_audio::prelude::*;
 use bevy::math::Vec4Swizzles;
 #[ allow( unused_imports ) ] // qqq : remove with Timer implementation
 use bevy::render::camera::{ camera_system, Camera };
