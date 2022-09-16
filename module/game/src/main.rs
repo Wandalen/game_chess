@@ -292,6 +292,7 @@ fn highlight_under_cursor
   interaction : Res< bevy_interact_2d::InteractionState >,
   q_camera : Query< &Camera >,
   mut highlight : ResMut< highlight::Highlight >,
+  game : Res< core::Game >,
 )
 {
   let window = windows.get_primary().unwrap();
@@ -300,9 +301,19 @@ fn highlight_under_cursor
   let camera = q_camera.single();
   let cell = cursor_to_cell( interaction.last_cursor_position, window_size, camera.projection_matrix() );
 
+  let x = cell.x as u8;
+  let y = cell.y as u8;
   if cell.x < 8.0 && cell.y < 8.0 && cell.x >= 0.0 && cell.y >= 0.0
   {
-    highlight.highlight( ( cell.x as u8, cell.y as u8 ), Color::rgba( 1.0, 1.0, 1.0, 0.2 ) );
+    let color = if game.piece_at( 8 * y + x ) != core::Piece::None
+    {
+      Color::rgba( 0.0, 0.0, 1.0, 1.0 )
+    }
+    else
+    {
+      Color::rgba( 1.0, 0.0, 0.0, 1.0 )
+    };
+    highlight.highlight( ( x, y ), color );
   }
 }
 
@@ -393,7 +404,7 @@ fn main()
 
   /* highlighting */
   #[ cfg( not( target_arch = "wasm32" ) ) ]
-  app.add_system( highlight_under_cursor );
+  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( highlight_under_cursor ) );
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   app.add_plugin( highlight::HighlightPlugin
   {
