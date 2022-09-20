@@ -1,5 +1,5 @@
 
-name: DesktopCommon
+name: desktop_common
 
 on:
   workflow_call:
@@ -13,6 +13,11 @@ on:
       build:
         required: true
         type: string
+
+concurrency :
+
+  group : desktop_${{ inputs.toolchain }}_${{ inputs.build }}
+  cancel-in-progress : true
 
 env:
   CARGO_TERM_COLOR: always
@@ -29,44 +34,38 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
 
     steps:
-    - name: Install libraries
-      if: ${{ matrix.os == 'ubuntu' }}
-      run: sudo apt install libudev-dev libalsa-ocaml-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-          target/
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-    - name: Install latest toolchain
-      uses: actions-rs/toolchain@v1
-      with:
-          toolchain: ${{ inputs.toolchain }}
-          override: true
-    - uses: davidB/rust-cargo-make@v1
+      - name: Install libraries
+        if: ${{ matrix.os == 'ubuntu' }}
+        run: sudo apt install libudev-dev libalsa-ocaml-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
+      - uses: actions/checkout@v2
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ~/.cargo/bin/
+      #       ~/.cargo/registry/index/
+      #       ~/.cargo/registry/cache/
+      #       ~/.cargo/git/db/
+      #       target/
+      #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install latest toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+            toolchain: ${{ inputs.toolchain }}
+            override: true
+      - uses: davidB/rust-cargo-make@v1
 
-    - name: Build
-      if: ${{ inputs.build == 'fast' }}
-      run: cargo make desktop_build
-    - name: Install component
-      if: ${{ inputs.build != 'fast' }}
-      run: rustup component add rustfmt
-    - name: Build
-      if: ${{ inputs.build != 'fast' }}
-      run: cargo make desktop_build
-      # run: cargo make desktop_build_three_targets
-    - name: Run tests
-      run: cargo test
-    - name: Upload
-      if: ${{ inputs.artifacts == 'true' }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.os }}
-        path: target/release/game
-        retention-days: 1
-
-
+      - name: Build
+        if: ${{ inputs.build == 'fast' }}
+        run: cargo make desktop_build
+      - name: Build
+        if: ${{ inputs.build != 'fast' }}
+        run: cargo make desktop_build_release
+      - name: Run tests
+        run: cargo test
+      - name: Upload
+        if: ${{ inputs.artifacts == 'true' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: target/release/game
+          retention-days: 1

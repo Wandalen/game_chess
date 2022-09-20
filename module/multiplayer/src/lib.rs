@@ -2,7 +2,7 @@
 pub mod generated;
 use generated::chess::GamePlayer;
 
-use time::OffsetDateTime;
+use time::{OffsetDateTime, format_description};
 
 use game_chess_core::GameStatus;
 pub use generated::chess::MultiplayerGame;
@@ -12,14 +12,36 @@ pub use generated::chess::MultiplayerGame;
 ///
 
 #[allow(dead_code)]
+#[derive(Debug, Clone)]
 pub struct MultiplayerMessage
 {
-  player_id : String,
+  pub player_id : String,
   text : String,
   timestamp : OffsetDateTime,
 }
 
-impl MultiplayerMessage {}
+impl MultiplayerMessage
+{
+  pub fn new(player_id : String, text : String) -> Self
+  {
+    Self {
+      player_id,
+      text,
+      timestamp : OffsetDateTime::now_utc(),
+    }
+  }
+
+  pub fn pretty_print(&self) -> String
+  {
+    let format = format_description::parse("[year]-[month]-[day] [hour]:[minute]:[second]").unwrap();
+    format!(
+      "[Player ID: {}][Date: {}]>> {}",
+      self.player_id,
+      self.timestamp.format(&format).unwrap(),
+      self.text
+    )
+  }
+}
 
 ///
 /// Player.
@@ -47,27 +69,21 @@ pub struct MultiplayerMove
 
 impl MultiplayerMove {}
 
-///
-/// Multiplayer game.
-///
-
-// This struct is already brought into scope
-// #[allow(dead_code)]
-// #[derive(Debug)]
-// pub struct MultiplayerGame
-// {
-//   pub id : String,
-//   players : Vec<MultiplayerPlayer>,
-// }
+pub enum MultiplayerStatus
+{
+  NotStarted = 0,
+  Started = 1,
+  Ended = 2,
+}
 
 impl MultiplayerGame
 {
-  pub fn new(id : String, player : GamePlayer) -> Self
+  pub fn new(id : String, player : GamePlayer, status : i32) -> Self
   {
     Self {
-      id,
+      game_id : id,
       players : Vec::from([player]),
-      status : 0,
+      status,
     }
   }
 
