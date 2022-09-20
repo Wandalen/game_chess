@@ -8,12 +8,14 @@ service Chess
 {
   rpc push_game_create (CreateGame) returns (GameId);
   rpc push_game_accept (AcceptGame) returns (GameId);
-  rpc push_move (GameMove) returns (GameId);
+  rpc push_move (GameMove) returns (Board);
+  rpc pull_moves (GameId) returns (GameAvailableMoves);
   rpc pull_board_state (GameId) returns (Board);
   rpc pull_game_state (GameId) returns (GameState);
   rpc pull_games_list (google.protobuf.Empty) returns (Games);
   rpc push_game_gg (GamePlayer) returns (google.protobuf.Empty);
-  rpc push_mgs (Msg) returns (google.protobuf.Empty);
+  rpc push_msg (Msg) returns (google.protobuf.Empty);
+  rpc read_msgs (GamePlayer) returns (Msgs);
   rpc pull_game_updates (GameId) returns (stream GameUpdate);
 }
 
@@ -24,6 +26,8 @@ message GameUpdate
     GameMove game_move = 1;
     GameEnd game_end = 2;
     // TODO: refactor chat messages to use streams when they are ready.
+
+    // string chat_msg = 3 ;
   }
 }
 
@@ -53,7 +57,7 @@ message GameState
 message Board
 {
   string game_id = 1;
-  Blank board_state = 2;
+  string board_state = 2;
 }
 
 message MultiplayerGame {
@@ -71,7 +75,12 @@ message GameMove
 {
   string game_id = 1;
   string player_id = 2;
-  Blank move = 3;
+  string move = 3;
+}
+
+message GameAvailableMoves
+{
+  repeated string moves_list = 1;
 }
 
 message GameEnd
@@ -106,5 +115,5 @@ message Msg
 
 message Msgs
 {
-  repeated Msg messages = 1;
+  repeated string messages = 1;
 }

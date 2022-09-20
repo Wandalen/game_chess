@@ -1,56 +1,30 @@
 
-name: Beta
+name: beta
 
 on :
   pull_request_target :
     branches:
       - master
 
+concurrency :
+
+  group : beta_pull_request
+  cancel-in-progress : true
+
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
 
-  check:
-    runs-on: ubuntu-latest
-    outputs:
-      shouldSkip: ${{ steps.validation.outputs.wrong-target }}
-    steps:
-      - name: Check branch
-        id: validation
-        uses: Vankka/pr-target-branch-action@v1.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-        with:
-          target: master
-          exclude: Wandalen:beta
-          comment : |
-            To save the application stability the repository uses a system to forward changes from an unstable branch to a stable.
-            The unstable branch is `alpha`. All user pull requests should be opened to this branch.
-            The staging branch is `beta`. Changes to this branch are forwarded by a pull request from branch `alpha` automatically.
-            The stable branch is `master`. Changes to this branch are forwarded by a pull request from branch `beta` automatically. Forwarded changes merge manually after review.
-
-            The pull request was automatically converted to draft. Please, change base branch taking into account the described system `alpha -> beta -> master`.
-      - name: Convert to draft
-        if : ${{ steps.validation.outputs.wrong-target == 'true' }}
-        uses: raviraipuria/convert-to-draft@v1.0.1
-        with:
-          repo-token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
-          days-before-convert-draft: 0
-
   desktop:
-    needs: check
-    if: ${{ needs.check.outputs.shouldSkip != 'true' }}
-    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@master
+    uses: Wandalen/game_chess/.github/workflows/DesktopCommon.yml@alpha
     with:
       artifacts: 'false'
       build: 'fast'
       toolchain: 'stable'
   web:
-    needs: check
-    if: ${{ needs.check.outputs.shouldSkip != 'true' }}
-    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@master
+    uses: Wandalen/game_chess/.github/workflows/WebCommon.yml@alpha
     with:
       artifacts: 'false'
       build: 'fast'
-      toolchain: 'nightly'
+      toolchain: 'stable'
