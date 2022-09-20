@@ -26,15 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cargo/bin/
-            ~/.cargo/registry/index/
-            ~/.cargo/registry/cache/
-            ~/.cargo/git/db/
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: |
+      #       ~/.cargo/bin/
+      #       ~/.cargo/registry/index/
+      #       ~/.cargo/registry/cache/
+      #       ~/.cargo/git/db/
+      #       target/
+      #     key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
       - name: Install latest toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -45,9 +45,6 @@ jobs:
       - name: Build
         if: ${{ inputs.build == 'fast' }}
         run: cargo make web_build
-      - name: Install library
-        if: ${{ inputs.build != 'fast' }}
-        run: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
       - name: Build
         if: ${{ inputs.build != 'fast' }}
         run: cargo make web_build_release
