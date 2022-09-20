@@ -7,7 +7,7 @@
 
 use bevy::prelude::*;
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-use bevy_kira_audio::AudioPlugin;
+use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::math::Vec4Swizzles;
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
@@ -217,28 +217,28 @@ fn init_system( mut game_state : ResMut< State< GameState > > )
 
 //Sounds
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn loss( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn loss( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/horror.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn win( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn win( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/Windless Slopes.ogg" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn draw( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn draw( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/sad_trombone.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn movement( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn movement( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/hit.mp3" );
   audio_output.play( music );
