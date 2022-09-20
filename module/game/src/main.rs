@@ -7,7 +7,7 @@
 
 use bevy::prelude::*;
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-use bevy_kira_audio::prelude::*;
+use bevy_kira_audio::AudioPlugin;
 use bevy::math::Vec4Swizzles;
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
