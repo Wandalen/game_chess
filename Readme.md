@@ -2,8 +2,6 @@
 
 [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://img.shields.io/github/workflow/status/Wandalen/game_chess/DesktopPush?label=Desktop&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml) [![web](https://img.shields.io/github/workflow/status/Wandalen/game_chess/WebPush?label=Web&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml) [![beta](https://img.shields.io/github/workflow/status/Wandalen/game_chess/Beta?label=Beta&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml)
 
-<!-- [![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml) [![web](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml) [![Beta](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml/badge.svg)](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml) -->
-
 ## Desktop Prerequisites
 
 - [Rust](https://www.rust-lang.org/tools/install)
@@ -11,13 +9,6 @@
 - [xcb](https://xcb.freedesktop.org/)
 - [libuv](https://github.com/libuv/libuv)
 - [libalsa](https://www.alsa-project.org/wiki/Main_Page)
-
-The rustup version v1.58  is required by the project. This is a workaround to respect Bevy library dependencies. To setup toolchain run:
-
-```
-rustup install 1.58
-rustup override set 1.58
-```
 
 The project uses utility [cargo-make](https://github.com/sagiegurari/cargo-make). To install it run:
 
@@ -46,14 +37,8 @@ cargo run
 
 ## How to develop
 
-Before cloning the repository please make a fork on github to been able to open pull requests.
+Before cloning the repository please make a [fork on Github](https://github.com/Wandalen/game_chess.git) to been able to open pull requests.
 Please open pull request into the branch `alpha`.
-
-<!--
-  the add instruction is considered correct because the result of testing
-  https://github.com/Wandalen/game_chess/actions/runs/1618686028
-  is ok
--->
 
 ## Platforms
 
