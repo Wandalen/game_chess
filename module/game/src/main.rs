@@ -7,9 +7,8 @@
 
 use bevy::prelude::*;
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-use bevy::audio::AudioPlugin;
+use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::math::Vec4Swizzles;
-#[ allow( unused_imports ) ] // qqq : remove with Timer implementation
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
@@ -69,12 +68,12 @@ pub struct Materials
 
 pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMaterial > > )
 {
-  #[ allow( unused_mut, unused_variables ) ] // qqq : remove with Timer implementation
   let mut camera = commands.spawn_bundle( camera::ChessCameraBundle::new() );
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   camera.insert( bevy_interact_2d::InteractionSource::default() );
+  camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, false ) } );
+  
   commands.spawn().insert( SelectedCell { pos : None } );
-  // camera.insert( Timer::from_seconds( 2.0, false ) );
   commands.insert_resource( Materials
   {
     white : materials.add( ColorMaterial::from( Color::rgb( 0.9, 0.9, 0.7 ) ) ),
@@ -211,15 +210,15 @@ pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< Game
   game_state.set( GameState::GameStart ).unwrap();
 }
 
-// fn timer_system( time : Res< Time >, mut query : Query< &mut Timer >, mut game_state : ResMut< State< GameState > > )
-// {
-//   let mut timer = query.single_mut().unwrap();
-//   timer.tick( time.delta() );
-//   if timer.finished()
-//   {
-//     game_state.set( GameState::GameNew ).unwrap();
-//   }
-// }
+fn timer_system( time : Res< Time >, mut query : Query< &mut GameTimer >, mut game_state : ResMut< State< GameState > > )
+{
+  let timer = &mut query.single_mut().timer;
+  timer.tick( time.delta() );
+  if timer.finished()
+  {
+    game_state.set( GameState::GameNew ).unwrap();
+  }
+}
 
 fn init_system( mut game_state : ResMut< State< GameState > > )
 {
@@ -228,28 +227,28 @@ fn init_system( mut game_state : ResMut< State< GameState > > )
 
 //Sounds
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn loss( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn loss( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/horror.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn win( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn win( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/Windless Slopes.ogg" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn draw( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn draw( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/sad_trombone.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
 #[ cfg( not( target_arch = "wasm32" ) ) ]
-fn movement( asset_server : Res< AssetServer >, audio_output : Res< Audio > )
+fn movement( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/hit.mp3" );
   audio_output.play( music );
@@ -288,6 +287,12 @@ pub fn egui_setup
       }
     });
   });
+}
+
+#[ derive( Component ) ]
+struct GameTimer
+{
+  timer : Timer,
 }
 
 ///
@@ -447,7 +452,7 @@ fn main()
   app.add_system( egui_setup );
   app.add_state( GameState::Init );
   // /* timer */
-  // app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
+  app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
   /* setup core */
   app.add_system_set( SystemSet::on_update( GameState::GameNew ).with_system( core_setup ) );
