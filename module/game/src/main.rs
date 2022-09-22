@@ -315,22 +315,20 @@ fn highlight_cells
   {
     let x = cell.x as u8;
     let y = cell.y as u8;
-    let color = if game.piece_at( 8 * y + x ) != core::Piece::None
+    let color = if game.piece_at( 8 * y + x ) == core::Piece::None
     {
-      Color::rgba( 0.0, 0.0, 1.0, 1.0 )
+      Color::rgba( 1.0, 0.0, 0.0, 1.0 )
     }
     else
     {
-      Color::rgba( 1.0, 0.0, 0.0, 1.0 )
+      Color::rgba( 0.0, 0.0, 1.0, 1.0 )
     };
     highlight.highlight( ( x, y ), color );
   }
 
   if let Some( pos ) = selected_cell.single().pos
   {
-    let x = pos.x as u8;
-    let y = pos.y as u8;
-    highlight.highlight( ( x, y ), Color::rgba( 0.0, 1.0, 0.0, 1.0 ) );
+    highlight.highlight( pos, Color::rgba( 0.0, 1.0, 0.0, 1.0 ) );
   }
 }
 
@@ -367,20 +365,20 @@ fn select_cell
 
     if let Some( pos ) = selected_cell.pos
     {
-      if pos.x as u8 == x && pos.y as u8 == y
+      if pos.0 == x && pos.1 == y
       {
         selected_cell.pos = None;
         return;
       }
     }
-    selected_cell.pos = Some( cell );
+    selected_cell.pos = Some( ( x, y ) );
   }
 }
 
 #[ derive( Component ) ]
 struct SelectedCell
 {
-  pos : Option< Vec2 >,
+  pos : Option< ( u8, u8 ) >,
 }
 
 // ///
@@ -473,8 +471,8 @@ fn main()
   app.add_system_set
   (
     SystemSet::on_update( GameState::GameStart )
-      .with_system( select_cell )
-      .with_system( highlight_cells )
+    .with_system( select_cell )
+    .with_system( highlight_cells )
   );
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   app.add_plugin( highlight::HighlightPlugin
