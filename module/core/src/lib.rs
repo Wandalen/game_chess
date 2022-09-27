@@ -111,7 +111,7 @@ impl Board
   ///
   pub fn from_fen(fen : &Fen) -> Self
   {
-    match pleco::Board::from_fen(&fen)
+    match pleco::Board::from_fen(fen)
     {
       Ok(pleco_board) => Self { pleco_board },
       _ => Self::default(),
@@ -331,7 +331,7 @@ pub fn move_der<'de, D : Deserializer<'de>>(d : D) -> Result<Move, D::Error>
 /// Status of the game
 ///
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub enum GameStatus
 {
   /// The game is not finished, and the game is still in play.
@@ -390,10 +390,10 @@ impl Game
   /// Constructs a new game from FEN.
   ///
 
-  pub fn from_fen(fen : &String) -> Self
+  pub fn from_fen(fen : &str) -> Self
   {
     Self {
-      board : Board::from_fen(&Fen::from(fen.clone())),
+      board : Board::from_fen(&Fen::from(fen.to_owned())),
       history : Vec::new(),
       is_forfeited : false,
       ai : None,
@@ -428,7 +428,7 @@ impl Game
   pub fn make_move(&mut self, uci_move : UCI) -> bool
   {
     let new_board = self.board.make_move(uci_move);
-    let success = !new_board.is_none();
+    let success = new_board.is_some();
     if success
     {
       self.board = new_board.unwrap();
@@ -444,7 +444,7 @@ impl Game
   ///
   /// Check if game has AI engine
   ///
-  pub fn has_ai(&self) -> bool { !self.ai.is_none() }
+  pub fn has_ai(&self) -> bool { self.ai.is_some() }
 
   ///
   /// AI makes the move using internal AI algorithm
@@ -506,7 +506,7 @@ impl Game
       return GameStatus::Stalemate;
     }
 
-    return GameStatus::Continuing;
+    GameStatus::Continuing
   }
 
   ///
@@ -515,11 +515,7 @@ impl Game
   ///
   pub fn last_move(&self) -> Option<UCI>
   {
-    match self.history.last()
-    {
-      Some(h) => Some(h.last_move.into()),
-      _ => None,
-    }
+    self.history.last().map( | h | h.last_move.into() )
   }
 
   ///
@@ -528,11 +524,7 @@ impl Game
   ///
   pub fn last_move_raw(&self) -> Option<Move>
   {
-    match self.history.last()
-    {
-      Some(h) => Some(h.last_move.clone()),
-      _ => None,
-    }
+    self.history.last().map( | h | h.last_move )
   }
 
   ///
@@ -549,7 +541,7 @@ impl Game
 
     let serialized = serde_json::to_string(&self).unwrap();
     let file_id = get_unix_timestamp(None);
-    let filename = format!("{}/{}{}", SAVES_FOLDER_NAME, file_id.to_string(), SAVE_FILE_EXTENSION);
+    let filename = format!("{}/{}{}", SAVES_FOLDER_NAME, file_id, SAVE_FILE_EXTENSION);
     let filepath = Path::new(&filename);
 
     let mut file = File::create(filepath).unwrap();
@@ -593,7 +585,7 @@ pub fn get_unix_timestamp(_start : Option<js_sys::Date>) -> u64 { js_sys::Date::
 #[cfg(not(target_arch = "wasm32"))]
 pub fn get_unix_timestamp(start : Option<SystemTime>) -> u64
 {
-  let start = start.unwrap_or(SystemTime::now());
+  let start = start.unwrap_or_else(SystemTime::now);
   let since_the_epoch = start.duration_since(UNIX_EPOCH).expect("Time went backwards");
 
   since_the_epoch.as_secs()

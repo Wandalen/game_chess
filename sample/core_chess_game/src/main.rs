@@ -17,9 +17,9 @@ pub fn main()
   let mut board : pleco::Board = pleco::Board::start_pos();
 
   let mut wait_for_enter_key = || {
-    stdout.write(b"Press Enter to make move for current player...\n").unwrap();
+    stdout.write_all(b"Press Enter to make move for current player...\n").unwrap();
     stdout.flush().unwrap();
-    stdin().read(&mut [0]).unwrap();
+    stdin().read_exact(&mut [0]).unwrap();
   };
 
   loop

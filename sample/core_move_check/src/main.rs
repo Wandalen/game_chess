@@ -32,12 +32,12 @@ pub fn main()
 
   println!(
     "Move {} is valid: {}",
-    invalid_move.to_string(),
+    invalid_move,
     board.pseudo_legal_move(invalid_move) && board.legal_move(invalid_move)
   );
   println!(
     "Move {} is valid: {}",
-    valid_move.to_string(),
+    valid_move,
     board.pseudo_legal_move(valid_move) && board.legal_move(valid_move)
   );
 }

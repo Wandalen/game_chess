@@ -103,7 +103,7 @@ pub async fn main()
 
   loop
   {
-    println!("");
+    println!();
 
     choice = wca::input::ask("\nPlease enter command");
 
@@ -174,7 +174,7 @@ pub fn command_exit(game : &Option<Game>)
       println!("Exiting..");
       std::process::exit(0);
     }
-    _ => command_status(&game),
+    _ => command_status(game),
   }
 }
 
@@ -185,7 +185,7 @@ pub fn command_exit(game : &Option<Game>)
 pub fn command_game_new() -> Game
 {
   let game = Game::default();
-  println!("");
+  println!();
   game.board_print();
   println!("Turn of {}", game.current_turn());
   game
@@ -230,7 +230,7 @@ pub fn command_game_new_ai() -> Option<Game>
   let mut game = Game::default();
   game.ai = Some(engine);
 
-  println!("");
+  println!();
   game.board_print();
   println!("Turn of {}", game.current_turn());
   Some(game)
@@ -250,7 +250,7 @@ pub fn command_status(game : &Option<Game>)
 
   let game = game.as_ref().unwrap();
 
-  println!("");
+  println!();
 
   game.board_print();
 
@@ -309,7 +309,7 @@ pub fn command_move(game : &mut Option<Game>)
     println!("\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move);
   }
 
-  println!("");
+  println!();
   game.board_print();
   println!("Turn of {}", game.current_turn());
 }
@@ -340,7 +340,7 @@ pub fn command_forfeit(game : &mut Option<Game>)
       println!("Exiting..");
       std::process::exit(0);
     }
-    _ => command_status(&game),
+    _ => command_status(game),
   }
 }
 
@@ -389,7 +389,7 @@ pub fn command_moves_list(game : &Option<Game>)
   let moves_list = game.moves_list();
   for legal_move in moves_list
   {
-    println!("{}", legal_move.to_string());
+    println!("{}", legal_move);
   }
 }
 
@@ -401,7 +401,7 @@ pub fn command_game_from_fen() -> Game
 {
   let line = wca::input::ask("Input FEN");
   let game = Game::from_fen(&line);
-  println!("");
+  println!();
   game.board_print();
   println!("Turn of {}", game.current_turn());
   game
@@ -421,7 +421,7 @@ pub fn command_move_ai(game : &mut Option<Game>)
 
   let game = game.as_mut().unwrap();
   game.make_move_ai();
-  println!("");
+  println!();
   game.board_print();
   println!("Turn of {}", game.current_turn());
 }
