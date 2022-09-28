@@ -90,7 +90,7 @@ impl Plugin for HighlightPlugin
   }
 }
 
-fn setup_highlight( mut cmd : Commands, mut highlight : ResMut< Highlight >, mut materials : ResMut< Assets< ColorMaterial > > )
+fn setup_highlight( mut cmd : Commands, mut highlight : ResMut< Highlight > )
 {
   let size = 2.0 / 8.0;
   let delta = 1.0 - size / 2.0;
@@ -100,7 +100,6 @@ fn setup_highlight( mut cmd : Commands, mut highlight : ResMut< Highlight >, mut
     for y in 0 .. 8
     {
       let color = Color::rgb( 0.9, 0.0, 0.0 );
-      materials.add( ColorMaterial::from( color ) );
 
       let transform = Transform
       {
@@ -141,7 +140,6 @@ fn apply_requests
   clear_on_each_frame : Res< ClearOnEachFrame >,
   mut highlight : ResMut< Highlight >,
   mut query : Query< ( &mut Sprite, &mut Visibility ) >,
-  mut materials : ResMut< Assets< ColorMaterial > >,
 )
 {
   let Highlight { commands, data } = &mut *highlight;
@@ -159,9 +157,9 @@ fn apply_requests
         }
         data[ idx ].1 = Some( color );
 
-        let ( sprite, mut visible ) = query.get_mut( data[ idx ].0 ).unwrap();
+        let ( mut sprite, mut visible ) = query.get_mut( data[ idx ].0 ).unwrap();
+        sprite.color = color;
         visible.is_visible = true;
-        materials.add( ColorMaterial::from( sprite.color ) );
       }
 
       HighlightCommand::Clear { pos } =>

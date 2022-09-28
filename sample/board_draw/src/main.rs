@@ -123,7 +123,7 @@ fn spawn_board( mut commands : Commands, mut meshes : ResMut< Assets< Mesh > >, 
         &materials.black
       };
 
-      commands.spawn_bundle( MaterialMesh2dBundle
+      let _ = commands.spawn_bundle( MaterialMesh2dBundle
       {
         material : material.clone(),
         mesh : meshes.add( shape::Quad::new( Vec2::new( 10.0, 10.0 ) ).into() ).into(),

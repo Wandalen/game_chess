@@ -2,7 +2,7 @@
 //! Implements in-memory storage.
 //!
 
-use std::{borrow::BorrowMut, collections::HashMap};
+use std::{collections::HashMap};
 
 #[allow(unused_imports)]
 use tonic::async_trait;
@@ -15,7 +15,7 @@ use crate::store::GameStore;
 /// Storage structure.
 ///
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct MemoryStore
 {
   #[allow(dead_code)]
