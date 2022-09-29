@@ -52,6 +52,7 @@ jobs:
         with:
             toolchain: ${{ inputs.toolchain }}
             override: true
+            components: rustfmt
       - uses: davidB/rust-cargo-make@v1
 
       - name: Build

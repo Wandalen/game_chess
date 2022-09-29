@@ -32,6 +32,6 @@ pub fn main()
   let legal_moves_for_target = legal_moves.iter().filter(|mv| mv.get_src() == from_square); //Selects legal moves that have target as source
   for legal_move in legal_moves_for_target
   {
-    println!("{}", legal_move.to_string());
+    println!("{}", legal_move);
   }
 }
