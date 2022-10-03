@@ -20,7 +20,7 @@ pub mod piece;
 pub mod controls;
 
 use common::GameState;
-use controls::SelectedCell;
+use controls::Selection;
 
 ///
 /// Color materials handles
@@ -73,7 +73,7 @@ pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMate
   camera.insert( bevy_interact_2d::InteractionSource::default() );
   camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, false ) } );
 
-  commands.spawn().insert( SelectedCell { pos : None } );
+  commands.spawn().insert( Selection::None );
   commands.insert_resource( Materials
   {
     white : materials.add( ColorMaterial::from( Color::rgb( 0.9, 0.9, 0.7 ) ) ),
@@ -178,9 +178,7 @@ pub fn diagnostics_rect( commands : &mut Commands, materials : &mut ResMut< Asse
 
 pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< GameState > > )
 {
-  let mut game = core::Game::default();
-  game.board_print();
-  game.make_move( "a2a4".into() );
+  let game = core::Game::default();
   game.board_print();
   commands.insert_resource( game );
 
@@ -281,7 +279,7 @@ fn highlight_cells
   windows : Res< Windows >,
   q_camera : Query< &Camera >,
   mut highlight : ResMut< highlight::Highlight >,
-  selected_cell : Query< &SelectedCell >,
+  selected_cell : Query< &Selection >,
   game : Res< core::Game >,
 )
 {
@@ -302,9 +300,11 @@ fn highlight_cells
     highlight.highlight( ( x, y ), color );
   }
 
-  if let Some( pos ) = selected_cell.single().pos
+
+  match selected_cell.single()
   {
-    highlight.highlight( pos, Color::rgba( 0.0, 1.0, 0.0, 1.0 ) );
+    Selection::EmptyCell( x, y ) | Selection::Piece( x, y ) => highlight.highlight( ( *x, *y ), Color::rgba( 0.0, 1.0, 0.0, 1.0 ) ),
+    Selection::None => {}
   }
 }
 
@@ -397,7 +397,7 @@ fn main()
   app.add_system_set
   (
     SystemSet::on_update( GameState::GameStart )
-    .with_system( controls::select_cell )
+    .with_system( controls::handle_click )
     .with_system( highlight_cells )
   );
   app.add_plugin( highlight::HighlightPlugin

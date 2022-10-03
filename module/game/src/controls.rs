@@ -4,28 +4,39 @@
 
 use bevy::prelude::*;
 use bevy::math::Vec4Swizzles;
+use game_chess_core::
+{
+  Piece,
+  UCI,
+  Game,
+};
 
 ///
 /// Resource which stores selected cell
 ///
 
 #[ derive( Component, Debug ) ]
-pub struct SelectedCell
+pub enum Selection
 {
-  /// Cell number
-  pub pos : Option< ( u8, u8 ) >,
+  /// Empty cell
+  EmptyCell( u8, u8 ),
+  /// Cell with a piece
+  Piece( u8, u8 ),
+  /// No selection
+  None,
 }
 
 ///
-/// System that updates selected cell
+/// System that handles mouse click
 ///
 
-pub fn select_cell
+pub fn handle_click
 (
   windows : Res< Windows >,
   mouse_button_input : Res< Input< MouseButton > >,
   q_camera : Query< &Camera >,
-  mut selected_cell : Query< &mut SelectedCell >,
+  mut selected_cell : Query< &mut Selection >,
+  mut game : ResMut< Game >,
 )
 {
   if !mouse_button_input.just_released( MouseButton::Left )
@@ -36,21 +47,116 @@ pub fn select_cell
   let cell = cell_number( &windows.get_primary().unwrap(), &q_camera.single() );
 
   let mut selected_cell = selected_cell.single_mut();
+  let selected_cell = selected_cell.as_mut();
   if let Some( cell ) = cell
   {
     let x = cell.x as u8;
     let y = cell.y as u8;
 
-    if let Some( pos ) = selected_cell.pos
+    match selected_cell
     {
-      if pos.0 == x && pos.1 == y
+      Selection::EmptyCell( selected_x, selected_y ) =>
       {
-        selected_cell.pos = None;
+        if *selected_x == x && *selected_y == y
+        {
+          *selected_cell = Selection::None;
+          return;
+        }
+      },
+      Selection::Piece( selected_x, selected_y ) =>
+      {
+        if let Some( uci ) = uci( ( *selected_x, *selected_y ), ( x, y ) )
+        {
+          if game.make_move( uci )
+          {
+            game.make_move_ai();
+            *selected_cell = Selection::None;
+          }
+        }
         return;
-      }
+      },
+      Selection::None => {},
     }
-    selected_cell.pos = Some( ( x, y ) );
+
+    *selected_cell = if game.piece_at( calc_square( x, y ) ) == Piece::None
+    {
+      Selection::EmptyCell( x, y )
+    }
+    else
+    {
+      Selection::Piece( x, y )
+    };
   }
+}
+
+///
+/// Convert move to the UCI format.
+///
+
+pub fn uci( from : ( u8, u8 ), to : ( u8, u8 ) ) -> Option< UCI >
+{
+  let coords =
+  (
+    to_x_uci_coord( from.0 ),
+    to_y_uci_coord( from.1 ),
+    to_x_uci_coord( to.0 ),
+    to_y_uci_coord( to.1 ),
+  );
+  if let ( Some( from_x ), Some( from_y ), Some( to_x ), Some( to_y ) ) = coords
+  {
+    let uci = String::from_iter( [ from_x, from_y, to_x, to_y ] );
+    return Some( UCI( uci ) );
+  }
+
+  None
+}
+
+///
+/// Get x cell coordinate in the UCI format.
+/// Return None if the conversion isn't possible.
+///
+
+fn to_x_uci_coord( x : u8 ) -> Option< char >
+{
+  Some
+  (
+    match x
+    {
+      0 => 'a',
+      1 => 'b',
+      2 => 'c',
+      3 => 'd',
+      4 => 'e',
+      5 => 'f',
+      6 => 'g',
+      7 => 'h',
+      _ => return None,
+    }
+  )
+}
+
+///
+/// Get y cell coordinate in the UCI format.
+/// Return None if the conversion isn't possible.
+///
+
+fn to_y_uci_coord( mut y : u8 ) -> Option< char >
+{
+  y += 1;
+  if y > 8
+  {
+    return None;
+  }
+  char::from_digit( y as u32, 10 )
+}
+
+///
+/// Calculate square index from cell number
+///
+
+pub fn calc_square( x : u8, y : u8 ) -> u8
+{
+  8 * y + x
 }
 
 ///
