@@ -90,9 +90,6 @@ pub fn board_setup
   mut commands : Commands,
   #[ cfg( feature = "diagnostic" ) ]
   mut materials : ResMut< Assets< ColorMaterial > >,
-  #[ cfg( not( feature = "diagnostic" ) ) ]
-  materials : Res< Assets< ColorMaterial > >,
-  materials_handles : Res< Materials >
 )
 {
   let size_in_cells = ( 8, 8 );
@@ -100,27 +97,15 @@ pub fn board_setup
   let size = 2.0 / 8.0;
   let delta = 1.0 - size / 2.0;
 
-  let black = materials.get( &materials_handles.black ).unwrap();
-  let white = materials.get( &materials_handles.white ).unwrap();
-
   for x in 0 .. size_in_cells.0
   {
     for y in 0 .. size_in_cells.1
     {
       let is_black = ( x + y ) % 2 == 0;
-      let material = if is_black
-      {
-        black.clone()
-      }
-      else
-      {
-        white.clone()
-      };
 
       let sprite = Sprite
       {
         custom_size : Some( Vec2::new( size, size ) ),
-        color : material.color,
         .. Default::default()
       };
 
@@ -135,12 +120,50 @@ pub fn board_setup
         sprite,
         transform,
         .. Default::default()
-      });
+      })
+      .insert( Cell { is_black } );
     }
   }
 
   #[ cfg( feature = "diagnostic" ) ]
   diagnostics_rect( &mut commands, &mut materials );
+}
+
+///
+/// Component that holds information about a cell.
+///
+
+#[ derive( Component, Debug ) ]
+pub struct Cell
+{
+  is_black : bool,
+}
+
+///
+/// System that changes color scheme.
+///
+
+pub fn gamma_change
+(
+  materials : ResMut< Assets< ColorMaterial > >,
+  materials_handles : Res< Materials >,
+  mut query : Query< ( &Cell, &mut Sprite ) >,
+)
+{
+  let black = materials.get( &materials_handles.black ).unwrap();
+  let white = materials.get( &materials_handles.white ).unwrap();
+
+  for ( cell, mut sprite ) in query.iter_mut()
+  {
+    if cell.is_black
+    {
+      sprite.color = black.color;
+    }
+    else
+    {
+      sprite.color = white.color;
+    }
+  }
 }
 
 ///
@@ -286,6 +309,16 @@ pub fn egui_setup
         material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
       }
     });
+    ui.heading( "\"Black\" cells color" );
+    let material = materials.get_mut( &materials_handles.black ).unwrap();
+    let mut color_schema = [ material.color.r(), material.color.g(), material.color.b(), 1.0 ];
+    ui.horizontal( | ui |
+      {
+        if ui.color_edit_button_rgba_unmultiplied( &mut color_schema ).changed()
+        {
+          material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
+        }
+      });
   });
 }
 
@@ -450,6 +483,7 @@ fn main()
   } );
   app.add_plugin( EguiPlugin );
   app.add_system( egui_setup );
+  app.add_system( gamma_change );
   app.add_state( GameState::Init );
   // /* timer */
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
