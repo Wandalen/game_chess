@@ -6,7 +6,6 @@
 //!
 
 use bevy::prelude::*;
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::math::Vec4Swizzles;
 use bevy::render::camera::{ camera_system, Camera };
@@ -72,7 +71,7 @@ pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMate
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   camera.insert( bevy_interact_2d::InteractionSource::default() );
   camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, false ) } );
-  
+
   commands.spawn().insert( SelectedCell { pos : None } );
   commands.insert_resource( Materials
   {
@@ -226,28 +225,24 @@ fn init_system( mut game_state : ResMut< State< GameState > > )
 }
 
 //Sounds
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn loss( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/horror.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn win( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/Windless Slopes.ogg" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn draw( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/sad_trombone.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn movement( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/hit.mp3" );
@@ -463,9 +458,7 @@ fn main()
 
   /* sound */
 
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
-  app.add_plugin( AudioPlugin ); // qqq : migrate to bevy_kira_audio https://github.com/NiklasEi/bevy_kira_audio
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
+  app.add_plugin( AudioPlugin );
   app.add_startup_stage( "loss", SystemStage::single( loss ) );
 
   #[ cfg( not( target_arch = "wasm32" ) ) ]
