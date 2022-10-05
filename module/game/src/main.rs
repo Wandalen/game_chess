@@ -8,7 +8,6 @@
 use bevy::prelude::*;
 #[ cfg( not( target_arch = "wasm32" ) ) ]
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
-use bevy::math::Vec4Swizzles;
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
@@ -16,11 +15,12 @@ use game_chess_core as core;
 
 pub mod camera;
 pub mod common;
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 pub mod highlight;
 pub mod piece;
+pub mod controls;
 
 use common::GameState;
+use controls::Selection;
 
 ///
 /// Color materials handles
@@ -72,8 +72,8 @@ pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMate
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   camera.insert( bevy_interact_2d::InteractionSource::default() );
   camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, false ) } );
-  
-  commands.spawn().insert( SelectedCell { pos : None } );
+
+  commands.spawn().insert( Selection::None );
   commands.insert_resource( Materials
   {
     white : materials.add( ColorMaterial::from( Color::rgb( 0.9, 0.9, 0.7 ) ) ),
@@ -224,9 +224,7 @@ pub fn diagnostics_rect( commands : &mut Commands, materials : &mut ResMut< Asse
 
 pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< GameState > > )
 {
-  let mut game = core::Game::default();
-  game.board_print();
-  game.make_move( "a2a4".into() );
+  let game = core::Game::default();
   game.board_print();
   commands.insert_resource( game );
 
@@ -332,22 +330,16 @@ struct GameTimer
 /// System that highlights cells
 ///
 
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn highlight_cells
 (
   windows : Res< Windows >,
-  interaction : Res< bevy_interact_2d::InteractionState >,
   q_camera : Query< &Camera >,
   mut highlight : ResMut< highlight::Highlight >,
-  selected_cell : Query< &SelectedCell >,
+  selected_cell : Query< &Selection >,
   game : Res< core::Game >,
 )
 {
-  let window = windows.get_primary().unwrap();
-  let window_size = Vec2::new( window.width(), window.height() );
-
-  let camera = q_camera.single();
-  let cell = cursor_to_cell( interaction.last_cursor_position, window_size, camera.projection_matrix() );
+  let cell = controls::cell_number( &windows.get_primary().unwrap(), &q_camera.single() );
 
   if let Some( cell ) = cell
   {
@@ -364,59 +356,12 @@ fn highlight_cells
     highlight.highlight( ( x, y ), color );
   }
 
-  if let Some( pos ) = selected_cell.single().pos
+
+  match selected_cell.single()
   {
-    highlight.highlight( pos, Color::rgba( 0.0, 1.0, 0.0, 1.0 ) );
+    Selection::EmptyCell( x, y ) | Selection::Piece( x, y ) => highlight.highlight( ( *x, *y ), Color::rgba( 0.0, 1.0, 0.0, 1.0 ) ),
+    Selection::None => {}
   }
-}
-
-///
-/// System that updates selected cell
-///
-
-#[ cfg( not( target_arch = "wasm32" ) ) ]
-fn select_cell
-(
-  windows : Res< Windows >,
-  mouse_button_input : Res< Input< MouseButton > >,
-  interaction : Res< bevy_interact_2d::InteractionState >,
-  q_camera : Query< &Camera >,
-  mut selected_cell : Query< &mut SelectedCell >,
-)
-{
-  if !mouse_button_input.just_released( MouseButton::Left )
-  {
-    return;
-  }
-
-  let window = windows.get_primary().unwrap();
-  let window_size = Vec2::new( window.width(), window.height() );
-
-  let camera = q_camera.single();
-  let cell = cursor_to_cell( interaction.last_cursor_position, window_size, camera.projection_matrix() );
-
-  let mut selected_cell = selected_cell.single_mut();
-  if let Some( cell ) = cell
-  {
-    let x = cell.x as u8;
-    let y = cell.y as u8;
-
-    if let Some( pos ) = selected_cell.pos
-    {
-      if pos.0 == x && pos.1 == y
-      {
-        selected_cell.pos = None;
-        return;
-      }
-    }
-    selected_cell.pos = Some( ( x, y ) );
-  }
-}
-
-#[ derive( Component ) ]
-struct SelectedCell
-{
-  pos : Option< ( u8, u8 ) >,
 }
 
 // ///
@@ -506,14 +451,12 @@ fn main()
   app.add_plugin( bevy_interact_2d::InteractionPlugin );
 
   /* highlighting */
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
   app.add_system_set
   (
     SystemSet::on_update( GameState::GameStart )
-    .with_system( select_cell )
+    .with_system( controls::handle_click )
     .with_system( highlight_cells )
   );
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
   app.add_plugin( highlight::HighlightPlugin
   {
     clear_on_each_frame : true,
