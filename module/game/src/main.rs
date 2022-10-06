@@ -176,10 +176,17 @@ pub fn diagnostics_rect( commands : &mut Commands, materials : &mut ResMut< Asse
 /// Startup system for the game.
 ///
 
-pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< GameState > > )
+pub fn core_setup
+(
+  mut commands : Commands,
+  mut game_state : ResMut< State< GameState > >,
+  server : Res< AssetServer >,
+  texture_atlases : ResMut< Assets< TextureAtlas > >,
+)
 {
   let game = core::Game::default();
   game.board_print();
+  piece::pieces_setup( &mut commands, server, texture_atlases, &game );
   commands.insert_resource( game );
 
   game_state.set( GameState::GameStart ).unwrap();
@@ -378,7 +385,7 @@ fn main()
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
   /* setup core */
   app.add_system_set( SystemSet::on_update( GameState::GameNew ).with_system( core_setup ) );
-  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::pieces_setup ) );
+  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::draw_pieces ) );
   /* setup board */
   app.add_startup_system( setup );
   app.add_startup_stage( "board_setup", SystemStage::single( board_setup ) );

@@ -26,6 +26,7 @@ pub use pleco::{
   core::sq::SQ as Cell,
   core::bitboard::BitBoard as CellsSet,
 };
+use pleco::BitMove;
 
 use serde::{Serialize, Deserialize, Serializer, Deserializer};
 
@@ -84,6 +85,8 @@ impl TryFrom<UCI> for Move
   }
 }
 
+type Cells = [ [ ( u8, Piece ); 8 ]; 8 ];
+
 ///
 /// Game board
 ///
@@ -92,6 +95,7 @@ impl TryFrom<UCI> for Move
 pub struct Board
 {
   pleco_board : pleco::Board,
+  cells : Cells,
 }
 
 impl Board
@@ -103,6 +107,7 @@ impl Board
   {
     Self {
       pleco_board : pleco::Board::start_pos(),
+      cells : Self::new_cells(),
     }
   }
 
@@ -113,7 +118,7 @@ impl Board
   {
     match pleco::Board::from_fen(fen)
     {
-      Ok(pleco_board) => Self { pleco_board },
+      Ok(pleco_board) => Self { pleco_board, cells : Self::new_cells() },
       _ => Self::default(),
     }
   }
@@ -127,7 +132,8 @@ impl Board
     let result = pleco_board.apply_uci_move(&uci_move.0);
     if result
     {
-      Some(Self { pleco_board })
+      self.apply_move_to_cells( self.move_from_uci( uci_move ).unwrap() );
+      Some(Self { pleco_board, cells : self.cells } )
     }
     else
     {
@@ -187,12 +193,39 @@ impl Board
       .0;
 
     self.pleco_board.apply_move(best_move);
+    self.apply_move_to_cells( best_move );
   }
 
   ///
-  /// Returns the piece located at the square
+  /// Returns the piece located at the square.
   ///
   pub fn piece_at(&self, sq : u8) -> Piece { self.pleco_board.piece_at_sq(Cell(sq)) }
+
+  ///
+  /// Returns the piece located at the square with its id.
+  ///
+  pub fn piece_at_with_id( &self, x : u8, y : u8 ) -> ( u8, Piece )
+  {
+    self.cells[ y as usize ][ x as usize ]
+  }
+
+  ///
+  /// Returns the piece with 'id' and its coordinates (x, y).
+  ///
+  pub fn piece_by_id( &self, id : u8 ) -> ( Piece, u8, u8 )
+  {
+    for ( y, row ) in self.cells.iter().enumerate()
+    {
+      for ( x, cell ) in row.iter().enumerate()
+      {
+        if cell.0 == id
+        {
+          return ( cell.1, x as u8, y as u8 )
+        }
+      }
+    }
+    ( Piece::None, 0, 0 )
+  }
 
   ///
   /// Evaluates the score of a [Board] for the current side to move.
@@ -270,6 +303,108 @@ impl Board
   /// Creates a 'Fen` string of the board.
   ///
   pub fn to_fen(&self) -> Fen { Fen::from(self.pleco_board.fen()) }
+
+  fn apply_move_to_cells( &mut self, bit_move : BitMove )
+  {
+    let ( src_x, src_y ) = Self::square_to_indexes( bit_move.get_src_u8() );
+    let ( dest_x, dest_y ) = Self::square_to_indexes( bit_move.get_dest_u8() );
+
+    let cell = std::mem::replace( &mut self.cells[ src_y ][ src_x ], ( 0u8, Piece::None ) );
+    self.cells[ dest_y ][ dest_x ] = cell;
+  }
+
+  fn square_to_indexes( sq : u8 ) -> ( usize, usize )
+  {
+    let x = sq % 8;
+    let y = sq / 8;
+    ( x as usize, y as usize )
+  }
+
+  fn new_cells() -> Cells
+  {
+    [
+      [
+        ( 1, Piece::BlackRook ),
+        ( 2, Piece::BlackKnight ),
+        ( 3, Piece::BlackBishop ),
+        ( 4, Piece::BlackQueen ),
+        ( 5, Piece::BlackKing ),
+        ( 6, Piece::BlackBishop ),
+        ( 7, Piece::BlackKnight ),
+        ( 8, Piece::BlackRook ),
+      ],
+      [
+        ( 9, Piece::BlackPawn ),
+        ( 10, Piece::BlackPawn ),
+        ( 11, Piece::BlackPawn ),
+        ( 12, Piece::BlackPawn ),
+        ( 13, Piece::BlackPawn ),
+        ( 14, Piece::BlackPawn ),
+        ( 15, Piece::BlackPawn ),
+        ( 16, Piece::BlackPawn ),
+      ],
+      [
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+      ],
+      [
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+      ],
+      [
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+      ],
+      [
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+        ( 0, Piece::None ),
+      ],
+      [
+        ( 17, Piece::WhitePawn ),
+        ( 18, Piece::WhitePawn ),
+        ( 19, Piece::WhitePawn ),
+        ( 20, Piece::WhitePawn ),
+        ( 21, Piece::WhitePawn ),
+        ( 22, Piece::WhitePawn ),
+        ( 23, Piece::WhitePawn ),
+        ( 24, Piece::WhitePawn ),
+      ],
+      [
+        ( 25, Piece::WhiteRook ),
+        ( 26, Piece::WhiteKnight ),
+        ( 27, Piece::WhiteBishop ),
+        ( 28, Piece::WhiteQueen ),
+        ( 29, Piece::WhiteKing ),
+        ( 30, Piece::WhiteBishop ),
+        ( 31, Piece::WhiteKnight ),
+        ( 32, Piece::WhiteRook ),
+      ],
+    ]
+  }
 }
 
 ///
@@ -454,7 +589,12 @@ impl Game
   {
     match &self.ai
     {
-      Some(engine) => self.board.pleco_board.apply_move(engine.best_move(self.board.clone())),
+      Some(engine) =>
+      {
+        let best_move = engine.best_move(self.board.clone());
+        self.board.pleco_board.apply_move( best_move );
+        self.board.apply_move_to_cells( best_move );
+      },
       None => self.board.make_move_ai(),
     };
 
@@ -531,6 +671,22 @@ impl Game
   /// Returns the piece located at the square
   ///
   pub fn piece_at(&self, sq : u8) -> Piece { self.board.piece_at(sq) }
+
+  ///
+  /// Returns the piece located at the square with its id.
+  ///
+  pub fn piece_at_with_id( &self, x : u8, y : u8 ) -> ( u8, Piece )
+  {
+    self.board.piece_at_with_id( x, y )
+  }
+
+  ///
+  /// Returns the piece with 'id' and its coordinates (x, y).
+  ///
+  pub fn piece_by_id( &self, id : u8 ) -> ( Piece, u8, u8 )
+  {
+    self.board.piece_by_id( id )
+  }
 
   ///
   /// Saves game to file
