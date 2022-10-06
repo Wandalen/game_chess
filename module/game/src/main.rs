@@ -6,7 +6,6 @@
 //!
 
 use bevy::prelude::*;
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
@@ -90,9 +89,6 @@ pub fn board_setup
   mut commands : Commands,
   #[ cfg( feature = "diagnostic" ) ]
   mut materials : ResMut< Assets< ColorMaterial > >,
-  #[ cfg( not( feature = "diagnostic" ) ) ]
-  materials : Res< Assets< ColorMaterial > >,
-  materials_handles : Res< Materials >
 )
 {
   let size_in_cells = ( 8, 8 );
@@ -100,27 +96,15 @@ pub fn board_setup
   let size = 2.0 / 8.0;
   let delta = 1.0 - size / 2.0;
 
-  let black = materials.get( &materials_handles.black ).unwrap();
-  let white = materials.get( &materials_handles.white ).unwrap();
-
   for x in 0 .. size_in_cells.0
   {
     for y in 0 .. size_in_cells.1
     {
       let is_black = ( x + y ) % 2 == 0;
-      let material = if is_black
-      {
-        black.clone()
-      }
-      else
-      {
-        white.clone()
-      };
 
       let sprite = Sprite
       {
         custom_size : Some( Vec2::new( size, size ) ),
-        color : material.color,
         .. Default::default()
       };
 
@@ -135,12 +119,73 @@ pub fn board_setup
         sprite,
         transform,
         .. Default::default()
-      });
+      })
+      .insert( Cell { is_black } );
     }
   }
 
   #[ cfg( feature = "diagnostic" ) ]
   diagnostics_rect( &mut commands, &mut materials );
+}
+
+///
+/// Component that holds information about a cell.
+///
+
+#[ derive( Component, Debug ) ]
+pub struct Cell
+{
+  is_black : bool,
+}
+
+///
+/// System that changes color scheme.
+///
+
+pub fn gamma_change
+(
+  materials : ResMut< Assets< ColorMaterial > >,
+  materials_handles : Res< Materials >,
+  mut query : Query< ( &Cell, &mut Sprite ) >,
+)
+{
+  let black = materials.get( &materials_handles.black ).unwrap();
+  let white = materials.get( &materials_handles.white ).unwrap();
+
+  for ( cell, mut sprite ) in query.iter_mut()
+  {
+    if cell.is_black
+    {
+      sprite.color = black.color;
+    }
+    else
+    {
+      sprite.color = white.color;
+    }
+  }
+}
+
+///
+/// Convert cursor position to cell number
+/// If cursor is outside of the board, returns None
+///
+
+pub fn cursor_to_cell( cursor_pos : Vec2, window_size : Vec2, projection_matrix : Mat4 ) -> Option< Vec2 >
+{
+  let clip_pos = ( cursor_pos / ( window_size / 2.0 ) ) - Vec2::splat( 1.0 );
+  let clip_pos_4 = clip_pos.extend( 0.0 ).extend( 1.0 );
+  let world_pos_4 = projection_matrix.inverse() * clip_pos_4;
+
+  let world_pos = world_pos_4.xy() / world_pos_4.w;
+  let pos = ( ( world_pos + Vec2::splat( 1.0 ) ) * 4.0 ).floor();
+  if pos.x < 8.0 && pos.y < 8.0 && pos.x >= 0.0 && pos.y >= 0.0
+  {
+    Some( pos )
+  }
+  else
+  {
+    None
+  }
 }
 
 #[ cfg( feature = "diagnostic" ) ]
@@ -176,10 +221,17 @@ pub fn diagnostics_rect( commands : &mut Commands, materials : &mut ResMut< Asse
 /// Startup system for the game.
 ///
 
-pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< GameState > > )
+pub fn core_setup
+(
+  mut commands : Commands,
+  mut game_state : ResMut< State< GameState > >,
+  server : Res< AssetServer >,
+  texture_atlases : ResMut< Assets< TextureAtlas > >,
+)
 {
   let game = core::Game::default();
   game.board_print();
+  piece::pieces_setup( &mut commands, server, texture_atlases, &game );
   commands.insert_resource( game );
 
   game_state.set( GameState::GameStart ).unwrap();
@@ -201,28 +253,24 @@ fn init_system( mut game_state : ResMut< State< GameState > > )
 }
 
 //Sounds
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn loss( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/horror.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn win( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/Windless Slopes.ogg" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn draw( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/sad_trombone.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn movement( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/hit.mp3" );
@@ -261,6 +309,16 @@ pub fn egui_setup
         material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
       }
     });
+    ui.heading( "\"Black\" cells color" );
+    let material = materials.get_mut( &materials_handles.black ).unwrap();
+    let mut color_schema = [ material.color.r(), material.color.g(), material.color.b(), 1.0 ];
+    ui.horizontal( | ui |
+      {
+        if ui.color_edit_button_rgba_unmultiplied( &mut color_schema ).changed()
+        {
+          material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
+        }
+      });
   });
 }
 
@@ -372,22 +430,21 @@ fn main()
   } );
   app.add_plugin( EguiPlugin );
   app.add_system( egui_setup );
+  app.add_system( gamma_change );
   app.add_state( GameState::Init );
   // /* timer */
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
   /* setup core */
   app.add_system_set( SystemSet::on_update( GameState::GameNew ).with_system( core_setup ) );
-  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::pieces_setup ) );
+  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::draw_pieces ) );
   /* setup board */
   app.add_startup_system( setup );
   app.add_startup_stage( "board_setup", SystemStage::single( board_setup ) );
 
   /* sound */
 
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
-  app.add_plugin( AudioPlugin ); // qqq : migrate to bevy_kira_audio https://github.com/NiklasEi/bevy_kira_audio
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
+  app.add_plugin( AudioPlugin );
   app.add_startup_stage( "loss", SystemStage::single( loss ) );
 
   #[ cfg( not( target_arch = "wasm32" ) ) ]
