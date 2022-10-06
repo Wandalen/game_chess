@@ -112,6 +112,7 @@ pub async fn main()
       ".game.new" => game = Some(command_game_new()),
       ".game.new.ai" | ".new.ai" => game = command_game_new_ai(),
       ".game.save" => command_game_save(&game),
+      ".games.list" => saved_games_list(),
       ".game.from.fen" => game = Some(command_game_from_fen()),
       ".move" | ".m" => command_move(&mut game),
       ".gg" => command_forfeit(&mut game),
@@ -147,6 +148,7 @@ pub fn command_help()
   println!(".game.new  => Create game with default board");
   println!(".new.ai    => Create game with ai. Also shortcut for .game.new.ai");
   println!(".game.save => Save game to file");
+  println!(".games.list => Print saved games list");
   println!(".game.from.fen => Load game from FEN");
   println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
   println!(".gg        => Forfeit the game ");

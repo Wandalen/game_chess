@@ -572,6 +572,27 @@ impl Game
 }
 
 ///
+/// Saved games list
+///
+
+pub fn saved_games_list()
+{
+  let saves_dir = fs::read_dir( SAVES_FOLDER_NAME );
+
+  if let Ok( paths ) = saves_dir
+  {
+    for path in paths 
+    {
+    println!( "Game: {}", path.unwrap().path().display() );
+    }
+  }
+  else 
+  {
+    println!( "No saved games!" );    
+  }
+}
+
+///
 /// Get unix timestamp in seconds.
 ///
 
