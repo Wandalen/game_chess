@@ -8,7 +8,7 @@ use std::pin::Pin;
 use std::sync::{Arc, Mutex};
 use futures::Stream;
 
-use tonic::codegen::http::request;
+
 use tonic::{Request, Response, Status};
 use tokio::sync::mpsc;
 
@@ -219,7 +219,7 @@ impl Chess for ChessRpcServer
 
       let mut board_state = store.get_board_state(&game_id).unwrap();
 
-      if turn_msg.len() == 0
+      if turn_msg.is_empty()
       {
         let current_turn = store.current_turn(&game_id);
         let last_move = store.last_move(&game_id);
@@ -293,13 +293,13 @@ impl Chess for ChessRpcServer
     let store = self.store.lock().expect("Failed to lock the store mutex");
     let games = store.get_games();
 
-    if games.len() > 0
+    if games.is_empty()
     {
-      Ok(Response::new(Games { games : games.clone() }))
+      Err(Status::not_found("No game found on server!"))
     }
     else
     {
-      Err(Status::not_found("No game found on server!"))
+      Ok(Response::new(Games { games : games.clone() }))
     }
   }
 
@@ -312,7 +312,7 @@ impl Chess for ChessRpcServer
     let game_id = message.game_id;
     let player_id = message.player_id;
 
-    let winner = {
+    let _winner = {
       let mut memory_store = self.store.lock().unwrap();
       let mut winner = None;
       let mut current_game = memory_store.get_game(&game_id).unwrap().clone();
@@ -386,7 +386,7 @@ impl Chess for ChessRpcServer
       msgs.messages.push(msg.pretty_print());
     }
 
-    if msgs.messages.len() == 0
+    if msgs.messages.is_empty()
     {
       msgs.messages.push("No Chat Messages!".to_owned());
     }

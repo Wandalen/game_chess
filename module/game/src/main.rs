@@ -6,9 +6,7 @@
 //!
 
 use bevy::prelude::*;
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
-use bevy::math::Vec4Swizzles;
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
@@ -16,11 +14,12 @@ use game_chess_core as core;
 
 pub mod camera;
 pub mod common;
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 pub mod highlight;
 pub mod piece;
+pub mod controls;
 
 use common::GameState;
+use controls::Selection;
 
 ///
 /// Color materials handles
@@ -72,8 +71,8 @@ pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMate
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   camera.insert( bevy_interact_2d::InteractionSource::default() );
   camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, false ) } );
-  
-  commands.spawn().insert( SelectedCell { pos : None } );
+
+  commands.spawn().insert( Selection::None );
   commands.insert_resource( Materials
   {
     white : materials.add( ColorMaterial::from( Color::rgb( 0.9, 0.9, 0.7 ) ) ),
@@ -90,9 +89,6 @@ pub fn board_setup
   mut commands : Commands,
   #[ cfg( feature = "diagnostic" ) ]
   mut materials : ResMut< Assets< ColorMaterial > >,
-  #[ cfg( not( feature = "diagnostic" ) ) ]
-  materials : Res< Assets< ColorMaterial > >,
-  materials_handles : Res< Materials >
 )
 {
   let size_in_cells = ( 8, 8 );
@@ -100,27 +96,15 @@ pub fn board_setup
   let size = 2.0 / 8.0;
   let delta = 1.0 - size / 2.0;
 
-  let black = materials.get( &materials_handles.black ).unwrap();
-  let white = materials.get( &materials_handles.white ).unwrap();
-
   for x in 0 .. size_in_cells.0
   {
     for y in 0 .. size_in_cells.1
     {
       let is_black = ( x + y ) % 2 == 0;
-      let material = if is_black
-      {
-        black.clone()
-      }
-      else
-      {
-        white.clone()
-      };
 
       let sprite = Sprite
       {
         custom_size : Some( Vec2::new( size, size ) ),
-        color : material.color,
         .. Default::default()
       };
 
@@ -135,12 +119,50 @@ pub fn board_setup
         sprite,
         transform,
         .. Default::default()
-      });
+      })
+      .insert( Cell { is_black } );
     }
   }
 
   #[ cfg( feature = "diagnostic" ) ]
   diagnostics_rect( &mut commands, &mut materials );
+}
+
+///
+/// Component that holds information about a cell.
+///
+
+#[ derive( Component, Debug ) ]
+pub struct Cell
+{
+  is_black : bool,
+}
+
+///
+/// System that changes color scheme.
+///
+
+pub fn gamma_change
+(
+  materials : ResMut< Assets< ColorMaterial > >,
+  materials_handles : Res< Materials >,
+  mut query : Query< ( &Cell, &mut Sprite ) >,
+)
+{
+  let black = materials.get( &materials_handles.black ).unwrap();
+  let white = materials.get( &materials_handles.white ).unwrap();
+
+  for ( cell, mut sprite ) in query.iter_mut()
+  {
+    if cell.is_black
+    {
+      sprite.color = black.color;
+    }
+    else
+    {
+      sprite.color = white.color;
+    }
+  }
 }
 
 ///
@@ -199,17 +221,17 @@ pub fn diagnostics_rect( commands : &mut Commands, materials : &mut ResMut< Asse
 /// Startup system for the game.
 ///
 
-pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< GameState > > )
+pub fn core_setup
+(
+  mut commands : Commands,
+  mut game_state : ResMut< State< GameState > >,
+  server : Res< AssetServer >,
+  texture_atlases : ResMut< Assets< TextureAtlas > >,
+)
 {
-  let mut game = core::Game::default();
+  let game = core::Game::default();
   game.board_print();
-  game.make_move( "c2c4".into() );
-  game.make_move( "h7h5".into() );
-  game.make_move( "d1a4".into() );
-  game.make_move( "h5h4".into() );
-  game.make_move( "c4c5".into() );
-  game.make_move( "b7b5".into() );
-  game.board_print();
+  piece::pieces_setup( &mut commands, server, texture_atlases, &game );
   commands.insert_resource( game );
 
   game_state.set( GameState::GameStart ).unwrap();
@@ -231,28 +253,24 @@ fn init_system( mut game_state : ResMut< State< GameState > > )
 }
 
 //Sounds
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn loss( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/horror.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn win( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/Windless Slopes.ogg" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn draw( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/sad_trombone.mp3" );
   audio_output.play( music );
 }
 #[ allow( dead_code ) ]
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn movement( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_audio::Audio > )
 {
   let music = asset_server.load( "sound/hit.mp3" );
@@ -291,6 +309,16 @@ pub fn egui_setup
         material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
       }
     });
+    ui.heading( "\"Black\" cells color" );
+    let material = materials.get_mut( &materials_handles.black ).unwrap();
+    let mut color_schema = [ material.color.r(), material.color.g(), material.color.b(), 1.0 ];
+    ui.horizontal( | ui |
+      {
+        if ui.color_edit_button_rgba_unmultiplied( &mut color_schema ).changed()
+        {
+          material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
+        }
+      });
   });
 }
 
@@ -304,22 +332,16 @@ struct GameTimer
 /// System that highlights cells
 ///
 
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn highlight_cells
 (
   windows : Res< Windows >,
-  interaction : Res< bevy_interact_2d::InteractionState >,
   q_camera : Query< &Camera >,
   mut highlight : ResMut< highlight::Highlight >,
-  selected_cell : Query< &SelectedCell >,
+  selected_cell : Query< &Selection >,
   game : Res< core::Game >,
 )
 {
-  let window = windows.get_primary().unwrap();
-  let window_size = Vec2::new( window.width(), window.height() );
-
-  let camera = q_camera.single();
-  let cell = cursor_to_cell( interaction.last_cursor_position, window_size, camera.projection_matrix() );
+  let cell = controls::cell_number( &windows.get_primary().unwrap(), &q_camera.single() );
 
   highlight_legal_moves( &selected_cell, &mut highlight, &game );
 
@@ -338,9 +360,10 @@ fn highlight_cells
     highlight.highlight( ( x, y ), color );
   }
 
-  if let Some( pos ) = selected_cell.single().pos
+  match selected_cell.single()
   {
-    highlight.highlight( pos, Color::rgba( 0.0, 1.0, 0.0, 1.0 ) );
+    Selection::EmptyCell( x, y ) | Selection::Piece( x, y ) => highlight.highlight( ( *x, *y ), Color::rgba( 0.0, 1.0, 0.0, 1.0 ) ),
+    Selection::None => {}
   }
 }
 
@@ -376,55 +399,6 @@ fn highlight_legal_moves
       highlight.highlight( index_to_pos( mv.get_dest_u8() ), color );
     });
   };
-}
-
-///
-/// System that updates selected cell
-///
-
-#[ cfg( not( target_arch = "wasm32" ) ) ]
-fn select_cell
-(
-  windows : Res< Windows >,
-  mouse_button_input : Res< Input< MouseButton > >,
-  interaction : Res< bevy_interact_2d::InteractionState >,
-  q_camera : Query< &Camera >,
-  mut selected_cell : Query< &mut SelectedCell >,
-)
-{
-  if !mouse_button_input.just_released( MouseButton::Left )
-  {
-    return;
-  }
-
-  let window = windows.get_primary().unwrap();
-  let window_size = Vec2::new( window.width(), window.height() );
-
-  let camera = q_camera.single();
-  let cell = cursor_to_cell( interaction.last_cursor_position, window_size, camera.projection_matrix() );
-
-  let mut selected_cell = selected_cell.single_mut();
-  if let Some( cell ) = cell
-  {
-    let x = cell.x as u8;
-    let y = cell.y as u8;
-
-    if let Some( pos ) = selected_cell.pos
-    {
-      if pos.0 == x && pos.1 == y
-      {
-        selected_cell.pos = None;
-        return;
-      }
-    }
-    selected_cell.pos = Some( ( x, y ) );
-  }
-}
-
-#[ derive( Component ) ]
-struct SelectedCell
-{
-  pos : Option< ( u8, u8 ) >,
 }
 
 // ///
@@ -491,36 +465,33 @@ fn main()
   } );
   app.add_plugin( EguiPlugin );
   app.add_system( egui_setup );
+  app.add_system( gamma_change );
   app.add_state( GameState::Init );
   // /* timer */
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
   /* setup core */
   app.add_system_set( SystemSet::on_update( GameState::GameNew ).with_system( core_setup ) );
-  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::pieces_setup ) );
+  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::draw_pieces ) );
   /* setup board */
   app.add_startup_system( setup );
   app.add_startup_stage( "board_setup", SystemStage::single( board_setup ) );
 
   /* sound */
 
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
-  app.add_plugin( AudioPlugin ); // qqq : migrate to bevy_kira_audio https://github.com/NiklasEi/bevy_kira_audio
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
+  app.add_plugin( AudioPlugin );
   app.add_startup_stage( "loss", SystemStage::single( loss ) );
 
   #[ cfg( not( target_arch = "wasm32" ) ) ]
   app.add_plugin( bevy_interact_2d::InteractionPlugin );
 
   /* highlighting */
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
   app.add_system_set
   (
     SystemSet::on_update( GameState::GameStart )
-    .with_system( select_cell )
+    .with_system( controls::handle_click )
     .with_system( highlight_cells )
   );
-  #[ cfg( not( target_arch = "wasm32" ) ) ]
   app.add_plugin( highlight::HighlightPlugin
   {
     clear_on_each_frame : true,

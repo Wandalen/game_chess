@@ -32,14 +32,7 @@ impl ToySession
 
   fn expired(&self) -> bool
   {
-    if self.player_id == None || self.game_id == None
-    {
-      true
-    }
-    else
-    {
-      false
-    }
+    self.player_id == None || self.game_id == None
   }
 
   fn update(&mut self)
@@ -74,7 +67,7 @@ pub async fn command_game_new(session : &mut ToySession, rpc_server : &mut Optio
   {
     let player_id = wca::input::ask("Input Player ID");
     let game_id = wca::input::ask("Input Game ID");
-    println!("");
+    println!();
 
     let online_game = CreateGame {
       player : Some(game_chess_client::GamePlayer {
@@ -118,7 +111,7 @@ pub async fn command_game_join(session : &mut ToySession, rpc_server : &mut Opti
   {
     let player_id = wca::input::ask("Input Player ID");
     let game_id = wca::input::ask("Input Game ID");
-    println!("");
+    println!();
 
     let online_game = AcceptGame {
       game_id : game_id.clone(),
@@ -324,7 +317,7 @@ fn print_board_status(board : Result<tonic::Response<game_chess_client::Board>, 
 
 fn clear_screen()
 {
-  if let Err(_) = std::process::Command::new("clear").status()
+  if std::process::Command::new("clear").status().is_err()
   {
     std::process::Command::new("cmd").args(&["/c", "cls"]).status().ok();
   }

@@ -123,7 +123,7 @@ impl core::fmt::Debug for dyn Algorithm
 
 pub fn ai_ser<S : Serializer>(algorithm : &Box<dyn Algorithm>, s : S) -> Result<S::Ok, S::Error>
 {
-  s.serialize_str(&algorithm.short_name())
+  s.serialize_str(algorithm.short_name())
 }
 
 ///
