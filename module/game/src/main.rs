@@ -17,6 +17,7 @@ pub mod common;
 pub mod highlight;
 pub mod piece;
 pub mod controls;
+pub mod main_menu;
 
 use common::GameState;
 use controls::Selection;
@@ -226,7 +227,7 @@ fn timer_system( time : Res< Time >, mut query : Query< &mut GameTimer >, mut ga
 
 fn init_system( mut game_state : ResMut< State< GameState > > )
 {
-  game_state.set( GameState::GameNew ).unwrap();
+  game_state.set( GameState::MainMenu ).unwrap();
 }
 
 //Sounds
@@ -406,9 +407,11 @@ fn main()
     .. Default::default()
   } );
   app.add_plugin( EguiPlugin );
-  app.add_system( egui_setup );
+  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( egui_setup ) );
   app.add_system( gamma_change );
   app.add_state( GameState::Init );
+  /* main menu */
+  app.add_system_set( SystemSet::on_update( GameState::MainMenu ).with_system( main_menu::setup_main_menu ) );
   // /* timer */
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
