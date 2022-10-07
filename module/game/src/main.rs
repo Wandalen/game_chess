@@ -18,6 +18,7 @@ pub mod highlight;
 pub mod piece;
 pub mod controls;
 pub mod main_menu;
+pub mod pause_menu;
 
 use common::GameState;
 use controls::Selection;
@@ -412,6 +413,8 @@ fn main()
   app.add_state( GameState::Init );
   /* main menu */
   app.add_system_set( SystemSet::on_update( GameState::MainMenu ).with_system( main_menu::setup_main_menu ) );
+  /* pause menu */
+  app.add_system_set( SystemSet::on_update( GameState::Pause ).with_system( pause_menu::setup_pause_menu ) );
   // /* timer */
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
@@ -435,6 +438,7 @@ fn main()
   (
     SystemSet::on_update( GameState::GameStart )
     .with_system( controls::handle_click )
+    .with_system( controls::handle_keyboard )
     .with_system( highlight_cells )
   );
   app.add_plugin( highlight::HighlightPlugin

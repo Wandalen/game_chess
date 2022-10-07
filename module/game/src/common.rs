@@ -19,4 +19,6 @@ pub enum GameState
   GameStart,
   /// When we are playing the game
   GamePlaying,
+  /// When game is on pause
+  Pause,
 }
