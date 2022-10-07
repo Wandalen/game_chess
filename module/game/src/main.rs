@@ -203,7 +203,12 @@ pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< Game
 {
   let mut game = core::Game::default();
   game.board_print();
-  game.make_move( "a2a4".into() );
+  game.make_move( "c2c4".into() );
+  game.make_move( "h7h5".into() );
+  game.make_move( "d1a4".into() );
+  game.make_move( "h5h4".into() );
+  game.make_move( "c4c5".into() );
+  game.make_move( "b7b5".into() );
   game.board_print();
   commands.insert_resource( game );
 
