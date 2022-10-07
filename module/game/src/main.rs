@@ -165,29 +165,6 @@ pub fn gamma_change
   }
 }
 
-///
-/// Convert cursor position to cell number
-/// If cursor is outside of the board, returns None
-///
-
-pub fn cursor_to_cell( cursor_pos : Vec2, window_size : Vec2, projection_matrix : Mat4 ) -> Option< Vec2 >
-{
-  let clip_pos = ( cursor_pos / ( window_size / 2.0 ) ) - Vec2::splat( 1.0 );
-  let clip_pos_4 = clip_pos.extend( 0.0 ).extend( 1.0 );
-  let world_pos_4 = projection_matrix.inverse() * clip_pos_4;
-
-  let world_pos = world_pos_4.xy() / world_pos_4.w;
-  let pos = ( ( world_pos + Vec2::splat( 1.0 ) ) * 4.0 ).floor();
-  if pos.x < 8.0 && pos.y < 8.0 && pos.x >= 0.0 && pos.y >= 0.0
-  {
-    Some( pos )
-  }
-  else
-  {
-    None
-  }
-}
-
 #[ cfg( feature = "diagnostic" ) ]
 /// Add sprite of size 2x2 for diagnostics purpose. The sprite should cover central zone of window.
 #[ cfg( feature = "diagnostic" ) ]
