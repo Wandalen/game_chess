@@ -26,7 +26,7 @@ pub fn setup_pause_menu
     {
       if ui.button( "Resume" ).clicked()
       {
-        app_state.set( GameState::GameStart ).unwrap();
+        app_state.set( GameState::GamePlaying ).unwrap();
       }
       if ui.button( "Exit" ).clicked()
       {

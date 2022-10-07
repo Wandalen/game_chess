@@ -213,7 +213,7 @@ pub fn core_setup
   piece::pieces_setup( &mut commands, server, texture_atlases, &game );
   commands.insert_resource( game );
 
-  game_state.set( GameState::GameStart ).unwrap();
+  game_state.set( GameState::GamePlaying ).unwrap();
 }
 
 fn timer_system( time : Res< Time >, mut query : Query< &mut GameTimer >, mut game_state : ResMut< State< GameState > > )
@@ -408,7 +408,7 @@ fn main()
     .. Default::default()
   } );
   app.add_plugin( EguiPlugin );
-  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( egui_setup ) );
+  app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( egui_setup ) );
   app.add_system( gamma_change );
   app.add_state( GameState::Init );
   /* main menu */
@@ -420,7 +420,7 @@ fn main()
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
   /* setup core */
   app.add_system_set( SystemSet::on_update( GameState::GameNew ).with_system( core_setup ) );
-  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::draw_pieces ) );
+  app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( piece::draw_pieces ) );
   /* setup board */
   app.add_startup_system( setup );
   app.add_startup_stage( "board_setup", SystemStage::single( board_setup ) );
@@ -436,7 +436,7 @@ fn main()
   /* highlighting */
   app.add_system_set
   (
-    SystemSet::on_update( GameState::GameStart )
+    SystemSet::on_update( GameState::GamePlaying )
     .with_system( controls::handle_click )
     .with_system( controls::handle_keyboard )
     .with_system( highlight_cells )
