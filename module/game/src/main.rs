@@ -203,7 +203,12 @@ pub fn core_setup( mut commands : Commands, mut game_state : ResMut< State< Game
 {
   let mut game = core::Game::default();
   game.board_print();
-  game.make_move( "a2a4".into() );
+  game.make_move( "c2c4".into() );
+  game.make_move( "h7h5".into() );
+  game.make_move( "d1a4".into() );
+  game.make_move( "h5h4".into() );
+  game.make_move( "c4c5".into() );
+  game.make_move( "b7b5".into() );
   game.board_print();
   commands.insert_resource( game );
 
@@ -316,6 +321,8 @@ fn highlight_cells
   let camera = q_camera.single();
   let cell = cursor_to_cell( interaction.last_cursor_position, window_size, camera.projection_matrix() );
 
+  highlight_legal_moves( &selected_cell, &mut highlight, &game );
+
   if let Some( cell ) = cell
   {
     let x = cell.x as u8;
@@ -335,6 +342,40 @@ fn highlight_cells
   {
     highlight.highlight( pos, Color::rgba( 0.0, 1.0, 0.0, 1.0 ) );
   }
+}
+
+fn index_to_pos( index : u8 ) -> ( u8, u8 )
+{
+  let y = index / 8;
+  ( index - 8 * y, y )
+}
+
+///
+/// Highlight legal moves
+///
+
+#[ cfg( not( target_arch = "wasm32" ) ) ]
+fn highlight_legal_moves
+(
+  selected_cell : &Query< &SelectedCell >,
+  highlight : &mut ResMut< highlight::Highlight >,
+  game : &Res< core::Game >
+)
+{
+  if let Some( ( x, y ) ) = selected_cell.single().pos
+  {
+    game.moves_list().iter()
+    .filter( | mv |  mv.get_src_u8() == 8 * y + x )
+    .for_each( | mv |
+    {
+      let color = if mv.is_capture()
+      { Color::rgba( 1.0, 0.5, 0.0, 1.0 ) }
+      else
+      { Color::rgba( 1.0, 1.0, 0.0, 1.0 ) };
+
+      highlight.highlight( index_to_pos( mv.get_dest_u8() ), color );
+    });
+  };
 }
 
 ///
