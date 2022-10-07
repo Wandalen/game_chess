@@ -1,4 +1,5 @@
 use game_chess_core::*;
+use assert_cmd::Command;
 
 /*
 cargo test test_trivial -- --show-output
@@ -71,4 +72,13 @@ fn test_print_board()
      2 | P P P P P P P P \n\
      1 | R N B Q K B N R \n  ------------------\n    a b c d e f g h"
   );
+}
+
+
+#[ test ]
+fn saved_games_list_test()
+{
+  let mut cmd = Command::cargo_bin( "cui" ).unwrap();
+  let assert = cmd.write_stdin( ".games.list" ).assert();
+  assert.success().stdout( "No saved games!" );
 }
