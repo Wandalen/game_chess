@@ -23,7 +23,7 @@ fn main()
     height : DISPLAY_HEIGHT,
     resizable : false,
     .. Default::default()
-  })
+  } )
   .add_plugins( DefaultPlugins )
   .add_startup_system( setup )
   .add_system_set_to_stage
@@ -46,7 +46,7 @@ fn setup( mut commands : Commands )
 
 //
 
-fn cursor_system( window : Res< Windows >, q_camera : Query< &Transform, With<MainCamera > > )
+fn cursor_system( window : Res< Windows >, q_camera : Query< &Transform, With< MainCamera > > )
 {
   let primary_window = window.get_primary().unwrap();
 

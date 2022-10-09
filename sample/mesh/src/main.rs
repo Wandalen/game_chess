@@ -39,5 +39,5 @@ fn setup( mut commands : Commands, mut meshes : ResMut< Assets< Mesh > >, mut ma
     material : materials.add( ColorMaterial::from( Color::rgb( 0.0, 0.0, 0.0 ) ) ),
     transform : Transform::from_translation( Vec3::new( 0.0, 0.0, 0.0 ) ),
     .. Default::default()
-  });
+  } );
 }

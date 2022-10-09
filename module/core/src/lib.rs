@@ -495,7 +495,7 @@ pub struct Game
   #[ serde( serialize_with = "board_ser", deserialize_with = "board_der" ) ]
   board : Board,
   is_forfeited : bool,
-  history : Vec<HistoryEntry>,
+  history : Vec< HistoryEntry >,
   ///
   /// AI Engine responsible for finding best moves
   ///

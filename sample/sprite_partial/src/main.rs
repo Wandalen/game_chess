@@ -20,7 +20,7 @@ fn main()
     height : DISPLAY_HEIGHT,
     resizable : false,
     .. Default::default()
-  })
+  } )
   .add_plugins( DefaultPlugins )
   .add_startup_system( setup )
   .run();
@@ -50,5 +50,5 @@ fn setup( mut commands : Commands, asset_server : Res< AssetServer >, mut textur
     // resize original sprite to 200% ( 300px, 300px )
     transform : Transform::from_scale( Vec3::splat( 2.0 ) ),
     .. Default::default()
-  });
+  } );
 }

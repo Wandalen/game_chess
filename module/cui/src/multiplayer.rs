@@ -297,7 +297,7 @@ pub async fn command_game_status( session : &mut ToySession, rpc_server : &mut O
     }
 
     let ( _, game_id ) = session.get();
-    let result = rpc_server.pull_board_state( GameId{ game_id } ).await;
+    let result = rpc_server.pull_board_state( GameId { game_id } ).await;
 
     print_board_status( result );
   }

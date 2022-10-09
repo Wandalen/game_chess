@@ -32,7 +32,7 @@ pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMate
   {
     black : materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() ),
     white : materials.add( Color::rgb( 1.0, 1.0, 1.0 ).into() ),
-  });
+  } );
   // add resource for combobox
   commands.insert_resource( CurrentSide( Side::White ) );
 }
@@ -60,8 +60,8 @@ pub fn setup_egui( mut egui_context : ResMut< EguiContext >, mut side : ResMut< 
     {
       ui.selectable_value( &mut side.0, Side::White, "White" );
       ui.selectable_value( &mut side.0, Side::Black, "Black" );
-    })
-  });
+    } )
+  } );
 }
 
 //
@@ -144,7 +144,7 @@ pub fn spawn_board
         },
         0.95,
       );
-      segments.0.push(seg);
+      segments.0.push( seg );
     }
   }
 }
@@ -217,7 +217,7 @@ pub fn position_translation( windows : Res< Windows >, mut q : Query< ( &Positio
     transform.translation = Vec3::new
     (
       0.15 * width + ( convert( pos.x as f32, width as f32, DESK_WIDTH as f32 ) - pos.x as f32 * 0.02 * width ),
-      0.1 * height + ( convert(pos.y as f32, height as f32, DESK_HEIGHT as f32) - pos.y as f32 * 0.02 * height ),
+      0.1 * height + ( convert( pos.y as f32, height as f32, DESK_HEIGHT as f32 ) - pos.y as f32 * 0.02 * height ),
       0.0,
     );
   }
