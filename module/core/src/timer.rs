@@ -34,9 +34,18 @@ impl Timer
   }
 
   ///
-  /// Swtich turn to next player
+  /// Resets current time
   /// 
-  pub fn switch_turn( &mut self )
+  pub fn reset_time( &mut self )
+  {
+    self.timestamp = get_unix_timestamp( None )
+  }
+
+  ///
+  /// Swtich turn to next player
+  /// Returns spent time for a move
+  /// 
+  pub fn switch_turn( &mut self ) -> u64
   {
     let time_now = get_unix_timestamp( None );
     let diff = time_now - self.timestamp;
@@ -46,6 +55,8 @@ impl Timer
 
     self.whos_turn = if self.whos_turn + 1 == self.players_time.len()
     { 0 } else { self.whos_turn + 1 };
+
+    diff
   }
 
   ///
@@ -67,6 +78,55 @@ impl Timer
   /// 
   pub fn time_is_out( &self ) -> bool
   {
-    self.players_time.iter().any( | player_time | player_time == &0 )
+    self.players_time.iter().enumerate().any( |( number, _ )| self.get_player_time( number ) == 0 )
+  }
+}
+
+
+#[ cfg( test ) ]
+mod tests
+{
+  use super::*;
+
+  #[ test ]
+  fn basic()
+  {
+    let mut timer = Timer::new( 100 );
+
+    // init statement
+    assert_eq!( timer.whos_turn, 0 );
+    assert_eq!( timer.players_time, [ 100, 100 ] );
+
+    assert!( !timer.time_is_out() );
+    assert!( timer.get_player_time( 0 ) <= 100 );
+    assert_eq!( timer.get_player_time( 1 ), 100 );
+
+    // 50 seconds later for first player
+    timer.timestamp -= 50;
+
+    assert!( timer.get_player_time( 0 ) <= 50 );
+    assert_eq!( timer.get_player_time( 1 ), 100 );
+
+    assert!( timer.switch_turn() >= 50 );
+
+    assert_eq!( timer.whos_turn, 1 );
+    assert!( timer.get_player_time( 0 ) <= 50 );
+    assert!( timer.get_player_time( 1 ) <= 100 );
+
+    // 70 seconds later for second player
+    timer.timestamp -= 70;
+
+    assert!( timer.get_player_time( 0 ) <= 50 );
+    assert!( timer.get_player_time( 1 ) <= 30 );
+
+    assert!( timer.switch_turn() >= 70 );
+
+    timer.timestamp -= 70;
+
+    assert_eq!( timer.whos_turn, 0 );
+    assert_eq!( timer.get_player_time( 0 ), 0 );
+
+    // end game
+    assert!( timer.time_is_out() );
   }
 }
