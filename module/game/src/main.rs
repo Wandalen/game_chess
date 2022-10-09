@@ -5,6 +5,7 @@
 //! Chess game implemented on Bevy for educational purpose.
 //!
 
+use bevy::math::Vec4Swizzles;
 use bevy::prelude::*;
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
