@@ -6,6 +6,7 @@
 //!
 
 pub mod ai;
+pub mod timer;
 
 use std::fs;
 use std::fs::File;
@@ -43,6 +44,7 @@ HistoryEntry
 
 Game
    board : Board
+   timer : Timer
    history : Vec<HistoryEntry>
 */
 
@@ -475,6 +477,8 @@ pub enum GameStatus
   Checkmate,
   /// The game is drawn.
   Stalemate,
+  /// The game is finished by time
+  TimeIsOut,
   /// Forfeit
   GG,
 }
@@ -491,6 +495,10 @@ pub struct Game
   #[serde(serialize_with = "board_ser", deserialize_with = "board_der")]
   board : Board,
   is_forfeited : bool,
+  ///
+  /// Timer
+  ///
+  pub timer : Option< timer::Timer >,
   history : Vec<HistoryEntry>,
   ///
   /// AI Engine responsible for finding best moves
@@ -511,6 +519,7 @@ impl Game
   {
     Self {
       board : Board::default(),
+      timer : None,
       history : Vec::new(),
       is_forfeited : false,
       ai : None,
@@ -529,6 +538,7 @@ impl Game
   {
     Self {
       board : Board::from_fen(&Fen::from(fen.to_owned())),
+      timer : None,
       history : Vec::new(),
       is_forfeited : false,
       ai : None,
@@ -572,7 +582,10 @@ impl Game
         fen : self.board.to_fen(),
         last_move,
       });
+
+      self.timer.as_mut().map( | timer | timer.switch_turn() );
     }
+
     success
   }
 
@@ -603,6 +616,8 @@ impl Game
       fen : self.board.to_fen(),
       last_move,
     });
+
+    self.timer.as_mut().map( | timer | timer.switch_turn() );
   }
 
   ///
@@ -614,6 +629,17 @@ impl Game
   /// Prints board to the terminal.
   ///
   pub fn board_print(&self) { self.board.print(); }
+
+  ///
+  /// Prints timers
+  /// 
+  pub fn timers_print(&self)
+  {
+    if let Some( timer ) = &self.timer
+    {
+      println!( "-Timers-\nPlayer1 : {}\nPlayer2 : {}", timer.get_player_time( 0 ), timer.get_player_time( 1 ) )
+    }
+  }
 
   ///
   /// Prints history to the terminal.
@@ -646,7 +672,12 @@ impl Game
       return GameStatus::Stalemate;
     }
 
-    GameStatus::Continuing
+    if let Some( true ) = self.timer.as_ref().map( | timer | timer.time_is_out() )
+    {
+      return GameStatus::TimeIsOut;
+    }
+
+    return GameStatus::Continuing;
   }
 
   ///
