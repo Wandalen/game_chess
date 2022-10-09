@@ -215,7 +215,7 @@ pub fn diagnostics_rect( commands : &mut Commands, materials : &mut ResMut< Asse
     sprite,
     transform,
     .. Default::default()
-  });
+  } );
 }
 
 ///
@@ -293,7 +293,7 @@ pub fn egui_setup
   {
     // add labels inside Egui window
     ui.label( "Time: 00:00.00" );
-  });
+  } );
 
   egui::SidePanel::left( "Menu" )
   .resizable( false )
@@ -319,8 +319,8 @@ pub fn egui_setup
         {
           material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
         }
-      });
-  });
+      } );
+  } );
 }
 
 #[ derive( Component ) ]
@@ -461,7 +461,7 @@ fn main()
   app.add_plugin( highlight::HighlightPlugin
   {
     clear_on_each_frame : true,
-  });
+  } );
 
   /* escape on exit */
   app.add_system( close_on_esc );

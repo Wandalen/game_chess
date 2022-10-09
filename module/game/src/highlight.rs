@@ -26,7 +26,7 @@ enum HighlightCommand
 #[ derive( Debug ) ]
 pub struct Highlight
 {
-  data : Vec< ( Entity, Option<Color> ) >,
+  data : Vec< ( Entity, Option< Color > ) >,
   commands : Vec< HighlightCommand >,
 }
 
@@ -125,12 +125,12 @@ fn setup_highlight( mut cmd : Commands, mut highlight : ResMut< Highlight > )
       .insert( Visibility { is_visible : false } )
       .id();
 
-      highlight.data.push( (ent, None ) );
+      highlight.data.push( ( ent, None ) );
     }
   }
 }
 
-fn pos_to_index( (x, y ) : ( u8, u8 ) ) -> usize
+fn pos_to_index( ( x, y ) : ( u8, u8 ) ) -> usize
 {
   x as usize * 8 + y as usize
 }

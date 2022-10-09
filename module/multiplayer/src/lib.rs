@@ -1,8 +1,8 @@
-#[allow(non_camel_case_types)]
+#[ allow( non_camel_case_types ) ]
 pub mod generated;
 use generated::chess::GamePlayer;
 
-use time::{OffsetDateTime, format_description};
+use time::{ OffsetDateTime, format_description };
 
 
 pub use generated::chess::MultiplayerGame;
@@ -11,8 +11,8 @@ pub use generated::chess::MultiplayerGame;
 /// Message.
 ///
 
-#[allow(dead_code)]
-#[derive(Debug, Clone)]
+#[ allow( dead_code ) ]
+#[ derive( Debug, Clone ) ]
 pub struct MultiplayerMessage
 {
   pub player_id : String,
@@ -22,22 +22,23 @@ pub struct MultiplayerMessage
 
 impl MultiplayerMessage
 {
-  pub fn new(player_id : String, text : String) -> Self
+  pub fn new( player_id : String, text : String ) -> Self
   {
-    Self {
+    Self 
+    {
       player_id,
       text,
       timestamp : OffsetDateTime::now_utc(),
     }
   }
 
-  pub fn pretty_print(&self) -> String
+  pub fn pretty_print( &self ) -> String
   {
-    let format = format_description::parse("[year]-[month]-[day] [hour]:[minute]:[second]").unwrap();
+    let format = format_description::parse( "[year]-[month]-[day] [hour]:[minute]:[second]" ).unwrap();
     format!(
       "[Player ID: {}][Date: {}]>> {}",
       self.player_id,
-      self.timestamp.format(&format).unwrap(),
+      self.timestamp.format( &format ).unwrap(),
       self.text
     )
   }
@@ -47,8 +48,8 @@ impl MultiplayerMessage
 /// Player.
 ///
 
-#[allow(dead_code)]
-#[derive(Debug)]
+#[ allow( dead_code ) ]
+#[ derive( Debug ) ]
 pub struct MultiplayerPlayer
 {
   id : String,
@@ -78,14 +79,15 @@ pub enum MultiplayerStatus
 
 impl MultiplayerGame
 {
-  pub fn new(id : String, player : GamePlayer, status : i32) -> Self
+  pub fn new( id : String, player : GamePlayer, status : i32 ) -> Self
   {
-    Self {
+    Self 
+    {
       game_id : id,
-      players : Vec::from([player]),
+      players : Vec::from( [ player ] ),
       status,
     }
   }
 
-  pub fn add_opponent(&mut self, player : GamePlayer) { self.players.push(player) }
+  pub fn add_opponent( &mut self, player : GamePlayer ) { self.players.push( player ) }
 }
