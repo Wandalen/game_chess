@@ -186,27 +186,34 @@ fn timer_setup() -> Option< timer::Timer >
     "yes" | "y" =>
     {
       println!( "" );
-      println!( "[1] => 10min" );
-      println!( "[2] => 5min" );
+      println!( "[1] => 10min + 50s" );
+      println!( "[2] => 5min + 3s" );
       println!( "[3] => 3min" );
       println!( "[0] => set your value" );
       let settings = wca::input::ask("\nPlease, select time settings? (default = 1)");
       match settings.as_str()
       {
-        "1" => Some( timer::Timer::new( 10 * 60 ) ),
-        "2" => Some( timer::Timer::new( 5 * 60 ) ),
-        "3" => Some( timer::Timer::new( 3 * 60 ) ),
+        "1" => Some( timer::Timer::new( 10 * 60, 50 ) ),
+        "2" => Some( timer::Timer::new( 5 * 60, 3 ) ),
+        "3" => Some( timer::Timer::new( 3 * 60, 0 ) ),
         "0" =>
         {
-          let value = wca::input::ask("\nEnter number of seconds for player: ");
+          let value = wca::input::ask("\nEnter number of seconds for player");
           let value = match value.parse()
           {
             Ok( value ) => value,
             Err( _ ) => { println!( "Failed to parse number." ); return None; }
           };
-          Some( timer::Timer::new( value ) )
+          let bonuses = wca::input::ask("\nEnter number of seconds for bonuses");
+          let bonuses = match bonuses.parse()
+          {
+            Ok( value ) => value,
+            Err( _ ) => { println!( "Failed to parse number." ); return None; }
+          };
+
+          Some( timer::Timer::new( value, bonuses ) )
         }
-        _ => Some( timer::Timer::new( 10 * 60 ) )
+        _ => Some( timer::Timer::new( 10 * 60, 50 ) )
       }
 
     },
