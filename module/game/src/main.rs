@@ -356,7 +356,6 @@ fn index_to_pos( index : u8 ) -> ( u8, u8 )
 /// Highlight legal moves
 ///
 
-#[ cfg( not( target_arch = "wasm32" ) ) ]
 fn highlight_legal_moves
 (
   selected_cell : &Query< &Selection >,
