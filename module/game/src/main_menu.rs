@@ -2,6 +2,7 @@
 //! Main menu implementation.
 //!
 
+use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy_egui::
 {
@@ -18,6 +19,7 @@ pub fn setup_main_menu
 (
   mut egui_context : ResMut< EguiContext >,
   mut app_state : ResMut< State< GameState > >,
+  mut exit : EventWriter< AppExit >,
 )
 {
   egui::CentralPanel::default().show( egui_context.ctx_mut(), | ui |
@@ -42,7 +44,7 @@ pub fn setup_main_menu
       }
       if ui.button( "Quit" ).clicked()
       {
-        // TODO: Implement game exit.
+        exit.send( AppExit );
       }
     });
   });

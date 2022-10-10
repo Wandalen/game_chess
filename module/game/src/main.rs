@@ -461,9 +461,6 @@ fn main()
     clear_on_each_frame : true,
   } );
 
-  /* escape on exit */
-  app.add_system( close_on_esc );
-
   // app.add_system( color_change );
 
   app.add_system_to_stage
