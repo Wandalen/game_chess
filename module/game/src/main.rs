@@ -247,6 +247,24 @@ fn movement( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_au
 }
 
 ///
+/// System that enables/disables sound
+///
+pub fn sound_control( audio_output : Res< bevy_kira_audio::Audio >, settings : Res< Settings > )
+{
+  if settings.is_changed()
+  {
+    if settings.enable_sound
+    {
+      audio_output.resume();
+    }
+    else
+    {
+      audio_output.pause();
+    }
+  }
+}
+
+///
 /// GUI setup
 ///
 
@@ -406,6 +424,7 @@ fn main()
   app.add_plugin( EguiPlugin );
   app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( egui_setup ) );
   app.add_system( gamma_change );
+  app.add_system( sound_control );
   app.add_state( GameState::Init );
   /* main menu */
   app.add_system_set( SystemSet::on_update( GameState::MainMenu ).with_system( main_menu::setup_main_menu ) );
