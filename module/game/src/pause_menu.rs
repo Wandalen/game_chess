@@ -28,6 +28,10 @@ pub fn setup_pause_menu
       {
         app_state.set( GameState::GamePlaying ).unwrap();
       }
+      if ui.button( "Options" ).clicked()
+      {
+        app_state.push( GameState::Settings ).unwrap();
+      }
       if ui.button( "Exit" ).clicked()
       {
         app_state.set( GameState::MainMenu ).unwrap();

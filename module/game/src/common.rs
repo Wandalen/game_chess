@@ -19,4 +19,6 @@ pub enum GameState
   GamePlaying,
   /// When game is on pause
   Pause,
+  /// Settings menu
+  Settings,
 }

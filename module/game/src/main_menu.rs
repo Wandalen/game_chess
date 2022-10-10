@@ -38,7 +38,7 @@ pub fn setup_main_menu
       }
       if ui.button( "Options" ).clicked()
       {
-        // TODO: Implement game settings.
+        app_state.push( GameState::Settings ).unwrap();
       }
       if ui.button( "Quit" ).clicked()
       {
