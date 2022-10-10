@@ -1,5 +1,5 @@
-#![warn(missing_docs)]
-#![warn(missing_debug_implementations)]
+#![ warn( missing_docs ) ]
+#![ warn( missing_debug_implementations ) ]
 
 //!
 //! Command user interface ( CLI ) for chess game implemented for educational purpose.
@@ -75,7 +75,7 @@ Commands minimal
 */
 
 use game_chess_core::*;
-#[allow(unused_imports)]
+#[ allow( unused_imports ) ]
 use game_chess_client::*;
 
 mod multiplayer;
@@ -83,16 +83,16 @@ mod multiplayer;
 ///
 /// Main. CLI game itself.
 ///
-#[tokio::main]
+#[ tokio::main ]
 pub async fn main()
 {
-  let mut game : Option<Game> = None;
+  let mut game : Option< Game > = None;
   let mut choice;
 
   let mut session = multiplayer::ToySession::init();
 
-  let remote_rpc = chess_client::ChessClient::connect("http://127.0.0.1:1313").await;
-  let mut remote_rpc = if let Ok(remote) = remote_rpc { Some(remote) } else { None };
+  let remote_rpc = chess_client::ChessClient::connect( "http://127.0.0.1:1313" ).await;
+  let mut remote_rpc = if let Ok( remote ) = remote_rpc { Some( remote ) } else { None };
 
   command_help();
 
@@ -105,33 +105,33 @@ pub async fn main()
   {
     println!();
 
-    choice = wca::input::ask("\nPlease enter command");
+    choice = wca::input::ask( "\nPlease enter command" );
 
     match choice.to_lowercase().trim()
     {
-      ".game.new" => game = Some(command_game_new()),
+      ".game.new" => game = Some( command_game_new() ),
       ".game.new.ai" | ".new.ai" => game = command_game_new_ai(),
-      ".game.save" => command_game_save(&game),
-      ".game.from.fen" => game = Some(command_game_from_fen()),
-      ".move" | ".m" => command_move(&mut game),
-      ".gg" => command_forfeit(&mut game),
-      ".moves.list" => command_moves_list(&game),
-      ".move.ai" => command_move_ai(&mut game),
-      ".status" | ".s" => command_status(&game),
-      ".moves.history" | ".m.h" => command_moves_history(&game),
-      ".quit" => command_exit(&game),
+      ".game.save" => command_game_save( &game ),
+      ".game.from.fen" => game = Some( command_game_from_fen() ),
+      ".move" | ".m" => command_move( &mut game ),
+      ".gg" => command_forfeit( &mut game ),
+      ".moves.list" => command_moves_list( &game ),
+      ".move.ai" => command_move_ai( &mut game ),
+      ".status" | ".s" => command_status( &game ),
+      ".moves.history" | ".m.h" => command_moves_history( &game ),
+      ".quit" => command_exit( &game ),
       ".help" => command_help(),
-      ".score" => command_score(&game),
+      ".score" => command_score( &game ),
 
-      ".online.new" => multiplayer::command_game_new(&mut session, &mut remote_rpc).await,
-      ".online.join" => multiplayer::command_game_join(&mut session, &mut remote_rpc).await,
-      ".online.move" => multiplayer::command_game_move(&mut session, &mut remote_rpc).await,
-      ".online.moves.list" => multiplayer::command_game_moves_list(&mut session, &mut remote_rpc).await,
-      ".online.msg" => multiplayer::command_game_send_msg(&mut session, &mut remote_rpc).await,
-      ".online.msg.read" => multiplayer::command_game_read_msgs(&mut session, &mut remote_rpc).await,
-      ".online.status" => multiplayer::command_game_status(&mut session, &mut remote_rpc).await,
+      ".online.new" => multiplayer::command_game_new( &mut session, &mut remote_rpc ).await,
+      ".online.join" => multiplayer::command_game_join( &mut session, &mut remote_rpc ).await,
+      ".online.move" => multiplayer::command_game_move( &mut session, &mut remote_rpc ).await,
+      ".online.moves.list" => multiplayer::command_game_moves_list( &mut session, &mut remote_rpc ).await,
+      ".online.msg" => multiplayer::command_game_send_msg( &mut session, &mut remote_rpc ).await,
+      ".online.msg.read" => multiplayer::command_game_read_msgs( &mut session, &mut remote_rpc ).await,
+      ".online.status" => multiplayer::command_game_status( &mut session, &mut remote_rpc ).await,
 
-      command => println!("Unknown command : {}\n", command),
+      command => println!( "Unknown command : {}\n", command ),
     }
   }
 }
@@ -142,20 +142,20 @@ pub async fn main()
 
 pub fn command_help()
 {
-  println!("\nCommands:\n");
+  println!( "\nCommands:\n");
 
-  println!(".game.new  => Create game with default board");
-  println!(".new.ai    => Create game with ai. Also shortcut for .game.new.ai");
-  println!(".game.save => Save game to file");
-  println!(".game.from.fen => Load game from FEN");
-  println!(".move      => Make a move by providing move in UCI format: \"a2a4\" ");
-  println!(".gg        => Forfeit the game ");
-  println!(".moves.list=> Print all available moves in UCI format: \"a2a4\" ");
-  println!(".move.ai   => Ask the AI to make a move for the player");
-  println!(".status    => Print board, current turn, last move");
-  println!(".moves.history => Print moves history");
-  println!(".quit      => Exit from the game");
-  println!(".help      => Print this help");
+  println!( ".game.new  => Create game with default board" );
+  println!( ".new.ai    => Create game with ai. Also shortcut for .game.new.ai" );
+  println!( ".game.save => Save game to file" );
+  println!( ".game.from.fen => Load game from FEN" );
+  println!( ".move      => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".gg        => Forfeit the game " );
+  println!( ".moves.list=> Print all available moves in UCI format: \"a2a4\" " );
+  println!( ".move.ai   => Ask the AI to make a move for the player" );
+  println!( ".status    => Print board, current turn, last move" );
+  println!( ".moves.history => Print moves history" );
+  println!( ".quit      => Exit from the game" );
+  println!( ".help      => Print this help" );
 
   multiplayer::command_help();
 }
@@ -164,17 +164,17 @@ pub fn command_help()
 /// Command to quit the game.
 ///
 
-pub fn command_exit(game : &Option<Game>)
+pub fn command_exit( game : &Option< Game > )
 {
-  let uci_exit = wca::input::ask("Do you want to exit?");
+  let uci_exit = wca::input::ask( "Do you want to exit?" );
   match uci_exit.to_lowercase().trim()
   {
     "yes" | "y" =>
     {
-      println!("Exiting..");
-      std::process::exit(0);
+      println!( "Exiting.." );
+      std::process::exit( 0 );
     }
-    _ => command_status(game),
+    _ => command_status( game ),
   }
 }
 
@@ -187,7 +187,7 @@ pub fn command_game_new() -> Game
   let game = Game::default();
   println!();
   game.board_print();
-  println!("Turn of {}", game.current_turn());
+  println!( "Turn of {}", game.current_turn() );
   game
 }
 
@@ -195,56 +195,56 @@ pub fn command_game_new() -> Game
 /// Command to start new game with AI
 ///
 
-pub fn command_game_new_ai() -> Option<Game>
+pub fn command_game_new_ai() -> Option< Game >
 {
-  let mut algorithm = wca::input::ask("\nPlease select the ai engine algorithm (default = iterative)");
+  let mut algorithm = wca::input::ask( "\nPlease select the ai engine algorithm (default = iterative)" );
   if algorithm.is_empty()
   {
-    algorithm = String::from("iterative")
+    algorithm = String::from( "iterative" )
   }
-  let mut engine = match ai::Engine::new(algorithm)
+  let mut engine = match ai::Engine::new( algorithm )
   {
-    Ok(engine) => engine,
-    Err(_) =>
+    Ok( engine ) => engine,
+    Err( _ ) =>
     {
-      println!("Unknown engine type, please try again.");
+      println!( "Unknown engine type, please try again." );
       return None;
     }
   };
 
-  let mut depth = wca::input::ask("\nPlease select the ai engine depth (default = 5)");
+  let mut depth = wca::input::ask( "\nPlease select the ai engine depth (default = 5)" );
   if depth.is_empty()
   {
-    depth = String::from("5");
+    depth = String::from( "5" );
   }
-  match depth.parse::<u16>()
+  match depth.parse::< u16 >()
   {
-    Ok(depth) => engine.depth = depth,
-    Err(_) =>
+    Ok( depth ) => engine.depth = depth,
+    Err( _ ) =>
     {
-      println!("Failed to parse number.");
+      println!( "Failed to parse number." );
       return None;
     }
   };
 
   let mut game = Game::default();
-  game.ai = Some(engine);
+  game.ai = Some( engine );
 
   println!();
   game.board_print();
-  println!("Turn of {}", game.current_turn());
-  Some(game)
+  println!( "Turn of {}", game.current_turn() );
+  Some( game )
 }
 
 ///
 /// Command to print status of the game.
 ///
 
-pub fn command_status(game : &Option<Game>)
+pub fn command_status( game : &Option< Game > )
 {
   if game.is_none()
   {
-    println!("Create a game first. Use command: .game.new");
+    println!( "Create a game first. Use command: .game.new" );
     return;
   }
 
@@ -254,12 +254,12 @@ pub fn command_status(game : &Option<Game>)
 
   game.board_print();
 
-  println!("Current turn: {}", game.current_turn());
+  println!( "Current turn: {}", game.current_turn() );
 
   match game.last_move()
   {
-    Some(m) => println!("Last move: {}", m.0),
-    _ => println!("Last move: None"),
+    Some( m ) => println!( "Last move: {}", m.0 ),
+    _ => println!( "Last move: None" ),
   }
 }
 
@@ -267,11 +267,11 @@ pub fn command_status(game : &Option<Game>)
 /// Command to save game to file.
 ///
 
-pub fn command_game_save(game : &Option<Game>)
+pub fn command_game_save( game : &Option< Game > )
 {
   if game.is_none()
   {
-    println!("Create a game first. Use command: .game.new");
+    println!( "Create a game first. Use command: .game.new" );
     return;
   }
 
@@ -279,25 +279,25 @@ pub fn command_game_save(game : &Option<Game>)
 
   let save_path = game.save();
 
-  println!("Saved game to file: {}", save_path.unwrap());
+  println!( "Saved game to file: {}", save_path.unwrap() );
 }
 
 ///
 /// Command to make a move.
 ///
 
-pub fn command_move(game : &mut Option<Game>)
+pub fn command_move( game : &mut Option< Game > )
 {
   if game.is_none()
   {
-    println!("Create a game first. Use command: .game.new");
+    println!( "Create a game first. Use command: .game.new" );
     return;
   }
 
   let game = game.as_mut().unwrap();
 
-  let uci_move = wca::input::ask("Provide move in UCI format, for example 'a2a4'");
-  if game.make_move(UCI(uci_move.clone()))
+  let uci_move = wca::input::ask( "Provide move in UCI format, for example 'a2a4'" );
+  if game.make_move( UCI( uci_move.clone() ) )
   {
     if game.has_ai()
     {
@@ -306,27 +306,27 @@ pub fn command_move(game : &mut Option<Game>)
   }
   else
   {
-    println!("\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move);
+    println!( "\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move );
   }
 
   println!();
   game.board_print();
-  println!("Turn of {}", game.current_turn());
+  println!( "Turn of {}", game.current_turn() );
 }
 
 ///
 /// Command to forfeit.
 ///
 
-pub fn command_forfeit(game : &mut Option<Game>)
+pub fn command_forfeit( game : &mut Option< Game > )
 {
   if game.is_none()
   {
-    println!("Create a game first. Use command: .game.new");
+    println!( "Create a game first. Use command: .game.new" );
     return;
   }
 
-  let uci_exit = wca::input::ask("Do you want to forfeit?");
+  let uci_exit = wca::input::ask( "Do you want to forfeit?" );
   match uci_exit.to_lowercase().trim()
   {
     "yes" =>
@@ -335,12 +335,12 @@ pub fn command_forfeit(game : &mut Option<Game>)
       game.forfeit();
 
       let player = game.current_turn();
-      println!("{:?} lose the game.", player);
+      println!( "{:?} lose the game.", player );
 
-      println!("Exiting..");
-      std::process::exit(0);
+      println!( "Exiting.." );
+      std::process::exit( 0 );
     }
-    _ => command_status(game),
+    _ => command_status( game ),
   }
 }
 
@@ -348,12 +348,12 @@ pub fn command_forfeit(game : &mut Option<Game>)
 /// Wrapper and control flow
 ///
 
-pub fn command_score(game : &Option<Game>)
+pub fn command_score( game : &Option< Game > )
 {
   match game
   {
-    Some(g) => println!("{}", g.count_score()),
-    None => println!("Game not found"),
+    Some( g ) => println!( "{}", g.count_score() ),
+    None => println!( "Game not found" ),
   }
 }
 
@@ -361,12 +361,12 @@ pub fn command_score(game : &Option<Game>)
 /// Command to print moves history.
 ///
 
-pub fn command_moves_history(game : &Option<Game>)
+pub fn command_moves_history( game : &Option< Game > )
 {
   println!();
   if game.is_none()
   {
-    println!("There is no history yet");
+    println!( "There is no history yet" );
     return;
   }
 
@@ -377,11 +377,11 @@ pub fn command_moves_history(game : &Option<Game>)
 /// Command to print available moves
 ///
 
-pub fn command_moves_list(game : &Option<Game>)
+pub fn command_moves_list( game : &Option< Game > )
 {
   if game.is_none()
   {
-    println!("Create a game first. Use command: .game.new");
+    println!( "Create a game first. Use command: .game.new" );
     return;
   }
 
@@ -389,7 +389,7 @@ pub fn command_moves_list(game : &Option<Game>)
   let moves_list = game.moves_list();
   for legal_move in moves_list
   {
-    println!("{}", legal_move);
+    println!( "{}", legal_move );
   }
 }
 
@@ -399,11 +399,11 @@ pub fn command_moves_list(game : &Option<Game>)
 
 pub fn command_game_from_fen() -> Game
 {
-  let line = wca::input::ask("Input FEN");
-  let game = Game::from_fen(&line);
+  let line = wca::input::ask( "Input FEN" );
+  let game = Game::from_fen( &line );
   println!();
   game.board_print();
-  println!("Turn of {}", game.current_turn());
+  println!( "Turn of {}", game.current_turn() );
   game
 }
 
@@ -411,11 +411,11 @@ pub fn command_game_from_fen() -> Game
 /// Command to ask the AI to make a move
 ///
 
-pub fn command_move_ai(game : &mut Option<Game>)
+pub fn command_move_ai( game : &mut Option< Game > )
 {
   if game.is_none()
   {
-    println!("Create a game first. Use command: .game.new");
+    println!( "Create a game first. Use command: .game.new" );
     return;
   }
 
@@ -423,5 +423,5 @@ pub fn command_move_ai(game : &mut Option<Game>)
   game.make_move_ai();
   println!();
   game.board_print();
-  println!("Turn of {}", game.current_turn());
+  println!( "Turn of {}", game.current_turn() );
 }

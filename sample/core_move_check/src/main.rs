@@ -27,17 +27,19 @@ pub fn main()
   */
 
   let board : pleco::Board = pleco::Board::default();
-  let invalid_move = pleco::BitMove::make_quiet(pleco::SQ(8), pleco::SQ(9)); //Creates move from 8 square to square 9
-  let valid_move = pleco::BitMove::make_quiet(pleco::SQ(8), pleco::SQ(16)); //Creates move from 8 square to square 16
+  let invalid_move = pleco::BitMove::make_quiet( pleco::SQ( 8 ), pleco::SQ( 9 ) ); //Creates move from 8 square to square 9
+  let valid_move = pleco::BitMove::make_quiet( pleco::SQ( 8 ), pleco::SQ( 16 ) ); //Creates move from 8 square to square 16
 
-  println!(
+  println!
+  (
     "Move {} is valid: {}",
     invalid_move,
-    board.pseudo_legal_move(invalid_move) && board.legal_move(invalid_move)
+    board.pseudo_legal_move( invalid_move ) && board.legal_move( invalid_move )
   );
-  println!(
+  println!
+  (
     "Move {} is valid: {}",
     valid_move,
-    board.pseudo_legal_move(valid_move) && board.legal_move(valid_move)
+    board.pseudo_legal_move( valid_move ) && board.legal_move( valid_move )
   );
 }

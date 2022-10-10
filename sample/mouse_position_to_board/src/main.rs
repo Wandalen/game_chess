@@ -44,7 +44,7 @@ fn setup( mut commands : Commands )
 
 //
 
-fn cursor_system( window_resource : Res<Windows>, mut cursor_moved_events : EventReader< CursorMoved > )
+fn cursor_system( window_resource : Res< Windows >, mut cursor_moved_events : EventReader< CursorMoved > )
 {
   let window = window_resource.get_primary().unwrap();
   let width = window.width();
