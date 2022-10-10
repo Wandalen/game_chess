@@ -10,6 +10,7 @@ use game_chess_core::
   UCI,
   Game,
 };
+use crate::GameState;
 
 ///
 /// Resource which stores selected cell
@@ -86,6 +87,23 @@ pub fn handle_click
     {
       Selection::Piece( x, y )
     };
+  }
+}
+
+///
+/// System that handles keyboard input.
+///
+pub fn handle_keyboard
+(
+  mut keys : ResMut< Input< KeyCode > >,
+  mut app_state : ResMut< State< GameState > >,
+)
+{
+  if keys.just_pressed( KeyCode::Escape )
+  {
+    app_state.set( GameState::Pause ).unwrap();
+    // Not doing this can cause issues https://github.com/bevyengine/bevy/issues/1700.
+    keys.reset( KeyCode::Escape );
   }
 }
 

@@ -15,8 +15,8 @@ pub enum GameState
   MainMenu,
   /// When we create a new game
   GameNew,
-  /// When we start a new game
-  GameStart,
   /// When we are playing the game
   GamePlaying,
+  /// When game is on pause
+  Pause,
 }
