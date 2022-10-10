@@ -727,6 +727,24 @@ impl Game
   }
 
   ///
+  /// Resume the game
+  ///
+  pub fn resume( &mut self )
+  {
+    // Now it's resumes timer only
+    self.timer.as_mut().map( | timer | timer.resume() );
+  }
+
+  ///
+  /// Pause the game
+  ///
+  pub fn pause( &mut self )
+  {
+    // Now it's pause timer only
+    self.timer.as_mut().map( | timer | timer.pause() );
+  }
+
+  ///
   /// Saves game to file
   ///
   pub fn save( &self ) -> std::io::Result< String >

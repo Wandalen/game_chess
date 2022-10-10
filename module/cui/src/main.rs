@@ -120,6 +120,8 @@ pub async fn main()
       ".status" | ".s" => command_status( &game ),
       ".moves.history" | ".m.h" => command_moves_history( &game ),
       ".quit" => command_exit( &game ),
+      ".resume" => command_resume( &mut game ),
+      ".pause" => command_pause( &mut game ),
       ".help" => command_help(),
       ".score" => command_score( &game ),
 
@@ -176,6 +178,40 @@ pub fn command_exit( game : &Option< Game > )
     }
     _ => command_status( game ),
   }
+}
+
+///
+/// Command to resume the game
+///
+
+pub fn command_resume( game : &mut Option< Game > )
+{
+  if game.is_none()
+  {
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  }
+
+  let game = game.as_mut().unwrap();
+  game.resume();
+  println!( "Game resumed" );
+}
+
+///
+/// Command to pause the game
+///
+
+pub fn command_pause( game : &mut Option< Game > )
+{
+  if game.is_none()
+  {
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  }
+
+  let game = game.as_mut().unwrap();
+  game.pause();
+  println!( "Game paused" );
 }
 
 fn timer_setup() -> Option< timer::Timer >
