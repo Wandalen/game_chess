@@ -43,7 +43,7 @@ path = "./src/main.rs"
 
 [dependencies]
 game_chess_core = { package = "game_chess_core", version = "~0.0", path = "../core" }
-bevy_egui = "~0.15"
+bevy_egui = "0.16.1"
 bevy_reflect = "~0.8"
 bevy_ecs = "~0.8"
 

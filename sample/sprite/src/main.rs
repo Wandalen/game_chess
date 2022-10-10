@@ -20,7 +20,7 @@ fn main()
     height : DISPLAY_HEIGHT,
     resizable : false,
     .. Default::default()
-  })
+  } )
   .add_plugins( DefaultPlugins )
   .add_startup_system( setup )
   .run();
@@ -36,5 +36,5 @@ fn setup( mut commands : Commands, asset_server : Res< AssetServer > )
   {
     texture : asset_server.load( "icon.png" ),
     .. Default::default()
-  });
+  } );
 }
