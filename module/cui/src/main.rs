@@ -178,16 +178,61 @@ pub fn command_exit( game : &Option< Game > )
   }
 }
 
+fn timer_setup() -> Option< timer::Timer >
+{
+  let use_it = wca::input::ask("\nDo you want to use timer? (default = no)");
+  match use_it.to_lowercase().trim()
+  {
+    "yes" | "y" =>
+    {
+      println!( "" );
+      println!( "[1] => 10min + 50s" );
+      println!( "[2] => 5min + 3s" );
+      println!( "[3] => 3min" );
+      println!( "[0] => set your value" );
+      let settings = wca::input::ask("\nPlease, select time settings? (default = 1)");
+      match settings.as_str()
+      {
+        "1" => Some( timer::Timer::new( 10 * 60, 50 ) ),
+        "2" => Some( timer::Timer::new( 5 * 60, 3 ) ),
+        "3" => Some( timer::Timer::new( 3 * 60, 0 ) ),
+        "0" =>
+        {
+          let value = wca::input::ask("\nEnter number of seconds for player");
+          let value = match value.parse()
+          {
+            Ok( value ) => value,
+            Err( _ ) => { println!( "Failed to parse number." ); return None; }
+          };
+          let bonuses = wca::input::ask("\nEnter number of seconds for bonuses");
+          let bonuses = match bonuses.parse()
+          {
+            Ok( value ) => value,
+            Err( _ ) => { println!( "Failed to parse number." ); return None; }
+          };
+
+          Some( timer::Timer::new( value, bonuses ) )
+        }
+        _ => Some( timer::Timer::new( 10 * 60, 50 ) )
+      }
+
+    },
+    _ => None
+  }
+}
+
 ///
 /// Command to start new game.
 ///
 
 pub fn command_game_new() -> Game
 {
-  let game = Game::default();
-  println!();
+  let mut game = Game::default();
+  game.timer = timer_setup();
+  println!("");
   game.board_print();
-  println!( "Turn of {}", game.current_turn() );
+  game.timers_print();
+  println!("Turn of {}", game.current_turn());
   game
 }
 
@@ -228,12 +273,14 @@ pub fn command_game_new_ai() -> Option< Game >
   };
 
   let mut game = Game::default();
-  game.ai = Some( engine );
+  game.ai = Some(engine);
+  game.timer = timer_setup();
 
   println!();
   game.board_print();
-  println!( "Turn of {}", game.current_turn() );
-  Some( game )
+  game.timers_print();
+  println!("Turn of {}", game.current_turn());
+  Some(game)
 }
 
 ///
@@ -253,6 +300,7 @@ pub fn command_status( game : &Option< Game > )
   println!();
 
   game.board_print();
+  game.timers_print();
 
   println!( "Current turn: {}", game.current_turn() );
 
@@ -311,6 +359,7 @@ pub fn command_move( game : &mut Option< Game > )
 
   println!();
   game.board_print();
+  game.timers_print();
   println!( "Turn of {}", game.current_turn() );
 }
 
@@ -403,6 +452,7 @@ pub fn command_game_from_fen() -> Game
   let game = Game::from_fen( &line );
   println!();
   game.board_print();
+  game.timers_print();
   println!( "Turn of {}", game.current_turn() );
   game
 }
@@ -423,5 +473,6 @@ pub fn command_move_ai( game : &mut Option< Game > )
   game.make_move_ai();
   println!();
   game.board_print();
+  game.timers_print();
   println!( "Turn of {}", game.current_turn() );
 }
