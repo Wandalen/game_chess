@@ -5,7 +5,6 @@
 //! Chess game implemented on Bevy for educational purpose.
 //!
 
-use bevy::math::Vec4Swizzles;
 use bevy::prelude::*;
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
@@ -360,12 +359,12 @@ fn index_to_pos( index : u8 ) -> ( u8, u8 )
 #[ cfg( not( target_arch = "wasm32" ) ) ]
 fn highlight_legal_moves
 (
-  selected_cell : &Query< &SelectedCell >,
+  selected_cell : &Query< &Selection >,
   highlight : &mut ResMut< highlight::Highlight >,
   game : &Res< core::Game >
 )
 {
-  if let Some( ( x, y ) ) = selected_cell.single().pos
+  if let Selection::Piece( x, y ) = selected_cell.single()
   {
     game.moves_list().iter()
     .filter( | mv |  mv.get_src_u8() == 8 * y + x )
