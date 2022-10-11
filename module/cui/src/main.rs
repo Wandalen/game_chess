@@ -77,7 +77,6 @@ Commands minimal
 use game_chess_core::*;
 #[ allow( unused_imports ) ]
 use game_chess_client::*;
-
 mod multiplayer;
 
 ///
@@ -114,6 +113,7 @@ pub async fn main()
       ".game.save" => command_game_save( &game ),
       ".game.from.fen" => game = Some( command_game_from_fen() ),
       ".move" | ".m" => command_move( &mut game ),
+      ".move.random" => command_random_move( &mut game ),
       ".gg" => command_forfeit( &mut game ),
       ".moves.list" => command_moves_list( &game ),
       ".move.ai" => command_move_ai( &mut game ),
@@ -142,15 +142,16 @@ pub async fn main()
 
 pub fn command_help()
 {
-  println!( "\nCommands:\n");
+  println!( "\nCommands:\n" );
 
   println!( ".game.new  => Create game with default board" );
   println!( ".new.ai    => Create game with ai. Also shortcut for .game.new.ai" );
   println!( ".game.save => Save game to file" );
   println!( ".game.from.fen => Load game from FEN" );
   println!( ".move      => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".move.random => Make a random move" );
   println!( ".gg        => Forfeit the game " );
-  println!( ".moves.list=> Print all available moves in UCI format: \"a2a4\" " );
+  println!( ".moves.list => Print all available moves in UCI format: \"a2a4\" " );
   println!( ".move.ai   => Ask the AI to make a move for the player" );
   println!( ".status    => Print board, current turn, last move" );
   println!( ".moves.history => Print moves history" );
@@ -180,7 +181,7 @@ pub fn command_exit( game : &Option< Game > )
 
 fn timer_setup() -> Option< timer::Timer >
 {
-  let use_it = wca::input::ask("\nDo you want to use timer? (default = no)");
+  let use_it = wca::input::ask( "\nDo you want to use timer? (default = no)" );
   match use_it.to_lowercase().trim()
   {
     "yes" | "y" =>
@@ -190,7 +191,7 @@ fn timer_setup() -> Option< timer::Timer >
       println!( "[2] => 5min + 3s" );
       println!( "[3] => 3min" );
       println!( "[0] => set your value" );
-      let settings = wca::input::ask("\nPlease, select time settings? (default = 1)");
+      let settings = wca::input::ask( "\nPlease, select time settings? (default = 1)" );
       match settings.as_str()
       {
         "1" => Some( timer::Timer::new( 10 * 60, 50 ) ),
@@ -198,13 +199,13 @@ fn timer_setup() -> Option< timer::Timer >
         "3" => Some( timer::Timer::new( 3 * 60, 0 ) ),
         "0" =>
         {
-          let value = wca::input::ask("\nEnter number of seconds for player");
+          let value = wca::input::ask( "\nEnter number of seconds for player" );
           let value = match value.parse()
           {
             Ok( value ) => value,
             Err( _ ) => { println!( "Failed to parse number." ); return None; }
           };
-          let bonuses = wca::input::ask("\nEnter number of seconds for bonuses");
+          let bonuses = wca::input::ask( "\nEnter number of seconds for bonuses" );
           let bonuses = match bonuses.parse()
           {
             Ok( value ) => value,
@@ -229,10 +230,10 @@ pub fn command_game_new() -> Game
 {
   let mut game = Game::default();
   game.timer = timer_setup();
-  println!("");
+  println!( "" );
   game.board_print();
   game.timers_print();
-  println!("Turn of {}", game.current_turn());
+  println!( "Turn of {}", game.current_turn() );
   game
 }
 
@@ -273,14 +274,14 @@ pub fn command_game_new_ai() -> Option< Game >
   };
 
   let mut game = Game::default();
-  game.ai = Some(engine);
+  game.ai = Some( engine );
   game.timer = timer_setup();
 
   println!();
   game.board_print();
   game.timers_print();
-  println!("Turn of {}", game.current_turn());
-  Some(game)
+  println!( "Turn of {}", game.current_turn() );
+  Some( game )
 }
 
 ///
@@ -355,6 +356,33 @@ pub fn command_move( game : &mut Option< Game > )
   else
   {
     println!( "\n\x1b[93mFailed to apply move: '{}'. Try again!\x1b[0m", uci_move );
+  }
+
+  println!();
+  game.board_print();
+  game.timers_print();
+  println!( "Turn of {}", game.current_turn() );
+}
+
+///
+/// Command make a random move
+///
+
+pub fn command_random_move( game : &mut Option< Game > )
+{
+  if game.is_none()
+  {
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  }
+
+  let game = game.as_mut().unwrap();
+  if game.make_random_move()
+  {
+    if game.has_ai()
+    {
+      game.make_move_ai();
+    }
   }
 
   println!();

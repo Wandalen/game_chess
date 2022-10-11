@@ -74,3 +74,16 @@ fn test_print_board()
      1 | R N B Q K B N R \n  ------------------\n    a b c d e f g h"
   );
 }
+
+#[ test ]
+fn test_make_random_move()
+{
+  let mut game = Game::default();
+  game.board_print();
+  let turn_befor = game.current_turn();
+  assert!( game.make_random_move() );
+  game.board_print();
+  assert_eq!( game.status(), GameStatus::Continuing );
+  let turn_after = game.current_turn();
+  assert_ne!( turn_befor, turn_after );
+}

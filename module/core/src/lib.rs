@@ -32,6 +32,9 @@ use pleco::BitMove;
 
 use serde::{ Serialize, Deserialize, Serializer, Deserializer };
 
+use rand::Rng;
+use rand::thread_rng;
+
 /* Structure:
 
 UCI( String )
@@ -541,8 +544,9 @@ impl Game
 
   pub fn from_fen( fen : &str ) -> Self
   {
-    Self {
-      board : Board::from_fen(&Fen::from(fen.to_owned())),
+    Self 
+    {
+      board : Board::from_fen( &Fen::from( fen.to_owned() ) ),
       timer : None,
       history : Vec::new(),
       is_forfeited : false,
@@ -587,12 +591,24 @@ impl Game
       {
         fen : self.board.to_fen(),
         last_move,
-      });
+      } );
 
       self.timer.as_mut().map( | timer | timer.switch_turn() );
     }
 
     success
+  }
+
+  ///
+  /// Make a random move on the board.
+  ///
+  pub fn make_random_move( &mut self ) -> bool
+  {
+    let moves_list = self.moves_list();
+    let idx = thread_rng().gen_range( 0..moves_list.len() );
+    let random_move = moves_list[ idx ];
+
+    self.make_move( UCI( random_move.to_string() ) )
   }
 
   ///
@@ -622,7 +638,7 @@ impl Game
     {
       fen : self.board.to_fen(),
       last_move,
-    });
+    } );
 
     self.timer.as_mut().map( | timer | timer.switch_turn() );
   }
