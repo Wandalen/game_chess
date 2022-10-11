@@ -31,9 +31,10 @@ path = "./src/lib.rs"
 
 [dependencies]
 pleco = "0.5.0"
-serde = { version = "1.0.132", features = [ "derive"] }
+serde = { version = "1.0.132", features = [ "derive" ] }
 serde_json = "1.0.73"
-assert_cmd = "2.0.4"
+rand = "0.8.5"
 
 [target.'cfg( target_arch = "wasm32" )'.dependencies]
 js-sys = "~0.3"
+

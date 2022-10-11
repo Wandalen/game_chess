@@ -1,4 +1,4 @@
-#![warn(missing_docs)]
+#![ warn( missing_docs ) ]
 
 //! Sample shows how to use Egui into Bevy window.
 
@@ -21,7 +21,7 @@ fn main()
     height : DISPLAY_HEIGHT,
     resizable : false,
     .. Default::default()
-  })
+  } )
   .add_plugins( DefaultPlugins )
   // add Egui plugin
   .add_plugin( EguiPlugin )
@@ -40,5 +40,5 @@ fn setup( mut egui_context : ResMut< EguiContext > )
     // add labels inside Egui window
     ui.label( "Game" );
     ui.label( "Options" );
-  });
+  } );
 }

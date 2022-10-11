@@ -6,6 +6,7 @@
 //!
 
 pub mod ai;
+pub mod timer;
 
 use std::fs;
 use std::fs::File;
@@ -14,7 +15,8 @@ use std::path::Path;
 use std::ops::Deref;
 #[ cfg( not( target_arch = "wasm32" ) ) ]
 use std::time::{ SystemTime, UNIX_EPOCH };
-pub use pleco::{
+pub use pleco::
+{
   core::Player,
   core::PieceType,
   core::Piece,
@@ -30,6 +32,9 @@ use pleco::BitMove;
 
 use serde::{ Serialize, Deserialize, Serializer, Deserializer };
 
+use rand::Rng;
+use rand::thread_rng;
+
 /* Structure:
 
 UCI( String )
@@ -43,6 +48,7 @@ HistoryEntry
 
 Game
    board : Board
+   timer : Timer
    history : Vec<HistoryEntry>
 */
 
@@ -105,7 +111,8 @@ impl Board
   ///
   pub fn default() -> Self
   {
-    Self {
+    Self 
+    {
       pleco_board : pleco::Board::start_pos(),
       cells : Self::new_cells(),
     }
@@ -159,7 +166,7 @@ impl Board
   pub fn move_from_uci( &self, uci_move : UCI ) -> Option< Move >
   {
     let all_moves : MoveList = self.pleco_board.generate_moves();
-    all_moves.iter().find( | m | m.stringify() == uci_move.0 ).cloned()
+    all_moves.iter().find( | m | m.stringify() == uci_move.0).cloned()
   }
 
   ///
@@ -173,14 +180,14 @@ impl Board
     .pleco_board
     .generate_moves()
     .into_iter()
-    .map(|m| 
+    .map( | m | 
     {
       self.pleco_board.apply_move( m );
       let score = pleco::tools::eval::Eval::eval_low( &self.pleco_board );
       self.pleco_board.undo_move();
       ( m, score )
-    } )
-    .max_by( | (_, a), (_, b) | 
+    })
+    .max_by( | ( _, a ), ( _, b ) | 
     {
       if turn == Player::Black
       {
@@ -190,7 +197,7 @@ impl Board
       {
         b.cmp( a )
       }
-    })
+    } )
     .unwrap()
     .0;
 
@@ -271,8 +278,8 @@ impl Board
     {
       if sq % 8 == 0
       {
-        s.push( char::from_digit( rank, 10 ).unwrap() );
-        s.push_str( " | " );
+        s.push(  char::from_digit(  rank, 10  ).unwrap() );
+        s.push_str(  " | "  );
         rank -= 1;
       }
 
@@ -413,7 +420,7 @@ impl Board
 ///Positions on the board in [FEN](https://www.chess.com/terms/fen-chess#what-is-fen) format
 ///
 
-#[derive( Serialize, Deserialize, Debug ) ]
+# [derive( Serialize, Deserialize, Debug ) ]
 pub struct FenString( String );
 
 impl Deref for FenString
@@ -452,7 +459,7 @@ pub struct HistoryEntry
 /// Serialize [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html)
 ///
 
-pub fn move_ser< S : Serializer>( m : &Move, s : S ) -> Result< S::Ok, S::Error > { s.serialize_u16( m.get_raw() ) }
+pub fn move_ser< S : Serializer >( m : &Move, s : S ) -> Result< S::Ok, S::Error > { s.serialize_u16( m.get_raw() ) }
 
 ///
 /// Deserialize [Move](https://docs.rs/pleco/0.5.0/pleco/core/piece_move/struct.BitMove.html)
@@ -477,6 +484,8 @@ pub enum GameStatus
   Checkmate,
   /// The game is drawn.
   Stalemate,
+  /// The game is finished by time
+  TimeIsOut,
   /// Forfeit
   GG,
 }
@@ -493,6 +502,10 @@ pub struct Game
   #[ serde( serialize_with = "board_ser", deserialize_with = "board_der" ) ]
   board : Board,
   is_forfeited : bool,
+  ///
+  /// Timer
+  ///
+  pub timer : Option< timer::Timer >,
   history : Vec< HistoryEntry >,
   ///
   /// AI Engine responsible for finding best moves
@@ -514,6 +527,7 @@ impl Game
     Self 
     {
       board : Board::default(),
+      timer : None,
       history : Vec::new(),
       is_forfeited : false,
       ai : None,
@@ -533,6 +547,7 @@ impl Game
     Self 
     {
       board : Board::from_fen( &Fen::from( fen.to_owned() ) ),
+      timer : None,
       history : Vec::new(),
       is_forfeited : false,
       ai : None,
@@ -577,8 +592,23 @@ impl Game
         fen : self.board.to_fen(),
         last_move,
       } );
+
+      self.timer.as_mut().map( | timer | timer.switch_turn() );
     }
+
     success
+  }
+
+  ///
+  /// Make a random move on the board.
+  ///
+  pub fn make_random_move( &mut self ) -> bool
+  {
+    let moves_list = self.moves_list();
+    let idx = thread_rng().gen_range( 0..moves_list.len() );
+    let random_move = moves_list[ idx ];
+
+    self.make_move( UCI( random_move.to_string() ) )
   }
 
   ///
@@ -609,6 +639,8 @@ impl Game
       fen : self.board.to_fen(),
       last_move,
     } );
+
+    self.timer.as_mut().map( | timer | timer.switch_turn() );
   }
 
   ///
@@ -620,6 +652,17 @@ impl Game
   /// Prints board to the terminal.
   ///
   pub fn board_print( &self ) { self.board.print(); }
+
+  ///
+  /// Prints timers
+  /// 
+  pub fn timers_print(&self)
+  {
+    if let Some( timer ) = &self.timer
+    {
+      println!( "-Timers-\nPlayer1 : {}\nPlayer2 : {}", timer.get_player_time( 0 ), timer.get_player_time( 1 ) )
+    }
+  }
 
   ///
   /// Prints history to the terminal.
@@ -652,7 +695,12 @@ impl Game
       return GameStatus::Stalemate;
     }
 
-    GameStatus::Continuing
+    if let Some( true ) = self.timer.as_ref().map( | timer | timer.time_is_out() )
+    {
+      return GameStatus::TimeIsOut;
+    }
+
+    return GameStatus::Continuing;
   }
 
   ///
@@ -695,6 +743,24 @@ impl Game
   }
 
   ///
+  /// Resume the game
+  ///
+  pub fn resume( &mut self )
+  {
+    // Now it's resumes timer only
+    self.timer.as_mut().map( | timer | timer.resume() );
+  }
+
+  ///
+  /// Pause the game
+  ///
+  pub fn pause( &mut self )
+  {
+    // Now it's pause timer only
+    self.timer.as_mut().map( | timer | timer.pause() );
+  }
+
+  ///
   /// Saves game to file
   ///
   pub fn save( &self ) -> std::io::Result< String >
@@ -734,27 +800,6 @@ impl Game
 }
 
 ///
-/// Saved games list
-///
-
-pub fn saved_games_list()
-{
-  let saves_dir = fs::read_dir( SAVES_FOLDER_NAME );
-
-  if let Ok( paths ) = saves_dir
-  {
-    for path in paths 
-    {
-    println!( "Game: {}", path.unwrap().path().display() );
-    }
-  }
-  else 
-  {
-    println!( "No saved games!" );    
-  }
-}
-
-///
 /// Get unix timestamp in seconds.
 ///
 
@@ -788,4 +833,28 @@ pub fn board_der< 'de, D : Deserializer< 'de > >( d : D ) -> Result< Board, D::E
 {
   let fen : String = Deserialize::deserialize( d )?;
   Ok( Board::from_fen( &Fen::from( fen ) ) )
+}
+
+///
+/// Returns the paths of saved games
+///
+
+pub fn list_saved_games() -> Option< Vec< std::path::PathBuf > >
+{
+  let mut game_list = vec![];
+  let saves_dir = fs::read_dir( SAVES_FOLDER_NAME );
+
+  if let Ok( paths ) = saves_dir
+  {
+    for path in paths
+    {
+      game_list.push( path.unwrap().path() );
+    }
+
+    return Some( game_list );
+  }
+  else 
+  {
+    None    
+  }
 }

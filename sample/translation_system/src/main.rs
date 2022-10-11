@@ -231,7 +231,7 @@ pub fn graphics_setup( mut commands : Commands, mut meshes : ResMut< Assets< Mes
     material : material.clone(),
     transform,
     ..Default::default()
-  });
+  } );
 
   //
 
@@ -249,5 +249,5 @@ pub fn graphics_setup( mut commands : Commands, mut meshes : ResMut< Assets< Mes
     material,
     transform,
     ..Default::default()
-  });
+  } );
 }

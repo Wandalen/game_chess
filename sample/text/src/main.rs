@@ -1,4 +1,4 @@
-#![warn(missing_docs)]
+#![ warn( missing_docs ) ]
 
 //! Sample shows how to add text to Bevy window.
 
@@ -20,7 +20,7 @@ fn main()
     height : DISPLAY_HEIGHT,
     resizable : false,
     .. Default::default()
-  })
+  } )
   .add_startup_system( setup )
   .add_plugins( DefaultPlugins )
   .run();
@@ -74,5 +74,5 @@ fn setup( mut commands : Commands, asset_server : Res< AssetServer > )
       .. Default::default()
     },
     .. Default::default()
-  });
+  } );
 }
