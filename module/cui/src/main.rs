@@ -147,20 +147,23 @@ pub fn command_help()
 {
   println!( "\nCommands:\n" );
 
-  println!( ".game.new  => Create game with default board" );
-  println!( ".new.ai    => Create game with ai. Also shortcut for .game.new.ai" );
-  println!( ".game.save => Save game to file" );
-  println!( ".games.list => Print list saved games" );
+  println!( ".game.new      => Create game with default board" );
+  println!( ".new.ai        => Create game with ai. Also shortcut for .game.new.ai" );
+  println!( ".game.save     => Save game to file" );
+  println!( ".games.list    => Print list saved games" );
   println!( ".game.from.fen => Load game from FEN" );
-  println!( ".move      => Make a move by providing move in UCI format: \"a2a4\" " );
-  println!( ".move.random => Make a random move" );
-  println!( ".gg        => Forfeit the game " );
-  println!( ".moves.list => Print all available moves in UCI format: \"a2a4\" " );
-  println!( ".move.ai   => Ask the AI to make a move for the player" );
-  println!( ".status    => Print board, current turn, last move" );
+  println!( ".move          => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".move.random   => Make a random move" );
+  println!( ".gg            => Forfeit the game " );
+  println!( ".moves.list    => Print all available moves in UCI format: \"a2a4\" " );
+  println!( ".move.ai       => Ask the AI to make a move for the player" );
+  println!( ".status        => Print board, current turn, last move" );
   println!( ".moves.history => Print moves history" );
-  println!( ".quit      => Exit from the game" );
-  println!( ".help      => Print this help" );
+  println!( ".pause         => Command to pause the game" );
+  println!( ".resume        => Command to resume the game" );
+  println!( ".score         => Print score" );
+  println!( ".quit          => Exit from the game" );
+  println!( ".help          => Print this help" );
 
   multiplayer::command_help();
 }
@@ -379,7 +382,8 @@ pub fn command_list_saved_games()
   {
     for path in list
     {
-      println!( "Game: {}", path.display() );
+      let filename = path.file_name().unwrap().to_str().unwrap();
+      println!( "Game: {}", filename );
     }
   }
   else 

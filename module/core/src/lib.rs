@@ -166,7 +166,7 @@ impl Board
   pub fn move_from_uci( &self, uci_move : UCI ) -> Option< Move >
   {
     let all_moves : MoveList = self.pleco_board.generate_moves();
-    all_moves.iter().find( | m | m.stringify() == uci_move.0).cloned()
+    all_moves.iter().find( | m | m.stringify() == uci_move.0 ).cloned()
   }
 
   ///
@@ -278,8 +278,8 @@ impl Board
     {
       if sq % 8 == 0
       {
-        s.push(  char::from_digit(  rank, 10  ).unwrap() );
-        s.push_str(  " | "  );
+        s.push(  char::from_digit( rank, 10 ).unwrap() );
+        s.push_str( " | " );
         rank -= 1;
       }
 
@@ -656,7 +656,7 @@ impl Game
   ///
   /// Prints timers
   /// 
-  pub fn timers_print(&self)
+  pub fn timers_print( &self )
   {
     if let Some( timer ) = &self.timer
     {
