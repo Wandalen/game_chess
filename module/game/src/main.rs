@@ -466,12 +466,12 @@ fn main()
   app.add_system_set
   (
     SystemSet::on_update( GameState::MultiplayerGame( Multiplayer::ConnectingToServer ) )
-      .with_system( multiplayer::connect_menu )
+      .with_system( multiplayer::menu::connect_menu )
   );
   app.add_system_set
   (
     SystemSet::on_enter( GameState::MultiplayerGame( Multiplayer::ConnectingToServer ) )
-      .with_system( multiplayer::setup )
+      .with_system( multiplayer::menu::setup )
   );
 
   // app.add_system( color_change );

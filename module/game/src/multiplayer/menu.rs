@@ -15,9 +15,7 @@ use game_chess_client::
 };
 use crate::GameState;
 use crate::common::Multiplayer;
-use crate::multiplayer::loading::AsyncTask;
-
-mod loading;
+use crate::multiplayer::async_task::AsyncTask;
 
 ///
 /// Component with a connection address

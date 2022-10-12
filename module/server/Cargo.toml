@@ -37,6 +37,7 @@ path = "./src/main.rs"
 rollo = "0.12.2"
 game_chess_core = { version = "~0.0", path = "../core" }
 tonic = "0.8.2"
+tonic-web = "0.4.0"
 tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
 tokio-stream = "0.1.10"
 futures = "0.3.24"

@@ -1,11 +1,7 @@
 use std::future::Future;
 use bevy::prelude::Component;
-use bevy::tasks::
-{
-  AsyncComputeTaskPool,
-  Task
-};
-use futures_lite::future;
+use bevy::tasks::AsyncComputeTaskPool;
+use futures_channel::oneshot;
 
 ///
 /// Component that executes a future on bevy's Task pool.
@@ -14,7 +10,7 @@ use futures_lite::future;
 #[ derive( Component, Debug ) ]
 pub struct AsyncTask< O >
 {
-  task : Task< O >,
+  receiver : oneshot::Receiver< O >,
 }
 
 impl< O : Send + 'static > AsyncTask< O >
@@ -25,9 +21,20 @@ impl< O : Send + 'static > AsyncTask< O >
 
   pub fn spawn( future : impl Future< Output = O > + Send + 'static ) -> Self
   {
-    let task = AsyncComputeTaskPool::get().spawn( future );
+    let ( sender, receiver ) = oneshot::channel();
+    AsyncComputeTaskPool::get().spawn
+    (
+      async
+      {
+        if sender.send( future.await ).is_err()
+        {
+          // TODO: logging
+        }
+      }
+    )
+    .detach();
 
-    AsyncTask{ task }
+    AsyncTask{ receiver }
   }
 
   ///
@@ -39,6 +46,6 @@ impl< O : Send + 'static > AsyncTask< O >
 
   pub fn result( &mut self ) -> Option< O >
   {
-    future::block_on( future::poll_once( &mut self.task ) )
+    self.receiver.try_recv().unwrap()
   }
 }
