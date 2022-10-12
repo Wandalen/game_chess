@@ -19,9 +19,9 @@ keywords = [ "chess", "gamedev" ]
 
 [dependencies]
 time = { version = "~0.3", features = ["parsing", "formatting"] }
-tonic = "~0.6"
-prost = "~0.9"
+tonic = "0.8.2"
+prost = "0.11.0"
 game_chess_core = {path="../core"}
 
 [build-dependencies]
-tonic-build = "~0.6"
+tonic-build = "0.8.2"

@@ -34,10 +34,10 @@ name = "chess_server"
 path = "./src/main.rs"
 
 [dependencies]
-rollo = "~0.8"
+rollo = "0.12.2"
 game_chess_core = { version = "~0.0", path = "../core" }
-tonic = "0.6"
-tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
-tokio-stream = "0.1.8"
-futures = "0.3.19"
+tonic = "0.8.2"
+tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+tokio-stream = "0.1.10"
+futures = "0.3.24"
 multiplayer = { path = "../multiplayer" }

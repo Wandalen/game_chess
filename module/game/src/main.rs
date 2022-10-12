@@ -8,7 +8,6 @@
 use bevy::prelude::*;
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
-use bevy::window::close_on_esc;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
 use game_chess_core as core;
 
@@ -20,9 +19,11 @@ pub mod controls;
 pub mod main_menu;
 pub mod pause_menu;
 pub mod settings;
+pub mod multiplayer;
 
 use common::GameState;
 use controls::Selection;
+use crate::common::Multiplayer;
 use crate::settings::Settings;
 
 
@@ -460,6 +461,18 @@ fn main()
   {
     clear_on_each_frame : true,
   } );
+
+  /* Multiplayer */
+  app.add_system_set
+  (
+    SystemSet::on_update( GameState::MultiplayerGame( Multiplayer::ConnectingToServer ) )
+      .with_system( multiplayer::connect_menu )
+  );
+  app.add_system_set
+  (
+    SystemSet::on_enter( GameState::MultiplayerGame( Multiplayer::ConnectingToServer ) )
+      .with_system( multiplayer::setup )
+  );
 
   // app.add_system( color_change );
 
