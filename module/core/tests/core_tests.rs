@@ -87,3 +87,17 @@ fn test_make_random_move()
   let turn_after = game.current_turn();
   assert_ne!( turn_befor, turn_after );
 }
+
+#[ test ]
+fn test_list_saved_games()
+{
+  use std::fs; 
+  let mut game = Game::default();
+  assert_eq!( list_saved_games(), None );
+  game.save();
+  assert!( list_saved_games().is_some() );
+  let list = list_saved_games().unwrap();
+  println!( "{}", list[ 0 ].display() );
+  assert!( list[ 0 ].display().to_string().contains( ".save" ) );
+  fs::remove_dir_all( "saves" ).unwrap();
+}  

@@ -10,6 +10,7 @@ use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
 use bevy::window::close_on_esc;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
+use bevy::math::Vec4Swizzles;
 use game_chess_core as core;
 
 pub mod camera;
@@ -107,7 +108,7 @@ pub fn board_setup
         sprite,
         transform,
         .. Default::default()
-      })
+      } )
       .insert( Cell { is_black } );
     }
   }

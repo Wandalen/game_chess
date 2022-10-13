@@ -111,6 +111,7 @@ pub async fn main()
       ".game.new" => game = Some( command_game_new() ),
       ".game.new.ai" | ".new.ai" => game = command_game_new_ai(),
       ".game.save" => command_game_save( &game ),
+      ".games.list" => command_list_saved_games(),
       ".game.from.fen" => game = Some( command_game_from_fen() ),
       ".move" | ".m" => command_move( &mut game ),
       ".move.random" => command_random_move( &mut game ),
@@ -146,19 +147,23 @@ pub fn command_help()
 {
   println!( "\nCommands:\n" );
 
-  println!( ".game.new  => Create game with default board" );
-  println!( ".new.ai    => Create game with ai. Also shortcut for .game.new.ai" );
-  println!( ".game.save => Save game to file" );
+  println!( ".game.new      => Create game with default board" );
+  println!( ".new.ai        => Create game with ai. Also shortcut for .game.new.ai" );
+  println!( ".game.save     => Save game to file" );
+  println!( ".games.list    => Print list saved games" );
   println!( ".game.from.fen => Load game from FEN" );
-  println!( ".move      => Make a move by providing move in UCI format: \"a2a4\" " );
-  println!( ".move.random => Make a random move" );
-  println!( ".gg        => Forfeit the game " );
-  println!( ".moves.list => Print all available moves in UCI format: \"a2a4\" " );
-  println!( ".move.ai   => Ask the AI to make a move for the player" );
-  println!( ".status    => Print board, current turn, last move" );
+  println!( ".move          => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".move.random   => Make a random move" );
+  println!( ".gg            => Forfeit the game " );
+  println!( ".moves.list    => Print all available moves in UCI format: \"a2a4\" " );
+  println!( ".move.ai       => Ask the AI to make a move for the player" );
+  println!( ".status        => Print board, current turn, last move" );
   println!( ".moves.history => Print moves history" );
-  println!( ".quit      => Exit from the game" );
-  println!( ".help      => Print this help" );
+  println!( ".pause         => Command to pause the game" );
+  println!( ".resume        => Command to resume the game" );
+  println!( ".score         => Print score" );
+  println!( ".quit          => Exit from the game" );
+  println!( ".help          => Print this help" );
 
   multiplayer::command_help();
 }
@@ -365,6 +370,26 @@ pub fn command_game_save( game : &Option< Game > )
   let save_path = game.save();
 
   println!( "Saved game to file: {}", save_path.unwrap() );
+}
+
+///
+/// Command to print list of saved games.
+///
+
+pub fn command_list_saved_games()
+{
+  if let Some( list ) = list_saved_games()
+  {
+    for path in list
+    {
+      let filename = path.file_name().unwrap().to_str().unwrap();
+      println!( "Game: {}", filename );
+    }
+  }
+  else 
+  {
+    println!( "No saved games!" );    
+  }
 }
 
 ///

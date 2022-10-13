@@ -166,7 +166,7 @@ impl Board
   pub fn move_from_uci( &self, uci_move : UCI ) -> Option< Move >
   {
     let all_moves : MoveList = self.pleco_board.generate_moves();
-    all_moves.iter().find( | m | m.stringify() == uci_move.0).cloned()
+    all_moves.iter().find( | m | m.stringify() == uci_move.0 ).cloned()
   }
 
   ///
@@ -278,7 +278,7 @@ impl Board
     {
       if sq % 8 == 0
       {
-        s.push( char::from_digit( rank, 10 ).unwrap());
+        s.push(  char::from_digit( rank, 10 ).unwrap() );
         s.push_str( " | " );
         rank -= 1;
       }
@@ -506,7 +506,7 @@ pub struct Game
   /// Timer
   ///
   pub timer : Option< timer::Timer >,
-  history : Vec<HistoryEntry>,
+  history : Vec< HistoryEntry >,
   ///
   /// AI Engine responsible for finding best moves
   ///
@@ -656,7 +656,7 @@ impl Game
   ///
   /// Prints timers
   /// 
-  pub fn timers_print(&self)
+  pub fn timers_print( &self )
   {
     if let Some( timer ) = &self.timer
     {
@@ -833,4 +833,28 @@ pub fn board_der< 'de, D : Deserializer< 'de > >( d : D ) -> Result< Board, D::E
 {
   let fen : String = Deserialize::deserialize( d )?;
   Ok( Board::from_fen( &Fen::from( fen ) ) )
+}
+
+///
+/// Returns the paths of saved games
+///
+
+pub fn list_saved_games() -> Option< Vec< std::path::PathBuf > >
+{
+  let mut game_list = vec![];
+  let saves_dir = fs::read_dir( SAVES_FOLDER_NAME );
+
+  if let Ok( paths ) = saves_dir
+  {
+    for path in paths
+    {
+      game_list.push( path.unwrap().path() );
+    }
+
+    return Some( game_list );
+  }
+  else 
+  {
+    None    
+  }
 }
