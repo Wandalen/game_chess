@@ -23,8 +23,10 @@ async fn main() -> Result< (), Box< dyn std::error::Error > >
   let addr = "0.0.0.0:1313".parse()?;
   println!( "Server listening on {}", addr );
 
+  let chess_server = tonic_web::enable( ChessServer::new( chess_grpc_server ) );
   Server::builder()
-  .add_service( ChessServer::new( chess_grpc_server ) )
+  .accept_http1( true )
+  .add_service( chess_server )
   .serve( addr )
   .await?;
 

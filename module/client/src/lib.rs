@@ -4,5 +4,6 @@
 //!
 //! Chess game client implemented for educational purpose.
 //!
+mod client;
 
-pub use multiplayer::generated::chess::*;
+pub use client::*;

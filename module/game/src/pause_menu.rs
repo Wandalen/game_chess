@@ -34,7 +34,7 @@ pub fn setup_pause_menu
       }
       if ui.button( "Exit" ).clicked()
       {
-        app_state.set( GameState::MainMenu ).unwrap();
+        app_state.replace( GameState::MainMenu ).unwrap();
       }
     });
   });

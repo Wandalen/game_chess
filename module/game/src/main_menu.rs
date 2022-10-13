@@ -9,6 +9,7 @@ use bevy_egui::
   egui,
   EguiContext
 };
+use crate::common::Multiplayer;
 use crate::GameState;
 
 ///
@@ -36,7 +37,7 @@ pub fn setup_main_menu
       }
       if ui.button( "Multiplayer" ).clicked()
       {
-        // TODO: Implement multiplayer.
+        app_state.push( GameState::MultiplayerGame( Multiplayer::ConnectingToServer ) ).unwrap();
       }
       if ui.button( "Options" ).clicked()
       {
