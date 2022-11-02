@@ -28,6 +28,12 @@ jobs:
       - name: Install protobuf
         if: ${{ matrix.os == 'ubuntu' }}
         run: sudo apt install protobuf-compiler
+      - name: Install protobuf  
+        if: ${{ matrix.os == 'macos' }}
+        run: brew install protobuf
+      - name: Install protobuf  
+        if: ${{ matrix.os == 'windows' }}
+        run: choco install -y protoc         
       - uses: actions/checkout@v2
       # - uses: actions/cache@v2
       #   with:
