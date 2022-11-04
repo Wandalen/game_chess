@@ -75,9 +75,9 @@ Commands minimal
 */
 
 use game_chess_core::*;
-#[ allow( unused_imports ) ]
+//#[ allow( unused_imports ) ]
 use game_chess_client::*;
-mod multiplayer;
+//mod multiplayer;
 
 ///
 /// Main. CLI game itself.
@@ -88,10 +88,10 @@ pub async fn main()
   let mut game : Option< Game > = None;
   let mut choice;
 
-  let mut session = multiplayer::ToySession::init();
+  //let mut session = multiplayer::ToySession::init();
 
-  let remote_rpc = game_chess_client::Client::connect( "http://127.0.0.1:1313" ).await;
-  let mut remote_rpc = if let Ok( remote ) = remote_rpc { Some( remote ) } else { None };
+  // let remote_rpc = chess_client::ChessClient::connect( "http://127.0.0.1:1313" ).await;
+  // let mut remote_rpc = if let Ok( remote ) = remote_rpc { Some( remote ) } else { None };
 
   command_help();
 
@@ -114,6 +114,7 @@ pub async fn main()
       ".games.list" => command_list_saved_games(),
       ".game.from.fen" => game = Some( command_game_from_fen() ),
       ".move" | ".m" => command_move( &mut game ),
+      ".move.undo" => command_move_undo( &mut game ),
       ".move.random" => command_random_move( &mut game ),
       ".gg" => command_forfeit( &mut game ),
       ".moves.list" => command_moves_list( &game ),
@@ -126,13 +127,13 @@ pub async fn main()
       ".help" => command_help(),
       ".score" => command_score( &game ),
 
-      ".online.new" => multiplayer::command_game_new( &mut session, &mut remote_rpc ).await,
-      ".online.join" => multiplayer::command_game_join( &mut session, &mut remote_rpc ).await,
-      ".online.move" => multiplayer::command_game_move( &mut session, &mut remote_rpc ).await,
-      ".online.moves.list" => multiplayer::command_game_moves_list( &mut session, &mut remote_rpc ).await,
-      ".online.msg" => multiplayer::command_game_send_msg( &mut session, &mut remote_rpc ).await,
-      ".online.msg.read" => multiplayer::command_game_read_msgs( &mut session, &mut remote_rpc ).await,
-      ".online.status" => multiplayer::command_game_status( &mut session, &mut remote_rpc ).await,
+      // ".online.new" => multiplayer::command_game_new( &mut session, &mut remote_rpc ).await,
+      // ".online.join" => multiplayer::command_game_join( &mut session, &mut remote_rpc ).await,
+      // ".online.move" => multiplayer::command_game_move( &mut session, &mut remote_rpc ).await,
+      // ".online.moves.list" => multiplayer::command_game_moves_list( &mut session, &mut remote_rpc ).await,
+      // ".online.msg" => multiplayer::command_game_send_msg( &mut session, &mut remote_rpc ).await,
+      // ".online.msg.read" => multiplayer::command_game_read_msgs( &mut session, &mut remote_rpc ).await,
+      // ".online.status" => multiplayer::command_game_status( &mut session, &mut remote_rpc ).await,
 
       command => println!( "Unknown command : {}\n", command ),
     }
@@ -153,6 +154,7 @@ pub fn command_help()
   println!( ".games.list    => Print list saved games" );
   println!( ".game.from.fen => Load game from FEN" );
   println!( ".move          => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".move.undo     => Move undo" );
   println!( ".move.random   => Make a random move" );
   println!( ".gg            => Forfeit the game " );
   println!( ".moves.list    => Print all available moves in UCI format: \"a2a4\" " );
@@ -165,7 +167,7 @@ pub fn command_help()
   println!( ".quit          => Exit from the game" );
   println!( ".help          => Print this help" );
 
-  //multiplayer::command_help();
+  // multiplayer::command_help();
 }
 
 ///
@@ -424,6 +426,29 @@ pub fn command_move( game : &mut Option< Game > )
   game.timers_print();
   println!( "Turn of {}", game.current_turn() );
 }
+
+///
+/// Command move undo
+/// 
+
+pub fn command_move_undo( game : &mut Option< Game > )
+{
+  if game.is_none()
+  {
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  }
+
+  let game = game.as_mut().unwrap();
+  game.move_undo();
+
+  println!();
+  game.board_print();
+  game.timers_print();
+  println!( "Turn of {}", game.current_turn() );
+}
+
+
 
 ///
 /// Command make a random move

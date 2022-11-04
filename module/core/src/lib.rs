@@ -600,6 +600,23 @@ impl Game
   }
 
   ///
+  /// Makes move undo
+  ///
+  pub fn move_undo( &mut self ) 
+  {
+    let prev_history = self.history.pop();
+    if let Some( history ) = prev_history
+    {
+      self.board= Board::from_fen( &history.fen );
+      println!( "{:?}", history.last_move.to_string() );
+    }
+    else 
+    {
+      println!( "History is empty" );    
+    }
+  }
+
+  ///
   /// Make a random move on the board.
   ///
   pub fn make_random_move( &mut self ) -> bool
