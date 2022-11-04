@@ -1,4 +1,4 @@
-use super::chess_client::ChessClient;
+use super::Client;
 use super::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove };
 use tonic::transport::channel::Channel;
 
