@@ -507,6 +507,7 @@ pub struct Game
   ///
   pub timer : Option< timer::Timer >,
   history : Vec< HistoryEntry >,
+  history_idx : usize,
   ///
   /// AI Engine responsible for finding best moves
   ///
@@ -529,6 +530,7 @@ impl Game
       board : Board::default(),
       timer : None,
       history : Vec::new(),
+      history_idx : 0,
       is_forfeited : false,
       ai : None,
       #[ cfg( not( target_arch = "wasm32" ) ) ]
@@ -549,6 +551,7 @@ impl Game
       board : Board::from_fen( &Fen::from( fen.to_owned() ) ),
       timer : None,
       history : Vec::new(),
+      history_idx : 0,
       is_forfeited : false,
       ai : None,
 
@@ -604,10 +607,23 @@ impl Game
   ///
   pub fn move_undo( &mut self ) 
   {
-    let prev_history = self.history.pop();
+    let idx = self.history.len() - 1;
+    if self.history_idx == 0 && idx >= 1 
+    {
+      self.history_idx = idx;
+    }
+    
+    if self.history_idx > 1 
+    {
+      self.history_idx -= 1;
+    }
+
+    let prev_history = self.history.get( self.history_idx );
+
     if let Some( history ) = prev_history
     {
-      self.board= Board::from_fen( &history.fen );
+      let board = Board::from_fen( &history.fen );
+      board.print();
       println!( "{:?}", history.last_move.to_string() );
     }
     else 
