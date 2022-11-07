@@ -584,6 +584,17 @@ impl Game
 
   pub fn make_move( &mut self, uci_move : UCI ) -> bool
   {
+    if self.history_idx != 0
+    {
+      let current_history = self.history.get( self.history_idx );
+      if let Some( history ) = current_history
+      {
+        self.board = Board::from_fen( &history.fen );
+      }
+      self.history.split_off( self.history_idx + 1 );
+      self.history_idx = 0;
+    }  
+
     let new_board = self.board.make_move( uci_move );
     let success = new_board.is_some();
     if success
@@ -613,7 +624,7 @@ impl Game
       self.history_idx = idx;
     }
     
-    if self.history_idx > 1 
+    if self.history_idx >= 1 
     {
       self.history_idx -= 1;
     }
@@ -624,7 +635,6 @@ impl Game
     {
       let board = Board::from_fen( &history.fen );
       board.print();
-      println!( "{:?}", history.last_move.to_string() );
     }
     else 
     {
