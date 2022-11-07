@@ -442,10 +442,10 @@ pub fn command_move_undo( game : &mut Option< Game > )
   let game = game.as_mut().unwrap();
   game.move_undo();
 
-  println!();
-  game.board_print();
-  game.timers_print();
-  println!( "Turn of {}", game.current_turn() );
+  // println!();
+  // game.board_print();
+  // game.timers_print();
+  // println!( "Turn of {}", game.current_turn() );
 }
 
 
