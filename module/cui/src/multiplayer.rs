@@ -1,7 +1,6 @@
-use super::chess_client::ChessClient;
-use super::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove };
+use game_chess_client::Client;
+use game_chess_client::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove };
 use tonic::transport::channel::Channel;
-
 ///
 /// Simple Session for Online MultiplayerGame
 ///
@@ -62,7 +61,7 @@ pub fn command_help()
 ///
 /// Command to start new online game.
 ///
-pub async fn command_game_new( session : &mut ToySession, rpc_server : &mut Option< ChessClient< Channel > > )
+pub async fn command_game_new( session : &mut ToySession, rpc_server : &mut Option< Client > )
 {
   if let Some( rpc_server ) = rpc_server
   {
