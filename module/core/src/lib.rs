@@ -584,7 +584,7 @@ impl Game
 
   pub fn make_move( &mut self, uci_move : UCI ) -> bool
   {
-    if self.history_idx != 0
+    if self.history_idx != 0 && self.history_idx < self.history.len()
     {
       let current_history = self.history.get( self.history_idx );
       if let Some( history ) = current_history
@@ -618,7 +618,14 @@ impl Game
   ///
   pub fn move_undo( &mut self ) 
   {
+    if self.history.is_empty()
+    {
+      println!( "No game history" );
+      return;
+    }
+
     let idx = self.history.len() - 1;
+
     if self.history_idx == 0 && idx >= 1 
     {
       self.history_idx = idx;
@@ -636,9 +643,11 @@ impl Game
       let board = Board::from_fen( &history.fen );
       board.print();
     }
-    else 
+
+    if self.history_idx == 0
     {
-      println!( "History is empty" );    
+      self.history_idx = 1;
+      println!( "No game history" );
     }
   }
 
