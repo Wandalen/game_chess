@@ -101,3 +101,9 @@ fn test_list_saved_games()
   assert!( list[ 0 ].display().to_string().contains( ".save" ) );
   fs::remove_dir_all( "saves" ).unwrap();
 }  
+
+#[ test ]
+fn test_move_undo()
+{
+  
+}  
