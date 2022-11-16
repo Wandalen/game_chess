@@ -7,3 +7,4 @@
 mod client;
 
 pub use client::*;
+pub use multiplayer::generated::chess::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove, Board };

@@ -2,7 +2,6 @@
   cargo test --test online_multiplayer
   cargo test --test online_multiplayer -- --nocapture
 */
-
 use tonic::transport::Server;
 use game_chess_server::rpc_server::ChessRpcServer;
 use game_chess_client::*;
@@ -38,7 +37,7 @@ async fn online_game_new()
     } ),
   };
 
-  let mut chess_client = chess_client::ChessClient::connect( "http://localhost:3001" ).await.unwrap();
+  let mut chess_client = game_chess_client::Client::connect( "http://localhost:3001" ).await.unwrap();
   let resp = chess_client.push_game_create( online_game ).await;
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
@@ -59,7 +58,7 @@ async fn online_game_join()
     } ),
   };
 
-  let mut chess_client = chess_client::ChessClient::connect( "http://localhost:3002" ).await.unwrap();
+  let mut chess_client = game_chess_client::Client::connect( "http://localhost:3002" ).await.unwrap();
   let resp = chess_client.push_game_create( online_game ).await;
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
@@ -84,7 +83,7 @@ async fn online_game_send_receive_msg()
 {
   run_test_server( "0.0.0.0:3003" ).await;
 
-  let mut chess_client = chess_client::ChessClient::connect( "http://localhost:3003" ).await.unwrap();
+  let mut chess_client = game_chess_client::Client::connect( "http://localhost:3003" ).await.unwrap();
   let player = Some( GamePlayer 
   {
     player_id : "01".to_owned(),

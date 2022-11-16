@@ -1,6 +1,6 @@
 use game_chess_client::Client;
-use game_chess_client::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove };
-use tonic::transport::channel::Channel;
+use game_chess_client::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove, Board };
+
 ///
 /// Simple Session for Online MultiplayerGame
 ///
@@ -107,7 +107,7 @@ pub async fn command_game_new( session : &mut ToySession, rpc_server : &mut Opti
 ///
 /// Command to join an online game.
 ///
-pub async fn command_game_join( session : &mut ToySession, rpc_server : &mut Option< ChessClient< Channel > > )
+pub async fn command_game_join( session : &mut ToySession, rpc_server : &mut Option< Client > )
 {
   if let Some( rpc_server ) = rpc_server
   {
@@ -154,7 +154,7 @@ pub async fn command_game_join( session : &mut ToySession, rpc_server : &mut Opt
 ///
 /// Command to make a move on the board.
 ///
-pub async fn command_game_move( session : &mut ToySession, rpc_server : &mut Option< ChessClient< Channel > > )
+pub async fn command_game_move( session : &mut ToySession, rpc_server : &mut Option< Client > )
 {
   if let Some( rpc_server ) = rpc_server
   {
@@ -190,7 +190,7 @@ pub async fn command_game_move( session : &mut ToySession, rpc_server : &mut Opt
 ///
 /// Command to print available moves
 ///
-pub async fn command_game_moves_list( session : &mut ToySession, rpc_server : &mut Option< ChessClient< Channel > > )
+pub async fn command_game_moves_list( session : &mut ToySession, rpc_server : &mut Option< Client > )
 {
   if let Some( rpc_server ) = rpc_server
   {
@@ -219,7 +219,7 @@ pub async fn command_game_moves_list( session : &mut ToySession, rpc_server : &m
 ///
 /// Command to send message to opponent.
 ///
-pub async fn command_game_send_msg( session : &mut ToySession, rpc_server : &mut Option< ChessClient< Channel > > )
+pub async fn command_game_send_msg( session : &mut ToySession, rpc_server : &mut Option< Client > )
 {
   if let Some( rpc_server ) = rpc_server
   {
@@ -253,7 +253,7 @@ pub async fn command_game_send_msg( session : &mut ToySession, rpc_server : &mut
 ///
 /// Command to read messages from opponent.
 ///
-pub async fn command_game_read_msgs( session : &mut ToySession, rpc_server : &mut Option< ChessClient< Channel > > )
+pub async fn command_game_read_msgs( session : &mut ToySession, rpc_server : &mut Option< Client > )
 {
   if let Some( rpc_server ) = rpc_server
   {
@@ -285,7 +285,7 @@ pub async fn command_game_read_msgs( session : &mut ToySession, rpc_server : &mu
 ///
 /// Command to print status of the multiplayer game.
 ///
-pub async fn command_game_status( session : &mut ToySession, rpc_server : &mut Option< ChessClient< Channel > > )
+pub async fn command_game_status( session : &mut ToySession, rpc_server : &mut Option< Client > )
 {
   if let Some( rpc_server ) = rpc_server
   {
@@ -306,7 +306,7 @@ pub async fn command_game_status( session : &mut ToySession, rpc_server : &mut O
   }
 }
 
-fn print_board_status( board : Result< tonic::Response< game_chess_client::Board >, tonic::Status > )
+fn print_board_status( board : Result< tonic::Response< Board >, tonic::Status > )
 {
   match board
   {

@@ -1,5 +1,5 @@
 use multiplayer::generated::chess::chess_client::ChessClient;
-use multiplayer::generated::chess::{ CreateGame, GameId, Board, AcceptGame, GameMove, GamePlayer, Msg };
+use multiplayer::generated::chess::{ CreateGame, GameId, Board, AcceptGame, GameMove, GamePlayer, Msg, Msgs, GameAvailableMoves };
 #[ cfg( not( target_arch = "wasm32" ) ) ]
 use lazy_static::lazy_static;
 
@@ -85,7 +85,7 @@ impl Client
     self._grpc_client.push_move( game_move ).await
   } 
 
-  /// Game player  
+  /// Send request to forfeit  
   pub async fn push_game_gg( &mut self, game_player : GamePlayer ) -> Result< tonic::Response< () >, tonic::Status >
   {
     self._grpc_client.push_game_gg( game_player ).await
@@ -95,6 +95,18 @@ impl Client
   pub async fn push_msg( &mut self, msg : Msg ) -> Result< tonic::Response< () >, tonic::Status >
   {
     self._grpc_client.push_msg( msg ).await
-  }  
+  }
+  
+  /// Pull Moves
+  pub async fn pull_moves( &mut self, game_id : GameId ) -> Result< tonic::Response< GameAvailableMoves >, tonic::Status >
+  {
+    self._grpc_client.pull_moves( game_id ).await
+  }
+
+  /// Read Msgs 
+  pub async fn read_msgs( &mut self, game_player : GamePlayer ) -> Result< tonic::Response< Msgs >, tonic::Status >
+  {
+    self._grpc_client.read_msgs( game_player ).await
+  } 
 }
 
