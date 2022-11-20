@@ -101,3 +101,19 @@ fn test_list_saved_games()
   assert!( list[ 0 ].display().to_string().contains( ".save" ) );
   fs::remove_dir_all( "saves" ).unwrap();
 } 
+
+#[ test ]
+fn test_move_undo()
+{
+  let mut game = Game::default();
+  assert!( game.get_history_idx().is_none() );
+  assert!( game.make_random_move() );
+  assert!( game.make_random_move() );
+  assert!( game.make_random_move() );
+  game.move_undo();
+  let idx_1 = game.get_history_idx();
+  assert!( game.get_history_idx().is_some());
+  game.move_undo();
+  let idx_2 = game.get_history_idx();
+  assert!( idx_1 > idx_2 );
+} 

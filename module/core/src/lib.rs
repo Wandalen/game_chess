@@ -507,7 +507,7 @@ pub struct Game
   ///
   pub timer : Option< timer::Timer >,
   history : Vec< HistoryEntry >,
-  history_idx : usize,
+  history_idx : Option< usize >,
   ///
   /// AI Engine responsible for finding best moves
   ///
@@ -530,7 +530,7 @@ impl Game
       board : Board::default(),
       timer : None,
       history : Vec::new(),
-      history_idx : 0,
+      history_idx : None,
       is_forfeited : false,
       ai : None,
       #[ cfg( not( target_arch = "wasm32" ) ) ]
@@ -551,7 +551,7 @@ impl Game
       board : Board::from_fen( &Fen::from( fen.to_owned() ) ),
       timer : None,
       history : Vec::new(),
-      history_idx : 0,
+      history_idx : None,
       is_forfeited : false,
       ai : None,
 
@@ -584,16 +584,17 @@ impl Game
 
   pub fn make_move( &mut self, uci_move : UCI ) -> bool
   {
-    if self.history_idx != 0 && self.history_idx < self.history.len()
+    if let Some( index ) = self.get_history_idx()
     {
-      let current_history = self.history.get( self.history_idx );
+      let current_history = self.history.get( index );
+
       if let Some( history ) = current_history
       {
         self.board = Board::from_fen( &history.fen );
       }
-      self.history.split_off( self.history_idx + 1 );
-      self.history_idx = 0;
-    }  
+      self.history.split_off( index + 1 );
+      self.history_idx = None;
+    }
 
     let new_board = self.board.make_move( uci_move );
     let success = new_board.is_some();
@@ -623,33 +624,59 @@ impl Game
       println!( "No game history" );
       return;
     }
-
-    let idx = self.history.len() - 1;
-
-    if self.history_idx == 0 && idx >= 1 
-    {
-      self.history_idx = idx;
-    }
     
-    if self.history_idx >= 1 
+    if let Some( index ) = self.get_history_idx()
     {
-      self.history_idx -= 1;
+      if index >= 1
+      {
+        self.set_history_idx( index - 1 );
+      }
     }
-
-    let prev_history = self.history.get( self.history_idx );
-
-    if let Some( history ) = prev_history
+    else if !self.history.is_empty() && self.history.len() >= 2
     {
-      let board = Board::from_fen( &history.fen );
-      board.print();
+      self.set_history_idx( self.history.len() - 2 );
     }
-
-    if self.history_idx == 0
+    else
     {
-      self.history_idx = 1;
       println!( "No game history" );
     }
+    
+    if let Some( index ) = self.get_history_idx()
+    {
+      let prev_history = self.history.get( index );
+
+      if let Some( history ) = prev_history
+      {
+        let board = Board::from_fen( &history.fen );
+        board.print();
+      }
+    }
+        
   }
+
+  ///
+  /// Set history index
+  /// 
+  pub fn set_history_idx( &mut self, idx: usize ) -> bool
+  {
+    if idx >= 0 && idx <= self.history.len() - 1
+    {
+      self.history_idx = Some( idx );
+      return true;
+    }
+    else
+    {
+      return false;    
+    }
+  }
+
+  ///
+  /// Get history index
+  /// 
+  pub fn get_history_idx( &self ) -> Option< usize >
+  {
+    self.history_idx
+  } 
 
   ///
   /// Make a random move on the board.
