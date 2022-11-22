@@ -41,7 +41,7 @@ fn test_board_from_fen()
 #[ test ]
 fn test_game_import()
 {
-  let src = r#"{"board":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","history":[{"fen":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","last_move":5640}],"date":{"secs_since_epoch":1643988263,"nanos_since_epoch":27317000},"is_forfeited":false}"#;
+  let src = r#"{"board":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","history":[{"fen":"rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq - 0 1","last_move":5640}],"history_idx":0,"date":{"secs_since_epoch":1643988263,"nanos_since_epoch":27317000},"is_forfeited":false}"#;
   let game : Game = serde_json::from_str( src ).unwrap();
   assert_eq!( game.last_move().unwrap().0, "a2a4" );
   assert_eq!( game.last_move_raw().unwrap().get_raw(), 5640 );
@@ -106,13 +106,11 @@ fn test_list_saved_games()
 fn test_move_undo()
 {
   let mut game = Game::default();
-  assert!( game.get_history_idx().is_none() );
-  assert!( game.make_random_move() );
-  assert!( game.make_random_move() );
-  assert!( game.make_random_move() );
+  assert!( game.get_history_idx() == 0 );
+  for _ in 1..5 { game.make_random_move(); }
   game.move_undo();
   let idx_1 = game.get_history_idx();
-  assert!( game.get_history_idx().is_some());
+  assert!( game.get_history_idx() != 0 );
   game.move_undo();
   let idx_2 = game.get_history_idx();
   assert!( idx_1 > idx_2 );
