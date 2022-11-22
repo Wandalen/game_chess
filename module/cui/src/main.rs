@@ -77,7 +77,7 @@ Commands minimal
 use game_chess_core::*;
 //#[ allow( unused_imports ) ]
 use game_chess_client::*;
-// mod multiplayer;
+mod multiplayer;
 
 ///
 /// Main. CLI game itself.
@@ -88,10 +88,10 @@ pub async fn main()
   let mut game : Option< Game > = None;
   let mut choice;
 
-  // let mut session = multiplayer::ToySession::init();
+  let mut session = multiplayer::ToySession::init();
 
-  // let remote_rpc = game_chess_client::Client::connect( "http://127.0.0.1:1313" ).await;
-  // let mut remote_rpc = if let Ok( remote ) = remote_rpc { Some( remote ) } else { None };
+  let remote_rpc = game_chess_client::Client::connect( "http://127.0.0.1:1313" ).await;
+  let mut remote_rpc = if let Ok( remote ) = remote_rpc { Some( remote ) } else { None };
 
   command_help();
 
@@ -128,13 +128,13 @@ pub async fn main()
       ".help" => command_help(),
       ".score" => command_score( &game ),
 
-      // ".online.new" => multiplayer::command_game_new( &mut session, &mut remote_rpc ).await,
-      // ".online.join" => multiplayer::command_game_join( &mut session, &mut remote_rpc ).await,
-      // ".online.move" => multiplayer::command_game_move( &mut session, &mut remote_rpc ).await,
-      // ".online.moves.list" => multiplayer::command_game_moves_list( &mut session, &mut remote_rpc ).await,
-      // ".online.msg" => multiplayer::command_game_send_msg( &mut session, &mut remote_rpc ).await,
-      // ".online.msg.read" => multiplayer::command_game_read_msgs( &mut session, &mut remote_rpc ).await,
-      // ".online.status" => multiplayer::command_game_status( &mut session, &mut remote_rpc ).await,
+      ".online.new" => multiplayer::command_game_new( &mut session, &mut remote_rpc ).await,
+      ".online.join" => multiplayer::command_game_join( &mut session, &mut remote_rpc ).await,
+      ".online.move" => multiplayer::command_game_move( &mut session, &mut remote_rpc ).await,
+      ".online.moves.list" => multiplayer::command_game_moves_list( &mut session, &mut remote_rpc ).await,
+      ".online.msg" => multiplayer::command_game_send_msg( &mut session, &mut remote_rpc ).await,
+      ".online.msg.read" => multiplayer::command_game_read_msgs( &mut session, &mut remote_rpc ).await,
+      ".online.status" => multiplayer::command_game_status( &mut session, &mut remote_rpc ).await,
 
       command => println!( "Unknown command : {}\n", command ),
     }
