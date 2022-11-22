@@ -507,7 +507,7 @@ pub struct Game
   ///
   pub timer : Option< timer::Timer >,
   history : Vec< HistoryEntry >,
-  history_idx : Option< usize >,
+  history_idx : usize,
   ///
   /// AI Engine responsible for finding best moves
   ///
@@ -530,7 +530,7 @@ impl Game
       board : Board::default(),
       timer : None,
       history : Vec::new(),
-      history_idx : None,
+      history_idx : 0,
       is_forfeited : false,
       ai : None,
       #[ cfg( not( target_arch = "wasm32" ) ) ]
@@ -551,7 +551,7 @@ impl Game
       board : Board::from_fen( &Fen::from( fen.to_owned() ) ),
       timer : None,
       history : Vec::new(),
-      history_idx : None,
+      history_idx : 0,
       is_forfeited : false,
       ai : None,
 
@@ -584,16 +584,18 @@ impl Game
 
   pub fn make_move( &mut self, uci_move : UCI ) -> bool
   {
-    if let Some( index ) = self.get_history_idx()
+    let index = self.get_history_idx();
+
+    if index != 0
     {
-      let current_history = self.history.get( index );
+      let current_history = self.history.get( index - 1 );
 
       if let Some( history ) = current_history
       {
         self.board = Board::from_fen( &history.fen );
       }
-      self.history.split_off( index + 1 );
-      self.history_idx = None;
+      self.history.split_off( index );
+      self.set_history_idx( 0 );
     }
 
     let new_board = self.board.make_move( uci_move );
@@ -625,33 +627,34 @@ impl Game
       return;
     }
     
-    if let Some( index ) = self.get_history_idx()
+    if self.get_history_idx() == 0 && self.history.len() > 1
     {
-      if index >= 1
-      {
-        self.set_history_idx( index - 1 );
-      }
+      self.set_history_idx( self.history.len() - 1 );
     }
-    else if !self.history.is_empty() && self.history.len() >= 2
+
+    let index = self.get_history_idx();
+   
+    if index > 0
     {
-      self.set_history_idx( self.history.len() - 2 );
-    }
-    else
-    {
-      println!( "No game history" );
-    }
-    
-    if let Some( index ) = self.get_history_idx()
-    {
-      let prev_history = self.history.get( index );
+      let prev_idx = index - 1;
+      let prev_history = self.history.get( prev_idx );
 
       if let Some( history ) = prev_history
       {
         let board = Board::from_fen( &history.fen );
         board.print();
       }
+
+      if prev_idx != 0
+      {
+        self.set_history_idx( prev_idx );
+      }
     }
-        
+    else
+    {
+      println!( "No game history" );
+      return;
+    }
   }
 
   ///
@@ -659,9 +662,9 @@ impl Game
   /// 
   pub fn set_history_idx( &mut self, idx: usize ) -> bool
   {
-    if idx >= 0 && idx <= self.history.len() - 1
+    if idx <= self.history.len() - 1
     {
-      self.history_idx = Some( idx );
+      self.history_idx = idx;
       return true;
     }
     else
@@ -673,7 +676,7 @@ impl Game
   ///
   /// Get history index
   /// 
-  pub fn get_history_idx( &self ) -> Option< usize >
+  pub fn get_history_idx( &self ) -> usize
   {
     self.history_idx
   } 
