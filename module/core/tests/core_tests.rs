@@ -115,3 +115,17 @@ fn test_move_undo()
   let idx_2 = game.get_history_idx();
   assert!( idx_1 > idx_2 );
 } 
+
+#[ test ]
+fn test_move_redo()
+{
+  let mut game = Game::default();
+  assert!( game.get_history_idx() == 0 );
+  for _ in 1..5 { game.make_random_move(); }
+  game.move_undo();
+  let idx_1 = game.get_history_idx();
+  assert!( game.get_history_idx() != 0 );
+  game.move_redo();
+  let idx_2 = game.get_history_idx();
+  assert!( idx_1 < idx_2 );
+} 

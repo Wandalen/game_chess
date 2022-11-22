@@ -658,6 +658,38 @@ impl Game
   }
 
   ///
+  /// Makes move redo
+  ///
+  pub fn move_redo( &mut self ) 
+  {
+    if self.history.is_empty() 
+    {
+      println!( "No game history" );
+      return;
+    }
+
+    let index = self.get_history_idx();
+
+    if index > 0
+    {
+      let next_idx = index + 1;
+      let next_history = self.history.get( next_idx );
+
+      if let Some( history ) = next_history
+      {
+        let board = Board::from_fen( &history.fen );
+        board.print();
+      }
+
+      self.set_history_idx( next_idx );
+    }
+    else 
+    {
+      println!( "Can't move redo" );  
+    }  
+  }
+
+  ///
   /// Set history index
   /// 
   pub fn set_history_idx( &mut self, idx: usize ) -> bool
