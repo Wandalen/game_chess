@@ -3,8 +3,10 @@
   cargo test --test online_multiplayer -- --nocapture
 */
 use tonic::transport::Server;
+use multiplayer::generated::chess::chess_server::ChessServer;
 use game_chess_server::rpc_server::ChessRpcServer;
-use game_chess_client::*;
+use game_chess_client::{ CreateGame, AcceptGame, GamePlayer, Msg, };
+
 
 async fn run_test_server( addr : &str )
 {
@@ -16,7 +18,7 @@ async fn run_test_server( addr : &str )
   tokio::spawn( async move 
   {
     Server::builder()
-      .add_service( chess_server::ChessServer::new( chess_grpc_server ) )
+      .add_service( ChessServer::new( chess_grpc_server ) )
       .serve( addr )
       .await
       .unwrap();
@@ -30,7 +32,7 @@ async fn online_game_new()
 
   let online_game = CreateGame 
   {
-    player : Some( game_chess_client::GamePlayer 
+    player : Some( GamePlayer 
     {
       player_id : "01".to_string(),
       game_id : "01".to_string(),
