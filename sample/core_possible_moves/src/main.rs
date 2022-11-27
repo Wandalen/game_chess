@@ -2,12 +2,11 @@
 How to get list of possible squares to move from a target square
 */
 
-pub fn main()
-{
+pub fn main() {
   /*
-  https://docs.rs/pleco/0.5.0/pleco/
-  https://docs.rs/pleco/0.5.0/pleco/board/struct.Board.html
-  https://docs.rs/pleco/0.5.0/pleco/board/struct.Board.html#bitboard-representation
+  https://docs.rs/tanton/latest/tanton/
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html#bitboard-representation
   */
 
   /*
@@ -25,13 +24,12 @@ pub fn main()
 
   */
 
-  let board : pleco::Board = pleco::Board::default();
+  let board: tanton::Board = tanton::Board::default();
   board.pretty_print(); //Prints a prettified representation of the board.
   let legal_moves = board.generate_moves(); //All legal moves
-  let from_square = pleco::SQ( 8 ); //Source square
-  let legal_moves_for_target = legal_moves.iter().filter( | mv | mv.get_src() == from_square ); //Selects legal moves that have target as source
-  for legal_move in legal_moves_for_target
-  {
-    println!( "{}", legal_move );
+  let from_square = tanton::SQ(8); //Source square
+  let legal_moves_for_target = legal_moves.iter().filter(|mv| mv.get_src() == from_square); //Selects legal moves that have target as source
+  for legal_move in legal_moves_for_target {
+    println!("{}", legal_move);
   }
 }

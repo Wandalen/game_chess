@@ -5,4 +5,4 @@
 - [Prerequisites](./Prerequisites.md)
 - [How to build](./Build.md)
 - [How to commit changes](./ChangesCommitting.md)
-- [Bevy and Pleco resources](./Resources.md)
+- [Bevy and Tanton resources](./Resources.md)
