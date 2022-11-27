@@ -4,17 +4,16 @@ Player moves are generated.
 Press Enter key to make a turn.
 */
 
-pub fn main()
-{
+pub fn main() {
   /*
-  https://docs.rs/pleco/0.5.0/pleco/
-  https://docs.rs/pleco/0.5.0/pleco/board/struct.Board.html
+  https://docs.rs/tanton/latest/tanton/
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html
   */
 
   use std::io::{stdin, stdout, Read, Write};
 
   let mut stdout = stdout();
-  let mut board : pleco::Board = pleco::Board::start_pos();
+  let mut board: tanton::Board = tanton::Board::start_pos();
 
   let mut wait_for_enter_key = || {
     stdout.write_all(b"Press Enter to make move for current player...\n").unwrap();
@@ -22,8 +21,7 @@ pub fn main()
     stdin().read_exact(&mut [0]).unwrap();
   };
 
-  loop
-  {
+  loop {
     println!("\nBoard:");
 
     board.pretty_print(); //Prints the board to the terminal
@@ -42,14 +40,12 @@ pub fn main()
 
     board.apply_move(current_player_move); //Makes the move
 
-    if board.checkmate()
-    {
+    if board.checkmate() {
       println!("\nCheckmate");
       break;
     }
 
-    if board.stalemate()
-    {
+    if board.stalemate() {
       println!("\nStalemate");
       break;
     }

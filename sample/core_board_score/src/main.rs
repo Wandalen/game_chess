@@ -2,13 +2,12 @@
 How to calculate board score
 */
 
-pub fn main()
-{
+pub fn main() {
   /*
-  https://docs.rs/pleco/0.5.0/pleco/
-  https://docs.rs/pleco/0.5.0/pleco/board/struct.Board.html
-  https://docs.rs/pleco/latest/pleco/board/struct.Board.html#bitboard-representation
-  https://docs.rs/pleco/0.5.0/pleco/tools/eval/struct.Eval.html#method.eval_low
+  https://docs.rs/tanton/latest/tanton/
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html#bitboard-representation
+  https://docs.rs/tanton/latest/tanton/tools/eval/struct.Eval.html#method.eval_low
   */
 
   /*
@@ -25,11 +24,11 @@ pub fn main()
       a  b  c  d  e  f  g  h
   */
 
-  let board : pleco::Board = pleco::Board::from_fen("3qkb1r/3ppp2/3r1np1/2Q4p/5P2/1P3B2/P1P1PP1P/R2NK2R b k - 0 22").unwrap();
+  let board: tanton::Board = tanton::Board::from_fen("3qkb1r/3ppp2/3r1np1/2Q4p/5P2/1P3B2/P1P1PP1P/R2NK2R b k - 0 22").unwrap();
 
   board.pretty_print();
 
-  let board_score = pleco::tools::eval::Eval::eval_low(&board); // Evaluates board score
+  let board_score = tanton::tools::eval::Eval::eval_low(&board); // Evaluates board score
 
   println!("Board score: {}", board_score);
 

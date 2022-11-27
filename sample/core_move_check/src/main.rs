@@ -2,14 +2,13 @@
 How to get check if move is valid
 */
 
-pub fn main()
-{
+pub fn main() {
   /*
-  https://docs.rs/pleco/0.5.0/pleco/
-  https://docs.rs/pleco/0.5.0/pleco/board/struct.Board.html
-  https://docs.rs/pleco/latest/pleco/board/struct.Board.html#bitboard-representation
-  https://docs.rs/pleco/0.5.0/pleco/board/struct.Board.html#method.legal_move
-  https://docs.rs/pleco/latest/pleco/board/struct.Board.html#method.pseudo_legal_move
+  https://docs.rs/tanton/latest/tanton/
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html#bitboard-representation
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html#method.legal_move
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html#method.pseudo_legal_move
   */
 
   /*
@@ -26,9 +25,9 @@ pub fn main()
       a  b  c  d  e  f  g  h
   */
 
-  let board : pleco::Board = pleco::Board::default();
-  let invalid_move = pleco::BitMove::make_quiet(pleco::SQ(8), pleco::SQ(9)); //Creates move from 8 square to square 9
-  let valid_move = pleco::BitMove::make_quiet(pleco::SQ(8), pleco::SQ(16)); //Creates move from 8 square to square 16
+  let board: tanton::Board = tanton::Board::default();
+  let invalid_move = tanton::BitMove::make_quiet(tanton::SQ(8), tanton::SQ(9)); //Creates move from 8 square to square 9
+  let valid_move = tanton::BitMove::make_quiet(tanton::SQ(8), tanton::SQ(16)); //Creates move from 8 square to square 16
 
   println!(
     "Move {} is valid: {}",

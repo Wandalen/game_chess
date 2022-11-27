@@ -5,7 +5,7 @@
 
 ## Chess crates
 
-- [Pleco](https://github.com/sfleischman105/Pleco)
+- [Tanton](https://github.com/chase-manning/tanton)
   * Board representation and related functionality
   * Board printing
   * Movement generation

@@ -2,15 +2,14 @@
 How to get board debug info
 */
 
-pub fn main()
-{
+pub fn main() {
   /*
-  https://docs.rs/pleco/0.5.0/pleco/
-  https://docs.rs/pleco/0.5.0/pleco/board/struct.Board.html
+  https://docs.rs/tanton/latest/tanton/
+  https://docs.rs/tanton/latest/tanton/board/struct.Board.html
   */
 
   let fen = "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2";
-  let board : pleco::Board = pleco::Board::from_fen(fen).unwrap();
+  let board: tanton::Board = tanton::Board::from_fen(fen).unwrap();
   // board.print_debug_info(); //Prints Debug Information.
   // board.pretty_print(); //Prints a prettified representation of the board.
   board.fancy_print(); //Print the board alongside useful information.

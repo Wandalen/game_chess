@@ -1,4 +1,3 @@
-
 ## Bevy
 
 - :star: [Textual introduction to Bevy ( v0.1 )](https://bevyengine.org/news/introducing-bevy/)
@@ -11,13 +10,13 @@
 - [Short ECS introduction](https://www.youtube.com/watch?v=2rW7ALyHaas)
 - [Examples](https://bevyengine.org/examples/)
 
-## Pleco
+## Tanton
 
-- [Documentation](https://docs.rs/pleco/0.5.0/pleco/)
-- [Algorithms at tools::eval::Eval](https://github.com/sfleischman105/Pleco/blob/master/pleco/src/tools/eval.rs#L57)
-- [Algorithms at helper::Helper](https://github.com/sfleischman105/Pleco/blob/master/pleco/src/helper/mod.rs#L29)
-- [Algorithms at helper::prelude](https://docs.rs/pleco/0.5.0/pleco/helper/prelude/index.html)
-- [AI at bot_prelude](https://docs.rs/pleco/0.5.0/pleco/bot_prelude/index.html)
+- [Documentation](https://docs.rs/tanton/latest/tanton/)
+- [Algorithms at tools::eval::Eval](https://github.com/chase-manning/tanton/blob/main/tanton/src/tools/eval.rs#L57)
+- [Algorithms at helper::Helper](https://github.com/chase-manning/tanton/blob/main/tanton/src/helper/mod.rs#L29)
+- [Algorithms at helper::prelude](https://docs.rs/tanton/latest/tanton/helper/prelude/index.html)
+- [AI at bot_prelude](https://docs.rs/tanton/latest/tanton/bot_prelude/index.html)
 
 ## gRPC
 
