@@ -11,6 +11,7 @@ lazy_static!
     std::thread::spawn( move || TOKIO_RUNTIME.block_on( std::future::pending::< () >() ) );
     tokio::runtime::Builder::new_current_thread()
     .enable_io()
+    .enable_time()
     .build()
     .expect( "cannot start tokio runtime" )
   };
