@@ -508,6 +508,7 @@ pub struct Game
   pub timer : Option< timer::Timer >,
   history : Vec< HistoryEntry >,
   history_idx : usize,
+ 
   ///
   /// AI Engine responsible for finding best moves
   ///
