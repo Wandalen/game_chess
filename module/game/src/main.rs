@@ -8,8 +8,8 @@
 use bevy::prelude::*;
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
-use bevy::window::close_on_esc;
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
+use bevy::math::Vec4Swizzles;
 use game_chess_core as core;
 
 pub mod camera;
@@ -17,22 +17,16 @@ pub mod common;
 pub mod highlight;
 pub mod piece;
 pub mod controls;
+pub mod main_menu;
+pub mod pause_menu;
+pub mod settings;
+pub mod multiplayer;
 
 use common::GameState;
 use controls::Selection;
+use crate::common::Multiplayer;
+use crate::settings::Settings;
 
-///
-/// Color materials handles
-///
-
-#[ derive( Debug ) ]
-pub struct Materials
-{
-  /// Black color
-  pub black : Handle< ColorMaterial >,
-  /// White color
-  pub white : Handle< ColorMaterial >,
-}
 
 // /// mut material  359
 // /// My color change
@@ -65,7 +59,7 @@ pub struct Materials
 /// Setup camera and add resources
 ///
 
-pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMaterial > > )
+pub fn setup( mut commands : Commands )
 {
   let mut camera = commands.spawn_bundle( camera::ChessCameraBundle::new() );
   #[ cfg( not( target_arch = "wasm32" ) ) ]
@@ -73,11 +67,7 @@ pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMate
   camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, false ) } );
 
   commands.spawn().insert( Selection::None );
-  commands.insert_resource( Materials
-  {
-    white : materials.add( ColorMaterial::from( Color::rgb( 0.9, 0.9, 0.7 ) ) ),
-    black : materials.add( ColorMaterial::from( Color::rgb( 0.2, 0.2, 0.1 ) ) ),
-  });
+  commands.init_resource::< Settings >();
 }
 
 ///
@@ -119,7 +109,7 @@ pub fn board_setup
         sprite,
         transform,
         .. Default::default()
-      })
+      } )
       .insert( Cell { is_black } );
     }
   }
@@ -145,46 +135,26 @@ pub struct Cell
 pub fn gamma_change
 (
   materials : ResMut< Assets< ColorMaterial > >,
-  materials_handles : Res< Materials >,
+  settings : Res< Settings >,
   mut query : Query< ( &Cell, &mut Sprite ) >,
 )
 {
-  let black = materials.get( &materials_handles.black ).unwrap();
-  let white = materials.get( &materials_handles.white ).unwrap();
-
-  for ( cell, mut sprite ) in query.iter_mut()
+  if settings.is_changed()
   {
-    if cell.is_black
+    let black = materials.get( &settings.color_handles.black ).unwrap();
+    let white = materials.get( &settings.color_handles.white ).unwrap();
+
+    for ( cell, mut sprite ) in query.iter_mut()
     {
-      sprite.color = black.color;
+      if cell.is_black
+      {
+        sprite.color = black.color;
+      }
+      else
+      {
+        sprite.color = white.color;
+      }
     }
-    else
-    {
-      sprite.color = white.color;
-    }
-  }
-}
-
-///
-/// Convert cursor position to cell number
-/// If cursor is outside of the board, returns None
-///
-
-pub fn cursor_to_cell( cursor_pos : Vec2, window_size : Vec2, projection_matrix : Mat4 ) -> Option< Vec2 >
-{
-  let clip_pos = ( cursor_pos / ( window_size / 2.0 ) ) - Vec2::splat( 1.0 );
-  let clip_pos_4 = clip_pos.extend( 0.0 ).extend( 1.0 );
-  let world_pos_4 = projection_matrix.inverse() * clip_pos_4;
-
-  let world_pos = world_pos_4.xy() / world_pos_4.w;
-  let pos = ( ( world_pos + Vec2::splat( 1.0 ) ) * 4.0 ).floor();
-  if pos.x < 8.0 && pos.y < 8.0 && pos.x >= 0.0 && pos.y >= 0.0
-  {
-    Some( pos )
-  }
-  else
-  {
-    None
   }
 }
 
@@ -214,7 +184,7 @@ pub fn diagnostics_rect( commands : &mut Commands, materials : &mut ResMut< Asse
     sprite,
     transform,
     .. Default::default()
-  });
+  } );
 }
 
 ///
@@ -234,7 +204,7 @@ pub fn core_setup
   piece::pieces_setup( &mut commands, server, texture_atlases, &game );
   commands.insert_resource( game );
 
-  game_state.set( GameState::GameStart ).unwrap();
+  game_state.set( GameState::GamePlaying ).unwrap();
 }
 
 fn timer_system( time : Res< Time >, mut query : Query< &mut GameTimer >, mut game_state : ResMut< State< GameState > > )
@@ -249,7 +219,7 @@ fn timer_system( time : Res< Time >, mut query : Query< &mut GameTimer >, mut ga
 
 fn init_system( mut game_state : ResMut< State< GameState > > )
 {
-  game_state.set( GameState::GameNew ).unwrap();
+  game_state.set( GameState::MainMenu ).unwrap();
 }
 
 //Sounds
@@ -278,48 +248,37 @@ fn movement( asset_server : Res< AssetServer >, audio_output : Res< bevy_kira_au
 }
 
 ///
+/// System that enables/disables sound
+///
+pub fn sound_control( audio_output : Res< bevy_kira_audio::Audio >, settings : Res< Settings > )
+{
+  if settings.is_changed()
+  {
+    if settings.enable_sound
+    {
+      audio_output.resume();
+    }
+    else
+    {
+      audio_output.pause();
+    }
+  }
+}
+
+///
 /// GUI setup
 ///
 
 pub fn egui_setup
 (
   mut egui_context : ResMut< EguiContext >,
-  mut materials : ResMut< Assets< ColorMaterial > >,
-  materials_handles : Res< Materials >,
 )
 {
   egui::Window::new( "Timer" ).show( egui_context.ctx_mut(), | ui |
   {
     // add labels inside Egui window
     ui.label( "Time: 00:00.00" );
-  });
-
-  egui::SidePanel::left( "Menu" )
-  .resizable( false )
-  //.default_width( SIDE_PANEL_WIDTH )
-  .show( egui_context.ctx_mut(), | ui |
-  {
-    ui.heading( "\"White\" cells color" );
-    let material = materials.get_mut( &materials_handles.white ).unwrap();
-    let mut color_schema = [ material.color.r(), material.color.g(), material.color.b(), 1.0 ];
-    ui.horizontal( | ui |
-    {
-      if ui.color_edit_button_rgba_unmultiplied( &mut color_schema ).changed()
-      {
-        material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
-      }
-    });
-    ui.heading( "\"Black\" cells color" );
-    let material = materials.get_mut( &materials_handles.black ).unwrap();
-    let mut color_schema = [ material.color.r(), material.color.g(), material.color.b(), 1.0 ];
-    ui.horizontal( | ui |
-      {
-        if ui.color_edit_button_rgba_unmultiplied( &mut color_schema ).changed()
-        {
-          material.color = Color::rgb( color_schema[ 0 ],color_schema[ 1 ], color_schema[ 2 ] );
-        }
-      });
-  });
+  } );
 }
 
 #[ derive( Component ) ]
@@ -343,6 +302,8 @@ fn highlight_cells
 {
   let cell = controls::cell_number( &windows.get_primary().unwrap(), &q_camera.single() );
 
+  highlight_legal_moves( &selected_cell, &mut highlight, &game );
+
   if let Some( cell ) = cell
   {
     let x = cell.x as u8;
@@ -358,12 +319,44 @@ fn highlight_cells
     highlight.highlight( ( x, y ), color );
   }
 
-
   match selected_cell.single()
   {
     Selection::EmptyCell( x, y ) | Selection::Piece( x, y ) => highlight.highlight( ( *x, *y ), Color::rgba( 0.0, 1.0, 0.0, 1.0 ) ),
     Selection::None => {}
   }
+}
+
+fn index_to_pos( index : u8 ) -> ( u8, u8 )
+{
+  let y = index / 8;
+  ( index - 8 * y, y )
+}
+
+///
+/// Highlight legal moves
+///
+
+fn highlight_legal_moves
+(
+  selected_cell : &Query< &Selection >,
+  highlight : &mut ResMut< highlight::Highlight >,
+  game : &Res< core::Game >
+)
+{
+  if let Selection::Piece( x, y ) = selected_cell.single()
+  {
+    game.moves_list().iter()
+    .filter( | mv |  mv.get_src_u8() == 8 * y + x )
+    .for_each( | mv |
+    {
+      let color = if mv.is_capture()
+      { Color::rgba( 1.0, 0.5, 0.0, 1.0 ) }
+      else
+      { Color::rgba( 1.0, 1.0, 0.0, 1.0 ) };
+
+      highlight.highlight( index_to_pos( mv.get_dest_u8() ), color );
+    });
+  };
 }
 
 // ///
@@ -429,15 +422,22 @@ fn main()
     .. Default::default()
   } );
   app.add_plugin( EguiPlugin );
-  app.add_system( egui_setup );
+  app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( egui_setup ) );
   app.add_system( gamma_change );
+  app.add_system( sound_control );
   app.add_state( GameState::Init );
+  /* main menu */
+  app.add_system_set( SystemSet::on_update( GameState::MainMenu ).with_system( main_menu::setup_main_menu ) );
+  /* settings menu */
+  app.add_system_set( SystemSet::on_update( GameState::Settings ).with_system( settings::settings_menu ) );
+  /* pause menu */
+  app.add_system_set( SystemSet::on_update( GameState::Pause ).with_system( pause_menu::setup_pause_menu ) );
   // /* timer */
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( timer_system ) );
   app.add_system_set( SystemSet::on_update( GameState::Init ).with_system( init_system ) ); // qqq use system with timer
   /* setup core */
   app.add_system_set( SystemSet::on_update( GameState::GameNew ).with_system( core_setup ) );
-  app.add_system_set( SystemSet::on_update( GameState::GameStart ).with_system( piece::draw_pieces ) );
+  app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( piece::draw_pieces ) );
   /* setup board */
   app.add_startup_system( setup );
   app.add_startup_stage( "board_setup", SystemStage::single( board_setup ) );
@@ -453,17 +453,27 @@ fn main()
   /* highlighting */
   app.add_system_set
   (
-    SystemSet::on_update( GameState::GameStart )
+    SystemSet::on_update( GameState::GamePlaying )
     .with_system( controls::handle_click )
+    .with_system( controls::handle_keyboard )
     .with_system( highlight_cells )
   );
   app.add_plugin( highlight::HighlightPlugin
   {
     clear_on_each_frame : true,
-  });
+  } );
 
-  /* escape on exit */
-  app.add_system( close_on_esc );
+  /* Multiplayer */
+  app.add_system_set
+  (
+    SystemSet::on_update( GameState::MultiplayerGame( Multiplayer::ConnectingToServer ) )
+      .with_system( multiplayer::menu::connect_menu )
+  );
+  app.add_system_set
+  (
+    SystemSet::on_enter( GameState::MultiplayerGame( Multiplayer::ConnectingToServer ) )
+      .with_system( multiplayer::menu::setup )
+  );
 
   // app.add_system( color_change );
 

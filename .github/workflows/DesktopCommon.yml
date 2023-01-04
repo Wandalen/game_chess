@@ -37,6 +37,15 @@ jobs:
       - name: Install libraries
         if: ${{ matrix.os == 'ubuntu' }}
         run: sudo apt install libudev-dev libalsa-ocaml-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
+      - name: Install protobuf
+        if: ${{ matrix.os == 'ubuntu' }}
+        run: sudo apt install protobuf-compiler
+      - name: Install protobuf  
+        if: ${{ matrix.os == 'macos' }}
+        run: brew install protobuf
+      - name: Install protobuf  
+        if: ${{ matrix.os == 'windows' }}
+        run: choco install -y protoc 
       - uses: actions/checkout@v2
       # - uses: actions/cache@v2
       #   with:

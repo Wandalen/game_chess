@@ -61,7 +61,7 @@ fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMaterial
   {
     black : materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() ),
     white : materials.add( Color::rgb( 1.0, 1.0, 1.0 ).into() ),
-  });
+  } );
 }
 
 ///

@@ -74,15 +74,15 @@ private = true
 install_script = "rustup target add wasm32-unknown-unknown"
 command = "cargo"
 args = [
-  "+nightly",
+  #"+nightly",
   "build",
   "--manifest-path", "${CARGO_MAKE_CURRENT_TASK_INITIAL_MAKEFILE_DIRECTORY}/../../Cargo.toml",
   "--bin", "game_web",
   "--target", "wasm32-unknown-unknown",
   "--features", "web",
   "--profile", "release_web",
-  "-Z", "build-std=std,panic_abort", # rebuild std
-  "-Z", "build-std-features=panic_immediate_abort", # rebuild std with abort, without unwind
+  #"-Z", "build-std=std,panic_abort", # rebuild std
+  #"-Z", "build-std-features=panic_immediate_abort", # rebuild std with abort, without unwind
 ]
 
 [tasks.web_wasm_rebuild_debug]

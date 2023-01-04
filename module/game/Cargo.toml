@@ -43,9 +43,11 @@ path = "./src/main.rs"
 
 [dependencies]
 game_chess_core = { package = "game_chess_core", version = "~0.0", path = "../core" }
-bevy_egui = "~0.15"
+game_chess_client = { path = "../client" }
+bevy_egui = "0.16.1"
 bevy_reflect = "~0.8"
 bevy_ecs = "~0.8"
+futures-channel = "0.3.24"
 
 bevy_kira_audio = { version = "0.12.0", features = [ "mp3" ] }
 bevy_interact_2d = { git = "https://github.com/dmvict/bevy_interact_2d.git", branch = "bevy_08" }

@@ -10,6 +10,7 @@ use game_chess_core::
   UCI,
   Game,
 };
+use crate::GameState;
 
 ///
 /// Resource which stores selected cell
@@ -48,44 +49,55 @@ pub fn handle_click
 
   let mut selected_cell = selected_cell.single_mut();
   let selected_cell = selected_cell.as_mut();
-  if let Some( cell ) = cell
-  {
-    let x = cell.x as u8;
-    let y = cell.y as u8;
+  cell.map( | c | select_cell( &c, selected_cell, game ) );
+}
 
-    match selected_cell
+fn select_cell( cell : &Vec2, selected_cell : &mut Selection, mut game : ResMut< Game > )
+{
+  let ( x, y ) = ( cell.x as u8, cell.y as u8 );
+  match selected_cell
+  {
+    // if piece selected
+    Selection::Piece( selected_x, selected_y ) =>
     {
-      Selection::EmptyCell( selected_x, selected_y ) =>
+      if let Some( uci ) = uci( ( *selected_x, *selected_y ), ( x, y ) )
       {
-        if *selected_x == x && *selected_y == y
+        // try to make move to cell
+        if game.make_move( uci )
         {
+          game.make_move_ai();
           *selected_cell = Selection::None;
           return;
         }
-      },
-      Selection::Piece( selected_x, selected_y ) =>
-      {
-        if let Some( uci ) = uci( ( *selected_x, *selected_y ), ( x, y ) )
-        {
-          if game.make_move( uci )
-          {
-            game.make_move_ai();
-            *selected_cell = Selection::None;
-          }
-        }
-        return;
-      },
-      Selection::None => {},
-    }
+      }
+    },
+    _ => {},
+  }
+  // add to selection current cell
+  *selected_cell = if game.piece_at( calc_square( x, y ) ) == Piece::None
+  {
+    Selection::EmptyCell( x, y )
+  }
+  else
+  {
+    Selection::Piece( x, y )
+  };
+}
 
-    *selected_cell = if game.piece_at( calc_square( x, y ) ) == Piece::None
-    {
-      Selection::EmptyCell( x, y )
-    }
-    else
-    {
-      Selection::Piece( x, y )
-    };
+///
+/// System that handles keyboard input.
+///
+pub fn handle_keyboard
+(
+  mut keys : ResMut< Input< KeyCode > >,
+  mut app_state : ResMut< State< GameState > >,
+)
+{
+  if keys.just_pressed( KeyCode::Escape )
+  {
+    app_state.set( GameState::Pause ).unwrap();
+    // Not doing this can cause issues https://github.com/bevyengine/bevy/issues/1700.
+    keys.reset( KeyCode::Escape );
   }
 }
 

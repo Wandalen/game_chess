@@ -1,4 +1,4 @@
-#![warn(missing_docs)]
+#![ warn( missing_docs ) ]
 
 //! Simpler drawing of chess board.
 
@@ -76,7 +76,7 @@ fn board_setup
         mesh : meshes.add( shape::Quad::new( Vec2::new( side, side ) ).into() ).into(),
         transform,
         ..Default::default()
-      });
+      } );
     }
   }
 }
