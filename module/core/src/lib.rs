@@ -584,19 +584,7 @@ impl Game
 
   pub fn make_move( &mut self, uci_move : UCI ) -> bool
   {
-    let index = self.get_history_idx();
-
-    if index != 0
-    {
-      let current_history = self.history.get( index - 1 );
-
-      if let Some( history ) = current_history
-      {
-        self.board = Board::from_fen( &history.fen );
-      }
-      self.history.split_off( index );
-      self.set_history_idx( 0 );
-    }
+    self.check_history_idx();
 
     let new_board = self.board.make_move( uci_move );
     let success = new_board.is_some();
@@ -614,6 +602,26 @@ impl Game
     }
 
     success
+  }
+
+  ///
+  /// Check history index subroutine
+  ///
+  fn check_history_idx( &mut self )
+  {
+    let index = self.get_history_idx();
+
+    if index != 0
+    {
+      let current_history = self.history.get( index - 1 );
+
+      if let Some( history ) = current_history
+      {
+        self.board = Board::from_fen( &history.fen );
+      }
+      self.history.split_off( index );
+      self.set_history_idx( 0 );
+    }
   }
 
   ///

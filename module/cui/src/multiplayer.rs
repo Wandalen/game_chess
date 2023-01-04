@@ -1,6 +1,5 @@
-use super::Client;
-use super::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove };
-use tonic::transport::channel::Channel;
+use game_chess_client::Client;
+use game_chess_client::{ GameId, CreateGame, AcceptGame, GamePlayer, Msg, GameMove, Board };
 
 ///
 /// Simple Session for Online MultiplayerGame
