@@ -2,10 +2,11 @@
   cargo test --test online_multiplayer
   cargo test --test online_multiplayer -- --nocapture
 */
-
 use tonic::transport::Server;
+use multiplayer::generated::chess::chess_server::ChessServer;
 use game_chess_server::rpc_server::ChessRpcServer;
-use game_chess_client::*;
+use game_chess_client::{ CreateGame, AcceptGame, GamePlayer, Msg, };
+
 
 async fn run_test_server( addr : &str )
 {
@@ -17,7 +18,7 @@ async fn run_test_server( addr : &str )
   tokio::spawn( async move 
   {
     Server::builder()
-      .add_service( chess_server::ChessServer::new( chess_grpc_server ) )
+      .add_service( ChessServer::new( chess_grpc_server ) )
       .serve( addr )
       .await
       .unwrap();
@@ -31,14 +32,14 @@ async fn online_game_new()
 
   let online_game = CreateGame 
   {
-    player : Some( game_chess_client::GamePlayer 
+    player : Some( GamePlayer 
     {
       player_id : "01".to_string(),
       game_id : "01".to_string(),
     } ),
   };
 
-  let mut chess_client = chess_client::ChessClient::connect( "http://localhost:3001" ).await.unwrap();
+  let mut chess_client = game_chess_client::Client::connect( "http://localhost:3001" ).await.unwrap();
   let resp = chess_client.push_game_create( online_game ).await;
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
@@ -59,7 +60,7 @@ async fn online_game_join()
     } ),
   };
 
-  let mut chess_client = chess_client::ChessClient::connect( "http://localhost:3002" ).await.unwrap();
+  let mut chess_client = game_chess_client::Client::connect( "http://localhost:3002" ).await.unwrap();
   let resp = chess_client.push_game_create( online_game ).await;
   let game_id = resp.unwrap().get_ref().game_id.to_string();
 
@@ -84,7 +85,7 @@ async fn online_game_send_receive_msg()
 {
   run_test_server( "0.0.0.0:3003" ).await;
 
-  let mut chess_client = chess_client::ChessClient::connect( "http://localhost:3003" ).await.unwrap();
+  let mut chess_client = game_chess_client::Client::connect( "http://localhost:3003" ).await.unwrap();
   let player = Some( GamePlayer 
   {
     player_id : "01".to_owned(),

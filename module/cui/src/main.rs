@@ -90,7 +90,7 @@ pub async fn main()
 
   let mut session = multiplayer::ToySession::init();
 
-  let remote_rpc = chess_client::ChessClient::connect( "http://127.0.0.1:1313" ).await;
+  let remote_rpc = game_chess_client::Client::connect( "http://127.0.0.1:1313" ).await;
   let mut remote_rpc = if let Ok( remote ) = remote_rpc { Some( remote ) } else { None };
 
   command_help();
@@ -165,7 +165,7 @@ pub fn command_help()
   println!( ".quit          => Exit from the game" );
   println!( ".help          => Print this help" );
 
-  multiplayer::command_help();
+  //multiplayer::command_help();
 }
 
 ///
