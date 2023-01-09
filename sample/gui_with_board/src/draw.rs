@@ -188,8 +188,8 @@ pub fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh
   for ( mesh_size, handle ) in q.iter()
   {
     let mesh = meshes.get_mut( &handle.0 ).unwrap();
-    let width = ( mesh_size.width / DESK_WIDTH as f32 * width as f32 ) * 0.9;
-    let height = ( mesh_size.height / DESK_HEIGHT as f32 * height as f32 ) * 0.9;
+    let width = ( mesh_size.width / DESK_WIDTH as f32 * width ) * 0.9;
+    let height = ( mesh_size.height / DESK_HEIGHT as f32 * height ) * 0.9;
     *mesh = Mesh::from( shape::Quad::new( Vec2::new( width, height ) ) );
 
   }
@@ -216,8 +216,8 @@ pub fn position_translation( windows : Res< Windows >, mut q : Query< ( &Positio
   {
     transform.translation = Vec3::new
     (
-      0.15 * width + ( convert( pos.x as f32, width as f32, DESK_WIDTH as f32 ) - pos.x as f32 * 0.02 * width ),
-      0.1 * height + ( convert( pos.y as f32, height as f32, DESK_HEIGHT as f32 ) - pos.y as f32 * 0.02 * height ),
+      0.15 * width + ( convert( pos.x as f32, width, DESK_WIDTH as f32 ) - pos.x as f32 * 0.02 * width ),
+      0.1 * height + ( convert( pos.y as f32, height, DESK_HEIGHT as f32 ) - pos.y as f32 * 0.02 * height ),
       0.0,
     );
   }

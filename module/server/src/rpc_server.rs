@@ -148,13 +148,13 @@ impl Chess for ChessRpcServer
           {
             let other_player = &game.players[ 1 ].player_id;
             let err_msg = format!( "Oops! Game ID: {input_game_id} is already joined by {other_player}" );
-            return Err( Status::not_found( &err_msg ) );
+            return Err( Status::not_found( err_msg ) );
           }
         }
         None =>
         {
           let err_msg = format!( "No game found by the Game ID: {input_game_id}" );
-          return Err( Status::not_found( &err_msg ) );
+          return Err( Status::not_found( err_msg ) );
         }
       };
 
@@ -193,7 +193,7 @@ impl Chess for ChessRpcServer
         None =>
         {
           let err_msg = format!( "No game found by the Game ID: {game_id}" );
-          return Err( Status::not_found( &err_msg ) );
+          return Err( Status::not_found( err_msg ) );
         }
       };
 

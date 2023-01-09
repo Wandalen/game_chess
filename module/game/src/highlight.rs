@@ -165,13 +165,14 @@ fn apply_requests
       HighlightCommand::Clear { pos } =>
       {
         let idx = pos_to_index( pos );
-        if data[ idx ].1 == None
+        let ( ent, color ) = &mut data[idx];
+
+        if color.take().is_none() 
         {
           continue;
         }
-        data[ idx ].1 = None;
 
-        let ( _, mut visible ) = query.get_mut( data[ idx ].0 ).unwrap();
+        let ( _, mut visible ) = query.get_mut( *ent ).unwrap();
         visible.is_visible = false;
       }
 
@@ -179,11 +180,10 @@ fn apply_requests
       {
         for ( ent, color ) in &mut *data
         {
-          if *color == None
+          if color.take().is_none() 
           {
             continue;
           }
-          *color = None;
 
           let ( _, mut visible ) = query.get_mut( *ent ).unwrap();
           visible.is_visible = false;

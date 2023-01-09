@@ -55,7 +55,7 @@ impl Timer
   pub fn pause( &mut self )
   {
     // if already paused - second one will be ignored
-    if let None = self.saved_time
+    if self.saved_time.is_none()
     {
       let time_now = get_unix_timestamp( None );
       self.saved_time = Some( time_now - self.timestamp );
@@ -88,7 +88,7 @@ impl Timer
     // if None - player loss
     .checked_sub( diff )
     // if player not lose give bonuses
-    .and_then( | time | Some( time + self.time_bonuses ) )
+    .map( | time | time + self.time_bonuses )
     .unwrap_or_default();
     self.timestamp = time_now;
 

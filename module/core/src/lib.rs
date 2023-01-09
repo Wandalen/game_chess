@@ -700,7 +700,7 @@ impl Game
       return GameStatus::TimeIsOut;
     }
 
-    return GameStatus::Continuing;
+    GameStatus::Continuing
   }
 
   ///
@@ -851,7 +851,7 @@ pub fn list_saved_games() -> Option< Vec< std::path::PathBuf > >
       game_list.push( path.unwrap().path() );
     }
 
-    return Some( game_list );
+    Some( game_list )
   }
   else 
   {
