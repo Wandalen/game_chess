@@ -172,7 +172,7 @@ fn segment_spawn( commands : &mut Commands, meshes : &mut ResMut< Assets< Mesh >
 
 pub fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh > >, q : Query< ( &Size, &Mesh2dHandle ) > )
 {
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let mut width = window.width();
   let mut height = window.height();
 
@@ -201,7 +201,7 @@ pub fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh
 
 pub fn position_translation( windows : Res< Windows >, mut q : Query< ( &Position, &mut Transform ) > )
 {
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let mut width = window.width() - SIDE_PANEL_WIDTH;
   let mut height = window.height();
   if width > height

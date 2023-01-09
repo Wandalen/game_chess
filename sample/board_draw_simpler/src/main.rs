@@ -42,7 +42,7 @@ fn board_setup
   let board_dim_f = ( board_dim.0 as f32, board_dim.1 as f32 );
   let board_margin_f = ( board_margin.0 as f32, board_margin.1 as f32 );
 
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let size_in_pixels = ( window.width(), window.height() );
   let side = if size_in_pixels.0 < size_in_pixels.1
   {
