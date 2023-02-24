@@ -76,7 +76,7 @@ Commands minimal
 
 use game_chess_core::*;
 //#[ allow( unused_imports ) ]
-use game_chess_client::*;
+//use game_chess_client::*;
 mod multiplayer;
 
 ///

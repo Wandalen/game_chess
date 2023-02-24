@@ -608,6 +608,7 @@ impl Game
   ///
   /// Check history index subroutine
   ///
+  #[ allow( unused ) ]
   fn check_history_idx( &mut self )
   {
     let index = self.get_history_idx();
