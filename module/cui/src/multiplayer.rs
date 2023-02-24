@@ -32,7 +32,7 @@ impl ToySession
 
   fn expired( &self ) -> bool
   {
-    self.player_id == None || self.game_id == None
+    self.player_id.is_none() || self.game_id.is_none()
   }
 
   fn update( &mut self )
@@ -325,6 +325,6 @@ fn clear_screen()
 {
   if std::process::Command::new( "clear" ).status().is_err()
   {
-    std::process::Command::new( "cmd" ).args( &[ "/c", "cls" ] ).status().ok();
+    std::process::Command::new( "cmd" ).args( [ "/c", "cls" ] ).status().ok();
   }
 }

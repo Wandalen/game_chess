@@ -231,7 +231,7 @@ fn timer_setup() -> Option< timer::Timer >
   {
     "yes" | "y" =>
     {
-      println!( "" );
+      println!();
       println!( "[1] => 10min + 50s" );
       println!( "[2] => 5min + 3s" );
       println!( "[3] => 3min" );
@@ -275,7 +275,7 @@ pub fn command_game_new() -> Game
 {
   let mut game = Game::default();
   game.timer = timer_setup();
-  println!( "" );
+  println!();
   game.board_print();
   game.timers_print();
   println!( "Turn of {}", game.current_turn() );
@@ -402,13 +402,10 @@ pub fn command_list_saved_games()
 
 pub fn command_move( game : &mut Option< Game > )
 {
-  if game.is_none()
-  {
+  let Some(game) = game else {
     println!( "Create a game first. Use command: .game.new" );
     return;
-  }
-
-  let game = game.as_mut().unwrap();
+  };
 
   let uci_move = wca::input::ask( "Provide move in UCI format, for example 'a2a4'" );
   if game.make_move( UCI( uci_move.clone() ) )
@@ -472,19 +469,14 @@ pub fn command_move_redo( game : &mut Option< Game > )
 
 pub fn command_random_move( game : &mut Option< Game > )
 {
-  if game.is_none()
-  {
+  let Some(game) = game else {
     println!( "Create a game first. Use command: .game.new" );
     return;
-  }
+  };
 
-  let game = game.as_mut().unwrap();
-  if game.make_random_move()
+  if game.make_random_move() && game.has_ai()
   {
-    if game.has_ai()
-    {
-      game.make_move_ai();
-    }
+    game.make_move_ai();
   }
 
   println!();

@@ -9,7 +9,6 @@ use bevy::prelude::*;
 use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
-use bevy::math::Vec4Swizzles;
 use game_chess_core as core;
 
 pub mod camera;
@@ -300,7 +299,7 @@ fn highlight_cells
   game : Res< core::Game >,
 )
 {
-  let cell = controls::cell_number( &windows.get_primary().unwrap(), &q_camera.single() );
+  let cell = controls::cell_number( windows.primary(), q_camera.single() );
 
   highlight_legal_moves( &selected_cell, &mut highlight, &game );
 

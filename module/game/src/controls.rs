@@ -37,7 +37,7 @@ pub fn handle_click
   mouse_button_input : Res< Input< MouseButton > >,
   q_camera : Query< &Camera >,
   mut selected_cell : Query< &mut Selection >,
-  mut game : ResMut< Game >,
+  game : ResMut< Game >,
 )
 {
   if !mouse_button_input.just_released( MouseButton::Left )
@@ -45,7 +45,7 @@ pub fn handle_click
     return;
   }
 
-  let cell = cell_number( &windows.get_primary().unwrap(), &q_camera.single() );
+  let cell = cell_number( windows.primary(), q_camera.single() );
 
   let mut selected_cell = selected_cell.single_mut();
   let selected_cell = selected_cell.as_mut();
