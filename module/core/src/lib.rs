@@ -608,7 +608,6 @@ impl Game
   ///
   /// Check history index subroutine
   ///
-  #[ allow( unused ) ]
   fn check_history_idx( &mut self )
   {
     let index = self.get_history_idx();
@@ -621,7 +620,7 @@ impl Game
       {
         self.board = Board::from_fen( &history.fen );
       }
-      self.history.split_off( index );
+      self.history.truncate( index );
       self.set_history_idx( 0 );
     }
   }
