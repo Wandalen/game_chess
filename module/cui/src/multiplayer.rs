@@ -45,7 +45,6 @@ impl ToySession
 ///
 /// Handler of multiplayer command `.help`.
 ///
-#[ allow( dead_code ) ]
 pub fn command_help()
 {
   println!( "\nMultiplayer Commands:\n" );

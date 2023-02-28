@@ -169,7 +169,7 @@ pub fn command_help()
   println!( ".quit          => Exit from the game" );
   println!( ".help          => Print this help" );
 
-  // multiplayer::command_help();
+  multiplayer::command_help();
 }
 
 ///
