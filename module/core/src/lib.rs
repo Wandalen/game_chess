@@ -620,7 +620,7 @@ impl Game
       {
         self.board = Board::from_fen( &history.fen );
       }
-      self.history.split_off( index );
+      self.history.truncate( index );
       self.set_history_idx( 0 );
     }
   }

@@ -92,9 +92,9 @@ fn test_make_random_move()
 fn test_list_saved_games()
 {
   use std::fs; 
-  let mut game = Game::default();
+  let game = Game::default();
   assert_eq!( list_saved_games(), None );
-  game.save();
+  game.save().unwrap();
   assert!( list_saved_games().is_some() );
   let list = list_saved_games().unwrap();
   println!( "{}", list[ 0 ].display() );

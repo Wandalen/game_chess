@@ -76,7 +76,7 @@ Commands minimal
 
 use game_chess_core::*;
 //#[ allow( unused_imports ) ]
-use game_chess_client::*;
+//use game_chess_client::*;
 mod multiplayer;
 
 ///
@@ -169,7 +169,7 @@ pub fn command_help()
   println!( ".quit          => Exit from the game" );
   println!( ".help          => Print this help" );
 
-  // multiplayer::command_help();
+  multiplayer::command_help();
 }
 
 ///

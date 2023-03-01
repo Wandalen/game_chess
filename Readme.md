@@ -1,6 +1,6 @@
 # game_chess
 
-[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://img.shields.io/github/workflow/status/Wandalen/game_chess/DesktopPush?label=Desktop&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml) [![web](https://img.shields.io/github/workflow/status/Wandalen/game_chess/WebPush?label=Web&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml) [![beta](https://img.shields.io/github/workflow/status/Wandalen/game_chess/Beta?label=Beta&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml)
+[![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://github.com/emersion/stability-badges#experimental) [![desktop](https://img.shields.io/github/actions/workflow/status/Wandalen/game_chess/DesktopPush.yml?label=Desktop&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/DesktopPush.yml) [![web](https://img.shields.io/github/actions/workflow/status/Wandalen/game_chess/WebPush.yml?label=Web&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/WebPush.yml) [![beta](https://img.shields.io/github/actions/workflow/status/Wandalen/game_chess/Beta.yml?label=&branch=beta&logo=github)](https://github.com/Wandalen/game_chess/actions/workflows/Beta.yml)
 
 ## Desktop Prerequisites
 
