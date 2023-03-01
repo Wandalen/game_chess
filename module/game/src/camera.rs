@@ -28,7 +28,7 @@ use bevy::
 ///
 
 
-#[ derive( Component, Debug, Clone, Reflect ) ]
+#[ derive( Component, Debug, Clone, reflect_value ) ]
 #[ reflect( Component ) ]
 pub struct ChessProjection
 {
