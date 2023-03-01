@@ -507,6 +507,8 @@ pub struct Game
   ///
   pub timer : Option< timer::Timer >,
   history : Vec< HistoryEntry >,
+  history_idx : usize,
+ 
   ///
   /// AI Engine responsible for finding best moves
   ///
@@ -529,6 +531,7 @@ impl Game
       board : Board::default(),
       timer : None,
       history : Vec::new(),
+      history_idx : 0,
       is_forfeited : false,
       ai : None,
       #[ cfg( not( target_arch = "wasm32" ) ) ]
@@ -549,6 +552,7 @@ impl Game
       board : Board::from_fen( &Fen::from( fen.to_owned() ) ),
       timer : None,
       history : Vec::new(),
+      history_idx : 0,
       is_forfeited : false,
       ai : None,
 
@@ -581,6 +585,8 @@ impl Game
 
   pub fn make_move( &mut self, uci_move : UCI ) -> bool
   {
+    self.check_history_idx();
+
     let new_board = self.board.make_move( uci_move );
     let success = new_board.is_some();
     if success
@@ -598,6 +604,123 @@ impl Game
 
     success
   }
+
+  ///
+  /// Check history index subroutine
+  ///
+  fn check_history_idx( &mut self )
+  {
+    let index = self.get_history_idx();
+
+    if index != 0
+    {
+      let current_history = self.history.get( index - 1 );
+
+      if let Some( history ) = current_history
+      {
+        self.board = Board::from_fen( &history.fen );
+      }
+      self.history.truncate( index );
+      self.set_history_idx( 0 );
+    }
+  }
+
+  ///
+  /// Makes move undo
+  ///
+  pub fn move_undo( &mut self ) 
+  {
+    if self.history.is_empty()
+    {
+      println!( "No game history" );
+      return;
+    }
+    
+    if self.get_history_idx() == 0 && self.history.len() > 1
+    {
+      self.set_history_idx( self.history.len() - 1 );
+    }
+
+    let index = self.get_history_idx();
+   
+    if index > 0
+    {
+      let prev_idx = index - 1;
+      let prev_history = self.history.get( prev_idx );
+
+      if let Some( history ) = prev_history
+      {
+        let board = Board::from_fen( &history.fen );
+        board.print();
+      }
+
+      if prev_idx != 0
+      {
+        self.set_history_idx( prev_idx );
+      }
+    }
+    else
+    {
+      println!( "No game history" );
+      return;
+    }
+  }
+
+  ///
+  /// Makes move redo
+  ///
+  pub fn move_redo( &mut self ) 
+  {
+    if self.history.is_empty() 
+    {
+      println!( "No game history" );
+      return;
+    }
+
+    let index = self.get_history_idx();
+
+    if index > 0
+    {
+      let next_idx = index + 1;
+      let next_history = self.history.get( next_idx );
+
+      if let Some( history ) = next_history
+      {
+        let board = Board::from_fen( &history.fen );
+        board.print();
+      }
+
+      self.set_history_idx( next_idx );
+    }
+    else 
+    {
+      println!( "Can't move redo" );  
+    }  
+  }
+
+  ///
+  /// Set history index
+  /// 
+  pub fn set_history_idx( &mut self, idx: usize ) -> bool
+  {
+    if idx <= self.history.len() - 1
+    {
+      self.history_idx = idx;
+      return true;
+    }
+    else
+    {
+      return false;    
+    }
+  }
+
+  ///
+  /// Get history index
+  /// 
+  pub fn get_history_idx( &self ) -> usize
+  {
+    self.history_idx
+  } 
 
   ///
   /// Make a random move on the board.
@@ -700,7 +823,7 @@ impl Game
       return GameStatus::TimeIsOut;
     }
 
-    return GameStatus::Continuing;
+    GameStatus::Continuing
   }
 
   ///
@@ -851,7 +974,7 @@ pub fn list_saved_games() -> Option< Vec< std::path::PathBuf > >
       game_list.push( path.unwrap().path() );
     }
 
-    return Some( game_list );
+    Some( game_list )
   }
   else 
   {

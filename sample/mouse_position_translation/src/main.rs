@@ -52,7 +52,7 @@ fn cursor_system( window : Res< Windows >, q_camera : Query< &Transform, With< M
 
   if let Some( pos ) = primary_window.cursor_position()
   {
-    let size = Vec2::new( primary_window.width() as f32, primary_window.height() as f32 );
+    let size = Vec2::new( primary_window.width(), primary_window.height() );
 
     // mouse coordinates related to center
     let p = pos - size / 2.0;

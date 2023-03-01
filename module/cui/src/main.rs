@@ -75,8 +75,8 @@ Commands minimal
 */
 
 use game_chess_core::*;
-#[ allow( unused_imports ) ]
-use game_chess_client::*;
+//#[ allow( unused_imports ) ]
+//use game_chess_client::*;
 mod multiplayer;
 
 ///
@@ -114,6 +114,8 @@ pub async fn main()
       ".games.list" => command_list_saved_games(),
       ".game.from.fen" => game = Some( command_game_from_fen() ),
       ".move" | ".m" => command_move( &mut game ),
+      ".move.undo" => command_move_undo( &mut game ),
+      ".move.redo" => command_move_redo( &mut game ),
       ".move.random" => command_random_move( &mut game ),
       ".gg" => command_forfeit( &mut game ),
       ".moves.list" => command_moves_list( &game ),
@@ -153,6 +155,8 @@ pub fn command_help()
   println!( ".games.list    => Print list saved games" );
   println!( ".game.from.fen => Load game from FEN" );
   println!( ".move          => Make a move by providing move in UCI format: \"a2a4\" " );
+  println!( ".move.undo     => Move undo" );
+  println!( ".move.redo     => Move redo" );
   println!( ".move.random   => Make a random move" );
   println!( ".gg            => Forfeit the game " );
   println!( ".moves.list    => Print all available moves in UCI format: \"a2a4\" " );
@@ -165,7 +169,7 @@ pub fn command_help()
   println!( ".quit          => Exit from the game" );
   println!( ".help          => Print this help" );
 
-  //multiplayer::command_help();
+  multiplayer::command_help();
 }
 
 ///
@@ -227,7 +231,7 @@ fn timer_setup() -> Option< timer::Timer >
   {
     "yes" | "y" =>
     {
-      println!( "" );
+      println!();
       println!( "[1] => 10min + 50s" );
       println!( "[2] => 5min + 3s" );
       println!( "[3] => 3min" );
@@ -271,7 +275,7 @@ pub fn command_game_new() -> Game
 {
   let mut game = Game::default();
   game.timer = timer_setup();
-  println!( "" );
+  println!();
   game.board_print();
   game.timers_print();
   println!( "Turn of {}", game.current_turn() );
@@ -398,13 +402,10 @@ pub fn command_list_saved_games()
 
 pub fn command_move( game : &mut Option< Game > )
 {
-  if game.is_none()
-  {
+  let Some(game) = game else {
     println!( "Create a game first. Use command: .game.new" );
     return;
-  }
-
-  let game = game.as_mut().unwrap();
+  };
 
   let uci_move = wca::input::ask( "Provide move in UCI format, for example 'a2a4'" );
   if game.make_move( UCI( uci_move.clone() ) )
@@ -426,10 +427,10 @@ pub fn command_move( game : &mut Option< Game > )
 }
 
 ///
-/// Command make a random move
-///
+/// Command move undo
+/// 
 
-pub fn command_random_move( game : &mut Option< Game > )
+pub fn command_move_undo( game : &mut Option< Game > )
 {
   if game.is_none()
   {
@@ -438,12 +439,44 @@ pub fn command_random_move( game : &mut Option< Game > )
   }
 
   let game = game.as_mut().unwrap();
-  if game.make_random_move()
+  game.move_undo();
+
+  // println!();
+  // game.board_print();
+  // game.timers_print();
+  // println!( "Turn of {}", game.current_turn() );
+}
+
+///
+/// Command move redo
+/// 
+
+pub fn command_move_redo( game : &mut Option< Game > )
+{
+  if game.is_none()
   {
-    if game.has_ai()
-    {
-      game.make_move_ai();
-    }
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  }
+
+  let game = game.as_mut().unwrap();
+  game.move_redo();
+}
+
+///
+/// Command make a random move
+///
+
+pub fn command_random_move( game : &mut Option< Game > )
+{
+  let Some(game) = game else {
+    println!( "Create a game first. Use command: .game.new" );
+    return;
+  };
+
+  if game.make_random_move() && game.has_ai()
+  {
+    game.make_move_ai();
   }
 
   println!();
