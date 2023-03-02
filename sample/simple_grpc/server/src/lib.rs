@@ -1,2 +1,2 @@
-#[cfg(not(rustfmt))]
+#[ cfg( not( rustfmt ) ) ]
 pub mod generated;

@@ -32,7 +32,7 @@ pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMate
   {
     black : materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() ),
     white : materials.add( Color::rgb( 1.0, 1.0, 1.0 ).into() ),
-  });
+  } );
   // add resource for combobox
   commands.insert_resource( CurrentSide( Side::White ) );
 }
@@ -60,8 +60,8 @@ pub fn setup_egui( mut egui_context : ResMut< EguiContext >, mut side : ResMut< 
     {
       ui.selectable_value( &mut side.0, Side::White, "White" );
       ui.selectable_value( &mut side.0, Side::Black, "Black" );
-    })
-  });
+    } )
+  } );
 }
 
 //
@@ -144,7 +144,7 @@ pub fn spawn_board
         },
         0.95,
       );
-      segments.0.push(seg);
+      segments.0.push( seg );
     }
   }
 }
@@ -172,7 +172,7 @@ fn segment_spawn( commands : &mut Commands, meshes : &mut ResMut< Assets< Mesh >
 
 pub fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh > >, q : Query< ( &Size, &Mesh2dHandle ) > )
 {
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let mut width = window.width();
   let mut height = window.height();
 
@@ -188,8 +188,8 @@ pub fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh
   for ( mesh_size, handle ) in q.iter()
   {
     let mesh = meshes.get_mut( &handle.0 ).unwrap();
-    let width = ( mesh_size.width / DESK_WIDTH as f32 * width as f32 ) * 0.9;
-    let height = ( mesh_size.height / DESK_HEIGHT as f32 * height as f32 ) * 0.9;
+    let width = ( mesh_size.width / DESK_WIDTH as f32 * width ) * 0.9;
+    let height = ( mesh_size.height / DESK_HEIGHT as f32 * height ) * 0.9;
     *mesh = Mesh::from( shape::Quad::new( Vec2::new( width, height ) ) );
 
   }
@@ -201,7 +201,7 @@ pub fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh
 
 pub fn position_translation( windows : Res< Windows >, mut q : Query< ( &Position, &mut Transform ) > )
 {
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let mut width = window.width() - SIDE_PANEL_WIDTH;
   let mut height = window.height();
   if width > height
@@ -216,8 +216,8 @@ pub fn position_translation( windows : Res< Windows >, mut q : Query< ( &Positio
   {
     transform.translation = Vec3::new
     (
-      0.15 * width + ( convert( pos.x as f32, width as f32, DESK_WIDTH as f32 ) - pos.x as f32 * 0.02 * width ),
-      0.1 * height + ( convert(pos.y as f32, height as f32, DESK_HEIGHT as f32) - pos.y as f32 * 0.02 * height ),
+      0.15 * width + ( convert( pos.x as f32, width, DESK_WIDTH as f32 ) - pos.x as f32 * 0.02 * width ),
+      0.1 * height + ( convert( pos.y as f32, height, DESK_HEIGHT as f32 ) - pos.y as f32 * 0.02 * height ),
       0.0,
     );
   }

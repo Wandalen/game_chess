@@ -61,7 +61,7 @@ fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMaterial
   {
     black : materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() ),
     white : materials.add( Color::rgb( 1.0, 1.0, 1.0 ).into() ),
-  });
+  } );
 }
 
 ///
@@ -146,7 +146,7 @@ fn spawn_board( mut commands : Commands, mut meshes : ResMut< Assets< Mesh > >, 
 
 fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh > >, q : Query< ( &Size, &Mesh2dHandle ) > )
 {
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let mut width = window.width();
   let mut height = window.height();
 
@@ -162,8 +162,8 @@ fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh > >
   for ( mesh_size, handle ) in q.iter()
   {
     let mesh = meshes.get_mut( &handle.0 ).unwrap();
-    let width = ( mesh_size.width / DESK_WIDTH as f32 * width as f32 ) * 0.9;
-    let height = ( mesh_size.height / DESK_HEIGHT as f32 * height as f32 ) * 0.9;
+    let width = ( mesh_size.width / DESK_WIDTH as f32 * width ) * 0.9;
+    let height = ( mesh_size.height / DESK_HEIGHT as f32 * height ) * 0.9;
     *mesh = Mesh::from( shape::Quad::new( Vec2::new( width, height ) ) );
 
   }
@@ -175,7 +175,7 @@ fn size_scaling( windows : Res< Windows >, mut meshes : ResMut< Assets< Mesh > >
 
 fn position_translation( windows : Res< Windows >, mut q : Query< ( &Position, &mut Transform ) > )
 {
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let mut width = window.width();
   let mut height = window.height();
   if width > height
@@ -190,8 +190,8 @@ fn position_translation( windows : Res< Windows >, mut q : Query< ( &Position, &
   {
     transform.translation = Vec3::new
     (
-      0.05 * width + ( convert( pos.x as f32, width as f32, DESK_WIDTH as f32 ) - pos.x as f32 * 0.02 * width ),
-      0.1 * height + ( convert( pos.y as f32, height as f32, DESK_HEIGHT as f32 ) - pos.y as f32 * 0.02 * height ),
+      0.05 * width + ( convert( pos.x as f32, width, DESK_WIDTH as f32 ) - pos.x as f32 * 0.02 * width ),
+      0.1 * height + ( convert( pos.y as f32, height, DESK_HEIGHT as f32 ) - pos.y as f32 * 0.02 * height ),
       0.0,
     );
   }

@@ -1,4 +1,4 @@
-#![warn(missing_docs)]
+#![ warn( missing_docs ) ]
 
 //! Simpler drawing of chess board.
 
@@ -42,7 +42,7 @@ fn board_setup
   let board_dim_f = ( board_dim.0 as f32, board_dim.1 as f32 );
   let board_margin_f = ( board_margin.0 as f32, board_margin.1 as f32 );
 
-  let window = windows.get_primary().unwrap();
+  let window = windows.primary();
   let size_in_pixels = ( window.width(), window.height() );
   let side = if size_in_pixels.0 < size_in_pixels.1
   {
@@ -76,7 +76,7 @@ fn board_setup
         mesh : meshes.add( shape::Quad::new( Vec2::new( side, side ) ).into() ).into(),
         transform,
         ..Default::default()
-      });
+      } );
     }
   }
 }
