@@ -35,7 +35,7 @@ pub fn pieces_setup
 )
 {
   let texture_atlas_handle : Handle< Image > = server.load( "piece/tileset_64.png" );
-  let texture_atlas = TextureAtlas::from_grid( texture_atlas_handle, Vec2::new( 64.0, 64.0 ), 6, 2 );
+  let texture_atlas = TextureAtlas::from_grid( texture_atlas_handle, Vec2::new( 64.0, 64.0 ), 6, 2, None, None );
   let texture_atlas_handle = texture_atlases.add( texture_atlas );
 
   for x in 0 .. 8
@@ -63,7 +63,7 @@ pub fn pieces_setup
           ..Default::default()
         };
 
-        commands.spawn_bundle( piece ).insert( PieceId { id } );
+        commands.spawn( piece ).insert( PieceId { id } );
       }
     }
   }

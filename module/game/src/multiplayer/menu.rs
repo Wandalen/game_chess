@@ -30,7 +30,7 @@ pub struct Destination( String );
 
 pub fn setup( mut commands : Commands )
 {
-  commands.spawn().insert( Destination( String::new() ) );
+  commands.spawn( Destination( String::new() ) );
 }
 
 ///
@@ -89,7 +89,7 @@ pub fn connect_menu
       {
         let destination = format!( "http://{}", destination.0 );
         let task = AsyncTask::spawn( Client::connect( destination ) );
-        commands.spawn().insert( task );
+        commands.spawn( task );
       }
 
       ui.separator();

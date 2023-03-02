@@ -58,14 +58,17 @@ use crate::settings::Settings;
 /// Setup camera and add resources
 ///
 
+#[ derive( Component ) ]
+struct IterSource( bevy_interact_2d::InteractionSource ); 
+
 pub fn setup( mut commands : Commands )
 {
-  let mut camera = commands.spawn_bundle( camera::ChessCameraBundle::new() );
+  let mut camera = commands.spawn( camera::ChessCameraBundle::new() );
   #[ cfg( not( target_arch = "wasm32" ) ) ]
-  camera.insert( bevy_interact_2d::InteractionSource::default() );
-  camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, false ) } );
+  camera.insert( IterSource( bevy_interact_2d::InteractionSource::default() ) );
+  camera.insert( GameTimer { timer : Timer::from_seconds( 2.0, TimerMode::Once ) } );
 
-  commands.spawn().insert( Selection::None );
+  commands.spawn( Selection::None );
   commands.init_resource::< Settings >();
 }
 
@@ -103,7 +106,7 @@ pub fn board_setup
         .. Default::default()
       };
 
-      commands.spawn_bundle( SpriteBundle
+      commands.spawn( SpriteBundle
       {
         sprite,
         transform,

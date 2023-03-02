@@ -111,8 +111,7 @@ fn setup_highlight( mut cmd : Commands, mut highlight : ResMut< Highlight > )
       //let material = materials.add( ColorMaterial::color( Color::rgb( 1.0, 0.0, 0.0 )) );
 
       let ent = cmd
-      .spawn()
-      .insert_bundle( SpriteBundle
+      .spawn( SpriteBundle
       {
         sprite : Sprite
         {
