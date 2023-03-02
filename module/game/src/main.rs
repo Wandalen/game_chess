@@ -403,6 +403,10 @@ fn highlight_legal_moves
 //   }
 // }
 
+// it's wrap in a tuple struct to bypass orphan rules
+#[ derive( Resource ) ]
+struct WinDescr ( WindowDescriptor );
+
 fn main()
 {
   let mut app = App::new();
@@ -412,14 +416,14 @@ fn main()
   app.add_plugins( DefaultPlugins );
   // app.insert_resource( CellColorSchema::default() );
   /* timer gui */
-  app.insert_resource( WindowDescriptor
+  app.insert_resource( WinDescr ( WindowDescriptor
   {
     title : "Timer GUI".to_string(),
     width : 100.,
     height : 20.,
     resizable : true,
     .. Default::default()
-  } );
+  } ) );
   app.add_plugin( EguiPlugin );
   app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( egui_setup ) );
   app.add_system( gamma_change );

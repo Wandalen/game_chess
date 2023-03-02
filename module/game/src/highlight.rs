@@ -23,7 +23,7 @@ enum HighlightCommand
 /// Resource responsible for highlighting cells
 ///
 
-#[ derive( Debug ) ]
+#[ derive( Debug, Resource ) ]
 pub struct Highlight
 {
   data : Vec< ( Entity, Option< Color > ) >,
@@ -52,6 +52,7 @@ impl Highlight
   }
 }
 
+#[ derive( Resource ) ]
 struct ClearOnEachFrame( bool );
 
 #[ derive( Default, Debug ) ]
