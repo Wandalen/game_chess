@@ -7,20 +7,24 @@ use bevy::prelude::*;
 const DISPLAY_HEIGHT : f32 = 300.0;
 const DISPLAY_WIDTH : f32 = 300.0;
 
+// it's wrap in a tuple struct to bypass orphan rules
+#[ derive( Resource ) ]
+struct WinDescr ( WindowDescriptor );
+
 //
 
 fn main()
 {
   App::new()
   .insert_resource( ClearColor( Color::rgb( 0.04, 0.04, 0.04 ) ) )
-  .insert_resource( WindowDescriptor
+  .insert_resource( WinDescr ( WindowDescriptor
   {
     title : "Draw text".to_string(),
     width : DISPLAY_WIDTH,
     height : DISPLAY_HEIGHT,
     resizable : false,
     .. Default::default()
-  } )
+  } ) )
   .add_plugins( DefaultPlugins )
   .add_startup_system( setup )
   .run();
@@ -33,11 +37,11 @@ fn setup( mut commands : Commands, asset_server : Res< AssetServer >, mut textur
   // load sprite image
   let texture_handle = asset_server.load( "icons.png" );
   // split original image. Parameters : ( asset image, size for partial sprite, number of columns, number of lines )
-  let texture_atlas = TextureAtlas::from_grid( texture_handle, Vec2::new( 150.0, 150.0 ), 6, 2 );
+  let texture_atlas = TextureAtlas::from_grid( texture_handle, Vec2::new( 150.0, 150.0 ), 6, 2, None, None );
   // handle sprites atlas as resource
   let texture_atlas_handle = texture_atlases.add( texture_atlas );
-  commands.spawn_bundle( Camera2dBundle::default() );
-  commands.spawn_bundle( SpriteSheetBundle
+  commands.spawn( Camera2dBundle::default() );
+  commands.spawn( SpriteSheetBundle
   {
     // choose the sprite
     sprite : TextureAtlasSprite

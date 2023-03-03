@@ -12,18 +12,22 @@ const DISPLAY_WIDTH : f32 = 300.0;
 #[ derive( Component ) ]
 struct MainCamera;
 
+// it's wrap in a tuple struct to bypass orphan rules
+#[ derive( Resource ) ]
+struct WinDescr ( WindowDescriptor );
+
 fn main()
 {
   App::new()
   .insert_resource( ClearColor( Color::rgb( 0.04, 0.04, 0.04 ) ) )
-  .insert_resource( WindowDescriptor
+  .insert_resource( WinDescr ( WindowDescriptor
   {
     title : "Draw text".to_string(),
     width : DISPLAY_WIDTH,
     height : DISPLAY_HEIGHT,
     resizable : false,
     .. Default::default()
-  } )
+  } ) )
   .add_plugins( DefaultPlugins )
   .add_startup_system( setup )
   .add_system_set_to_stage
@@ -39,8 +43,7 @@ fn main()
 fn setup( mut commands : Commands )
 {
   commands
-  .spawn()
-  .insert_bundle( Camera2dBundle::default() )
+  .spawn( Camera2dBundle::default() )
   .insert( MainCamera );
 }
 

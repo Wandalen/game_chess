@@ -12,13 +12,17 @@ use draw::*;
 const DISPLAY_HEIGHT : f32 = 600.0;
 const DISPLAY_WIDTH : f32 = 800.0;
 
+// it's wrap in a tuple struct to bypass orphan rules
+#[ derive( Resource ) ]
+struct WinDescr ( WindowDescriptor );
+
 //
 
 fn main()
 {
   App::new()
   .insert_resource( ClearColor( Color::rgb( 0.0, 0.0, 0.0 ) ) )
-  .insert_resource( WindowDescriptor
+  .insert_resource( WinDescr ( WindowDescriptor
   {
     title : "Spawn board".to_string(),
     width : DISPLAY_WIDTH,
@@ -31,7 +35,7 @@ fn main()
       .. Default::default()
     },
     .. Default::default()
-  })
+  } ) )
   .insert_resource( BoardSegments::default() )
   .add_startup_system( setup )
   .add_startup_stage( "game_setup", SystemStage::single( spawn_board ) )
