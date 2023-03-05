@@ -12,7 +12,7 @@ const DISPLAY_WIDTH : f32 = 300.0;
 #[ derive( Component ) ]
 struct MainCamera;
 
-// it's wrap in a tuple struct to bypass orphan rules
+// 
 #[ derive( Resource ) ]
 struct WinDescr ( WindowDescriptor );
 

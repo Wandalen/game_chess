@@ -406,7 +406,7 @@ fn highlight_legal_moves
 //   }
 // }
 
-// it's wrap in a tuple struct to bypass orphan rules
+// 
 #[ derive( Resource ) ]
 struct WinDescr ( WindowDescriptor );
 

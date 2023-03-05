@@ -12,7 +12,7 @@ use draw::*;
 const DISPLAY_HEIGHT : f32 = 600.0;
 const DISPLAY_WIDTH : f32 = 800.0;
 
-// it's wrap in a tuple struct to bypass orphan rules
+// 
 #[ derive( Resource ) ]
 struct WinDescr ( WindowDescriptor );
 

@@ -10,7 +10,7 @@ const DISPLAY_WIDTH : f32 = 300.0;
 const DESK_HEIGHT : u8 = 8;
 const DESK_WIDTH : u8 = 8;
 
-// it's wrap in a tuple struct to bypass orphan rules
+// 
 #[ derive( Resource ) ]
 struct WinDescr ( WindowDescriptor );
 
