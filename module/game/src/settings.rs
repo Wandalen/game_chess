@@ -14,7 +14,7 @@ use crate::GameState;
 /// Game settings
 ///
 
-#[ derive( Debug ) ]
+#[ derive( Debug, Resource ) ]
 pub struct Settings
 {
   /// Color material handles

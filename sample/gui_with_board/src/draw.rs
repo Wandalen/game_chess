@@ -18,7 +18,7 @@ pub enum Side
   White,
 }
 
-#[ derive( Clone, Eq, PartialEq ) ]
+#[ derive( Clone, Eq, PartialEq, Resource ) ]
 pub struct CurrentSide( Side );
 
 //
@@ -26,7 +26,7 @@ pub struct CurrentSide( Side );
 /// Start setup, adding main resources
 pub fn setup( mut commands : Commands, mut materials : ResMut< Assets< ColorMaterial > > )
 {
-  commands.spawn_bundle( Camera2dBundle::default() );
+  commands.spawn( Camera2dBundle::default() );
   // add resource with materials for chess board
   commands.insert_resource( Materials
   {
@@ -75,6 +75,7 @@ pub struct Position
 }
 
 /// A vector of board sprites
+#[ derive( Resource ) ]
 pub struct BoardSegments( pub Vec< Entity > );
 impl Default for BoardSegments
 {
@@ -103,6 +104,7 @@ impl Size
 //
 
 /// A struct to handle game matereals
+#[ derive( Resource ) ]
 pub struct Materials
 {
   pub black : Handle< ColorMaterial >,
@@ -153,12 +155,12 @@ pub fn spawn_board
 
 fn segment_spawn( commands : &mut Commands, meshes : &mut ResMut< Assets< Mesh > >, material : &Handle< ColorMaterial >, position : Position, size : f32 ) -> Entity
 {
-  commands.spawn_bundle( MaterialMesh2dBundle
+  commands.spawn( MaterialMesh2dBundle
   {
     material : material.clone(),
     mesh : meshes.add( shape::Quad::new( Vec2::new( 10.0, 10.0 ) ).into() ).into(),
     .. Default::default()
-  })
+  } )
   .insert( position )
   .insert( Size::square( size ) )
   .id()
