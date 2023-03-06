@@ -2,6 +2,7 @@ use multiplayer::generated::chess::chess_client::ChessClient;
 use multiplayer::generated::chess::{ CreateGame, GameId, Board, AcceptGame, GameMove, GamePlayer, Msg, Msgs, GameAvailableMoves };
 #[ cfg( not( target_arch = "wasm32" ) ) ]
 use lazy_static::lazy_static;
+use bevy::prelude::Resource;
 
 #[ cfg( not( target_arch = "wasm32" ) ) ]
 lazy_static!
@@ -21,7 +22,7 @@ lazy_static!
 /// Client for the chess multiplayer
 ///
 
-#[ derive( Debug ) ]
+#[ derive( Debug, Resource ) ]
 pub struct Client
 {
   #[ cfg( not( target_arch = "wasm32" ) ) ]

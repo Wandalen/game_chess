@@ -32,7 +32,7 @@ fn board_setup
   windows : Res< Windows >
 )
 {
-  commands.spawn_bundle( Camera2dBundle::default() );
+  commands.spawn( Camera2dBundle::default() );
 
   let black = materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() );
   let white = materials.add( Color::rgb( 1.0, 1.0, 1.0 ).into() );
@@ -70,7 +70,7 @@ fn board_setup
         .. Default::default()
       };
 
-      commands.spawn_bundle( MaterialMesh2dBundle
+      commands.spawn( MaterialMesh2dBundle
       {
         material,
         mesh : meshes.add( shape::Quad::new( Vec2::new( side, side ) ).into() ).into(),

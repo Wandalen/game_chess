@@ -30,6 +30,7 @@ game_chess_core = { version = "~0.0", path = "../core" }
 multiplayer = { path = "../multiplayer" }
 thiserror = "1.0.37"
 tokio = { version = "1.21.2", features = ["rt"] }
+bevy = "~0.9"
 
 [target.'cfg( not( target_arch = "wasm32" ) )'.dependencies]
 tonic = "0.8.2"

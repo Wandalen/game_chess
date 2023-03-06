@@ -1,116 +1,132 @@
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameUpdate {
-    #[prost(oneof="game_update::GameUpdate", tags="1, 2")]
+    #[prost(oneof = "game_update::GameUpdate", tags = "1, 2")]
     pub game_update: ::core::option::Option<game_update::GameUpdate>,
 }
 /// Nested message and enum types in `GameUpdate`.
 pub mod game_update {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum GameUpdate {
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         GameMove(super::GameMove),
         /// TODO: refactor chat messages to use streams when they are ready.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         GameEnd(super::GameEnd),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Blank {
-}
+pub struct Blank {}
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GamePlayer {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub player_id: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub game_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameInfo {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub game_id: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub players: ::prost::alloc::vec::Vec<GamePlayer>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameState {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub game_id: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub players: ::prost::alloc::vec::Vec<GamePlayer>,
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub game_status: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Board {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub game_id: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub board_state: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MultiplayerGame {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub game_id: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub players: ::prost::alloc::vec::Vec<GamePlayer>,
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub status: i32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Games {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub games: ::prost::alloc::vec::Vec<MultiplayerGame>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameMove {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub game_id: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub player_id: ::prost::alloc::string::String,
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub r#move: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameAvailableMoves {
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub moves_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameEnd {
     /// Can be empty if it's a draw.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub winner_id: ::prost::alloc::string::String,
     /// Draw, Player won, Surrender.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub reason: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceptGame {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub game_id: ::prost::alloc::string::String,
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub player_id: ::core::option::Option<GamePlayer>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGame {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub player: ::core::option::Option<GamePlayer>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GameId {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub game_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Msg {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub player: ::core::option::Option<GamePlayer>,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub text: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Msgs {
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub messages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Generated client implementations.
@@ -379,7 +395,7 @@ pub mod chess_client {
 pub mod chess_server {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    ///Generated trait containing gRPC methods that should be implemented for use with ChessServer.
+    /// Generated trait containing gRPC methods that should be implemented for use with ChessServer.
     #[async_trait]
     pub trait Chess: Send + Sync + 'static {
         async fn push_game_create(
@@ -422,7 +438,7 @@ pub mod chess_server {
             &self,
             request: tonic::Request<super::GamePlayer>,
         ) -> Result<tonic::Response<super::Msgs>, tonic::Status>;
-        ///Server streaming response type for the pull_game_updates method.
+        /// Server streaming response type for the pull_game_updates method.
         type pull_game_updatesStream: futures_core::Stream<
                 Item = Result<super::GameUpdate, tonic::Status>,
             >

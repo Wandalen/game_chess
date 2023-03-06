@@ -23,7 +23,7 @@ enum HighlightCommand
 /// Resource responsible for highlighting cells
 ///
 
-#[ derive( Debug ) ]
+#[ derive( Debug, Resource ) ]
 pub struct Highlight
 {
   data : Vec< ( Entity, Option< Color > ) >,
@@ -52,6 +52,7 @@ impl Highlight
   }
 }
 
+#[ derive( Resource ) ]
 struct ClearOnEachFrame( bool );
 
 #[ derive( Default, Debug ) ]
@@ -110,8 +111,7 @@ fn setup_highlight( mut cmd : Commands, mut highlight : ResMut< Highlight > )
       //let material = materials.add( ColorMaterial::color( Color::rgb( 1.0, 0.0, 0.0 )) );
 
       let ent = cmd
-      .spawn()
-      .insert_bundle( SpriteBundle
+      .spawn( SpriteBundle
       {
         sprite : Sprite
         {
