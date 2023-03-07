@@ -36,7 +36,7 @@ fn board_setup
 
   let black = materials.add( Color::rgb( 0.30, 0.05, 0.0 ).into() );
   let white = materials.add( Color::rgb( 1.0, 1.0, 1.0 ).into() );
-
+  
   let board_dim = ( 8, 8 );
   let board_margin = ( 1, 1 );
   let board_dim_f = ( board_dim.0 as f32, board_dim.1 as f32 );
@@ -57,7 +57,7 @@ fn board_setup
   {
     for y in 0 .. board_dim.1
     {
-      let material = if ( x + y ) % 2 == 0 { white.clone() } else { black.clone() };
+      let material = if ( x + y ) % 2 == 0 { black.clone() } else { white.clone() };
 
       let transform = Transform
       {
@@ -75,7 +75,7 @@ fn board_setup
         material,
         mesh : meshes.add( shape::Quad::new( Vec2::new( side, side ) ).into() ).into(),
         transform,
-        ..Default::default()
+        .. Default::default()
       } );
     }
   }
