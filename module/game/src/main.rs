@@ -10,6 +10,7 @@ use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
 use game_chess_core as core;
+use std::slice::Windows;
 
 pub mod camera;
 pub mod common;
