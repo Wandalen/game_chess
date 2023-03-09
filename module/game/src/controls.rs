@@ -4,7 +4,6 @@
 
 use bevy::prelude::*;
 use bevy::math::Vec4Swizzles;
-use std::slice::Windows;
 use game_chess_core::
 {
   Piece,

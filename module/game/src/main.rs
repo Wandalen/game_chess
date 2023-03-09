@@ -10,7 +10,6 @@ use bevy_kira_audio::{ AudioPlugin, AudioControl };
 use bevy::render::camera::{ camera_system, Camera };
 use bevy_egui::{ egui, EguiContext, EguiPlugin };
 use game_chess_core as core;
-use std::slice::Windows;
 
 pub mod camera;
 pub mod common;
@@ -272,9 +271,12 @@ pub fn sound_control( audio_output : Res< bevy_kira_audio::Audio >, settings : R
 /// GUI setup
 ///
 
+#[ derive( Resource ) ]
+struct ResEquiContext ( EguiContext );
+
 pub fn egui_setup
 (
-  mut egui_context : ResMut< EguiContext >,
+  mut egui_context : ResMut< ResEquiContext >,
 )
 {
   egui::Window::new( "Timer" ).show( egui_context.ctx_mut(), | ui |
@@ -408,8 +410,6 @@ fn highlight_legal_moves
 // }
 
 // 
-#[ derive( Resource ) ]
-struct WinDescr ( WindowDescriptor );
 
 fn main()
 {
@@ -420,14 +420,14 @@ fn main()
   app.add_plugins( DefaultPlugins );
   // app.insert_resource( CellColorSchema::default() );
   /* timer gui */
-  app.insert_resource( WinDescr ( WindowDescriptor
+  app.insert_resource( Window
   {
     title : "Timer GUI".to_string(),
     width : 100.,
     height : 20.,
     resizable : true,
     .. Default::default()
-  } ) );
+  } );
   app.add_plugin( EguiPlugin );
   app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( egui_setup ) );
   app.add_system( gamma_change );
