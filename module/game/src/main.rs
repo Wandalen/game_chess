@@ -485,7 +485,7 @@ fn main()
 
   app.add_system_to_stage
   (
-    CoreStage::PostUpdate,
+    CoreSet::PostUpdate,
     camera_system::< camera::ChessProjection >,
   );
 
