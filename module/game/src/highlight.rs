@@ -120,9 +120,9 @@ fn setup_highlight( mut cmd : Commands, mut highlight : ResMut< Highlight > )
           .. Default::default()
         },
         transform,
-        .. Default::default()
+        ..Default::default()
       })
-      .insert( Visibility { is_visible : false } )
+      .insert( Visibility::Hidden )
       .id();
 
       highlight.data.push( ( ent, None ) );
