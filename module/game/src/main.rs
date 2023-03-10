@@ -423,10 +423,9 @@ fn main()
   app.insert_resource( Window
   {
     title : "Timer GUI".to_string(),
-    width : 100.,
-    height : 20.,
+    resolution: ( 100., 20. ).into(),
     resizable : true,
-    .. Default::default()
+    ..Default::default()
   } );
   app.add_plugin( EguiPlugin );
   app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( egui_setup ) );
