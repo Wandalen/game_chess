@@ -6,7 +6,7 @@
 /// Game state enum
 ///
 
-#[ derive( Debug, Clone, Eq, PartialEq, Hash ) ]
+#[ derive( Debug, Clone, Eq, PartialEq, Hash, ) ]
 pub enum GameState
 {
   /// Intial state

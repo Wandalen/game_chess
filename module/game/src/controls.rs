@@ -33,7 +33,7 @@ pub enum Selection
 
 pub fn handle_click
 (
-  windows : Res< Windows >,
+  windows : Query< &Window >,
   mouse_button_input : Res< Input< MouseButton > >,
   q_camera : Query< &Camera >,
   mut selected_cell : Query< &mut Selection >,
@@ -45,7 +45,7 @@ pub fn handle_click
     return;
   }
 
-  let cell = cell_number( windows.primary(), q_camera.single() );
+  let cell = cell_number( windows.get_single(), q_camera.single() );
 
   let mut selected_cell = selected_cell.single_mut();
   let selected_cell = selected_cell.as_mut();
