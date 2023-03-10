@@ -37,7 +37,7 @@ pub fn handle_click
   mouse_button_input : Res< Input< MouseButton > >,
   q_camera : Query< &Camera >,
   mut selected_cell : Query< &mut Selection >,
-  game : ResMut< Game >,
+  game : NonSendMut< Game >,
 )
 {
   if !mouse_button_input.just_released( MouseButton::Left )
@@ -52,7 +52,7 @@ pub fn handle_click
   cell.map( | c | select_cell( &c, selected_cell, game ) );
 }
 
-fn select_cell( cell : &Vec2, selected_cell : &mut Selection, mut game : ResMut< Game > )
+fn select_cell( cell : &Vec2, selected_cell : &mut Selection, mut game : NonSendMut< Game > )
 {
   let ( x, y ) = ( cell.x as u8, cell.y as u8 );
   match selected_cell

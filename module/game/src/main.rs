@@ -302,7 +302,7 @@ fn highlight_cells
   q_camera : Query< &Camera >,
   mut highlight : ResMut< highlight::Highlight >,
   selected_cell : Query< &Selection >,
-  game : Res< core::Game >,
+  game : NonSend< core::Game >,
 )
 {
   let cell = controls::cell_number( windows.get_single(), q_camera.single() );
@@ -345,7 +345,7 @@ fn highlight_legal_moves
 (
   selected_cell : &Query< &Selection >,
   highlight : &mut ResMut< highlight::Highlight >,
-  game : &Res< core::Game >
+  game : &NonSend< core::Game >
 )
 {
   if let Selection::Piece( x, y ) = selected_cell.single()

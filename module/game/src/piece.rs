@@ -77,7 +77,7 @@ pub fn draw_pieces
 (
   mut commands : Commands,
   mut query : Query< ( Entity, &PieceId, &mut Transform ) >,
-  game : Res< Game >,
+  game : NonSend< Game >,
 )
 {
   for ( entity, id, mut transform ) in query.iter_mut()
