@@ -9,14 +9,18 @@ use bevy_egui::
   EguiContext
 };
 use crate::GameState;
+use bevy::prelude::Resource;
 
 ///
 /// System that draws the pause menu.
 ///
 
+#[ derive( Resource ) ]
+struct ResEguiContext ( EguiContext );
+
 pub fn setup_pause_menu
 (
-  mut egui_context : ResMut< EguiContext >,
+  mut egui_context : ResMut< ResEguiContext >,
   mut app_state : ResMut< State< GameState > >,
 )
 {

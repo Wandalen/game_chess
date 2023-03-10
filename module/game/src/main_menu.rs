@@ -11,14 +11,18 @@ use bevy_egui::
 };
 use crate::common::Multiplayer;
 use crate::GameState;
+use bevy::prelude::Resource;
 
 ///
 /// System that draws the main menu.
 ///
 
+#[ derive( Resource ) ]
+struct ResEguiContext ( EguiContext );
+
 pub fn setup_main_menu
 (
-  mut egui_context : ResMut< EguiContext >,
+  mut egui_context : ResMut< ResEguiContext >,
   mut app_state : ResMut< State< GameState > >,
   mut exit : EventWriter< AppExit >,
 )

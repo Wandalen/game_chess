@@ -9,6 +9,7 @@ use bevy_egui::
   EguiContext,
 };
 use crate::GameState;
+use bevy::prelude::Resource;
 
 ///
 /// Game settings
@@ -40,9 +41,12 @@ pub struct Materials
 /// System that draws the settings menu.
 ///
 
+#[ derive( Resource ) ]
+struct ResEguiContext ( EguiContext );
+
 pub fn settings_menu
 (
-  mut egui_context : ResMut< EguiContext >,
+  mut egui_context : ResMut< ResEguiContext >,
   mut keys : ResMut< Input< KeyCode > >,
   mut app_state : ResMut< State< GameState > >,
   mut materials : ResMut< Assets< ColorMaterial > >,
