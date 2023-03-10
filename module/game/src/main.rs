@@ -298,14 +298,14 @@ struct GameTimer
 
 fn highlight_cells
 (
-  windows : Res< Windows >,
+  windows : Query< &Window >,
   q_camera : Query< &Camera >,
   mut highlight : ResMut< highlight::Highlight >,
   selected_cell : Query< &Selection >,
   game : Res< core::Game >,
 )
 {
-  let cell = controls::cell_number( windows.primary(), q_camera.single() );
+  let cell = controls::cell_number( windows.get_single(), q_camera.single() );
 
   highlight_legal_moves( &selected_cell, &mut highlight, &game );
 
