@@ -2,13 +2,16 @@
 //! Common data structures
 //!
 
+use bevy::prelude::States;
+
 ///
 /// Game state enum
 ///
 
-#[ derive( Debug, Clone, Eq, PartialEq, Hash, ) ]
+#[ derive( Debug, Clone, Eq, PartialEq, Hash, Copy, Default, States, ) ]
 pub enum GameState
 {
+  #[default]
   /// Intial state
   Init,
   /// Main menu
@@ -18,7 +21,7 @@ pub enum GameState
   /// When we are playing the game
   GamePlaying,
   /// Multiplayer game
-  MultiplayerGame( Multiplayer ),
+  // MultiplayerGame( Multiplayer ),
   /// When game is on pause
   Pause,
   /// Settings menu
