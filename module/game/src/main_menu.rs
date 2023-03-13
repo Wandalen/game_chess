@@ -23,15 +23,11 @@ struct ResEguiContext ( EguiContext );
 pub fn setup_main_menu
 (
   mut egui_context : ResMut< ResEguiContext >,
-<<<<<<< HEAD
   mut app_state : ResMut< NextState< GameState > >,
-=======
-  mut app_state : ResMut< State< GameState > >,
->>>>>>> 1316e2094a4d24e4a8ca2babef6eaf416851e451
   mut exit : EventWriter< AppExit >,
 )
 {
-  egui::CentralPanel::default().show( egui_context.ctx_mut(), | ui |
+  egui::CentralPanel::default().show( egui_context.0.get_mut(), | ui |
   {
     ui.vertical_centered( |ui|
     {

@@ -21,7 +21,7 @@ pub enum GameState
   /// When we are playing the game
   GamePlaying,
   /// Multiplayer game
-  // MultiplayerGame( Multiplayer ),
+  MultiplayerGame( Multiplayer ),
   /// When game is on pause
   Pause,
   /// Settings menu
@@ -32,7 +32,7 @@ pub enum GameState
 /// Multiplayer game's states
 ///
 
-#[ derive( Debug, Clone, Eq, PartialEq, Hash ) ]
+#[ derive( Debug, Copy, Clone, Eq, PartialEq, Hash ) ]
 pub enum Multiplayer
 {
   /// Connection setup
