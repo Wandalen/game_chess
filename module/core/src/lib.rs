@@ -29,6 +29,7 @@ pub use pleco::
   core::bitboard::BitBoard as CellsSet,
 };
 use pleco::BitMove;
+use bevy::prelude::Resource;
 
 use serde::{ Serialize, Deserialize, Serializer, Deserializer };
 
@@ -496,7 +497,7 @@ pub enum GameStatus
 /// Basically Board + History.
 ///
 
-#[ derive( Serialize, Deserialize, Debug ) ]
+#[ derive( Serialize, Deserialize, Debug, Resource ) ]
 pub struct Game
 {
   #[ serde( serialize_with = "board_ser", deserialize_with = "board_der" ) ]

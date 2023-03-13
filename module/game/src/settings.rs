@@ -14,7 +14,7 @@ use crate::GameState;
 /// Game settings
 ///
 
-#[ derive( Debug ) ]
+#[ derive( Debug, Resource ) ]
 pub struct Settings
 {
   /// Color material handles
@@ -81,8 +81,8 @@ pub fn settings_menu
           {
             app_state.pop().unwrap();
           }
-        });
-    });
+        } );
+    } );
 }
 
 impl FromWorld for Settings
@@ -94,8 +94,8 @@ impl FromWorld for Settings
     {
       color_handles : Materials
       {
-        black: materials.add( ColorMaterial::from( Color::rgb( 0.9, 0.9, 0.7 ) ) ),
-        white: materials.add( ColorMaterial::from( Color::rgb( 0.2, 0.2, 0.1 ) ) ),
+        black : materials.add( ColorMaterial::from( Color::rgb( 0.2, 0.2, 0.1 ) ) ),
+        white : materials.add( ColorMaterial::from( Color::rgb( 0.9, 0.9, 0.7 ) ) ),
       },
       enable_sound : true,
     }

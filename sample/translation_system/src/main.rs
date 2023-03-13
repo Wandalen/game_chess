@@ -16,7 +16,6 @@ use bevy::
       Camera,
       CameraRenderGraph,
       CameraProjection,
-      DepthCalculation,
       camera_system,
     },
     primitives::Frustum,
@@ -48,8 +47,6 @@ pub struct ChessProjection
   pub far : f32,
   /// Scale of view.
   pub scale: f32,
-  /// Depth calculation.
-  pub depth_calculation: DepthCalculation,
 }
 
 impl CameraProjection for ChessProjection
@@ -88,12 +85,6 @@ impl CameraProjection for ChessProjection
   {
     self.far
   }
-
-  /// Sort entities by depth. Not used.
-  fn depth_calculation( &self ) -> DepthCalculation
-  {
-    self.depth_calculation
-  }
 }
 
 impl Default for ChessProjection
@@ -110,7 +101,6 @@ impl Default for ChessProjection
       near : 0.0,
       far : 1000.0,
       scale: 1.0,
-      depth_calculation : DepthCalculation::Distance,
     }
   }
 }
@@ -213,7 +203,7 @@ fn main()
 pub fn graphics_setup( mut commands : Commands, mut meshes : ResMut< Assets< Mesh > >, mut materials : ResMut< Assets< ColorMaterial > > )
 {
   /* camera */
-  commands.spawn_bundle( ChessCameraBundle::new() );
+  commands.spawn( ChessCameraBundle::new() );
 
   let material = materials.add( ColorMaterial::from( Color::rgb( 0.2, 0.2, 0.1 ) ) );
 
@@ -225,7 +215,7 @@ pub fn graphics_setup( mut commands : Commands, mut meshes : ResMut< Assets< Mes
     ..Default::default()
   };
 
-  commands.spawn_bundle( MaterialMesh2dBundle
+  commands.spawn( MaterialMesh2dBundle
   {
     mesh : meshes.add( mesh.into() ).into(),
     material : material.clone(),
@@ -243,7 +233,7 @@ pub fn graphics_setup( mut commands : Commands, mut meshes : ResMut< Assets< Mes
     ..Default::default()
   };
 
-  commands.spawn_bundle( MaterialMesh2dBundle
+  commands.spawn( MaterialMesh2dBundle
   {
     mesh : meshes.add( mesh.into() ).into(),
     material,

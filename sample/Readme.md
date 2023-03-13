@@ -23,6 +23,7 @@ List of samples
 - [core_move_check](./core_move_check) - Check that a move is valid.
 - [core_possible_moves](./core_possible_moves) - Calculate a best possible moves for current situation.
 - [gui_with_board](./gui_with_board) - Draw the resizable chess board and GUI panel with combobox.
+- [sample_mesh](./mesh) - Sample shows how to drav a mesh in Bevy.
 - [mouse_event_detection](./mouse_event_detection) - Detect and handle mouse and cursor events.
 - [mouse_position_to_board](./mouse_position_to_board) - Translate current cursor position to chess board coordinates.
 - [mouse_position_translation](./mouse_position_translation) - Calculate current cursor position relative to the center of window.
