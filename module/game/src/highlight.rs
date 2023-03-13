@@ -159,7 +159,7 @@ fn apply_requests
 
         let ( mut sprite, mut visible ) = query.get_mut( data[ idx ].0 ).unwrap();
         sprite.color = color;
-        visible.is_visible = true;
+        *visible = Visibility::Inherited;
       }
 
       HighlightCommand::Clear { pos } =>
@@ -173,7 +173,7 @@ fn apply_requests
         }
 
         let ( _, mut visible ) = query.get_mut( *ent ).unwrap();
-        visible.is_visible = false;
+        *visible = Visibility::Hidden;
       }
 
       HighlightCommand::ClearAll =>
@@ -186,7 +186,7 @@ fn apply_requests
           }
 
           let ( _, mut visible ) = query.get_mut( *ent ).unwrap();
-          visible.is_visible = false;
+          *visible = Visibility::Hidden;
         }
       }
     }

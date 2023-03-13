@@ -23,7 +23,7 @@ struct ResEguiContext ( EguiContext );
 pub fn setup_main_menu
 (
   mut egui_context : ResMut< ResEguiContext >,
-  mut app_state : ResMut< State< GameState > >,
+  mut app_state : ResMut< NextState< GameState > >,
   mut exit : EventWriter< AppExit >,
 )
 {
@@ -33,7 +33,7 @@ pub fn setup_main_menu
     {
       if ui.button( "New game with AI" ).clicked()
       {
-        app_state.set( GameState::GameNew ).unwrap();
+        app_state.set( GameState::GameNew );
       }
       if ui.button( "New game" ).clicked()
       {

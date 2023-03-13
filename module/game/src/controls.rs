@@ -45,7 +45,7 @@ pub fn handle_click
     return;
   }
 
-  let cell = cell_number( windows.get_single(), q_camera.single() );
+  let cell = cell_number( windows.get_single().unwrap(), q_camera.single() );
 
   let mut selected_cell = selected_cell.single_mut();
   let selected_cell = selected_cell.as_mut();
@@ -90,12 +90,12 @@ fn select_cell( cell : &Vec2, selected_cell : &mut Selection, mut game : NonSend
 pub fn handle_keyboard
 (
   mut keys : ResMut< Input< KeyCode > >,
-  mut app_state : ResMut< State< GameState > >,
+  mut app_state : ResMut< NextState< GameState > >,
 )
 {
   if keys.just_pressed( KeyCode::Escape )
   {
-    app_state.set( GameState::Pause ).unwrap();
+    app_state.set( GameState::Pause );
     // Not doing this can cause issues https://github.com/bevyengine/bevy/issues/1700.
     keys.reset( KeyCode::Escape );
   }
