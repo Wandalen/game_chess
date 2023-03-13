@@ -45,7 +45,11 @@ pub fn handle_click
     return;
   }
 
+<<<<<<< HEAD
   let cell = cell_number( windows.get_single().unwrap(), q_camera.single() );
+=======
+  let cell = cell_number( windows.get_single(), q_camera.single() );
+>>>>>>> 1316e2094a4d24e4a8ca2babef6eaf416851e451
 
   let mut selected_cell = selected_cell.single_mut();
   let selected_cell = selected_cell.as_mut();
