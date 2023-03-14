@@ -34,7 +34,7 @@ use serde::{ Serialize, Deserialize, Serializer, Deserializer };
 
 use rand::Rng;
 use rand::thread_rng;
-
+use bevy::prelude::Resource;
 
 /* Structure:
 
@@ -497,7 +497,7 @@ pub enum GameStatus
 /// Basically Board + History.
 ///
 
-#[ derive( Serialize, Deserialize, Debug, ) ]
+#[ derive( Serialize, Deserialize, Debug, Resource, ) ]
 pub struct Game
 {
   #[ serde( serialize_with = "board_ser", deserialize_with = "board_der" ) ]

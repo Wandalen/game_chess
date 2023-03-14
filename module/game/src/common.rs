@@ -21,7 +21,7 @@ pub enum GameState
   /// When we are playing the game
   GamePlaying,
   /// Multiplayer game
-  // MultiplayerGame( Multiplayer ),
+  MultiplayerGame( Multiplayer ),
   /// When game is on pause
   Pause,
   /// Settings menu

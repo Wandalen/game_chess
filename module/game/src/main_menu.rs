@@ -27,7 +27,7 @@ pub fn setup_main_menu
   mut exit : EventWriter< AppExit >,
 )
 {
-  egui::CentralPanel::default().show( egui_context.0.get_mut(), | ui |
+  egui::CentralPanel::default().show( egui_context.ctx_mut(), | ui |
   {
     ui.vertical_centered( |ui|
     {
