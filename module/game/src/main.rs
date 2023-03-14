@@ -271,9 +271,12 @@ pub fn sound_control( audio_output : Res< bevy_kira_audio::Audio >, settings : R
 /// GUI setup
 ///
 
+#[ derive( Resource ) ]
+struct ResEquiContext ( EguiContext );
+
 pub fn egui_setup
 (
-  mut egui_context : ResMut< EguiContext >,
+  mut egui_context : ResMut< ResEquiContext >,
 )
 {
   egui::Window::new( "Timer" ).show( egui_context.ctx_mut(), | ui |
@@ -295,14 +298,14 @@ struct GameTimer
 
 fn highlight_cells
 (
-  windows : Res< Windows >,
+  windows : Query< &Window >,
   q_camera : Query< &Camera >,
   mut highlight : ResMut< highlight::Highlight >,
   selected_cell : Query< &Selection >,
-  game : Res< core::Game >,
+  game : NonSend< core::Game >,
 )
 {
-  let cell = controls::cell_number( windows.primary(), q_camera.single() );
+  let cell = controls::cell_number( windows.get_single(), q_camera.single() );
 
   highlight_legal_moves( &selected_cell, &mut highlight, &game );
 
@@ -342,7 +345,7 @@ fn highlight_legal_moves
 (
   selected_cell : &Query< &Selection >,
   highlight : &mut ResMut< highlight::Highlight >,
-  game : &Res< core::Game >
+  game : &NonSend< core::Game >
 )
 {
   if let Selection::Piece( x, y ) = selected_cell.single()
@@ -407,8 +410,6 @@ fn highlight_legal_moves
 // }
 
 // 
-#[ derive( Resource ) ]
-struct WinDescr ( WindowDescriptor );
 
 fn main()
 {
@@ -419,14 +420,13 @@ fn main()
   app.add_plugins( DefaultPlugins );
   // app.insert_resource( CellColorSchema::default() );
   /* timer gui */
-  app.insert_resource( WinDescr ( WindowDescriptor
+  app.insert_resource( Window
   {
     title : "Timer GUI".to_string(),
-    width : 100.,
-    height : 20.,
+    resolution: ( 100., 20. ).into(),
     resizable : true,
-    .. Default::default()
-  } ) );
+    ..Default::default()
+  } );
   app.add_plugin( EguiPlugin );
   app.add_system_set( SystemSet::on_update( GameState::GamePlaying ).with_system( egui_setup ) );
   app.add_system( gamma_change );
@@ -485,7 +485,7 @@ fn main()
 
   app.add_system_to_stage
   (
-    CoreStage::PostUpdate,
+    CoreSet::PostUpdate,
     camera_system::< camera::ChessProjection >,
   );
 

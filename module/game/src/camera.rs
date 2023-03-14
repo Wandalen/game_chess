@@ -161,7 +161,7 @@ impl ChessCameraBundle
     let projection = ChessProjection::default();
     let transform = Transform::from_xyz( 0.0, 0.0, projection.far() - 0.1 );
     let view_projection = projection.get_projection_matrix() * transform.compute_matrix().inverse();
-    let frustum = Frustum::from_view_projection
+    let frustum = Frustum::from_view_projection_custom_far
     (
       &view_projection,
       &transform.translation,

@@ -37,10 +37,13 @@ pub fn setup( mut commands : Commands )
 /// Connection menu
 ///
 
+#[ derive( Resource ) ]
+struct ResEguiContext ( EguiContext );
+
 pub fn connect_menu
 (
   mut commands : Commands,
-  mut egui_context : ResMut< EguiContext >,
+  mut egui_context : ResMut< ResEguiContext >,
   mut query : Query< ( Entity, &mut AsyncTask< Result< Client, ClientError > > ) >,
   mut destination : Query< &mut Destination >,
   mut app_state : ResMut< State< GameState > >,

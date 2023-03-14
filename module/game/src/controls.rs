@@ -33,11 +33,11 @@ pub enum Selection
 
 pub fn handle_click
 (
-  windows : Res< Windows >,
+  windows : Query< &Window >,
   mouse_button_input : Res< Input< MouseButton > >,
   q_camera : Query< &Camera >,
   mut selected_cell : Query< &mut Selection >,
-  game : ResMut< Game >,
+  game : NonSendMut< Game >,
 )
 {
   if !mouse_button_input.just_released( MouseButton::Left )
@@ -45,14 +45,14 @@ pub fn handle_click
     return;
   }
 
-  let cell = cell_number( windows.primary(), q_camera.single() );
+  let cell = cell_number( windows.get_single().unwrap(), q_camera.single() );
 
   let mut selected_cell = selected_cell.single_mut();
   let selected_cell = selected_cell.as_mut();
   cell.map( | c | select_cell( &c, selected_cell, game ) );
 }
 
-fn select_cell( cell : &Vec2, selected_cell : &mut Selection, mut game : ResMut< Game > )
+fn select_cell( cell : &Vec2, selected_cell : &mut Selection, mut game : NonSendMut< Game > )
 {
   let ( x, y ) = ( cell.x as u8, cell.y as u8 );
   match selected_cell
@@ -90,12 +90,12 @@ fn select_cell( cell : &Vec2, selected_cell : &mut Selection, mut game : ResMut<
 pub fn handle_keyboard
 (
   mut keys : ResMut< Input< KeyCode > >,
-  mut app_state : ResMut< State< GameState > >,
+  mut app_state : ResMut< NextState< GameState > >,
 )
 {
   if keys.just_pressed( KeyCode::Escape )
   {
-    app_state.set( GameState::Pause ).unwrap();
+    app_state.set( GameState::Pause );
     // Not doing this can cause issues https://github.com/bevyengine/bevy/issues/1700.
     keys.reset( KeyCode::Escape );
   }
