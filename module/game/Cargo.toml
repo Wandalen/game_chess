@@ -50,7 +50,7 @@ bevy_ecs = "~0.10"
 futures-channel = "~0.3"
 
 bevy_kira_audio = { version = "~0.15", features = [ "mp3" ] }
-bevy_interact_2d = "~0.9"
+bevy_interact_2d = { git = "https://github.com/olgZZZ/bevy_rei.git" }
 
 [dependencies.bevy]
 version = "~0.10"
@@ -62,6 +62,7 @@ features = [
   "bevy_scene",
   "bevy_winit",
   "bevy_sprite",
+  "bevy_render",
   "png",
   "hdr",
   "x11",
